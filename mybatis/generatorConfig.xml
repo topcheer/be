@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration >
+  <context id="eduTables" targetRuntime="MyBatis3">
+  	<plugin type="org.mybatis.generator.plugins.MapperConfigPlugin">
+  		<property name="targetPackage" value="com.brightedu"/>
+  		<property name="targetProject" value="BrightEdu/src"/>
+  	
+  	</plugin>
+    <jdbcConnection driverClass="org.postgresql.Driver" 
+    	connectionURL="jdbc:postgresql://jmedu.wassecurity.net:5432/edu" 
+    	userId="edu" 
+    	password="edu2012">
+    </jdbcConnection>
+    <javaTypeResolver >
+      <property name="forceBigDecimals" value="false" />
+    </javaTypeResolver>
+
+    <javaModelGenerator targetPackage="com.brightedu.model" targetProject="BrightEdu/src">
+      <property name="enableSubPackages" value="true" />
+      <property name="trimStrings" value="true" />
+    </javaModelGenerator>
+
+    <sqlMapGenerator targetPackage="com.brightedu.xml"  targetProject="BrightEdu/src">
+      <property name="enableSubPackages" value="true" />
+    </sqlMapGenerator>
+
+    <javaClientGenerator type="MIXEDMAPPER" targetPackage="com.brightedu.dao"  targetProject="BrightEdu/src">
+      <property name="enableSubPackages" value="true" />
+    </javaClientGenerator>
+    <table  schema="edu" tableName="ag_return_amount" domainObjectName="AgentReturnAmount" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>  
+    <table  schema="edu" tableName="agent_relation" domainObjectName="AgentRelation" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>  
+     <table  schema="edu" tableName="agent_retrun" domainObjectName="AgentReturn" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>  
+     <table  schema="edu" tableName="agree_retrun" domainObjectName="AgreeReturn" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>  
+    <table  schema="edu" tableName="batch_index" domainObjectName="BatchIndex" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>  
+    <table  schema="edu" tableName="charge_admin" domainObjectName="ChargeAdmin" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>  
+    <table schema="edu" tableName="college_agreement" domainObjectName="CollegeAgreement" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>   
+    <table  schema="edu" tableName="co_college" domainObjectName="College" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>  
+    <table  schema="edu" tableName="college_subject" domainObjectName="CollegeSubject" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>  
+    <table  schema="edu" tableName="derate_request" domainObjectName="DerateRequest" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>  
+    <table  schema="edu" tableName="entrance_cost" domainObjectName="EntranceCost" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>  
+    
+    <table  schema="edu" tableName="fee_type" domainObjectName="FeeType" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>  
+    <table  schema="edu" tableName="receive_fund" domainObjectName="ReceiveFund" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>  
+    <table  schema="edu" tableName="recruit_agent" domainObjectName="RecruitAgent" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>  
+    <table  schema="edu" tableName="refundment_admin" domainObjectName="RefundmentAdmin" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>  
+    <table  schema="edu" tableName="student_change" domainObjectName="StudentChange" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>  
+    <table  schema="edu" tableName="student_classified" domainObjectName="StudentClassified" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>  
+    <table  schema="edu" tableName="student_info" domainObjectName="StudentInfo" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>  
+    <table  schema="edu" tableName="subjects" domainObjectName="Subjects" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>  
+    <table  schema="edu" tableName="user_admin" domainObjectName="User" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>  
+        
+  </context>
+  
+</generatorConfiguration>
