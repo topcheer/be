@@ -8,11 +8,18 @@
   		<property name="targetProject" value="BrightEdu/src"/>
   	
   	</plugin>
-    <jdbcConnection driverClass="org.postgresql.Driver" 
+    <!--  jdbcConnection driverClass="org.postgresql.Driver" 
     	connectionURL="jdbc:postgresql://jmedu.wassecurity.net:5432/edu" 
     	userId="edu" 
     	password="edu2012">
+    </jdbcConnection> -->
+    
+    <jdbcConnection driverClass="org.postgresql.Driver" 
+    	connectionURL="jdbc:postgresql://10.61.241.106:5432/edu" 
+    	userId="bright_owner" 
+    	password="12345">
     </jdbcConnection>
+    
     <javaTypeResolver >
       <property name="forceBigDecimals" value="false" />
     </javaTypeResolver>
