@@ -5,7 +5,6 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 public class Log {
-	static byte[] syncLock = new byte[0];
 
 	private static String FQCN = Log.class.getName();
 	private static Logger logger = Logger.getLogger(Log.class);
