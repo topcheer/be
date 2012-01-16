@@ -7,8 +7,17 @@
       to this file before it is usable by MyBatis.
     This file was generated on Sun Jan 15 14:02:44 CST 2012.
   -->
-  <environments default="dev">
-      <environment id="dev">
+  <environments default="dev_internal">
+        <environment id="dev_internal">
+         <transactionManager type="JDBC"/> 
+         <dataSource type="POOLED"> 
+         	<property name="driver" value="org.postgresql.Driver"/>
+         	<property name="url" value="jdbc:postgresql://jmedu.wassecurity.net:5432/edu"/> 
+         	<property name="username" value="edu"/> 
+         	<property name="password" value="edu2012"/>
+         </dataSource>
+      </environment>
+      <environment id="dev_external">
          <transactionManager type="JDBC"/> 
          <dataSource type="POOLED"> 
          	<property name="driver" value="org.postgresql.Driver"/>
@@ -18,6 +27,7 @@
          </dataSource>
       </environment>
     </environments>
+
   
   <mappers >
     <mapper resource="com/brightedu/xml/edu/AgentReturnAmountMapper.xml" />
