@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datasources>
+	<!-- 持久层的数据源 -->
+
+	<pool name="edu" default="false" type="jdbc">
+		<param name="url" value="jdbc:postgresql://jmedu.wassecurity.net:5432/edu" />
+		<param name="driver" value="org.postgresql.Driver" />
+		<param name="user" value="edu" />
+		<param name="password" value="edu2012" />
+		<param name="initial_size" value="20" />
+		<param name="max_size" value="150" />
+		<param name="min_size" value="20" />
+		<param name="idle_time" value="10000" />
+	</pool>	
+	
+</datasources>
