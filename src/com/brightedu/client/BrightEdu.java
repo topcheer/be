@@ -109,6 +109,8 @@ public class BrightEdu implements EntryPoint {
 //				sendNameToServer();
 				LoginDialog loginDiaog = new LoginDialog();
 				loginDiaog.show();
+//				LoginWindow loginWindow = new LoginWindow();
+//				loginWindow.show();
 			}
 
 			/**
