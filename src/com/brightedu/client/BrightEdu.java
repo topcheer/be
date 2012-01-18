@@ -1,5 +1,6 @@
 package com.brightedu.client;
 
+import com.brightedu.client.login.LoginDialog;
 import com.brightedu.shared.FieldVerifier;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -87,6 +88,8 @@ public class BrightEdu implements EntryPoint {
 		dialogVPanel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
 		dialogVPanel.add(closeButton);
 		dialogBox.setWidget(dialogVPanel);
+		
+		
 
 		// Add a handler to close the DialogBox
 		closeButton.addClickHandler(new ClickHandler() {
@@ -103,7 +106,9 @@ public class BrightEdu implements EntryPoint {
 			 * Fired when the user clicks on the sendButton.
 			 */
 			public void onClick(ClickEvent event) {
-				sendNameToServer();
+//				sendNameToServer();
+				LoginDialog loginDiaog = new LoginDialog();
+				loginDiaog.show();
 			}
 
 			/**

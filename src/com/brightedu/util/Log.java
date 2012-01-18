@@ -13,7 +13,7 @@ public class Log {
 		String log4jConfigLocation = System.getProperty("log4j.configuration");
 		if (log4jConfigLocation == null) {
 			log4jConfigLocation = Log.class.getResource(
-					"/resources/log4j.properties").getFile();
+					"log4j.properties").getFile();
 		}
 		PropertyConfigurator.configureAndWatch(log4jConfigLocation, 3000);
 	}

@@ -33,7 +33,7 @@ public class ConnectionManager {
 		}
 		defaultSource = null;
 		Document config = Utils.getXMLDocument(ConnectionManager.class
-				.getResource("/resources/datasource.xml"));
+				.getResource("datasource.xml"));
 		NodeList sourceList = config.getElementsByTagName("pool");
 		for (int i = 0; i < sourceList.getLength(); i++) {
 			Element pool = (Element) sourceList.item(i);
