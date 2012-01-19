@@ -13,8 +13,10 @@ public class UiUtils {
 		link.setHeight(20);
 		link.setAlign(Alignment.CENTER);
 		// Set the width to the length of the text.
-//		link.setWidth(message.length() * 6);
-		link.addClickHandler(handler);
+		// link.setWidth(message.length() * 6);
+		if (handler != null) {
+			link.addClickHandler(handler);
+		}
 		return link;
 
 	}

@@ -5,6 +5,7 @@ import com.brightedu.shared.UserObj;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.CloseClickEvent;
@@ -28,6 +29,8 @@ public class BrightEdu implements EntryPoint {
 	 */
 	private final GreetingServiceAsync greetingService = GWT
 			.create(GreetingService.class);
+	
+	private String auth;
 
 	/**
 	 * This is the entry point method.
@@ -179,6 +182,13 @@ public class BrightEdu implements EntryPoint {
 				login(loginDialog);
 			}
 		}));
+		loginDialog.getForgetPass().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				SC.say("忘记密码"+auth);
+			}
+		});
 	}
 
 	private void login(LoginDialog loginDialog) {
@@ -197,6 +207,7 @@ public class BrightEdu implements EntryPoint {
 			@Override
 			public void onSuccess(String result) {
 				System.out.println(result);
+				auth = result;
 			}
 		});
 	}
