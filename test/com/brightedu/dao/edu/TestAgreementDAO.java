@@ -1,23 +1,16 @@
 package com.brightedu.dao.edu;
 
-import static org.junit.Assert.*;
-import java.io.IOException; 
-import java.io.Reader; 
-import java.sql.Connection;
+import java.io.IOException;
+import java.io.Reader;
 import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException; 
-import org.apache.ibatis.io.Resources; 
-import org.apache.ibatis.session.SqlSession; 
-import org.apache.ibatis.session.SqlSessionFactory; 
-import org.apache.ibatis.session.SqlSessionFactoryBuilder; 
 
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Test;
 
 import com.brightedu.model.edu.College;
-import com.brightedu.model.edu.CollegeAgreement;
-import com.brightedu.util.ConnectionManager;
 
 public class TestAgreementDAO {
 
