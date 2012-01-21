@@ -16,6 +16,12 @@
     <url-pattern>/brightedu/greet</url-pattern>
   </servlet-mapping>
   
+   <servlet>
+    <servlet-name>init</servlet-name>
+    <servlet-class>com.brightedu.server.util.InitServlet</servlet-class>
+  	<load-on-startup>0</load-on-startup>
+  </servlet>
+  
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>BrightEdu.html</welcome-file>

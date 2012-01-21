@@ -1,9 +1,9 @@
 package com.brightedu.server;
 
 import com.brightedu.client.GreetingService;
+import com.brightedu.shared.User;
 import com.brightedu.server.util.Log;
 import com.brightedu.shared.FieldVerifier;
-import com.brightedu.shared.UserObj;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
@@ -51,8 +51,8 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 				.replaceAll(">", "&gt;");
 	}
 
-	public String login(UserObj user) {
-		Log.d("User login: "+user.getUsername());
+	public String login(User user) {
+		Log.d("User login: "+user.getUser_name());
 		return "aaa|bbb|ccc|";//permissions
 	}
 }

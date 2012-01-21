@@ -1,6 +1,6 @@
 package com.brightedu.client;
 
-import com.brightedu.shared.UserObj;
+import com.brightedu.shared.User;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
@@ -10,5 +10,5 @@ public interface GreetingServiceAsync {
 	void greetServer(String input, AsyncCallback<String> callback)
 			throws IllegalArgumentException;
 
-	void login(UserObj user, AsyncCallback<String> callback);
+	void login(User user, AsyncCallback<String> callback);
 }
