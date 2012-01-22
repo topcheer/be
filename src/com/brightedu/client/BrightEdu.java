@@ -3,7 +3,8 @@ package com.brightedu.client;
 import java.util.LinkedHashMap;
 
 import com.brightedu.client.login.LoginDialog;
-import com.brightedu.shared.User;
+import com.brightedu.model.edu.User;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Cookies;

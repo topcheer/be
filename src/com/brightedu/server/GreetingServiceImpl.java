@@ -1,7 +1,8 @@
 package com.brightedu.server;
 
 import com.brightedu.client.GreetingService;
-import com.brightedu.shared.User;
+import com.brightedu.model.edu.User;
+
 import com.brightedu.server.util.Log;
 import com.brightedu.shared.FieldVerifier;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
