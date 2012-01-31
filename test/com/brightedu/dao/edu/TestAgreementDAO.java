@@ -3,6 +3,7 @@ package com.brightedu.dao.edu;
 import java.io.IOException;
 import java.io.Reader;
 import java.sql.Date;
+import java.util.List;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -11,6 +12,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Test;
 
 import com.brightedu.model.edu.College;
+import com.brightedu.model.edu.CollegeExample;
 
 public class TestAgreementDAO {
 
@@ -25,14 +27,19 @@ public class TestAgreementDAO {
 		
 		CollegeMapper cm = session.getMapper(CollegeMapper.class);
 		
-	
-		College co = new College();
-		co.setCollege_name("Test Coll");
-		co.setRegister_date(new Date(System.currentTimeMillis()));
-		cm.insertSelective(co);
+		CollegeExample ce = new CollegeExample();
+		ce.createCriteria().andCollege_idIsNotNull();
+		List<College> colleges = cm.selectByExample(ce);
+		System.out.println(colleges.size());
 		
-		session.commit();
-		session.close();
+	
+//		College co = new College();
+//		co.setCollege_name("Test Coll");
+//		co.setRegister_date(new Date(System.currentTimeMillis()));
+//		cm.insertSelective(co);
+//		
+//		session.commit();
+//		session.close();
 //		ConnectionManager.load();
 //		try {
 //			Connection conn = ConnectionManager.getConnection("edu");
