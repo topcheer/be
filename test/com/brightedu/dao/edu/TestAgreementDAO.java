@@ -22,11 +22,15 @@ public class TestAgreementDAO {
 		Reader reader = Resources.getResourceAsReader(resource);
 		SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(reader); 
 		SqlSession session = sessionFactory.openSession(); 
+		
+		CollegeMapper cm = session.getMapper(CollegeMapper.class);
+		
 	
 		College co = new College();
 		co.setCollege_name("Test Coll");
 		co.setRegister_date(new Date(System.currentTimeMillis()));
-		session.insert("com.brightedu.dao.edu.CollegeMapper.insert",co);
+		cm.insertSelective(co);
+		
 		session.commit();
 		session.close();
 //		ConnectionManager.load();
