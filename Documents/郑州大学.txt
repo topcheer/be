@@ -1,0 +1,21 @@
+郑大的客户端程序，其实它是调的WebService
+
+WSDL
+
+http://202.196.64.19:8088/aspx/SignSys/CapService.asmx?wsdl
+
+有效的WebServices
+
+http://202.196.64.19:8088/aspx/SignSys/CapService.asmx?
+
+我们要调用的几个方法可能是以下几个
+
+AchiveMajors 
+Web 服务提供的方法，返回该学习中心所属管理中心能招生的专业列表  （抓包工具显示它返回的是ID列表，所以我们得找到值和ID的mapping关系）
+
+
+AddExaminee 
+Web 服务提供的方法，添加报名信息。 
+
+AutoLogin 
+Web 服务提供的方法，验证客户端账号。
