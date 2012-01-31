@@ -42,10 +42,10 @@
     <table  schema="edu" tableName="agent_relation" domainObjectName="AgentRelation" >
       <property name="useActualColumnNames" value="true"/>
     </table>  
-     <table  schema="edu" tableName="agent_retrun" domainObjectName="AgentReturn" >
+     <table  schema="edu" tableName="agent_return" domainObjectName="AgentReturn" >
       <property name="useActualColumnNames" value="true"/>
     </table>  
-     <table  schema="edu" tableName="agree_retrun" domainObjectName="AgreeReturn" >
+     <table  schema="edu" tableName="agree_return" domainObjectName="AgreeReturn" >
       <property name="useActualColumnNames" value="true"/>
     </table>  
     <table  schema="edu" tableName="batch_index" domainObjectName="BatchIndex" >
