@@ -1,4 +1,4 @@
-郑大的客户端程序，其实它是调的WebService
+郑大的客户端程序，调的WebService
 
 WSDL
 
@@ -19,3 +19,6 @@ Web 服务提供的方法，添加报名信息。
 
 AutoLogin 
 Web 服务提供的方法，验证客户端账号。
+
+
+Junjun
