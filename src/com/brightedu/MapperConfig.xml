@@ -12,9 +12,9 @@
          <transactionManager type="JDBC"/> 
          <dataSource type="POOLED"> 
          	<property name="driver" value="org.postgresql.Driver"/>
-         	<property name="url" value="jdbc:postgresql://10.61.241.106:5432/edu"/> 
-         	<property name="username" value="bright_owner"/> 
-         	<property name="password" value="12345"/>
+         	<property name="url" value="jdbc:postgresql://localhost:55555/edu"/> 
+         	<property name="username" value="edu"/> 
+         	<property name="password" value="edu2012"/>
          </dataSource>
       </environment>
       <environment id="dev_external">
