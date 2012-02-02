@@ -1,5 +1,6 @@
 package com.brightedu.client.nav;
 
+import com.brightedu.client.panels.PanelFactory;
 import com.smartgwt.client.widgets.tree.TreeNode;
 
 public class ExplorerTreeNode extends TreeNode {
@@ -11,13 +12,12 @@ public class ExplorerTreeNode extends TreeNode {
             setName("<span style='color:808080'>" + name + "</span>");
         }
         setNodeID(nodeID.replace("-", "_") + idSuffix);
-        setThumbnail("thumbnails/" + nodeID.replace("-", "_") + ".gif");
         setParentNodeID(parentNodeID.replace("-", "_") + idSuffix);
         setIcon(icon);
        
         setFactory(factory);
         
-        if(nodeID.equals("featured-category") || nodeID.equals("new-category")) {
+        if(parentNodeID.equals("root")) {
             setIsOpen(true);
         }
     }
@@ -42,13 +42,13 @@ public class ExplorerTreeNode extends TreeNode {
         setAttribute("parentNodeID", value);
     }
 
-    public void setXXName(String name) {
-        setAttribute("nodeTitle", name);
-    }
-
-    public String getXXName() {
-        return getAttributeAsString("nodeTitle");
-    }
+//    public void setName(String name) {
+//        setAttribute("nodeTitle", name);
+//    }
+//
+//    public String getName() {
+//        return getAttributeAsString("nodeTitle");
+//    }
 
     public void setIcon(String icon) {
         setAttribute("icon", icon);

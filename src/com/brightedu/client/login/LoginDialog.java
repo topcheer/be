@@ -57,7 +57,6 @@ public class LoginDialog extends Window {
 
 		form.setPadding(5);
 		form.setCellPadding(5);
-		form.setCellPadding(5);
 
 		form.setWrapItemTitles(false);
 		form.setLayoutAlign(VerticalAlignment.CENTER);

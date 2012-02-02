@@ -9,7 +9,7 @@ public class UiUtils {
 	public static Label getLink(String message, ClickHandler handler) {
 		Label link = new Label();
 		link = new Label(message);
-		link.addStyleName("linkable");
+		link.setStyleName("linkable");
 		link.setHeight(20);
 		link.setAlign(Alignment.CENTER);
 		// Set the width to the length of the text.

@@ -44,7 +44,8 @@ public class FunctionsXmlDS extends DataSource {
         setFields(nameField, employeeIdField, reportsToField, jobField, emailField,
                 statusField, salaryField, orgField, genderField, maritalStatusField);
 
-        setDataURL("ds/test_data/employees.data.xml");
+//        setDataURL("ds/test_data/employees.data.xml");
+        setDataURL("/brightedu/datasource?action=priv");
         setClientOnly(true);
     }
 }

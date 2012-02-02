@@ -1,8 +1,11 @@
 package com.brightedu.client;
 
 import com.brightedu.client.login.LoginDialog;
+import com.brightedu.client.nav.CommandTreeNode;
 import com.brightedu.client.nav.ExplorerTreeNode;
 import com.brightedu.client.nav.FunctionTree;
+import com.brightedu.client.panels.PanelData;
+import com.brightedu.client.panels.PanelFactory;
 import com.brightedu.model.edu.User;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -53,148 +56,16 @@ public class BrightEdu implements EntryPoint {
 			.create(GreetingService.class);
 
 	private String auth;
-	private static String idSuffix = "idsuffix";
-	private static ExplorerTreeNode[] treeNodeData = new ExplorerTreeNode[]{
-        new ExplorerTreeNode("系统管理", "featured-category", "root", "silk/house.png", null, true, idSuffix),
-        new ExplorerTreeNode("Demo Application", "featured-complete-app", "featured-category", "silk/layout_content.png", null, true, idSuffix),
-        new ExplorerTreeNode("Smart GWT MVC", "featured-smartgwt-mvc", "featured-category", "silk/arrow_join.png", null, true, idSuffix),
-        new ExplorerTreeNode("Grid Cell Widgets", "featured-grid-cell-widgets", "featured-category", null, null, true, idSuffix),
-        new ExplorerTreeNode("Miller Columns", "featured-miller-columns", "featured-category", "silk/ipod.png",null, true, idSuffix),
-        new ExplorerTreeNode("Nested Grid", "featured-nested-grid", "featured-category", "crystal/16/mimetypes/widget_doc.png", null, true, idSuffix),
-	};
+
+	private static ExplorerTreeNode[] treeNodeData = null;
+
+	public static final String idSuffix = "_bright";
 
 	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-		// final Button sendButton = new Button("登陆");
-		// final TextBox nameField = new TextBox();
-		// final PasswordTextBox passwordField = new PasswordTextBox();
-		//
-		//
-		//
-		// final Label errorLabel = new Label();
-		//
-		// // We can add style names to widgets
-		// sendButton.addStyleName("sendButton");
-		//
-		// // Add the nameField and sendButton to the RootPanel
-		// // Use RootPanel.get() to get the entire body element
-		// RootPanel.get("nameLabelContainer").add(new Label("用户名"));
-		// RootPanel.get("nameFieldContainer").add(nameField);
-		// RootPanel.get("passwordlabelContainer").add(new Label("密码"));
-		// RootPanel.get("passwordFieldContainer").add(passwordField);
-		// RootPanel.get("sendButtonContainer").add(sendButton);
-		// RootPanel.get("errorLabelContainer").add(errorLabel);
-		//
-		//
-		// nameField.setVisibleLength(15);
-		// nameField.setMaxLength(25);
-		//
-		// passwordField.setVisibleLength(18);
-		// passwordField.setMaxLength(25);
-		//
-		//
-		//
-		// // Create the popup dialog box
-		// final DialogBox dialogBox = new DialogBox();
-		// dialogBox.setText("Remote Procedure Call");
-		// dialogBox.setAnimationEnabled(true);
-		// final Button closeButton = new Button("Close");
-		// // We can set the id of a widget by accessing its Element
-		// closeButton.getElement().setId("closeButton");
-		// final Label textToServerLabel = new Label();
-		// final HTML serverResponseLabel = new HTML();
-		// VerticalPanel dialogVPanel = new VerticalPanel();
-		// dialogVPanel.addStyleName("dialogVPanel");
-		// dialogVPanel.add(new HTML("<b>Sending name to the server:</b>"));
-		// dialogVPanel.add(textToServerLabel);
-		// dialogVPanel.add(new HTML("<br><b>Server replies:</b>"));
-		// dialogVPanel.add(serverResponseLabel);
-		// dialogVPanel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
-		// dialogVPanel.add(closeButton);
-		// dialogBox.setWidget(dialogVPanel);
-		//
-		//
-		//
-		// // Add a handler to close the DialogBox
-		// closeButton.addClickHandler(new ClickHandler() {
-		// public void onClick(ClickEvent event) {
-		// dialogBox.hide();
-		// sendButton.setEnabled(true);
-		// sendButton.setFocus(true);
-		// }
-		// });
-		//
-		// // Create a handler for the sendButton and nameField
-		// class MyHandler implements ClickHandler, KeyUpHandler {
-		// /**
-		// * Fired when the user clicks on the sendButton.
-		// */
-		// public void onClick(ClickEvent event) {
-		// // sendNameToServer();
-		// LoginDialog loginDiaog = new LoginDialog();
-		// loginDiaog.show();
-		// // LoginWindow loginWindow = new LoginWindow();
-		// // loginWindow.show();
-		// }
-		//
-		// /**
-		// * Fired when the user types in the nameField.
-		// */
-		// public void onKeyUp(KeyUpEvent event) {
-		// if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-		// sendNameToServer();
-		// }
-		// }
-		//
-		// /**
-		// * Send the name from the nameField to the server and wait for a
-		// response.
-		// */
-		// private void sendNameToServer() {
-		// // First, we validate the input.
-		// errorLabel.setText("");
-		// String textToServer = nameField.getText();
-		// if (!FieldVerifier.isValidName(textToServer)) {
-		// errorLabel.setText("请输入用户名和密码");
-		// return;
-		// }
-		//
-		// // Then, we send the input to the server.
-		// sendButton.setEnabled(false);
-		// textToServerLabel.setText(textToServer);
-		// serverResponseLabel.setText("");
-		// greetingService.greetServer(textToServer,
-		// new AsyncCallback<String>() {
-		// public void onFailure(Throwable caught) {
-		// // Show the RPC error message to the user
-		// dialogBox
-		// .setText("Remote Procedure Call - Failure");
-		// serverResponseLabel
-		// .addStyleName("serverResponseLabelError");
-		// serverResponseLabel.setHTML(SERVER_ERROR);
-		// dialogBox.center();
-		// closeButton.setFocus(true);
-		// }
-		//
-		// public void onSuccess(String result) {
-		// dialogBox.setText("Remote Procedure Call");
-		// serverResponseLabel
-		// .removeStyleName("serverResponseLabelError");
-		// serverResponseLabel.setHTML(result);
-		// dialogBox.center();
-		// closeButton.setFocus(true);
-		// }
-		// });
-		// }
-		// }
-		//
-		// // Add a handler to send the name to the server
-		// MyHandler handler = new MyHandler();
-		// sendButton.addClickHandler(handler);
-		// nameField.addKeyUpHandler(handler);
-
+		// System.out.println("Auth: " + auth);
 		final LoginDialog loginDialog = new LoginDialog();
 		loginDialog.show();
 		loginDialog.addCloseClickHandler(new CloseClickHandler() {
@@ -240,6 +111,18 @@ public class BrightEdu implements EntryPoint {
 			public void onSuccess(String result) {
 				System.out.println(result);
 				auth = result;
+				String[] nodes = auth.split("\\|");
+				treeNodeData = new ExplorerTreeNode[nodes.length];
+				for (int i = 0; i < nodes.length; i++) {
+					String[] props = nodes[i].split(" ");// id+name+parentid+factory
+					String id = props[0];
+					String name = props[1];
+					String parentId = props[2];
+					PanelFactory f = PanelData.getPanelFactory(id);
+					treeNodeData[i] = new ExplorerTreeNode(name, id, parentId,
+							id + ".png", f, true, idSuffix);
+
+				}
 				createUI();
 			}
 		});
@@ -335,17 +218,17 @@ public class BrightEdu implements EntryPoint {
 
 		VLayout sideNavLayout = new VLayout();
 		sideNavLayout.setHeight100();
-		sideNavLayout.setWidth(185);
+		sideNavLayout.setWidth(200);
 		sideNavLayout.setShowResizeBar(true);
 		FunctionTree sideNav = new FunctionTree();
-        sideNav.addLeafClickHandler(new LeafClickHandler() {
-            public void onLeafClick(LeafClickEvent event) {
-                TreeNode node = event.getLeaf();
-                showFunction(node);
-            }
-        });
-        sideNavLayout.addMember(sideNav);
-        
+		sideNav.addLeafClickHandler(new LeafClickHandler() {
+			public void onLeafClick(LeafClickEvent event) {
+				TreeNode node = event.getLeaf();
+				showFunction(node);
+			}
+		});
+		sideNavLayout.addMember(sideNav);
+
 		hLayout.addMember(sideNavLayout);
 
 		mainTabSet = new TabSet();
@@ -416,9 +299,48 @@ public class BrightEdu implements EntryPoint {
 	}
 
 	protected void showFunction(TreeNode node) {
-		
-	}
+		if (node instanceof ExplorerTreeNode) {
+			ExplorerTreeNode explorerTreeNode = (ExplorerTreeNode) node;
+			PanelFactory factory = explorerTreeNode.getFactory();
+			if (factory != null) {
+				String panelID = factory.getID();
+				Tab tab = null;
+				if (panelID != null) {
+					String tabID = panelID + "_tab";
+					tab = mainTabSet.getTab(tabID);
+				}
+				if (tab == null) {
+					Canvas panel = factory.create();
+					tab = new Tab();
+					tab.setID(factory.getID() + "_tab");
+					// store history token on tab so that when an already open
+					// is selected, one can retrieve the
+					// history token and update the URL
+					tab.setAttribute("historyToken",
+							explorerTreeNode.getNodeID());
+					// tab.setContextMenu(contextMenu);
 
+					String sampleName = explorerTreeNode.getName();
+
+					String icon = explorerTreeNode.getIcon();
+					if (icon == null) {
+						icon = "silk/plugin.png";
+					}
+					String imgHTML = Canvas.imgHTML(icon, 16, 16);
+					tab.setTitle("<span>" + imgHTML + "&nbsp;" + sampleName
+							+ "</span>");
+					tab.setPane(panel);
+					tab.setCanClose(true);
+					mainTabSet.addTab(tab);
+					mainTabSet.selectTab(tab);
+				} else {
+					mainTabSet.selectTab(tab);
+				}
+			}
+		} else if (node instanceof CommandTreeNode) {
+			SC.say("not implemented for commandtreenode");
+		}
+	}
 
 	private void login_logout() {
 		SC.say("login or logout!");

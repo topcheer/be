@@ -1,4 +1,4 @@
-package com.brightedu.client.nav;
+package com.brightedu.client.panels;
 
 import com.smartgwt.client.widgets.Canvas;
 

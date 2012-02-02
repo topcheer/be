@@ -3,6 +3,7 @@ package com.brightedu.server;
 import com.brightedu.client.GreetingService;
 import com.brightedu.model.edu.User;
 
+import com.brightedu.server.util.AuthManager;
 import com.brightedu.server.util.Log;
 import com.brightedu.shared.FieldVerifier;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -54,6 +55,6 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 
 	public String login(User user) {
 		Log.d("User login: "+user.getUser_name());
-		return "aaa|bbb|ccc|";//permissions
+		return AuthManager.getFunctions(new String[]{"system_manage"});
 	}
 }
