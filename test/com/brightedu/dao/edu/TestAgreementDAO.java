@@ -32,6 +32,11 @@ public class TestAgreementDAO {
 		List<College> colleges = cm.selectByExample(ce);
 		System.out.println(colleges.size());
 		
+		College col = new College ();
+		col.setCollege_name("测试");
+		cm.insert(col);
+		session.commit();
+		session.close();
 	
 //		College co = new College();
 //		co.setCollege_name("Test Coll");
