@@ -15,9 +15,9 @@
     </jdbcConnection> -->
     
     <jdbcConnection driverClass="org.postgresql.Driver" 
-    	connectionURL="jdbc:postgresql://10.61.241.106:5432/edu" 
-    	userId="bright_owner" 
-    	password="12345">
+    	connectionURL="jdbc:postgresql://localhost:55555/edu" 
+    	userId="edu" 
+    	password="edu2012">
     </jdbcConnection>
     
     <javaTypeResolver >
