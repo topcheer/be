@@ -68,6 +68,7 @@ public class LoginDialog extends Window {
 		HLayout hLayout = new HLayout(10);
 		hLayout.setLayoutAlign(VerticalAlignment.BOTTOM);
 		hLayout.setPadding(5);
+		
 		okBtn.setWidth(70);
 
 		hLayout.addMember(forgetPass);

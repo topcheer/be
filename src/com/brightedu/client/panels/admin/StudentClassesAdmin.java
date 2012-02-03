@@ -3,18 +3,17 @@ package com.brightedu.client.panels.admin;
 import com.brightedu.client.panels.BasicAdminPanel;
 import com.brightedu.client.panels.FunctionPanel;
 import com.brightedu.client.panels.PanelFactory;
-import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.widgets.Canvas;
 
-public class BatchAdmin extends FunctionPanel {
+public class StudentClassesAdmin extends FunctionPanel {
 
-	public static String DESCRIPTION = "批次代码维护";
+	public static String DESCRIPTION = "学生类别代码维护";
 
 	public static class Factory implements PanelFactory {
 		private String id;
 
 		public Canvas create() {
-			BatchAdmin panel = new BatchAdmin();
+			StudentClassesAdmin panel = new StudentClassesAdmin();
 			id = panel.getID();
 			return panel;
 		}
@@ -30,7 +29,7 @@ public class BatchAdmin extends FunctionPanel {
 
 	@Override
 	public Canvas getViewPanel() {
-		BasicAdminPanel p = new BatchAdminPanel();
+		BasicAdminPanel p = new StudentClassesAdminPanel();
 		return p;
 	}
 

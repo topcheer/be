@@ -183,7 +183,8 @@ public class BrightEdu implements EntryPoint {
 						login_logout();
 					}
 				});
-
+		login_logout_Btn.setShowFocused(false);
+		login_logout_Btn.setShowFocusedAsOver(false);
 		topBar.addButton(login_logout_Btn);
 
 		topBar.addSeparator();
@@ -193,6 +194,7 @@ public class BrightEdu implements EntryPoint {
 		aboutBtn.setHeight(18);
 		aboutBtn.setIcon("about.gif");
 		aboutBtn.setShowFocused(false);
+		aboutBtn.setShowFocusedAsOver(false);
 		aboutBtn.setPrompt("帮助");
 		aboutBtn.addClickHandler(new ClickHandler() {
 

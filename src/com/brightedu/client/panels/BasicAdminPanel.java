@@ -1,5 +1,6 @@
 package com.brightedu.client.panels;
 
+import com.smartgwt.client.data.Record;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -57,7 +58,10 @@ public abstract class BasicAdminPanel extends VLayout {
 		delButton.setAutoFit(true);
 		addButton.setIcon("add.gif");
 		delButton.setIcon("delete.gif");
-
+		addButton.setShowFocused(false);
+		addButton.setShowFocusedAsOver(false);
+		delButton.setShowFocused(false);
+		delButton.setShowFocusedAsOver(false);
 		final PickerIcon findIcon = new PickerIcon(PickerIcon.SEARCH);
 		final PickerIcon cancelIcon = new PickerIcon(PickerIcon.CLEAR);
 		searchItem.setIcons(findIcon, cancelIcon);
@@ -67,7 +71,10 @@ public abstract class BasicAdminPanel extends VLayout {
 				if (icon.getSrc().equals(cancelIcon.getSrc())) {
 					searchItem.setValue("");
 				} else {
-					search();
+					String keyWords = searchItem.getValueAsString();
+					keyWords = keyWords == null ? "" : keyWords.trim();
+					Record range = rangeItem.getSelectedRecord();
+					search(keyWords, range);
 				}
 			}
 		});
@@ -87,10 +94,10 @@ public abstract class BasicAdminPanel extends VLayout {
 		});
 
 		ToolStrip toolbar = new ToolStrip();
-//		toolbar.setPadding(5);
-//		toolbar.addSpacer(3);
+		// toolbar.setPadding(5);
+		// toolbar.addSpacer(3);
 		toolbar.addMember(addButton);
-//		toolbar.addSpacer(10);
+		// toolbar.addSpacer(10);
 		toolbar.addMember(delButton);
 		toolbar.addFill();
 		DynamicForm form = new DynamicForm();
@@ -114,7 +121,8 @@ public abstract class BasicAdminPanel extends VLayout {
 
 			@Override
 			public void onChanged(ChangedEvent event) {
-				showFirstPageRecords();
+
+				initPages();
 			}
 		});
 		firstLabel.setAutoFit(true);
@@ -168,7 +176,7 @@ public abstract class BasicAdminPanel extends VLayout {
 						if (indexGoto > totalPageCounts) {
 							SC.say("当前记录最多只有" + totalPageCounts + "页");
 						} else {
-							updatePage(indexGoto);
+							gotoPage(indexGoto);
 						}
 					}
 				}
@@ -238,20 +246,22 @@ public abstract class BasicAdminPanel extends VLayout {
 		this.currentPageIndex = currentPageIndex;
 	}
 
-	protected abstract void search();
+	protected abstract void search(String keyWords, Record range);
 
 	protected abstract void addRecord();
 
-	protected abstract void deleteRecords() ;
+	protected abstract void deleteRecords();
 
-	protected abstract void showLastPageRecords() ;
+	protected abstract void showLastPageRecords();
 
-	protected abstract void showFirstPageRecords() ;
+	protected abstract void showFirstPageRecords();
 
 	protected abstract void showNextPageRecords();
 
-	protected abstract void showPreviousPageRecords() ;
+	protected abstract void showPreviousPageRecords();
 
-	protected abstract void updatePage(int indexGoto);
+	protected abstract void gotoPage(int indexGoto);
+
+	protected abstract void initPages();
 
 }
