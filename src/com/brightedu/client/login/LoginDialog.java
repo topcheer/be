@@ -12,6 +12,8 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.CloseClickEvent;
 import com.smartgwt.client.widgets.events.CloseClickHandler;
+import com.smartgwt.client.widgets.events.KeyDownEvent;
+import com.smartgwt.client.widgets.events.KeyDownHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.PasswordItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
@@ -88,6 +90,7 @@ public class LoginDialog extends Window {
 		setOpacity(80);
 		setEdgeOffset(5);
 		centerInPage();
+		
 	}
 
 	public IButton getOkBtn() {

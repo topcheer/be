@@ -23,6 +23,8 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.CloseClickEvent;
 import com.smartgwt.client.widgets.events.CloseClickHandler;
+import com.smartgwt.client.widgets.events.KeyDownEvent;
+import com.smartgwt.client.widgets.events.KeyDownHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.Layout;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -77,13 +79,16 @@ public class BrightEdu implements EntryPoint {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				// okBtn.setDisabled(true);
-				// infolable.setVisible(true);
-				// infolable.setContents("good");
-				// SC.say("失败", "用户名或密码错误");
 				login(loginDialog);
 			}
 		}));
+		loginDialog.addKeyDownHandler(new KeyDownHandler() {
+
+			@Override
+			public void onKeyDown(KeyDownEvent event) {
+				login(loginDialog);
+			}
+		});
 		loginDialog.getForgetPass().addClickHandler(new ClickHandler() {
 
 			@Override

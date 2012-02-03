@@ -6,6 +6,8 @@ import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.events.KeyDownEvent;
+import com.smartgwt.client.widgets.events.KeyDownHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.LayoutSpacer;
@@ -59,6 +61,13 @@ public abstract class AdminDialog extends Window {
 //		hLayout.setStyleName("test2");
 		setAutoSize(true);
 		setCanDragResize(true);
+		addKeyDownHandler(new KeyDownHandler() {
+			
+			@Override
+			public void onKeyDown(KeyDownEvent event) {
+				System.out.println("down");
+			}
+		});
 	}
 
 	protected abstract DynamicForm getContentForm();
