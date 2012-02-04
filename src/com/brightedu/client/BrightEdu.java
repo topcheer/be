@@ -98,7 +98,7 @@ public class BrightEdu implements EntryPoint {
 		});
 	}
 
-	private void login(LoginDialog loginDialog) {
+	private void login(final LoginDialog loginDialog) {
 		String username = loginDialog.getUserItem().getValueAsString();
 		String password = loginDialog.getPassItem().getValueAsString();
 		User user = new User();
@@ -129,6 +129,8 @@ public class BrightEdu implements EntryPoint {
 
 				}
 				createUI();
+				SC.say("登陆成功");
+				loginDialog.destroy();
 			}
 		});
 	}
