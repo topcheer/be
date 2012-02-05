@@ -11,6 +11,8 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Test;
 
+import com.brightedu.model.edu.BatchIndex;
+import com.brightedu.model.edu.BatchIndexExample;
 import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.CollegeExample;
 
@@ -25,17 +27,13 @@ public class TestAgreementDAO {
 		SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(reader); 
 		SqlSession session = sessionFactory.openSession(); 
 		
-		CollegeMapper cm = session.getMapper(CollegeMapper.class);
+		BatchIndexMapper cm = session.getMapper(BatchIndexMapper.class);
 		
-		CollegeExample ce = new CollegeExample();
-		ce.createCriteria().andCollege_idIsNotNull();
-		List<College> colleges = cm.selectByExample(ce);
+		BatchIndexExample ce = new BatchIndexExample();
+		ce.createCriteria().andBatch_idIsNotNull();
+		List<BatchIndex> colleges = cm.selectByExample(null);
 		System.out.println(colleges.size());
-		
-		College col = new College ();
-		col.setCollege_name("测试");
-		cm.insert(col);
-		session.commit();
+
 		session.close();
 	
 //		College co = new College();
