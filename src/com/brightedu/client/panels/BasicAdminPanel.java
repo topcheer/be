@@ -1,5 +1,8 @@
 package com.brightedu.client.panels;
 
+import com.brightedu.client.DataBaseRPC;
+import com.brightedu.client.DataBaseRPCAsync;
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Label;
@@ -22,6 +25,8 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public abstract class BasicAdminPanel extends VLayout {
+	
+	protected final DataBaseRPCAsync dbService = GWT.create(DataBaseRPC.class);
 
 	protected ToolStripButton addButton = new ToolStripButton("添加");
 	protected ToolStripButton delButton = new ToolStripButton("删除");
