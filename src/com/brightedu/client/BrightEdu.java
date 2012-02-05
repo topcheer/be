@@ -56,7 +56,8 @@ public class BrightEdu implements EntryPoint {
 	 */
 	private final GreetingServiceAsync greetingService = GWT
 			.create(GreetingService.class);
-
+	
+	
 	private String auth;
 
 	private static ExplorerTreeNode[] treeNodeData = null;
