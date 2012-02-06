@@ -7,11 +7,11 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface DataBaseRPCAsync {
 
-	void getBatchList(AsyncCallback<List<BatchIndex>> callback);
+	void getBatchList(int offset, int limit,
+			AsyncCallback<List<BatchIndex>> callback);
 
 	void addBatch(String batch_name, AsyncCallback<Boolean> callback);
 
 	void deleteBatch(Integer batch_id, AsyncCallback<Boolean> callback);
-
 
 }

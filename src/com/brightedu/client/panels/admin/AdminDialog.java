@@ -6,14 +6,11 @@ import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.events.KeyDownEvent;
-import com.smartgwt.client.widgets.events.KeyDownHandler;
 import com.smartgwt.client.widgets.events.KeyPressEvent;
 import com.smartgwt.client.widgets.events.KeyPressHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.LayoutSpacer;
-import com.smartgwt.client.widgets.layout.VLayout;
 
 public abstract class AdminDialog extends Window {
 
@@ -44,7 +41,7 @@ public abstract class AdminDialog extends Window {
 		form.setAutoFocus(true);
 		form.setWrapItemTitles(false);
 		form.setAutoHeight();
-		 addItem(form);
+		addItem(form);
 
 		HLayout hLayout = new HLayout();
 		hLayout.addMember(new Label("  "));
@@ -53,11 +50,11 @@ public abstract class AdminDialog extends Window {
 		okBtn.setWidth(70);
 		//
 		hLayout.addMember(okBtn);
-		
+
 		hLayout.setAutoHeight();
 		hLayout.setWidth100();
 
-		 addItem(hLayout);
+		addItem(hLayout);
 
 		setAutoSize(true);
 		setCanDragResize(true);

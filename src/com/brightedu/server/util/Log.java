@@ -12,10 +12,18 @@ public class Log {
 	static {
 		String log4jConfigLocation = System.getProperty("log4j.configuration");
 		if (log4jConfigLocation == null) {
-			log4jConfigLocation = Log.class.getResource(
-					"/log4j.properties").getFile();
+			log4jConfigLocation = Log.class.getResource("/log4j.properties")
+					.getFile();
 		}
 		PropertyConfigurator.configureAndWatch(log4jConfigLocation, 3000);
+	}
+
+	public static boolean isDebugEnabled() {
+		return logger.isDebugEnabled();
+	}
+
+	public static boolean isInfoEnabled() {
+		return logger.isInfoEnabled();
 	}
 
 	public static void d(String msg) {
@@ -25,7 +33,7 @@ public class Log {
 	public static void d(String msg, Throwable e) {
 		logger.log(FQCN, Level.DEBUG, msg, e);
 	}
-	
+
 	public static void i(String msg) {
 		logger.log(FQCN, Level.INFO, msg, null);
 	}
@@ -33,7 +41,7 @@ public class Log {
 	public static void i(String msg, Throwable e) {
 		logger.log(FQCN, Level.INFO, msg, e);
 	}
-	
+
 	public static void w(String msg) {
 		logger.log(FQCN, Level.WARN, msg, null);
 	}
@@ -41,7 +49,7 @@ public class Log {
 	public static void w(String msg, Throwable e) {
 		logger.log(FQCN, Level.WARN, msg, e);
 	}
-	
+
 	public static void e(String msg) {
 		logger.log(FQCN, Level.ERROR, msg, null);
 	}
@@ -49,7 +57,7 @@ public class Log {
 	public static void e(String msg, Throwable e) {
 		logger.log(FQCN, Level.ERROR, msg, e);
 	}
-	
+
 	public static void f(String msg) {
 		logger.log(FQCN, Level.FATAL, msg, null);
 	}
