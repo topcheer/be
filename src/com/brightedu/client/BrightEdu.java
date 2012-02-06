@@ -25,6 +25,8 @@ import com.smartgwt.client.widgets.events.CloseClickEvent;
 import com.smartgwt.client.widgets.events.CloseClickHandler;
 import com.smartgwt.client.widgets.events.KeyDownEvent;
 import com.smartgwt.client.widgets.events.KeyDownHandler;
+import com.smartgwt.client.widgets.events.KeyPressEvent;
+import com.smartgwt.client.widgets.events.KeyPressHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.Layout;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -71,6 +73,7 @@ public class BrightEdu implements EntryPoint {
 		// System.out.println("Auth: " + auth);
 		final LoginDialog loginDialog = new LoginDialog();
 		loginDialog.show();
+//		loginDialog.getUserItem().getf
 		loginDialog.addCloseClickHandler(new CloseClickHandler() {
 			public void onCloseClick(CloseClickEvent event) {
 				// notLogin();
@@ -83,11 +86,14 @@ public class BrightEdu implements EntryPoint {
 				login(loginDialog);
 			}
 		}));
-		loginDialog.addKeyDownHandler(new KeyDownHandler() {
-
+		
+		loginDialog.addKeyPressHandler(new KeyPressHandler() {
+			
 			@Override
-			public void onKeyDown(KeyDownEvent event) {
-				login(loginDialog);
+			public void onKeyPress(KeyPressEvent event) {
+				if(event.getKeyName().toLowerCase().equals("enter")){
+					login(loginDialog);
+				}
 			}
 		});
 		loginDialog.getForgetPass().addClickHandler(new ClickHandler() {

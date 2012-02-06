@@ -161,7 +161,7 @@ public class BatchAdminPanel extends BasicAdminPanel {
 	}
 
 	@Override
-	protected void initPages() {
+	protected void initPages(int rowsPerpage) {
 
   
 	}

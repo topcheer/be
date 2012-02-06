@@ -127,7 +127,7 @@ public abstract class BasicAdminPanel extends VLayout {
 			@Override
 			public void onChanged(ChangedEvent event) {
 
-				initPages();
+				initPages(Integer.parseInt(rowsPerPageItem.getValueAsString()));
 			}
 		});
 		firstLabel.setAutoFit(true);
@@ -267,6 +267,6 @@ public abstract class BasicAdminPanel extends VLayout {
 
 	protected abstract void gotoPage(int indexGoto);
 
-	protected abstract void initPages();
+	protected abstract void initPages(int rowsPerpage);
 
 }

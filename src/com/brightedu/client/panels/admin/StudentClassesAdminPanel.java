@@ -52,7 +52,7 @@ public class StudentClassesAdminPanel extends BasicAdminPanel {
 	}
 
 	@Override
-	protected void initPages() {
+	protected void initPages(int rowsPerpage) {
 		// TODO Auto-generated method stub
 
 	}

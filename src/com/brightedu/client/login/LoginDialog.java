@@ -56,7 +56,7 @@ public class LoginDialog extends Window {
 		DynamicForm form = new DynamicForm();
 		// form.setHeight100();
 		// form.setWidth100();
-
+		form.setAutoFocus(true);
 		form.setPadding(5);
 		form.setCellPadding(5);
 
