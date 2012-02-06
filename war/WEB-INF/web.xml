@@ -26,5 +26,13 @@
   <welcome-file-list>
     <welcome-file>BrightEdu.html</welcome-file>
   </welcome-file-list>
+  <servlet>
+  	<servlet-name>DataBaseRPC</servlet-name>
+  	<servlet-class>com.brightedu.server.DataBaseRPCImpl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>DataBaseRPC</servlet-name>
+  	<url-pattern>/brightedu/DataBaseRPC</url-pattern>
+  </servlet-mapping>
 
 </web-app>
