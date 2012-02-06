@@ -1,6 +1,5 @@
 package com.brightedu.client.panels.admin;
 
-import java.util.Iterator;
 import java.util.List;
 
 import com.brightedu.client.panels.BasicAdminPanel;
@@ -17,49 +16,6 @@ import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class BatchAdminPanel extends BasicAdminPanel {
-	final AdminDialog dialog = new NewBatchDialog();
-
-	protected void postInit() {
-
-		final DataSource ds = new DataSource();
-		ds.setClientOnly(true);
-		ds.addField(new DataSourceField("batch_index", FieldType.TEXT, "批次代码"));
-		ds.addField(new DataSourceField("batch_name", FieldType.TEXT, "批次名称"));
-		ds.addField(new DataSourceField("reg_time", FieldType.TEXT, "录入时间"));
-
-		AsyncCallback<List<BatchIndex>> callback = new AsyncCallback<List<BatchIndex>>() {
-
-			@Override
-			public void onFailure(Throwable caught) {
-
-				caught.printStackTrace();
-
-			}
-
-			@Override
-			public void onSuccess(List<BatchIndex> result) {
-
-				Iterator<BatchIndex> it = result.iterator();
-
-				while (it.hasNext()) {
-					BatchIndex bi = it.next();
-					Record rec = new Record();
-					rec.setAttribute("batch_index", bi.getBatch_id());
-					rec.setAttribute("batch_name", bi.getBatch_name());
-					rec.setAttribute("reg_time", bi.getRegister_date());
-					ds.addData(rec);
-				}
-			}
-
-		};
-		dbService.getBatchList(0,
-				Integer.parseInt(rowsPerPageItem.getValueAsString()), callback);
-
-		resultList.setDataSource(ds);
-		resultList.fetchData();
-		resultList.redraw();
-
-	}
 
 	@Override
 	protected void search(String keyWords, Record range) {
@@ -67,7 +23,7 @@ public class BatchAdminPanel extends BasicAdminPanel {
 
 	@Override
 	protected void addRecord() {
-
+		AdminDialog dialog = new NewBatchDialog();
 		dialog.show();
 	}
 
@@ -104,15 +60,6 @@ public class BatchAdminPanel extends BasicAdminPanel {
 
 									@Override
 									public void onSuccess(Boolean result) {
-										// TODO Auto-generated method stub
-
-										// if(result.booleanValue())
-										// {
-										// SC.say("成功", "成功删除记录");
-										// }
-										// {
-										// SC.say("失败", "操作失败，请稍后再试");
-										// }
 
 									}
 
@@ -120,7 +67,8 @@ public class BatchAdminPanel extends BasicAdminPanel {
 
 					}
 				}
-				postInit();
+				// initPages();
+				gotoPage(currentPageIndex);
 
 			}
 
@@ -129,32 +77,50 @@ public class BatchAdminPanel extends BasicAdminPanel {
 	}
 
 	@Override
-	protected void showLastPageRecords() {
+	protected void gotoPage(final int indexGoto, final boolean init) {
+		final DataSource ds = new DataSource();
+		ds.setClientOnly(true);
+		ds.addField(new DataSourceField("batch_index", FieldType.TEXT, "批次代码"));
+		ds.addField(new DataSourceField("batch_name", FieldType.TEXT, "批次名称"));
+		ds.addField(new DataSourceField("reg_time", FieldType.TEXT, "录入时间"));
 
-	}
+		AsyncCallback<List<BatchIndex>> callback = new AsyncCallback<List<BatchIndex>>() {
 
-	@Override
-	protected void showFirstPageRecords() {
+			@Override
+			public void onFailure(Throwable caught) {
+				caught.printStackTrace();
+			}
 
-	}
-
-	@Override
-	protected void showNextPageRecords() {
-
-	}
-
-	@Override
-	protected void showPreviousPageRecords() {
-	}
-
-	@Override
-	protected void gotoPage(int indexGoto) {
-
-	}
-
-	@Override
-	protected void initPages(int rowsPerpage) {
-
+			@Override
+			public void onSuccess(List result) {
+				int size = result.size();
+				for (int i = 0; i < size; i++) {
+					if (i == size - 1) {
+						if (init) {
+							int counts = (Integer) result.get(size - 1);
+							setTotalCounts(counts);
+							break;
+						}
+					}
+					BatchIndex bi = (BatchIndex) result.get(i);
+					Record rec = new Record();
+					rec.setAttribute("batch_index", bi.getBatch_id());
+					rec.setAttribute("batch_name", bi.getBatch_name());
+					rec.setAttribute("reg_time", bi.getRegister_date());
+					ds.addData(rec);
+				}
+				setCurrentPage(indexGoto);
+			}
+		};
+		if (init) {
+			dbService.getBatchListAndTotalCounts(0, currentRowsInOnePage,
+					callback);
+		} else {
+			dbService.getBatchList((indexGoto - 1) * currentRowsInOnePage,
+					currentRowsInOnePage, callback);
+		}
+		resultList.setDataSource(ds);
+		resultList.fetchData();
 	}
 
 	private class NewBatchDialog extends AdminDialog {
@@ -191,16 +157,16 @@ public class BatchAdminPanel extends BasicAdminPanel {
 					@Override
 					public void onSuccess(Boolean result) {
 						// TODO Auto-generated method stub
-						SC.say("新建批次：" + batch);
+						// SC.say("新建批次：" + batch);
 
 						// refresh GridList
-						postInit();
-						dialog.destroy();
+						// postInit();
+						showLastPageRecords();
+						destroy();
 					}
 
 				});
 
-				showLastPageRecords();
 			} else {
 				SC.say("空内容无效！");
 			}

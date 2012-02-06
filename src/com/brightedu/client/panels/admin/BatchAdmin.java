@@ -3,7 +3,6 @@ package com.brightedu.client.panels.admin;
 import com.brightedu.client.panels.BasicAdminPanel;
 import com.brightedu.client.panels.FunctionPanel;
 import com.brightedu.client.panels.PanelFactory;
-import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.widgets.Canvas;
 
 public class BatchAdmin extends FunctionPanel {
@@ -22,16 +21,18 @@ public class BatchAdmin extends FunctionPanel {
 		public String getID() {
 			return id;
 		}
-
-		public String getDescription() {
-			return DESCRIPTION;
-		}
+		
 	}
 
 	@Override
 	public Canvas getViewPanel() {
 		BasicAdminPanel p = new BatchAdminPanel();
 		return p;
+	}
+	
+	@Override
+	public String getDescription(){
+		return DESCRIPTION;
 	}
 
 }

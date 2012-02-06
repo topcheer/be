@@ -17,6 +17,7 @@ package com.brightedu.server;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.io.Resources;
@@ -28,7 +29,6 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import com.brightedu.client.DataBaseRPC;
 import com.brightedu.dao.edu.BatchIndexMapper;
 import com.brightedu.model.edu.BatchIndex;
-import com.brightedu.model.edu.BatchIndexExample;
 import com.brightedu.server.util.Log;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -52,10 +52,20 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 
 	public List<BatchIndex> getBatchList(int offset, int limit) {
 
-//		BatchIndexMapper bim = session.getMapper(BatchIndexMapper.class);		
-//		List<BatchIndex> result = bim.selectByExample(null);
-		return session.selectList("com.brightedu.dao.edu.BatchIndexMapper.selectByExample",null,new RowBounds(offset, limit));
+		List<BatchIndex> result = session.selectList(
+				"com.brightedu.dao.edu.BatchIndexMapper.selectByExample", null,
+				new RowBounds(offset, limit));
+		return result;
 
+	}
+
+	public List getBatchListAndTotalCounts(int offset, int limit) {
+		List batchList = getBatchList(offset, limit);
+		List result = new ArrayList(batchList);
+		BatchIndexMapper bim = session.getMapper(BatchIndexMapper.class);
+		Integer counts = bim.countByExample(null);
+		result.add(counts);
+		return result;
 	}
 
 	@Override

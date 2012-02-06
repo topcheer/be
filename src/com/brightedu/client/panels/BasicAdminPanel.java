@@ -25,7 +25,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public abstract class BasicAdminPanel extends VLayout {
-	
+
 	protected final DataBaseRPCAsync dbService = GWT.create(DataBaseRPC.class);
 
 	protected ToolStripButton addButton = new ToolStripButton("添加");
@@ -45,7 +45,7 @@ public abstract class BasicAdminPanel extends VLayout {
 	protected ToolStripButton nextPageBtn = new ToolStripButton();
 	protected ToolStripButton lastPageBtn = new ToolStripButton();
 
-	protected int currentPageIndex = 0;
+	protected int currentPageIndex = 1;
 	protected int totalPageCounts = 1;
 
 	protected int currentRowsInOnePage = 20;
@@ -55,6 +55,9 @@ public abstract class BasicAdminPanel extends VLayout {
 		postInit();
 	}
 
+	/**
+	 * other init actions for UI only
+	 */
 	protected void postInit() {
 	}
 
@@ -119,15 +122,17 @@ public abstract class BasicAdminPanel extends VLayout {
 		addMember(resultList);
 
 		ToolStrip pagetools = new ToolStrip();
-		rowsPerPageItem.setValueMap("10", "20", "50", "100", "300");
+		rowsPerPageItem.setValueMap("1", "2", "3", "10", "20", "50", "100",
+				"300");
 		rowsPerPageItem.setWidth(60);
 		rowsPerPageItem.setValue(String.valueOf(currentRowsInOnePage));
 		rowsPerPageItem.addChangedHandler(new ChangedHandler() {
 
 			@Override
 			public void onChanged(ChangedEvent event) {
-
-				initPages(Integer.parseInt(rowsPerPageItem.getValueAsString()));
+				currentRowsInOnePage = Integer.parseInt(rowsPerPageItem
+						.getValueAsString());
+				initPages();
 			}
 		});
 		firstLabel.setAutoFit(true);
@@ -212,7 +217,7 @@ public abstract class BasicAdminPanel extends VLayout {
 		pagetools.addMember(lastPageBtn);
 
 		addMember(pagetools);
-
+		initPages();
 	}
 
 	public ToolStripButton getAddButton() {
@@ -257,16 +262,50 @@ public abstract class BasicAdminPanel extends VLayout {
 
 	protected abstract void deleteRecords();
 
-	protected abstract void showLastPageRecords();
+	protected void showLastPageRecords() {
+		if (currentPageIndex != totalPageCounts) {
+			gotoPage(totalPageCounts);
+		}
+	}
 
-	protected abstract void showFirstPageRecords();
+	protected void showFirstPageRecords() {
+		if (currentPageIndex != 1) {
+			gotoPage(1);
+		}
+	}
 
-	protected abstract void showNextPageRecords();
+	protected void showNextPageRecords() {
+		if (currentPageIndex + 1 <= totalPageCounts) {
+			gotoPage(currentPageIndex + 1);
+		}
+	}
 
-	protected abstract void showPreviousPageRecords();
+	protected void showPreviousPageRecords() {
+		if (currentPageIndex - 1 > 0) {
+			gotoPage(currentPageIndex - 1);
+		}
+	}
 
-	protected abstract void gotoPage(int indexGoto);
+	protected void setCurrentPage(int pageIndex) {
+		currentPageIndexField.setValue(pageIndex);
+		currentPageIndex = pageIndex;
+	}
 
-	protected abstract void initPages(int rowsPerpage);
+	protected void setTotalCounts(int totalCounts) {
+		this.totalPageCounts = totalCounts % currentRowsInOnePage == 0 ? (totalCounts / currentRowsInOnePage)
+				: (totalCounts / currentRowsInOnePage + 1);
+		
+		totalPageLabel.setContents("共" + totalPageCounts + "页");
+	}
+
+	protected void gotoPage(int indexGoto) {
+		gotoPage(indexGoto, false);
+	}
+
+	protected abstract void gotoPage(int indexGoto, boolean init);
+
+	protected void initPages() {
+		gotoPage(1, true);
+	}
 
 }

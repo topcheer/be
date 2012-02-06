@@ -22,39 +22,9 @@ public class StudentClassesAdminPanel extends BasicAdminPanel {
 	}
 
 	@Override
-	protected void showLastPageRecords() {
+	protected void gotoPage(int indexGoto, boolean init) {
 		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void showFirstPageRecords() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void showNextPageRecords() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void showPreviousPageRecords() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void gotoPage(int indexGoto) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void initPages(int rowsPerpage) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 }
