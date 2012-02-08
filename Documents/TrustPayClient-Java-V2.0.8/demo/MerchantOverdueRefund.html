@@ -1,0 +1,100 @@
+<HTML>
+<HEAD><TITLE>农行网上支付平台-商户接口示例-订单超期退款</TITLE></HEAD>
+<script language="javascript">
+	var stroldcount = 0;
+	var ioldcount = 0;
+	function formatIndex(index) {
+		if(index < 10)
+			return "00" + index ;
+		else if(index >= 10 && index < 100)
+			return "0" + index ;
+		else
+			return index ;
+	}
+	function addLine() {
+		//var kc = event.keyCode ;
+		//if(kc != 13)
+			//return false ;
+		var count = form1.TotalCount.value ;
+		if(isNaN(count)) {
+			alert("批次总笔数请输入数字！") ;
+			return false ;
+		}
+		ioldcount =  parseInt(stroldcount);
+		count = parseInt(count) ;
+		for(var i = 1 ; i <= count- ioldcount; i++) {
+			var index = formatIndex(i) ;
+			var row = bach.insertRow() ;
+			for(var j = 0 ; j < 3  ; j++) {
+				var col = row.insertCell() ;
+				switch(j) {
+				case 0 :
+					col.align = "left" ;
+					col.height = "30" ;
+					col.innerHTML = index ;
+					break ;
+				case 1 :
+					col.align = "center" ;
+					col.innerHTML = "<input type=\"text\" name=\"orderno\" style=\"width:95%\" value=\"ON200905010001\">" ;
+					break ;
+				case 2 :
+					col.align = "center" ;
+					col.innerHTML = "<input type=\"text\" name=\"orderamount\" style=\"width:95%\" value=\"0.01\">" ;
+					break ;
+				}
+				
+			}			
+		}
+		ioldcount = count;
+		form1.payment.disabled = "" ;
+	}
+	function submitFun() {
+		var count = form1.TotalCount.value ;
+		if(isNaN(count)) 
+			return false ;
+		count = parseInt(count) ;
+		if(count == 1)
+			form1.TotalAmount.value = form1.orderamount.value ;
+		else  {
+			var c = 0 ;	
+			c = parseFloat(c);
+			for(var i = 0 ; i < count ; i++) {
+				c = c + parseFloat(form1.orderamount[i].value) ;
+			}
+			form1.TotalAmount.value = c ;
+		}
+		form1.submit() ;
+	}
+</script>
+<BODY BGCOLOR='#FFFFFF' TEXT='#000000' LINK='#0000FF' VLINK='#0000FF' ALINK='#FF0000'>
+  <CENTER>订单超期退款</CENTER>
+  <FORM name='form1' action='MerchantOverdueRefund.jsp' method='POST'>
+    <TABLE width="100%">
+      <TR width=>
+      	   <TD >退款总笔数</TD>
+      	   <TD ><input name='TotalCount' value='10'> *必须</TD>
+      </TR>
+      <TR>
+      	   <TD >退款总金额</TD>
+      	   <TD ><input name='TotalAmount' value='0.10'> *必须</TD>
+      	   <TD ><INPUT type='button' VALUE='添加' name="AddOrder"  onclick="addLine()"></TD>
+      </TR>
+      <TR>
+      	   <TD >备注</TD>
+      	   <TD ><input name='Remark' value='测试超期退款客户端'> </TD>
+      </TR>
+      <TR>
+	      <TD colspan=2>
+	      	<table border="1" style="font-size: 17px;" width="100%" id="bach">
+	      		<TR>
+	      			<TD width="15%" align="center">序号</TD><TD width="15%" align="center">订单号</TD><TD width="15%" align="center">退款金额</TD>
+	      		<tr>
+	      	</table>
+	      </TD>
+      </TR>
+      <TR><TD colspan=2><INPUT type='button' VALUE='提交超期退款' name="payment" disabled="disabled" onclick="submitFun()"></TD></TR>
+    </TABLE>
+  </FORM>
+  <CENTER><a href='Merchant.html'>回商户首页</a></CENTER>
+</BODY>
+</HTML>

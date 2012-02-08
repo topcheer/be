@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+      <title>农行网上支付平台-商户接口示例-网上付款交易结果查询</title>
+  </head>
+  
+<body style="font-size: 14px;">
+    <center>
+        网上付款交易结果查询
+    </center>
+   
+    <form id="form1" action="OnlineRmtQueryResult.jsp">
+        <br />
+        <table>
+            <tr>
+                <td>
+                    付款流水号</td>
+                <td>
+                <input type="text" name="SerialNumber" value=""/>
+                    *必须</td>
+            </tr>
+            <tr>
+                <td>
+                    收款方账号</td>
+                <td>
+                    <input type="text" name="ReceiveAccount" value=""/>
+                    *必须</td>
+            </tr>
+            <tr>
+                <td>
+                    起始日期</td>
+                <td>
+                    <input type="text" name="StartTime" value="2010/06/29"/>
+                    *必须</td>
+            </tr>
+            <tr>
+                <td>
+                    截止日期</td>
+                <td>
+                    <input type="text" name="EndTime" value="2010/06/30"/>
+                    *必须</td>
+            </tr>     
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="提交页面内容"/>
+                    <a href='Merchant.html'>回商户首页</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>

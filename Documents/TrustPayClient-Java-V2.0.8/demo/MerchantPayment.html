@@ -1,0 +1,69 @@
+<!--
+/*
+ * @(#)MerchantPayment.html	V1.5.1	2004/11/10
+ *
+ * Project: BJP03004
+ *
+ * Description:
+ *    商户支付请求范例页面。
+ *
+ * Modify Information:
+ *    Author        Date        Description
+ *    ============  ==========  =======================================
+ *    HiTRUST       2004/01/05  V1.0 Release
+ *    HiTRUST       2004/01/07  V1.0.1 Release
+ *    HiTRUST       2004/04/16  V1.0.3 Release 新增支付类型
+ *    HiTRUST       2004/09/16  V1.2   Release 新增支付结果通知类型
+ *    HiTRUST       2004/09/27  V1.5 Release
+ *    HiTRUST       2004/11/10  V1.5.1 Release
+ *
+ * Copyright Notice:
+ *   Copyright (c) 2001-2004 Beijing HiTRUST Technology Co., Ltd.
+ *   1808 Room, Science & Technology Building, No. 9 South Street,
+ *   Zhong Guan Cun, Haidian District, Beijing ,100081, China
+ *   All rights reserved.
+ *
+ *   This software is the confidential and proprietary information of
+ *   HiTRUST.COM, Inc. ("Confidential Information"). You shall not
+ *   disclose such Confidential Information and shall use it only in
+ *   accordance with the terms of the license agreement you entered
+ *   into with HiTRUST.
+ */
+-->
+<HTML>
+<HEAD><TITLE>农行网上支付平台-商户接口范例-支付请求</TITLE></HEAD>
+<BODY BGCOLOR='#FFFFFF' TEXT='#000000' LINK='#0000FF' VLINK='#0000FF' ALINK='#FF0000'>
+  <FORM name=form1 action='MerchantPayment.jsp' method=post>
+    <TABLE>
+      <TR><TD>OrderNo        </TD>
+          <TD><INPUT NAME='OrderNo'         VALUE='ON200306300001'></TD></TR>
+      <TR><TD>OrderDesc      </TD>
+          <TD><INPUT NAME='OrderDesc'       VALUE='Game Card Order'></TD></TR>
+      <TR><TD>OrderDate      </TD>
+          <TD><INPUT NAME='OrderDate'       VALUE='2003/11/12'>（YYYY/MM/DD）</TD></TR>
+      <TR><TD>OrderTime      </TD>
+          <TD><INPUT NAME='OrderTime'       VALUE='23:55:30'>（HH:MM:SS）</TD></TR>
+      <TR><TD>OrderAmount    </TD>
+          <TD><INPUT NAME='OrderAmount'     VALUE='280'></TD></TR>
+      <TR><TD>OrderURL       </TD>
+          <TD><INPUT NAME='OrderURL'        VALUE='http://127.0.0.1/Merchant/MerchantQueryOrder.jsp?ON=ON200306300001&QueryType=1'></TD></TR>
+      <TR><TD>BuyIP       </TD>
+          <TD><INPUT NAME='BuyIP'        VALUE='172.30.7.75'></TD></TR>
+      <TR><TD>ProductType    </TD>
+          <TD><INPUT NAME='ProductType'     VALUE='1'></TD></TR>
+      <TR><TD>PaymentType    </TD>
+          <TD><INPUT NAME='PaymentType'     VALUE='1'>1：农行卡支付  2：国际卡支付  3：农行贷记卡支付 A:支付方式合并</TD></TR>
+      <TR><TD>PaymentLinkType    </TD>
+          <TD><INPUT NAME='PaymentLinkType'     VALUE='1'>1：internet网络接入  2：手机网络接入  3:数字电视网络接入 4:智能客户端</TD></TR>    
+       <TR><TD>NotifyType    </TD>
+          <TD><INPUT NAME='NotifyType'      VALUE='0'>0：URL页面通知  1：服务器通知</TD></TR>   
+      <TR><TD>ResultNotifyURL</TD>
+          <TD><INPUT NAME='ResultNotifyURL' VALUE='http://127.0.0.1/Merchant/MerchantResult.jsp'></TD></TR>
+      <TR><TD>MerchantRemarks</TD>
+          <TD><INPUT NAME='MerchantRemarks' VALUE='Hi!'></TD></TR>
+      <TR><TD colspan=2><INPUT type=submit>
+    </TABLE>
+  </FORM>
+  <CENTER><a href='Merchant.html'>回商户首页</a></CENTER>
+</BODY>
+</HTML>

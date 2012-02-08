@@ -1,0 +1,54 @@
+<HTML>
+<HEAD><TITLE>农行网上支付平台-商户接口范例-委托扣款单笔扣款</TITLE></HEAD>
+<BODY BGCOLOR='#FFFFFF' TEXT='#000000' LINK='#0000FF' VLINK='#0000FF' ALINK='#FF0000'>
+  <CENTER>委托扣款单笔代扣</CENTER>
+  <FORM name='form1' action='B2CAgentPayment.jsp' method='POST'>
+    <TABLE>
+      <TR>
+      	  <TD>订单编号</TD>
+      	  <TD><INPUT NAME='OrderNo' VALUE='ON200905070001'> *必须</TD>
+      </TR>
+     <TR>
+          <TD>请求日期</TD>
+          <TD><INPUT NAME='RequestDate' VALUE='2009/05/07'> *必须，格式要求为YYYY/MM/DD</TD>
+      </TR>	
+      <TR>
+          <TD>请求时间</TD>
+      	  <TD><INPUT NAME='RequestTime' VALUE='09:10:10'> *必须，格式为HH:MM:SS</TD>
+      </TR>	
+      <TR>
+          <TD>客户证件号码</TD>
+          <TD><INPUT NAME='CertificateNo' VALUE='340121198403084619'> *必须</TD>
+      </TR>
+      <TR>
+          <TD>签约协议号</TD>
+          <TD><INPUT NAME='AgentSignNo' VALUE='No200905150001'> *必须</TD>
+      </TR>
+      <TR>
+          <TD>账单币种</TD>
+      	  <TD><INPUT NAME='Currency' VALUE='RMB'> *必须</TD>
+      </TR>	
+      <TR>
+          <TD>账单金额</TD>
+      	  <TD><INPUT NAME='Amount' VALUE='0.01'> *必须</TD>
+      </TR>	
+      <TR>
+          <TD>商品编号</TD>
+      	  <TD><INPUT NAME='ProductId' VALUE='000001'> *必须</TD>
+      </TR>	
+      <TR>
+          <TD>商品名称</TD>
+      	  <TD><INPUT NAME='ProductName' VALUE='点卡'> *必须</TD>
+      </TR>	
+      <TR>
+          <TD>商品数量</TD>
+      	  <TD><INPUT NAME='Quantity' VALUE='1'> *必须</TD>
+      </TR>	      
+      <TR>
+          <TD colspan=2><INPUT type='submit' VALUE='委托扣款单笔扣款'></TD>
+      </TR>
+    </TABLE>
+  </FORM>
+  <CENTER><a href='Merchant.html'>回商户首页</a></CENTER>
+</BODY>
+</HTML>

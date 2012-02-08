@@ -1,0 +1,115 @@
+<HTML>
+<HEAD><TITLE>农行网上支付平台-商户接口示例-委托扣款批量扣款</TITLE></HEAD>
+<script language="javascript">
+	function formatIndex(index) {
+		if(index < 10)
+			return "00" + index ;
+		else if(index >= 10 && index < 100)
+			return "0" + index ;
+		else
+			return index ;
+	}
+	function addLine() {
+		var kc = event.keyCode ;
+		if(kc != 13)
+			return false ;
+		var count = form1.AgentCount.value ;
+		if(isNaN(count)) {
+			alert("批次总笔数请输入数字！") ;
+			return false ;
+		}
+		count = parseInt(count) ;
+		for(var i = 1 ; i <= count ; i++) {
+			var index = formatIndex(i) ;
+			var row = batch.insertRow() ;
+			for(var j = 0 ; j < 7  ; j++) {
+				var col = row.insertCell() ;
+				switch(j) {
+				case 0 :
+					col.align = "left" ;
+					col.height = "30" ;
+					col.innerHTML = "<input type=\"text\" name=\"orderno\" style=\"width:95%\" value=\""+ form1.BatchNo.value + index+ "\">" ;
+					break ;
+				case 1 :
+					col.align = "center" ;
+					col.innerHTML = "<input type=\"text\" name=\"orderamount\" style=\"width:95%\" value=\"1.00\">" ;
+					break ;
+				case 2 :
+					col.align = "center" ;
+					col.innerHTML = "<input type=\"text\" name=\"certificateno\" style=\"width:95%\" value=\"510230198307191135\">" ;
+					break ;
+				case 3 :
+					col.align = "center" ;
+					col.innerHTML = "<input type=\"text\" name=\"contractid\" style=\"width:95%\" value=\"ON2009052500100\">" ;
+					break ;
+				case 4 :
+					col.align = "center" ;
+					col.innerHTML = "<input type=\"text\" name=\"productid\" style=\"width:95%\" value=\"ProductID\">" ;
+					break ;
+				case 5 :
+					col.align = "center" ;
+					col.innerHTML = "<input type=\"text\" name=\"productname\" style=\"width:95%\" value=\"ProductName\">" ;
+					break ;
+				case 6 :
+					col.align = "center" ;
+					col.innerHTML = "<input type=\"text\" name=\"productnum\" style=\"width:95%\" value=\"1\">" ;
+					break ;
+				
+				}
+				
+			}			
+		}
+		form1.payment.disabled = "" ;
+	}
+	function submitFun() {
+		var count = form1.AgentCount.value ;
+		if(isNaN(count)) 
+			return false ;
+		count = parseInt(count) ;
+		if(count == 1)
+			form1.AgentAmount.value = form1.orderamount.value ;
+		else  {
+			var c = 0 ;		
+			for(var i = 0 ; i < count ; i++) {
+				c = c + parseFloat(form1.orderamount[i].value) ;
+			}
+			form1.AgentAmount.value = c ;
+		}
+		form1.submit() ;
+	}
+</script>
+<BODY BGCOLOR='#FFFFFF' TEXT='#000000' LINK='#0000FF' VLINK='#0000FF' ALINK='#FF0000'>
+  <CENTER>委托扣款批量</CENTER>
+  <FORM name='form1' action='B2CAgentBatch.jsp' method='POST'>
+    <TABLE width="100%">
+      <TR>
+           <TD>批次编号</TD>
+           <TD><INPUT NAME='BatchNo' VALUE='1'>*必须</TD>
+      </TR>
+      <TR>
+           <TD>批次日期</TD>
+      	   <TD><input name='BatchDate' value='20090527'> *必须，日期格式要求为YYYYMMDD</TD>
+      </TR>
+      <TR>
+      	   <TD>批次总笔数</TD>
+      	   <TD><input name='AgentCount' value='10' onkeyup="addLine()"> *必须</TD>
+      </TR>
+      <TR>
+      	   <TD>批次总金额</TD>
+      	   <TD><input name='AgentAmount' value='10.00'> *必须</TD>
+      </TR>
+      <TR>
+	      <TD colspan=2>
+	      	<table border="1" style="font-size: 17px;" width="100%" id="batch">
+	      		<TR>
+	      			<TD width="15%" align="center">账单编号</TD><TD width="15%" align="center">账单金额</TD><TD width="15%" align="center">证件号码</TD><TD align="center">签约协议号</TD><TD  align="center" width="15%">商品编号</TD><TD  align="center" width="10%">商品名称</TD><TD  align="center" width="10%">商品数量</TD>
+	      		<tr>
+	      	</table>
+	      </TD>
+      </TR>
+      <TR><TD colspan=2><INPUT type='button' VALUE='批量提交' name="payment" disabled="disabled" onclick="submitFun()"></TD></TR>
+    </TABLE>
+  </FORM>
+  <CENTER><a href='Merchant.html'>回商户首页</a></CENTER>
+</BODY>
+</HTML>

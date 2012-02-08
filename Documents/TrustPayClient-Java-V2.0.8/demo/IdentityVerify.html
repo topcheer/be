@@ -1,0 +1,60 @@
+<HTML>
+<HEAD><TITLE>农行网上支付平台-商户接口范例-身份验证</TITLE></HEAD>
+<BODY BGCOLOR='#FFFFFF' TEXT='#000000' LINK='#0000FF' VLINK='#0000FF' ALINK='#FF0000'>
+  <CENTER>身份验证</CENTER>
+  <FORM name='form1' action='IdentityVerify.jsp' method='POST'>
+    <TABLE>
+     <TR>
+          <TD>请求日期</TD>
+          <TD><INPUT NAME='RequestDate' VALUE='2008/01/17'> *必须，格式要求为YYYY/MM/DD</TD>
+      </TR>	
+      <TR>
+          <TD>请求时间</TD>
+      	  <TD><INPUT NAME='RequestTime' VALUE='09:10:10'> *必须，格式为HH:MM:SS</TD>
+      </TR>	
+      <TR>
+      	  <TD>证件类型</TD>
+          <TD>
+          		<select name="CertificateType">
+					<option value=I>公民身份证</option>
+					<option value=P>中国护照</option>
+					<option value=S>军人身份证</option>
+					<option value=J>警官证</option>
+					<option value=K>户口簿</option>
+					<option value=T>临时身份证</option>
+					<option value=F>外国护照</option>
+					<option value=D>港澳通行证</option>
+					<option value=W>台胞通行证</option>
+					<option value=R>离休干部荣誉证</option>
+					<option value=B>军官退休证</option>
+					<option value=A>文职干部退休证</option>
+					<option value=C>军事院校学员证</option>
+					<option value=E>武装警察身份证</option>
+					<option value=G>军官证</option>
+					<option value=H>文职干部证</option>
+					<option value=L>军人士兵证</option>
+					<option value=M>武警士兵证</option>
+					<option value=U>其他证件</option>
+                </select>*必须
+           </TD>
+      </TR>
+      <TR>
+          <TD>证件号码</TD>
+          <TD><INPUT NAME='CertificateNo' VALUE='350624560911051'> *必须</TD>
+      </TR>
+      <TR>
+          <TD>银行卡号</TD>
+      	  <TD><INPUT NAME='BankCardNo' VALUE='9559980120333681118'> *必须</TD>
+      </TR>
+      <TR>
+          <TD>结果接收URL</TD>
+          <TD><INPUT NAME='ResultNotifyURL' VALUE='http://127.0.0.1:9080/b2cclient/IdentityVerifyResult.jsp'><strong style="color:#ff0000">*必须</strong></TD>
+      </TR>
+      <TR>
+          <TD colspan=2><INPUT type='submit' VALUE='身份验证'></TD>
+      </TR>
+    </TABLE>
+  </FORM>
+  <CENTER><a href='Merchant.html'>回商户首页</a></CENTER>
+</BODY>
+</HTML>

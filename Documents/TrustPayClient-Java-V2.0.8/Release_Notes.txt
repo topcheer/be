@@ -1,0 +1,32 @@
+/*
+ * @(#)Release_Notes.txt  V2.0
+ *
+ *  Project: BJP03004
+ *
+ *  Description:
+ *  =========================================================================
+ *    版本更新说明
+ *
+ *  Change History:
+ *  Author        Date       Description
+ *  ========== ========== ===================================================
+ *  Janus Liu  2009-05-31 
+ *                        1、新增超期退款功能
+ *                        2、新增委托扣款功能
+ *                        3、新增贷记卡支付功能
+ *  农行支付平台小组  2009-07-01  新增商户连接农行b2c支付平台方法：通过表单提交方法
+ *  Copyright Notice:
+ *   Copyright (c) 2001-2005 Beijing HiTRUST Technology Co., Ltd. 1808 Room,
+ *   Science & Technology Building, No. 9 South Street, Zhong Guan Cun,
+ *   Haidian District, Beijing ,100081, China All rights reserved.
+ *
+ *   This software is the confidential and proprietary information of
+ *   HiTRUST.COM, Inc. ('Confidential Information').  You shall not
+ *   disclose such Confidential Information and shall use it only in
+ *   accordance with the terms of the license agreement you entered
+ *   into with HiTRUST.
+ *
+ *  Warning:
+ *  =========================================================================
+ *
+ */

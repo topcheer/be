@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <title>农行网上支付平台-商户接口示例-网上付款信息发送</title>
+</head>
+  <script language="javascript">
+	var stroldcount = 0;
+	var ioldcount = 0;
+	function formatIndex(index) {
+		if(index < 10)
+			return "00" + index ;
+		else if(index >= 10 && index < 100)
+			return "0" + index ;
+		else
+			return index ;
+	}
+	function addLine() {
+		var count = form1.TotalCount.value ;
+		if(isNaN(count)) {
+			alert("批次总笔数请输入数字！") ;
+			return false ;
+		}
+		ioldcount =  parseInt(stroldcount);
+		count = parseInt(count) ;
+		var currCount = bach.rows.length;
+		for(var j = currCount ; j > 0; j--) {
+		    try{
+		        bach.deleteRow(j);
+		    }
+		    catch(e){}
+		}
+		
+		for(var i = 1 ; i <= count - ioldcount; i++) {
+			var index = formatIndex(i) ;
+			var row = bach.insertRow() ;
+			for(var j = 0 ; j < 5  ; j++) {
+				var col = row.insertCell() ;
+				switch(j) {
+				case 0 :
+					col.align = "left" ;
+					col.height = "30" ;
+					//col.innerHTML = index ;
+					col.innerHTML = "<input type=\"text\" name=\"NO\" style=\"width:95%\" value= \""+index+"\" >" ;
+					break ;
+				case 1 :
+					col.align = "center" ;
+					col.innerHTML = "<input type=\"text\" name=\"CardNo\" style=\"width:95%\" value=\"6228430010000088888\">" ;
+					break ;
+				case 2 :
+					col.align = "center" ;
+					col.innerHTML = "<input type=\"text\" name=\"CardName\" style=\"width:95%\" value=\"张三\">" ;
+					break ;
+				case 3 :
+					col.align = "center" ;
+					col.innerHTML = "<input type=\"text\" name=\"RemitAmount\" style=\"width:95%\" value=\"1.00\">" ;
+					break ;
+				case 4 :
+					col.align = "center" ;
+					col.innerHTML = "<input type=\"text\" name=\"Purpose\" style=\"width:95%\" value=\"张三货款\">" ;
+					break ;
+				}
+			}			
+		}
+		ioldcount = count;
+		form1.btnButton.disabled = "" ;
+	}
+</script>
+  <body style="font-size: 14px;">
+    <center>
+        网上付款信息发送
+    </center>
+    <form id="form1" action="SendOnlineRemitInfo.jsp">
+        <br />
+        <table>
+            <tr width="">
+                <td>
+                    付款批次流水号</td>
+                <td>
+                    <input name='SerialNumber' value='RMT2010073100001'>
+                    *必须</td>
+            </tr>
+            <tr width="">
+                <td>
+                    批次总笔数</td>
+                <td>
+                    <input name='TotalCount' value='10'>
+                    *必须</td>
+            </tr>
+            <tr>
+                <td>
+                    批次总金额</td>
+                <td>
+                    <input name='TotalAmount' value='10.00'>
+                    *必须</td>
+                
+               
+            </tr>
+            <tr>
+                <td>
+                    备注</td>
+                <td>
+                    <input name='Remark' value='网上付款测试'>
+                </td>
+                
+            </tr>
+            <tr>
+            <td><input type='button' value=' 添加 ' name="AddOrder" onclick="addLine()"></td>
+             </tr>
+            <tr>
+                <td colspan="2">
+                    <table border="1" style="font-size: 12px;" width="100%" id="bach">
+                        <tr>
+                            <td width="15%" align="center">
+                                序号</td>
+                            <td width="15%" align="center">
+                                收款方账号</td>
+                            <td width="15%" align="center">
+                                收款方户名</td>
+                            <td width="15%" align="center">
+                                付款金额</td>
+                            <td width="15%" align="center">
+                                用途</td>
+                            <tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <INPUT type='submit' value="提交页面内容" name="btnButton" disabled="disabled">
+                    <a href='Merchant.html'>回商户首页</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>
