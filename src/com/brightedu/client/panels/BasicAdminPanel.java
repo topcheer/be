@@ -4,6 +4,8 @@ import com.brightedu.client.DataBaseRPC;
 import com.brightedu.client.DataBaseRPCAsync;
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.data.Record;
+import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.ListGridEditEvent;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -20,6 +22,7 @@ import com.smartgwt.client.widgets.form.fields.events.IconClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.KeyUpEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyUpHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
+import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
@@ -32,7 +35,7 @@ public abstract class BasicAdminPanel extends VLayout {
 	protected ToolStripButton delButton = new ToolStripButton("删除");
 	protected TextItem searchItem = new TextItem("搜索内容");
 	protected SelectItem rangeItem = new SelectItem("搜索范围");
-	protected ListGrid resultList = new ListGrid();
+	protected ListGrid resultList ;
 
 	protected SelectItem rowsPerPageItem = new SelectItem("每页行数");
 	protected ToolStripButton firstPageBtn = new ToolStripButton();
@@ -50,6 +53,8 @@ public abstract class BasicAdminPanel extends VLayout {
 
 	protected int currentRowsInOnePage = 20;
 
+//	protected DataSource ds = null;
+
 	public BasicAdminPanel() {
 		init();
 		postInit();
@@ -62,6 +67,7 @@ public abstract class BasicAdminPanel extends VLayout {
 	}
 
 	private void init() {
+		resultList = createListGrid();
 		addButton.setAutoFit(true);
 		delButton.setAutoFit(true);
 		addButton.setIcon("add.gif");
@@ -184,7 +190,9 @@ public abstract class BasicAdminPanel extends VLayout {
 						int indexGoto = Integer.parseInt(currentPageIndexField
 								.getValue().toString());
 						if (indexGoto > totalPageCounts) {
-							SC.say("当前记录最多只有" + totalPageCounts + "页");
+							SC.warn("当前记录最多只有" + totalPageCounts + "页");
+						} else if (indexGoto == 0) {
+							SC.warn("跳转的页数必须大于0");
 						} else {
 							gotoPage(indexGoto);
 						}
@@ -217,6 +225,7 @@ public abstract class BasicAdminPanel extends VLayout {
 		pagetools.addMember(lastPageBtn);
 
 		addMember(pagetools);
+
 		initPages();
 	}
 
@@ -294,7 +303,7 @@ public abstract class BasicAdminPanel extends VLayout {
 	protected void setTotalCounts(int totalCounts) {
 		this.totalPageCounts = totalCounts % currentRowsInOnePage == 0 ? (totalCounts / currentRowsInOnePage)
 				: (totalCounts / currentRowsInOnePage + 1);
-		
+
 		totalPageLabel.setContents("共" + totalPageCounts + "页");
 	}
 
@@ -303,6 +312,11 @@ public abstract class BasicAdminPanel extends VLayout {
 	}
 
 	protected abstract void gotoPage(int indexGoto, boolean init);
+
+//	protected abstract DataSource createDataSource();
+	
+	
+	protected abstract ListGrid createListGrid();
 
 	protected void initPages() {
 		gotoPage(1, true);
