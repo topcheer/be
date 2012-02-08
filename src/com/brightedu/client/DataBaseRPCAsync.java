@@ -15,6 +15,8 @@ public interface DataBaseRPCAsync {
 
 	void addBatch(String batch_name, AsyncCallback<Boolean> callback);
 
-	void deleteBatch(Integer batch_id, AsyncCallback<Boolean> callback);
+	void deleteBatch(List<Integer> batch_ids, AsyncCallback<Boolean> callback);
+
+	void save(BatchIndex editedBatch, AsyncCallback<Boolean> callback);
 
 }

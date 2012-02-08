@@ -2,11 +2,14 @@ package com.brightedu.client.panels;
 
 import com.brightedu.client.DataBaseRPC;
 import com.brightedu.client.DataBaseRPCAsync;
+import com.brightedu.client.panels.admin.BatchAdmin;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Timer;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.types.ListGridEditEvent;
+import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.util.SC;
+import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
@@ -19,10 +22,9 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.IconClickEvent;
 import com.smartgwt.client.widgets.form.fields.events.IconClickHandler;
-import com.smartgwt.client.widgets.form.fields.events.KeyUpEvent;
-import com.smartgwt.client.widgets.form.fields.events.KeyUpHandler;
+import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
+import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
-import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
@@ -35,7 +37,7 @@ public abstract class BasicAdminPanel extends VLayout {
 	protected ToolStripButton delButton = new ToolStripButton("删除");
 	protected TextItem searchItem = new TextItem("搜索内容");
 	protected SelectItem rangeItem = new SelectItem("搜索范围");
-	protected ListGrid resultList ;
+	protected ListGrid resultList;
 
 	protected SelectItem rowsPerPageItem = new SelectItem("每页行数");
 	protected ToolStripButton firstPageBtn = new ToolStripButton();
@@ -47,13 +49,12 @@ public abstract class BasicAdminPanel extends VLayout {
 
 	protected ToolStripButton nextPageBtn = new ToolStripButton();
 	protected ToolStripButton lastPageBtn = new ToolStripButton();
+	protected ToolStripButton refreButton = new ToolStripButton();
 
 	protected int currentPageIndex = 1;
 	protected int totalPageCounts = 1;
 
 	protected int currentRowsInOnePage = 20;
-
-//	protected DataSource ds = null;
 
 	public BasicAdminPanel() {
 		init();
@@ -147,6 +148,7 @@ public abstract class BasicAdminPanel extends VLayout {
 		lastPageBtn.setIcon("pagination_last.gif");
 		previousPageBtn.setIcon("pagination_prev.gif");
 		nextPageBtn.setIcon("pagination_next.gif");
+		refreButton.setIcon("refresh.gif");
 
 		firstPageBtn.addClickHandler(new ClickHandler() {
 
@@ -181,10 +183,11 @@ public abstract class BasicAdminPanel extends VLayout {
 		currentPageIndexField.setMask("####");
 		currentPageIndexField.setShowTitle(false);
 		currentPageIndexField.setShowHint(false);
-		currentPageIndexField.addKeyUpHandler(new KeyUpHandler() {
+
+		currentPageIndexField.addKeyPressHandler(new KeyPressHandler() {
 
 			@Override
-			public void onKeyUp(KeyUpEvent event) {
+			public void onKeyPress(KeyPressEvent event) {
 				if (event.getKeyName().toLowerCase().equals("enter")) {
 					if (currentPageIndexField.getValue() != null) {
 						int indexGoto = Integer.parseInt(currentPageIndexField
@@ -198,6 +201,14 @@ public abstract class BasicAdminPanel extends VLayout {
 						}
 					}
 				}
+			}
+		});
+
+		refreButton.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				gotoPage(currentPageIndex);
 			}
 		});
 		DynamicForm pageForm1 = new DynamicForm();
@@ -223,9 +234,9 @@ public abstract class BasicAdminPanel extends VLayout {
 		pagetools.addMember(totalPageLabel);
 		pagetools.addMember(nextPageBtn);
 		pagetools.addMember(lastPageBtn);
-
+		pagetools.addSeparator();
+		pagetools.addMember(refreButton);
 		addMember(pagetools);
-
 		initPages();
 	}
 
@@ -271,16 +282,32 @@ public abstract class BasicAdminPanel extends VLayout {
 
 	protected abstract void deleteRecords();
 
-	protected void showLastPageRecords() {
-		if (currentPageIndex != totalPageCounts) {
+	protected void showLastPageRecords(boolean force) {
+		if (force) {
 			gotoPage(totalPageCounts);
+		} else {
+			if (currentPageIndex != totalPageCounts) {
+				gotoPage(totalPageCounts);
+			}
 		}
 	}
 
-	protected void showFirstPageRecords() {
-		if (currentPageIndex != 1) {
+	protected void showFirstPageRecords(boolean force) {
+		if (force) {
 			gotoPage(1);
+		} else {
+			if (currentPageIndex != 1) {
+				gotoPage(1);
+			}
 		}
+	}
+
+	protected void showLastPageRecords() {
+		showLastPageRecords(false);
+	}
+
+	protected void showFirstPageRecords() {
+		showFirstPageRecords(false);
 	}
 
 	protected void showNextPageRecords() {
@@ -313,9 +340,8 @@ public abstract class BasicAdminPanel extends VLayout {
 
 	protected abstract void gotoPage(int indexGoto, boolean init);
 
-//	protected abstract DataSource createDataSource();
-	
-	
+	// protected abstract DataSource createDataSource();
+
 	protected abstract ListGrid createListGrid();
 
 	protected void initPages() {

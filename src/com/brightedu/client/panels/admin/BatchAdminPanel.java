@@ -1,11 +1,15 @@
 package com.brightedu.client.panels.admin;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.brightedu.client.BrightCanvas;
+import com.brightedu.client.CommonAsyncCall;
 import com.brightedu.client.panels.BasicAdminPanel;
 import com.brightedu.model.edu.BatchIndex;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.data.Record;
+import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.ListGridEditEvent;
 import com.smartgwt.client.types.ListGridFieldType;
@@ -15,7 +19,8 @@ import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
-import com.smartgwt.client.widgets.grid.ListGridRecord;
+import com.smartgwt.client.widgets.grid.events.CellSavedEvent;
+import com.smartgwt.client.widgets.grid.events.CellSavedHandler;
 
 public class BatchAdminPanel extends BasicAdminPanel {
 
@@ -31,8 +36,14 @@ public class BatchAdminPanel extends BasicAdminPanel {
 
 	@Override
 	protected void deleteRecords() {
-
-		if (resultList.getSelectedRecord() == null) {
+		RecordList recList = resultList.getDataAsRecordList();
+		final List<Integer> deleteIds = new ArrayList<Integer>();
+		for (int i = 0; i < recList.getLength(); i++) {
+			if (recList.get(i).getAttributeAsBoolean("select")) {
+				deleteIds.add(recList.get(i).getAttributeAsInt("batch_id"));
+			}
+		}
+		if (deleteIds.size() == 0) {
 			SC.say("请选择一些记录");
 			return;
 		}
@@ -41,93 +52,79 @@ public class BatchAdminPanel extends BasicAdminPanel {
 			@Override
 			public void execute(Boolean value) {
 				if (value) {
-					ListGridRecord[] records = resultList.getSelectedRecords();
-
-					for (int i = 0; i < records.length; i++) {
-						dbService.deleteBatch(
-								records[i].getAttributeAsInt("batch_index"),
-								new AsyncCallback<Boolean>() {
-									@Override
-									public void onFailure(Throwable caught) {
-										caught.printStackTrace();
-									}
-
-									@Override
-									public void onSuccess(Boolean result) {
-
-									}
-
-								});
-
-					}
+					dbService.deleteBatch(deleteIds,
+							new CommonAsyncCall<Boolean>() {
+								@Override
+								public void onSuccess(Boolean result) {
+									showTip("已删除！");
+									gotoPage(currentPageIndex);
+								}
+							});
 				}
-				gotoPage(currentPageIndex);
 			}
 		});
 	}
 
-	
-//	protected DataSource createDataSource() {
-//		DataSource ds = new DataSource();
-//		ds.setClientOnly(true);
-//		DataSourceField selectField = new DataSourceField("select",
-//				FieldType.BOOLEAN, "选择");
-//		
-//		DataSourceField indexField = new DataSourceField("batch_index",
-//				FieldType.INTEGER, "批次代码");
-//		indexField.setCanEdit(false);
-//		DataSourceField nameField = new DataSourceField("batch_name",
-//				FieldType.TEXT, "批次名称");
-//		nameField.setCanEdit(true);
-//		DataSourceField regTimeField = new DataSourceField("reg_time",
-//				FieldType.DATE, "录入时间");
-//		regTimeField.setCanEdit(true);
-//		
-//		ds.setFields(selectField, indexField, nameField, regTimeField);
-//		return ds;
-//	}
-	
+	private void showTip(String tip) {
+		BrightCanvas ca = (BrightCanvas) getById(BrightCanvas.ID);
+		ca.showTip(tip);
+	}
+
 	@Override
 	protected ListGrid createListGrid() {
 		ListGrid result = new ListGrid();
 		ListGridField selectField = new ListGridField("select", "选择", 100);
-		ListGridField indexField = new ListGridField("batch_index", "批次代码", 100);
+		ListGridField indexField = new ListGridField("batch_id", "批次代码", 100);
 		ListGridField nameField = new ListGridField("batch_name", "批次名称");
 		ListGridField regTimeField = new ListGridField("reg_time", "录入时间", 200);
 		selectField.setType(ListGridFieldType.BOOLEAN);
 		indexField.setType(ListGridFieldType.INTEGER);
 		nameField.setType(ListGridFieldType.TEXT);
 		regTimeField.setType(ListGridFieldType.DATE);
-		
+
 		indexField.setCanEdit(false);
 		regTimeField.setCanEdit(false);
-		
+
 		selectField.setAlign(Alignment.CENTER);
 		indexField.setAlign(Alignment.CENTER);
 		nameField.setAlign(Alignment.CENTER);
 		regTimeField.setAlign(Alignment.CENTER);
-//		selectField
+		// selectField
 		result.setCanEdit(true);
-		
+		nameField.addCellSavedHandler(new CellSavedHandler() {
+
+			@Override
+			public void onCellSaved(CellSavedEvent event) {
+				Record rec = event.getRecord();
+				BatchIndex editedBatch = new BatchIndex();
+				editedBatch.setBatch_id(rec.getAttributeAsInt("batch_id"));
+				editedBatch.setBatch_name(rec
+						.getAttributeAsString("batch_name"));
+				editedBatch.setRegister_date(rec.getAttributeAsDate("reg_time"));
+				dbService.save(editedBatch, new CommonAsyncCall<Boolean>() {
+
+					@Override
+					public void onSuccess(Boolean result) {
+						showTip("保存成功!");
+					}
+				});
+			}
+		});
 		result.setEditEvent(ListGridEditEvent.DOUBLECLICK);
-		result.setFields(selectField,indexField,nameField,regTimeField);
+		result.setFields(selectField, indexField, nameField, regTimeField);
 		return result;
 	}
 
 	protected void gotoPage(final int indexGoto, final boolean init) {
-		//没烧到情况ds的方法，只好重新创建一次
-//		ds = createDataSource();
-		AsyncCallback<List<BatchIndex>> callback = new AsyncCallback<List<BatchIndex>>() {
-			@Override
-			public void onFailure(Throwable caught) {
-				caught.printStackTrace();
-			}
-
+		// 没烧到情况ds的方法，只好重新创建一次
+		// ds = createDataSource();
+		AsyncCallback<List<BatchIndex>> callback = new CommonAsyncCall<List<BatchIndex>>() {
 			@Override
 			public void onSuccess(List result) {
 				int size = result.size();
-//				List<Record> listData = new ArrayList<Record>();
-				Record[] listData = init?new Record[size-1]:new Record[size];
+				// List<Record> listData = new ArrayList<Record>();
+				Record[] listData = init ? new Record[size - 1]
+						: new Record[size];
 				for (int i = 0; i < size; i++) {
 					if (i == size - 1) {
 						if (init) {
@@ -139,17 +136,15 @@ public class BatchAdminPanel extends BasicAdminPanel {
 					BatchIndex bi = (BatchIndex) result.get(i);
 					Record rec = new Record();
 					rec.setAttribute("select", false);
-					rec.setAttribute("batch_index", bi.getBatch_id());
+					rec.setAttribute("batch_id", bi.getBatch_id());
 					rec.setAttribute("batch_name", bi.getBatch_name());
 					rec.setAttribute("reg_time", bi.getRegister_date());
-//					ds.addData(rec);
 					listData[i] = rec;
 				}
 				resultList.setData(listData);
 				setCurrentPage(indexGoto);
 			}
 		};
-//		resultList.clear();
 		if (init) {
 			dbService.getBatchListAndTotalCounts(0, currentRowsInOnePage,
 					callback);
@@ -157,9 +152,6 @@ public class BatchAdminPanel extends BasicAdminPanel {
 			dbService.getBatchList((indexGoto - 1) * currentRowsInOnePage,
 					currentRowsInOnePage, callback);
 		}
-		
-//		resultList.setDataSource(ds);
-//		resultList.fetchData();
 	}
 
 	private class NewBatchDialog extends AdminDialog {
@@ -184,27 +176,18 @@ public class BatchAdminPanel extends BasicAdminPanel {
 		protected void createNewAdminItem() {
 			final String batch = batchItem.getValueAsString();
 			if (batch != null && batch.trim().length() > 0) {
-				dbService.addBatch(batch, new AsyncCallback<Boolean>() {
-
-					@Override
-					public void onFailure(Throwable caught) {
-						caught.printStackTrace();
-					}
-
+				dbService.addBatch(batch, new CommonAsyncCall<Boolean>() {
 					@Override
 					public void onSuccess(Boolean result) {
-						showLastPageRecords();
+						showLastPageRecords(true);
 						destroy();
 					}
 				});
-
 			} else {
 				SC.say("空内容无效！");
 			}
 		}
 
 	}
-
-
 
 }

@@ -40,7 +40,8 @@ public interface DataBaseRPC extends RemoteService {
 	public List<BatchIndex> getBatchList(int offset, int limit);
 	public List getBatchListAndTotalCounts(int offset, int limit);
 	public boolean addBatch(String batch_name);
-	public boolean deleteBatch(Integer batch_id);
+	public boolean deleteBatch(List<Integer> batch_ids);
+	boolean save(BatchIndex editedBatch);
 	
 	
 }

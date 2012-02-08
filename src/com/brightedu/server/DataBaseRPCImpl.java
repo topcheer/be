@@ -29,6 +29,8 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import com.brightedu.client.DataBaseRPC;
 import com.brightedu.dao.edu.BatchIndexMapper;
 import com.brightedu.model.edu.BatchIndex;
+import com.brightedu.model.edu.BatchIndexExample;
+import com.brightedu.model.edu.BatchIndexExample.Criteria;
 import com.brightedu.server.util.Log;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -51,9 +53,10 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 	}
 
 	public List<BatchIndex> getBatchList(int offset, int limit) {
-
+		BatchIndexExample ex = new BatchIndexExample();
+		ex.setOrderByClause("batch_id");
 		List<BatchIndex> result = session.selectList(
-				"com.brightedu.dao.edu.BatchIndexMapper.selectByExample", null,
+				"com.brightedu.dao.edu.BatchIndexMapper.selectByExample", ex,
 				new RowBounds(offset, limit));
 		return result;
 
@@ -61,6 +64,7 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 
 	public List getBatchListAndTotalCounts(int offset, int limit) {
 		List batchList = getBatchList(offset, limit);
+		//避免影响缓存
 		List result = new ArrayList(batchList);
 		BatchIndexMapper bim = session.getMapper(BatchIndexMapper.class);
 		Integer counts = bim.countByExample(null);
@@ -81,13 +85,24 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public boolean deleteBatch(Integer batch_id) {
+	public boolean deleteBatch(List<Integer> batch_ids) {
 		BatchIndexMapper bim = session.getMapper(BatchIndexMapper.class);
-		int count = bim.deleteByPrimaryKey(batch_id);
-
+//		int count = bim.deleteByPrimaryKey(batch_id);
+		BatchIndexExample ex = new BatchIndexExample();
+		Criteria cr = ex.createCriteria();
+		cr.andBatch_idIn(batch_ids);
+		bim.deleteByExample(ex);
 		session.commit();
 		return true;
 
+	}
+
+	@Override
+	public boolean save(BatchIndex editedBatch) {
+		BatchIndexMapper bim = session.getMapper(BatchIndexMapper.class);
+		bim.updateByPrimaryKey(editedBatch);
+		session.commit();
+		return true;
 	}
 
 }

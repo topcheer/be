@@ -70,6 +70,7 @@ public abstract class FunctionPanel extends VLayout {
 		}
 
 		addMember(layout);
+		
 	}
 
 	protected boolean isTopIntro() {
@@ -99,6 +100,8 @@ public abstract class FunctionPanel extends VLayout {
 	public String getDescription() {
 		return null;
 	}
+	
+	
 
 	public abstract Canvas getViewPanel();
 

@@ -23,8 +23,6 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.CloseClickEvent;
 import com.smartgwt.client.widgets.events.CloseClickHandler;
-import com.smartgwt.client.widgets.events.KeyDownEvent;
-import com.smartgwt.client.widgets.events.KeyDownHandler;
 import com.smartgwt.client.widgets.events.KeyPressEvent;
 import com.smartgwt.client.widgets.events.KeyPressHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
@@ -73,6 +71,7 @@ public class BrightEdu implements EntryPoint {
 		// System.out.println("Auth: " + auth);
 		final LoginDialog loginDialog = new LoginDialog();
 		loginDialog.show();
+		
 //		loginDialog.getUserItem().getf
 		loginDialog.addCloseClickHandler(new CloseClickHandler() {
 			public void onCloseClick(CloseClickEvent event) {
@@ -114,7 +113,6 @@ public class BrightEdu implements EntryPoint {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
 				caught.printStackTrace();
 				SC.say("登录失败，请重试! " + caught.getMessage());
 			}
@@ -135,8 +133,7 @@ public class BrightEdu implements EntryPoint {
 							id + ".png", f, true, idSuffix);
 
 				}
-				createUI();
-				SC.say("登陆成功");
+				createUI();		
 				loginDialog.destroy();
 			}
 		});
@@ -148,9 +145,15 @@ public class BrightEdu implements EntryPoint {
 		if (p != null)
 			RootPanel.getBodyElement().removeChild(p.getElement());
 		createAdminUI();
+		
+		
 	}
+	
+//	public static void showTip(String tip){
+//		mainTabSet.showTip(tip);
+//	}
 
-	private TabSet mainTabSet;
+	private  TabSet mainTabSet;
 
 	private void createAdminUI() {
 		VLayout main = new VLayout() {
@@ -247,8 +250,9 @@ public class BrightEdu implements EntryPoint {
 
 		hLayout.addMember(sideNavLayout);
 
+//		mainTabSet = new BrightTabSet();
 		mainTabSet = new TabSet();
-
+//		BrightTabSet.ID = mainTabSet.getID();
 		Layout paneContainerProperties = new Layout();
 		paneContainerProperties.setLayoutMargin(0);
 		paneContainerProperties.setLayoutTopMargin(1);
@@ -286,7 +290,7 @@ public class BrightEdu implements EntryPoint {
 
 		mainTabSet.addTab(tab);
 
-		Canvas canvas = new Canvas();
+		BrightCanvas canvas = new BrightCanvas();
 		canvas.setBackgroundImage("[SKIN]/shared/background.gif");
 		canvas.setWidth100();
 		canvas.setHeight100();
