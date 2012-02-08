@@ -112,6 +112,8 @@ public class BatchAdminPanel extends BasicAdminPanel {
 		});
 		result.setEditEvent(ListGridEditEvent.DOUBLECLICK);
 		result.setFields(selectField, indexField, nameField, regTimeField);
+		//隐藏ID列，好看一点
+		result.hideField(indexField.getName());
 		return result;
 	}
 
