@@ -6,8 +6,13 @@
   	<plugin type="org.mybatis.generator.plugins.MapperConfigPlugin">
   		<property name="targetPackage" value="com.brightedu"/>
   		<property name="targetProject" value="BrightEdu/src"/>
-  	
   	</plugin>
+  	
+  	<plugin type="org.mybatis.generator.plugins.SerializablePlugin">
+  		<property name="targetPackage" value="com.brightedu"/>
+  		<property name="targetProject" value="BrightEdu/src"/>
+  	</plugin>
+  	
     <!--  jdbcConnection driverClass="org.postgresql.Driver" 
     	connectionURL="jdbc:postgresql://jmedu.wassecurity.net:5432/edu" 
     	userId="edu" 
@@ -36,6 +41,7 @@
     <javaClientGenerator type="MIXEDMAPPER" targetPackage="com.brightedu.dao"  targetProject="BrightEdu/src">
       <property name="enableSubPackages" value="true" />
     </javaClientGenerator>
+  
     <table  schema="edu" tableName="ag_return_amount" domainObjectName="AgentReturnAmount" >
       <property name="useActualColumnNames" value="true"/>
     </table>  
@@ -45,13 +51,25 @@
      <table  schema="edu" tableName="agent_return" domainObjectName="AgentReturn" >
       <property name="useActualColumnNames" value="true"/>
     </table>  
+     <table  schema="edu" tableName="agent_return_type" domainObjectName="AgentReturnType" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>     
      <table  schema="edu" tableName="agree_return" domainObjectName="AgreeReturn" >
       <property name="useActualColumnNames" value="true"/>
     </table>  
+     <table  schema="edu" tableName="bank_account" domainObjectName="BankAccount" >
+      <property name="useActualColumnNames" value="true"/>
+    </table> 
+     <table  schema="edu" tableName="bank_order" domainObjectName="BankOrder" >
+      <property name="useActualColumnNames" value="true"/>
+    </table> 
     <table  schema="edu" tableName="batch_index" domainObjectName="BatchIndex" >
       <property name="useActualColumnNames" value="true"/>
     </table>  
     <table  schema="edu" tableName="charge_admin" domainObjectName="ChargeAdmin" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>  
+    <table  schema="edu" tableName="charge_type" domainObjectName="ChargeType" >
       <property name="useActualColumnNames" value="true"/>
     </table>  
     <table schema="edu" tableName="college_agreement" domainObjectName="CollegeAgreement" >
@@ -60,6 +78,12 @@
     <table  schema="edu" tableName="co_college" domainObjectName="College" >
       <property name="useActualColumnNames" value="true"/>
     </table>  
+    <table  schema="edu" tableName="college_agreement" domainObjectName="CollegeAgreement" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>  
+    <table  schema="edu" tableName="college_return" domainObjectName="CollegeReturn" >
+      <property name="useActualColumnNames" value="true"/>
+    </table> 
     <table  schema="edu" tableName="college_subject" domainObjectName="CollegeSubject" >
       <property name="useActualColumnNames" value="true"/>
     </table>  
@@ -73,9 +97,9 @@
     <table  schema="edu" tableName="fee_type" domainObjectName="FeeType" >
       <property name="useActualColumnNames" value="true"/>
     </table>  
-    <table  schema="edu" tableName="receive_fund" domainObjectName="ReceiveFund" >
+    <!-- table  schema="edu" tableName="receive_fund" domainObjectName="ReceiveFund" >
       <property name="useActualColumnNames" value="true"/>
-    </table>  
+    </table-->  
     <table  schema="edu" tableName="recruit_agent" domainObjectName="RecruitAgent" >
       <property name="useActualColumnNames" value="true"/>
     </table>  
@@ -91,9 +115,15 @@
     <table  schema="edu" tableName="student_info" domainObjectName="StudentInfo" >
       <property name="useActualColumnNames" value="true"/>
     </table>  
+    <table  schema="edu" tableName="student_status" domainObjectName="StudentStatus" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>
     <table  schema="edu" tableName="subjects" domainObjectName="Subjects" >
       <property name="useActualColumnNames" value="true"/>
     </table>  
+    <table  schema="edu" tableName="user_type" domainObjectName="UserType" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>      
     <table  schema="edu" tableName="user_admin" domainObjectName="User" >
       <property name="useActualColumnNames" value="true"/>
     </table>  
