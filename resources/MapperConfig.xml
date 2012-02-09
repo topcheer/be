@@ -35,26 +35,33 @@
 
 
 	<mappers>
-		<mapper resource="com/brightedu/xml/edu/AgentReturnAmountMapper.xml" />
-		<mapper resource="com/brightedu/xml/edu/AgentRelationMapper.xml" />
-		<mapper resource="com/brightedu/xml/edu/AgentReturnMapper.xml" />
-		<mapper resource="com/brightedu/xml/edu/AgreeReturnMapper.xml" />
-		<mapper resource="com/brightedu/xml/edu/BatchIndexMapper.xml" />
-		<mapper resource="com/brightedu/xml/edu/ChargeAdminMapper.xml" />
-		<mapper resource="com/brightedu/xml/edu/CollegeAgreementMapper.xml" />
-		<mapper resource="com/brightedu/xml/edu/CollegeMapper.xml" />
-		<mapper resource="com/brightedu/xml/edu/CollegeSubjectMapper.xml" />
-		<mapper resource="com/brightedu/xml/edu/DerateRequestMapper.xml" />
-		<mapper resource="com/brightedu/xml/edu/EntranceCostMapper.xml" />
-		<mapper resource="com/brightedu/xml/edu/FeeTypeMapper.xml" />
-		<mapper resource="com/brightedu/xml/edu/ReceiveFundMapper.xml" />
-		<mapper resource="com/brightedu/xml/edu/RecruitAgentMapper.xml" />
-		<mapper resource="com/brightedu/xml/edu/RefundmentAdminMapper.xml" />
-		<mapper resource="com/brightedu/xml/edu/StudentChangeMapper.xml" />
-		<mapper resource="com/brightedu/xml/edu/StudentClassifiedMapper.xml" />
-		<mapper resource="com/brightedu/xml/edu/StudentInfoMapper.xml" />
-		<mapper resource="com/brightedu/xml/edu/SubjectsMapper.xml" />
-		<mapper resource="com/brightedu/xml/edu/UserMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/AgentReturnAmountMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/AgentRelationMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/AgentReturnMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/AgentReturnTypeMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/AgreeReturnMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/BankAccountMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/BankOrderMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/BatchIndexMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/ChargeAdminMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/ChargeTypeMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/CollegeAgreementMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/CollegeMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/CollegeAgreementMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/CollegeReturnMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/CollegeSubjectMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/DerateRequestMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/EntranceCostMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/FeeTypeMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/RecruitAgentMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/RefundmentAdminMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/StudentChangeMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/StudentClassifierMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/StudentInfoMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/StudentStatusMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/SubjectsMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/UserTypeMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/UserMapper.xml" />
 	</mappers>
 
 
