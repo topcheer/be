@@ -23,6 +23,11 @@ import com.hitrust.trustpay.client.b2c.PaymentResult;
 
 public class CallbackServlet extends HttpServlet {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3079744184443202126L;
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
