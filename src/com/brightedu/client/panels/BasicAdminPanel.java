@@ -1,15 +1,19 @@
 package com.brightedu.client.panels;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.brightedu.client.DataBaseRPC;
 import com.brightedu.client.DataBaseRPCAsync;
-import com.brightedu.client.panels.admin.BatchAdmin;
+import com.brightedu.client.panels.admin.AdminDialog;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Timer;
 import com.smartgwt.client.data.Record;
+import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.types.VerticalAlignment;
+import com.smartgwt.client.types.ListGridEditEvent;
+import com.smartgwt.client.types.ListGridFieldType;
+import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
-import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
@@ -25,6 +29,9 @@ import com.smartgwt.client.widgets.form.fields.events.IconClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
+import com.smartgwt.client.widgets.grid.ListGridField;
+import com.smartgwt.client.widgets.grid.events.CellSavedEvent;
+import com.smartgwt.client.widgets.grid.events.CellSavedHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
@@ -37,7 +44,7 @@ public abstract class BasicAdminPanel extends VLayout {
 	protected ToolStripButton delButton = new ToolStripButton("删除");
 	protected TextItem searchItem = new TextItem("搜索内容");
 	protected SelectItem rangeItem = new SelectItem("搜索范围");
-	protected ListGrid resultList;
+	protected ListGrid resultList = new ListGrid();
 
 	protected SelectItem rowsPerPageItem = new SelectItem("每页行数");
 	protected ToolStripButton firstPageBtn = new ToolStripButton();
@@ -56,6 +63,8 @@ public abstract class BasicAdminPanel extends VLayout {
 
 	protected int currentRowsInOnePage = 20;
 
+	private AdminDialog dialog;
+
 	public BasicAdminPanel() {
 		init();
 		postInit();
@@ -68,7 +77,7 @@ public abstract class BasicAdminPanel extends VLayout {
 	}
 
 	private void init() {
-		resultList = createListGrid();
+		initListGrid();
 		addButton.setAutoFit(true);
 		delButton.setAutoFit(true);
 		addButton.setIcon("add.gif");
@@ -97,22 +106,23 @@ public abstract class BasicAdminPanel extends VLayout {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				addRecord();
+				if (dialog == null) {
+					dialog = createAdminDialog();
+					dialog.init();
+				}
+				dialog.show();
 			}
 		});
 		delButton.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				deleteRecords();
+				del();
 			}
 		});
 
 		ToolStrip toolbar = new ToolStrip();
-		// toolbar.setPadding(5);
-		// toolbar.addSpacer(3);
 		toolbar.addMember(addButton);
-		// toolbar.addSpacer(10);
 		toolbar.addMember(delButton);
 		toolbar.addFill();
 		DynamicForm form = new DynamicForm();
@@ -240,49 +250,54 @@ public abstract class BasicAdminPanel extends VLayout {
 		initPages();
 	}
 
-	public ToolStripButton getAddButton() {
-		return addButton;
+	private void initListGrid() {
+		ListGridField[] fields = createGridFileds();
+		if (fields == null) {
+			fields = new ListGridField[0];// only for select
+		}
+		ListGridField selectField = new ListGridField("select", "选择", 100);
+		// static hidden fields
+		ListGridField idField = new ListGridField("id", "id");// used for id
+		ListGridField objectField = new ListGridField("object", "object");// used
+		ListGridField[] newFields = new ListGridField[fields.length + 3];
+		selectField.setType(ListGridFieldType.BOOLEAN);
+		selectField.setAlign(Alignment.CENTER);
+		newFields[0] = selectField;
+		for (int i = 0; i < fields.length; i++) {
+			newFields[i + 1] = fields[i];
+		}
+		newFields[newFields.length - 2] = idField;
+		newFields[newFields.length - 1] = objectField;
+		idField.setHidden(true);
+		objectField.setHidden(true);
+		resultList.setFields(newFields);
+		resultList.setCanEdit(true);
+		resultList.setEditEvent(ListGridEditEvent.DOUBLECLICK);
 	}
 
-	public ToolStripButton getDelButton() {
-		return delButton;
+	private void del() {
+		RecordList recList = resultList.getDataAsRecordList();
+		final List<Integer> deleteIds = new ArrayList<Integer>();
+		for (int i = 0; i < recList.getLength(); i++) {
+			if (recList.get(i).getAttributeAsBoolean("select")) {
+				deleteIds.add(recList.get(i).getAttributeAsInt("id"));
+			}
+		}
+		if (deleteIds.size() == 0) {
+			SC.say("请选择一些记录");
+			return;
+		}
+		SC.ask("确认", "你确认要删除选中的记录吗？", new BooleanCallback() {
+			@Override
+			public void execute(Boolean value) {
+				if (value) {
+					deleteRecords(deleteIds);
+				}
+			}
+		});
 	}
 
-	public TextItem getSearchItem() {
-		return searchItem;
-	}
-
-	public SelectItem getRangeItem() {
-		return rangeItem;
-	}
-
-	public Label getTotalPageLabel() {
-		return totalPageLabel;
-	}
-
-	public int getTotalPageCounts() {
-		return totalPageCounts;
-	}
-
-	public void setTotalPageCounts(int totalPageCounts) {
-		this.totalPageCounts = totalPageCounts;
-	}
-
-	public int getCurrentPageIndex() {
-		return currentPageIndex;
-	}
-
-	public void setCurrentPageIndex(int currentPageIndex) {
-		this.currentPageIndex = currentPageIndex;
-	}
-
-	protected abstract void search(String keyWords, Record range);
-
-	protected abstract void addRecord();
-
-	protected abstract void deleteRecords();
-
-	protected void showLastPageRecords(boolean force) {
+	public void showLastPageRecords(boolean force) {
 		if (force) {
 			gotoPage(totalPageCounts);
 		} else {
@@ -292,7 +307,7 @@ public abstract class BasicAdminPanel extends VLayout {
 		}
 	}
 
-	protected void showFirstPageRecords(boolean force) {
+	public void showFirstPageRecords(boolean force) {
 		if (force) {
 			gotoPage(1);
 		} else {
@@ -302,21 +317,21 @@ public abstract class BasicAdminPanel extends VLayout {
 		}
 	}
 
-	protected void showLastPageRecords() {
+	public void showLastPageRecords() {
 		showLastPageRecords(false);
 	}
 
-	protected void showFirstPageRecords() {
+	public void showFirstPageRecords() {
 		showFirstPageRecords(false);
 	}
 
-	protected void showNextPageRecords() {
+	public void showNextPageRecords() {
 		if (currentPageIndex + 1 <= totalPageCounts) {
 			gotoPage(currentPageIndex + 1);
 		}
 	}
 
-	protected void showPreviousPageRecords() {
+	public void showPreviousPageRecords() {
 		if (currentPageIndex - 1 > 0) {
 			gotoPage(currentPageIndex - 1);
 		}
@@ -331,21 +346,59 @@ public abstract class BasicAdminPanel extends VLayout {
 		this.totalPageCounts = totalCounts % currentRowsInOnePage == 0 ? (totalCounts / currentRowsInOnePage)
 				: (totalCounts / currentRowsInOnePage + 1);
 
-		totalPageLabel.setContents("共" + totalPageCounts + "页");
+		totalPageLabel.setContents(" 共 " + totalPageCounts + " 页");
 	}
 
 	protected void gotoPage(int indexGoto) {
 		gotoPage(indexGoto, false);
 	}
 
-	protected abstract void gotoPage(int indexGoto, boolean init);
-
-	// protected abstract DataSource createDataSource();
-
-	protected abstract ListGrid createListGrid();
-
 	protected void initPages() {
 		gotoPage(1, true);
 	}
 
+	protected ListGridField[] parseGridFields(String[] names, String[] titles,
+			ListGridFieldType[] types, boolean[] canEdit, int[] width) {
+		ListGridField[] fields = new ListGridField[names.length];
+		for (int i = 0; i < names.length; i++) {
+			fields[i] = new ListGridField(names[i], titles[i]);
+			if (width[i] > 0) {
+				fields[i].setWidth(width[i]);
+			}
+			fields[i].setType(types[i]);
+			fields[i].setCanEdit(canEdit[i]);
+			fields[i].setAlign(Alignment.CENTER);
+			if (canEdit[i]) {
+				fields[i].addCellSavedHandler(new CellSavedHandler() {
+
+					@Override
+					public void onCellSaved(CellSavedEvent event) {
+						final Record rec = event.getRecord();
+						update(rec);
+					}
+				});
+			}
+		}
+		return fields;
+	}
+
+	public abstract void gotoPage(int indexGoto, boolean init);
+
+	public abstract ListGridField[] createGridFileds();
+
+	public abstract void search(String keyWords, Record range);
+
+	// public abstract void addRecord();
+
+	public abstract void deleteRecords(List<Integer> deleteIds);
+
+	public abstract void update(Record record);
+
+	public abstract void add(Object model);
+
+	public abstract AdminDialog createAdminDialog();
+
+	public AdminDialog getAdminDialog() {
+		return dialog;
+	}
 }

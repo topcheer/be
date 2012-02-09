@@ -33,4 +33,8 @@ public class StudentClassesAdmin extends FunctionPanel {
 		return p;
 	}
 
+	@Override
+	public String getDescription() {
+		return DESCRIPTION;
+	}
 }

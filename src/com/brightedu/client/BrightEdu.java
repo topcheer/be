@@ -42,18 +42,7 @@ import com.smartgwt.client.widgets.tree.events.LeafClickHandler;
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class BrightEdu implements EntryPoint {
-	/**
-	 * The message displayed to the user when the server cannot be reached or
-	 * returns an error.
-	 */
-	private static final String SERVER_ERROR = "An error occurred while "
-			+ "attempting to contact the server. Please check your network "
-			+ "connection and try again.";
 
-	/**
-	 * Create a remote service proxy to talk to the server-side Greeting
-	 * service.
-	 */
 	private final GreetingServiceAsync greetingService = GWT
 			.create(GreetingService.class);
 
@@ -108,7 +97,7 @@ public class BrightEdu implements EntryPoint {
 		String password = loginDialog.getPassItem().getValueAsString();
 		User user = new User();
 		user.setUser_name(username);
-		
+
 		greetingService.login(user, new AsyncCallback<String>() {
 
 			@Override
@@ -135,7 +124,7 @@ public class BrightEdu implements EntryPoint {
 				}
 				createUI();
 				loginDialog.destroy();
-				showTips("已登录！");
+				showTip("已登录！");
 			}
 		});
 	}
@@ -148,7 +137,6 @@ public class BrightEdu implements EntryPoint {
 		createAdminUI();
 
 	}
-
 
 	private TabSet mainTabSet;
 
@@ -315,9 +303,8 @@ public class BrightEdu implements EntryPoint {
 		main.draw();
 	}
 
-	public static void showTips(String tips) {
-		BrightCanvas ca = (BrightCanvas) BrightCanvas.getById(BrightCanvas
-				.getCanvasID());
+	public static void showTip(String tips) {
+		BrightCanvas ca = (BrightCanvas) BrightCanvas.getById(BrightCanvas.ID);
 		ca.showTip(tips);
 	}
 

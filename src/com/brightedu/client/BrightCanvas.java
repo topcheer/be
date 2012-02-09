@@ -8,22 +8,17 @@ import com.smartgwt.client.widgets.Label;
 
 public class BrightCanvas extends Canvas {
 
-	private static String ID;
+	public final static String ID="brightcanvas";
 
 	private Label tipLabel = new Label();
 
 	public BrightCanvas() {
+		super(ID);
 		initTipsLabel();
-		ID = getID();
-		// setID(ID);
 	}
-	
-	public static String getCanvasID(){
-		return ID;
-	}
+
 
 	private void initTipsLabel() {
-
 		tipLabel.setParentElement(this);
 		tipLabel.setShowEdges(true);
 		tipLabel.setBackgroundColor("#f0f0f0");
@@ -31,16 +26,14 @@ public class BrightCanvas extends Canvas {
 		tipLabel.setWidth(200);
 		tipLabel.setHeight(100);
 		tipLabel.setTop(-120);
-		// tipLabel.setLeft(-220); // start off screen
 		tipLabel.setValign(VerticalAlignment.CENTER);
 		tipLabel.setAlign(Alignment.CENTER);
-		tipLabel.setAnimateTime(1000); // milliseconds
+		tipLabel.setAnimateTime(800); // milliseconds
 	}
 
 	protected void showTip(String tip) {
 		int width = getWidth();
 		final int left = width / 2 - tipLabel.getWidth() / 2;
-		// Canvas ca = getById(BatchAdmin.ID);
 		int height = getHeight();
 		tipLabel.setLeft(left);
 		tipLabel.setContents(tip);
@@ -49,7 +42,7 @@ public class BrightCanvas extends Canvas {
 			public void run() {
 				tipLabel.animateMove(left, -120);
 			}
-		}.schedule(2500);
+		}.schedule(1500);
 	}
 
 }

@@ -1,52 +1,52 @@
 package com.brightedu.client.panels.admin;
 
+import java.util.List;
+
 import com.brightedu.client.panels.BasicAdminPanel;
-import com.smartgwt.client.data.DataSource;
-import com.smartgwt.client.data.DataSourceField;
 import com.smartgwt.client.data.Record;
-import com.smartgwt.client.types.FieldType;
-import com.smartgwt.client.widgets.grid.ListGrid;
+import com.smartgwt.client.types.ListGridFieldType;
+import com.smartgwt.client.widgets.grid.ListGridField;
 
 public class StudentClassesAdminPanel extends BasicAdminPanel {
 
 	@Override
-	protected void search(String keyWords, Record range) {
+	public void search(String keyWords, Record range) {
 	}
 
 	@Override
-	protected void addRecord() {
-		// TODO Auto-generated method stub
+	public void gotoPage(int indexGoto, boolean init) {
 
 	}
 
 	@Override
-	protected void deleteRecords() {
-		// TODO Auto-generated method stub
+	public void deleteRecords(List<Integer> deleteIds) {
 
-	}
-//	
-//	@Override
-//	protected DataSource createDataSource() {
-//		DataSource ds = new DataSource();
-//		ds.setClientOnly(true);
-//		DataSourceField selectField = new DataSourceField("select",
-//				FieldType.BOOLEAN, "选择", 30);
-//		selectField.setCanEdit(true);
-//		
-//		ds.setFields(selectField);
-//		return ds;
-//	}
-
-	@Override
-	protected void gotoPage(int indexGoto, boolean init) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
-	protected ListGrid createListGrid() {
-		ListGrid result = new ListGrid();
-		return result;
+	public ListGridField[] createGridFileds() {
+		return parseGridFields(new String[] { "stu_class_name", "reg_time" },
+				new String[] { "学生类别名称", "录入时间" }, new ListGridFieldType[] {
+						ListGridFieldType.TEXT, ListGridFieldType.DATE },
+				new boolean[] { true, false }, new int[] { -1, 200 });
+	}
+
+	@Override
+	public void update(Record record) {
+
+	}
+
+	@Override
+	public void add(Object model) {
+
+	}
+
+	@Override
+	public AdminDialog createAdminDialog() {
+		TextAdminDialog text = new TextAdminDialog();
+		text.titles = new String[] { "类别" };
+		text.adminPanel = this;
+		return text;
 	}
 
 }

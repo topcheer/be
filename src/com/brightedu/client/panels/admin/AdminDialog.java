@@ -1,5 +1,8 @@
 package com.brightedu.client.panels.admin;
 
+import com.brightedu.client.BrightEdu;
+import com.brightedu.client.CommonAsyncCall;
+import com.brightedu.client.panels.BasicAdminPanel;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Label;
@@ -22,7 +25,7 @@ public abstract class AdminDialog extends Window {
 
 	}
 
-	protected void init() {
+	public void init() {
 		setEdgeMarginSize(4);
 		setEdgeOffset(5);
 		setAutoCenter(true);
@@ -31,13 +34,14 @@ public abstract class AdminDialog extends Window {
 		setIsModal(true);
 		setShowModalMask(false);
 		setOverflow(Overflow.VISIBLE);
+		setCanDragResize(false);
 
 		form = getContentForm();
 		okBtn.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				createNewAdminItem();
+				adminPanel.add(getAddedModel());
 			}
 		});
 		form.setAutoFocus(true);
@@ -66,10 +70,15 @@ public abstract class AdminDialog extends Window {
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
 				if (event.getKeyName().toLowerCase().equals("enter")) {
-					createNewAdminItem();
+					adminPanel.add(getAddedModel());
 				}
 			}
 		});
+	}
+	
+	public void hide(){
+		super.hide();
+		reset();
 	}
 
 	public void addFieldsKeyPressHandler(KeyPressHandler pressHandler) {
@@ -79,13 +88,38 @@ public abstract class AdminDialog extends Window {
 		}
 	}
 
-	protected abstract DynamicForm getContentForm();
-
-	public void show() {
-		init();
-		super.show();
+	protected void reset() {
+		FormItem[] items = form.getFields();
+		for (FormItem item : items) {
+			item.setValue("");
+		}
 	}
 
-	protected abstract void createNewAdminItem();
+	protected abstract Object getAddedModel();
+
+	protected abstract DynamicForm getContentForm();
+
+	protected BasicAdminPanel adminPanel;
+
+	private AdminAddAsyncCall addAsync = new AdminAddAsyncCall();
+
+	public AdminAddAsyncCall getAddAsync() {
+		return addAsync;
+	}
+
+	public void setAdminPanel(BasicAdminPanel adminPanel) {
+		this.adminPanel = adminPanel;
+	}
+
+	private class AdminAddAsyncCall<T> extends CommonAsyncCall<T> {
+
+		@Override
+		public void onSuccess(T result) {
+			adminPanel.showLastPageRecords(true);
+			hide();
+			BrightEdu.showTip("已添加!");
+		}
+
+	}
 
 }
