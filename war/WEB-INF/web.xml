@@ -34,5 +34,12 @@
   	<servlet-name>DataBaseRPC</servlet-name>
   	<url-pattern>/brightedu/DataBaseRPC</url-pattern>
   </servlet-mapping>
-
+  <servlet>
+  	<servlet-name>PaymentRPC</servlet-name>
+  	<servlet-class>com.brightedu.server.PaymentRPCImpl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>PaymentRPC</servlet-name>
+  	<url-pattern>/brightedu/PaymentRPC</url-pattern>
+  </servlet-mapping>
 </web-app>
