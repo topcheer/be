@@ -178,6 +178,7 @@ public class BrightEdu implements EntryPoint {
 
 		ToolStripButton login_logout_Btn = new ToolStripButton();
 		login_logout_Btn.setTitle("退出");
+		login_logout_Btn.setPrompt("退出");
 		login_logout_Btn.setIcon("logout.gif");
 		login_logout_Btn
 				.addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
@@ -256,9 +257,6 @@ public class BrightEdu implements EntryPoint {
 				}
 			}
 		});
-
-		// contextMenu = createContextMenu();
-
 		Tab tab = new Tab();
 		tab.setTitle("Home&nbsp;&nbsp;");
 		tab.setIcon("pieces/16/cube_green.png", 16);
@@ -321,6 +319,7 @@ public class BrightEdu implements EntryPoint {
 				}
 				if (tab == null) {
 					Canvas panel = factory.create();
+					panel.setHeight100();
 					tab = new Tab();
 					tab.setID(factory.getID() + "_tab");
 					// store history token on tab so that when an already open

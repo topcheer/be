@@ -3,6 +3,8 @@ package com.brightedu.client.panels;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.brightedu.client.BrightEdu;
+import com.brightedu.client.CommonAsyncCall;
 import com.brightedu.client.DataBaseRPC;
 import com.brightedu.client.DataBaseRPCAsync;
 import com.brightedu.client.panels.admin.AdminDialog;
@@ -59,7 +61,7 @@ public abstract class BasicAdminPanel extends VLayout {
 	protected ToolStripButton refreButton = new ToolStripButton();
 
 	protected int currentPageIndex = 1;
-	protected int totalPageCounts = 1;
+	private int totalPageCounts = 1;
 
 	protected int currentRowsInOnePage = 20;
 
@@ -343,9 +345,11 @@ public abstract class BasicAdminPanel extends VLayout {
 	}
 
 	protected void setTotalCounts(int totalCounts) {
-		this.totalPageCounts = totalCounts % currentRowsInOnePage == 0 ? (totalCounts / currentRowsInOnePage)
+		totalPageCounts = totalCounts % currentRowsInOnePage == 0 ? (totalCounts / currentRowsInOnePage)
 				: (totalCounts / currentRowsInOnePage + 1);
-
+		if(totalPageCounts==0){
+			totalPageCounts = 1;
+		}
 		totalPageLabel.setContents(" 共 " + totalPageCounts + " 页");
 	}
 
@@ -400,5 +404,17 @@ public abstract class BasicAdminPanel extends VLayout {
 
 	public AdminDialog getAdminDialog() {
 		return dialog;
+	}
+	
+	protected DeleteAsync delAsync = new DeleteAsync();
+	
+	private class DeleteAsync<T> extends CommonAsyncCall<T>{
+
+		@Override
+		public void onSuccess(T result) {
+			BrightEdu.showTip("已删除！");
+			gotoPage(currentPageIndex);
+		}
+		
 	}
 }

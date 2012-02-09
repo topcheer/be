@@ -20,13 +20,7 @@ public class BatchAdminPanel extends BasicAdminPanel {
 
 	@Override
 	public void deleteRecords(final List<Integer> deleteIds) {
-		dbService.deleteBatch(deleteIds, new CommonAsyncCall<Boolean>() {
-			@Override
-			public void onSuccess(Boolean result) {
-				BrightEdu.showTip("已删除！");
-				gotoPage(currentPageIndex);
-			}
-		});
+		dbService.deleteBatch(deleteIds, delAsync);
 	}
 
 	public ListGridField[] createGridFileds() {
@@ -106,7 +100,6 @@ public class BatchAdminPanel extends BasicAdminPanel {
 		} else {
 			SC.say("内容不能为空！");
 		}
-
 	}
 
 }

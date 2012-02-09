@@ -41,7 +41,7 @@ public abstract class AdminDialog extends Window {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				adminPanel.add(getAddedModel());
+				add();
 			}
 		});
 		form.setAutoFocus(true);
@@ -70,10 +70,14 @@ public abstract class AdminDialog extends Window {
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
 				if (event.getKeyName().toLowerCase().equals("enter")) {
-					adminPanel.add(getAddedModel());
+					add();
 				}
 			}
 		});
+	}
+	
+	private void add(){
+		adminPanel.add(getAddedModel());
 	}
 	
 	public void hide(){

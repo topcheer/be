@@ -28,6 +28,7 @@ public abstract class FunctionPanel extends VLayout {
 		viewPanel = getViewPanel();
 		HLayout wrapper = new HLayout();
 		wrapper.setWidth100();
+		wrapper.setHeight100();
 		wrapper.addMember(viewPanel);
 		String desc = getDescription();
 		if (desc != null) {

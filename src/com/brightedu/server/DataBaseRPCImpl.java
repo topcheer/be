@@ -15,25 +15,25 @@
  */
 package com.brightedu.server;
 
-import java.io.IOException;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import com.brightedu.client.DataBaseRPC;
 import com.brightedu.dao.edu.BatchIndexMapper;
+import com.brightedu.dao.edu.CollegeMapper;
+import com.brightedu.dao.edu.StudentClassifiedMapper;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.BatchIndexExample;
 import com.brightedu.model.edu.BatchIndexExample.Criteria;
+import com.brightedu.model.edu.College;
+import com.brightedu.model.edu.CollegeExample;
 import com.brightedu.model.edu.StudentClassified;
+import com.brightedu.model.edu.StudentClassifiedExample;
 import com.brightedu.server.util.ConnectionManager;
-import com.brightedu.server.util.Log;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class DataBaseRPCImpl extends RemoteServiceServlet implements
@@ -65,13 +65,15 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 	public List getBatchListAndTotalCounts(int offset, int limit) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			List batchList = getBatchList(offset, limit);
-			// 避免影响缓存
-			List result = new ArrayList(batchList);
+			BatchIndexExample ex = new BatchIndexExample();
+			ex.setOrderByClause("batch_id");
+			List batchList = session.selectList(
+					"com.brightedu.dao.edu.BatchIndexMapper.selectByExample",
+					ex, new RowBounds(offset, limit));
 			BatchIndexMapper bim = session.getMapper(BatchIndexMapper.class);
 			Integer counts = bim.countByExample(null);
-			result.add(counts);
-			return result;
+			batchList.add(counts);
+			return batchList;
 		} finally {
 			session.close();
 		}
@@ -122,41 +124,170 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 		}
 	}
 
+	/*********************** 学生类别管理 ************************************/
 	@Override
 	public List<StudentClassified> getStudentClassesList(int offset, int limit) {
-		// BatchIndexExample ex = new BatchIndexExample();
-		// ex.setOrderByClause("batch_id");
-		// List<BatchIndex> result = session.selectList(
-		// "com.brightedu.dao.edu.BatchIndexMapper.selectByExample", ex,
-		// new RowBounds(offset, limit));
-		// return result;
-		return null;
+		SqlSession session = sessionFactory.openSession();
+		try {
+			StudentClassifiedExample ex = new StudentClassifiedExample();
+			ex.setOrderByClause("classified_id");
+			List<StudentClassified> result = session
+					.selectList(
+							"com.brightedu.dao.edu.StudentClassifiedMapper.selectByExample",
+							ex, new RowBounds(offset, limit));
+			return result;
+		} finally {
+			session.close();
+		}
 
 	}
 
-	/*********************** 学生类别管理 ************************************/
 	@Override
 	public List getStudentClasseshListAndTotalCounts(int offset, int limit) {
-
-		return null;
+		SqlSession session = sessionFactory.openSession();
+		try {
+			StudentClassifiedExample ex = new StudentClassifiedExample();
+			ex.setOrderByClause("classified_id");
+			List result = session
+					.selectList(
+							"com.brightedu.dao.edu.StudentClassifiedMapper.selectByExample",
+							ex, new RowBounds(offset, limit));
+			StudentClassifiedMapper scm = session
+					.getMapper(StudentClassifiedMapper.class);
+			Integer counts = scm.countByExample(null);
+			result.add(counts);
+			return result;
+		} finally {
+			session.close();
+		}
 	}
 
 	@Override
 	public boolean addStudentClass(String studentClassName) {
-
-		return true;
+		SqlSession session = sessionFactory.openSession();
+		try {
+			StudentClassifiedMapper scm = session
+					.getMapper(StudentClassifiedMapper.class);
+			StudentClassified sc = new StudentClassified();
+			sc.setClassified_name(studentClassName);
+			int count = scm.insertSelective(sc);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
 	}
 
 	@Override
 	public boolean deleteStudentClasses(List<Integer> studentClassesId) {
-
-		return true;
+		SqlSession session = sessionFactory.openSession();
+		try {
+			StudentClassifiedMapper scm = session
+					.getMapper(StudentClassifiedMapper.class);
+			StudentClassifiedExample ex = new StudentClassifiedExample();
+			StudentClassifiedExample.Criteria cr = ex.createCriteria();
+			cr.andClassified_idIn(studentClassesId);
+			scm.deleteByExample(ex);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
 	}
 
 	@Override
 	public boolean saveStudentClasses(StudentClassified studentClass) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			StudentClassifiedMapper scm = session
+					.getMapper(StudentClassifiedMapper.class);
+			scm.updateByPrimaryKey(studentClass);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
 
-		return true;
+	/*********************** 合作高校代码维护 ************************************/
+
+	@Override
+	public List<College> getCollegeList(int offset, int limit) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			CollegeExample ex = new CollegeExample();
+			ex.setOrderByClause("college_id");
+			List<College> result = session.selectList(
+					"com.brightedu.dao.edu.CollegeMapper.selectByExample", ex,
+					new RowBounds(offset, limit));
+			return result;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public List getCollegeListAndTotalCounts(int offset, int limit) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			CollegeExample ex = new CollegeExample();
+			ex.setOrderByClause("college_id");
+			List result = session.selectList(
+					"com.brightedu.dao.edu.CollegeMapper.selectByExample", ex,
+					new RowBounds(offset, limit));
+			CollegeMapper cm = session.getMapper(CollegeMapper.class);
+			Integer counts = cm.countByExample(null);
+			result.add(counts);
+			return result;
+		} finally {
+			session.close();
+		}
+
+	}
+
+	@Override
+	public boolean addCollege(String collegeName) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			CollegeMapper cm = session.getMapper(CollegeMapper.class);
+			College co = new College();
+			co.setCollege_name(collegeName);
+			int count = cm.insertSelective(co);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean deleteCollege(List<Integer> college_ids) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			CollegeMapper cm = session.getMapper(CollegeMapper.class);
+			CollegeExample ex = new CollegeExample();
+			CollegeExample.Criteria cr = ex.createCriteria();
+			cr.andCollege_idIn(college_ids);
+			cm.deleteByExample(ex);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean saveCollege(College college) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			CollegeMapper cm = session
+					.getMapper(CollegeMapper.class);
+			cm.updateByPrimaryKey(college);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
 	}
 
 }

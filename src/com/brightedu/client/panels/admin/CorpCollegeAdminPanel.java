@@ -5,22 +5,18 @@ import java.util.List;
 import com.brightedu.client.BrightEdu;
 import com.brightedu.client.CommonAsyncCall;
 import com.brightedu.client.panels.BasicAdminPanel;
-import com.brightedu.model.edu.StudentClassified;
+import com.brightedu.model.edu.College;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.grid.ListGridField;
 
-public class StudentClassesAdminPanel extends BasicAdminPanel {
-
-	@Override
-	public void search(String keyWords, Record range) {
-	}
+public class CorpCollegeAdminPanel extends BasicAdminPanel {
 
 	@Override
 	public void gotoPage(final int indexGoto, final boolean init) {
-		AsyncCallback<List<StudentClassified>> callback = new CommonAsyncCall<List<StudentClassified>>() {
+		AsyncCallback<List<College>> callback = new CommonAsyncCall<List<College>>() {
 			@Override
 			public void onSuccess(List result) {
 				int size = result.size();
@@ -34,13 +30,13 @@ public class StudentClassesAdminPanel extends BasicAdminPanel {
 							break;
 						}
 					}
-					StudentClassified sc = (StudentClassified) result.get(i);
+					College bi = (College) result.get(i);
 					Record rec = new Record();
 					rec.setAttribute("select", false);
-					rec.setAttribute("id", sc.getClassified_id());
-					rec.setAttribute("object", sc);
-					rec.setAttribute("stu_class_name", sc.getClassified_name());
-					rec.setAttribute("reg_time", sc.getRegister_date());
+					rec.setAttribute("id", bi.getCollege_id());
+					rec.setAttribute("object", bi);
+					rec.setAttribute("college_name", bi.getCollege_name());
+					rec.setAttribute("reg_time", bi.getRegister_date());
 					listData[i] = rec;
 				}
 				resultList.setData(listData);
@@ -48,52 +44,56 @@ public class StudentClassesAdminPanel extends BasicAdminPanel {
 			}
 		};
 		if (init) {
-			dbService.getStudentClasseshListAndTotalCounts((indexGoto - 1)
+			dbService.getCollegeListAndTotalCounts((indexGoto - 1)
 					* currentRowsInOnePage, currentRowsInOnePage, callback);
 		} else {
-			dbService.getStudentClassesList((indexGoto - 1)
-					* currentRowsInOnePage, currentRowsInOnePage, callback);
+			dbService.getCollegeList((indexGoto - 1) * currentRowsInOnePage,
+					currentRowsInOnePage, callback);
 		}
 	}
 
 	@Override
-	public void deleteRecords(List<Integer> deleteIds) {
-		dbService.deleteStudentClasses(deleteIds, delAsync);
-	}
-
-	@Override
 	public ListGridField[] createGridFileds() {
-		return parseGridFields(new String[] { "stu_class_name", "reg_time" },
-				new String[] { "学生类别名称", "录入时间" }, new ListGridFieldType[] {
+		return parseGridFields(new String[] { "college_name", "reg_time" },
+				new String[] { "高校名称", "录入时间" }, new ListGridFieldType[] {
 						ListGridFieldType.TEXT, ListGridFieldType.DATE },
 				new boolean[] { true, false }, new int[] { -1, 200 });
 	}
 
 	@Override
+	public void search(String keyWords, Record range) {
+
+	}
+
+	@Override
+	public void deleteRecords(List<Integer> deleteIds) {
+		dbService.deleteCollege(deleteIds, delAsync);
+	}
+
+	@Override
 	public void update(final Record rec) {
-		final StudentClassified editedSC = (StudentClassified) rec
+		final College editedBatch = (College) rec
 				.getAttributeAsObject("object");
-		final String oldName = editedSC.getClassified_name();
-		editedSC.setClassified_name(rec.getAttributeAsString("stu_class_name"));
-		dbService.saveStudentClasses(editedSC, new CommonAsyncCall<Boolean>() {
+		final String oldName = editedBatch.getCollege_name();
+		editedBatch.setCollege_name(rec.getAttributeAsString("college_name"));
+		dbService.saveCollege(editedBatch, new CommonAsyncCall<Boolean>() {
 			@Override
 			public void onSuccess(Boolean result) {
 				BrightEdu.showTip("已保存!");
 			}
 
 			protected void failed() { // rollback in UI
-				editedSC.setClassified_name(oldName);
-				rec.setAttribute("stu_class_name", oldName);
+				editedBatch.setCollege_name(oldName);
+				rec.setAttribute("batch_name", oldName);
 			}
 		});
 	}
 
 	@Override
 	public void add(Object model) {
-		final String studentClass = ((String[]) model)[0];
-		if (studentClass != null && studentClass.trim().length() > 0) {
-			dbService.addStudentClass(studentClass, getAdminDialog()
-					.getAddAsync());
+		final String collegeName = ((String[]) model)[0];
+		if (collegeName != null && collegeName.trim().length() > 0) {
+			dbService.addCollege(collegeName, getAdminDialog().getAddAsync());
 		} else {
 			SC.say("内容不能为空！");
 		}
@@ -102,7 +102,7 @@ public class StudentClassesAdminPanel extends BasicAdminPanel {
 	@Override
 	public AdminDialog createAdminDialog() {
 		TextAdminDialog text = new TextAdminDialog();
-		text.titles = new String[] { "类别" };
+		text.titles = new String[] { "高校" };
 		text.adminPanel = this;
 		return text;
 	}

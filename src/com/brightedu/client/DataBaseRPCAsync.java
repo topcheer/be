@@ -3,6 +3,7 @@ package com.brightedu.client;
 import java.util.List;
 
 import com.brightedu.model.edu.BatchIndex;
+import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.StudentClassified;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -30,9 +31,22 @@ public interface DataBaseRPCAsync {
 			AsyncCallback<Boolean> callback);
 
 	void getStudentClasseshListAndTotalCounts(int offset, int limit,
-			AsyncCallback<List> callback);
+			AsyncCallback<List<StudentClassified>> callback);
 
 	void saveStudentClasses(StudentClassified studentClass,
 			AsyncCallback<Boolean> callback);
+
+	void getCollegeList(int offset, int limit,
+			AsyncCallback<List<College>> callback);
+
+	void getCollegeListAndTotalCounts(int offset, int limit,
+			AsyncCallback<List<College>> callback);
+
+	void addCollege(String collegeName, AsyncCallback<Boolean> callback);
+
+	void deleteCollege(List<Integer> college_ids,
+			AsyncCallback<Boolean> callback);
+
+	void saveCollege(College college, AsyncCallback<Boolean> callback);
 
 }
