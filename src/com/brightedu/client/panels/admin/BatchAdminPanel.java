@@ -24,7 +24,7 @@ public class BatchAdminPanel extends BasicAdminPanel {
 	}
 
 	public ListGridField[] createGridFileds() {
-		return parseGridFields(new String[] { "batch_name", "reg_time" },
+		return parseGridFields(new String[] { "obj_name", "reg_time" },
 				new String[] { "批次名称", "录入时间" }, new ListGridFieldType[] {
 						ListGridFieldType.TEXT, ListGridFieldType.DATE },
 				new boolean[] { true, false }, new int[] { -1, 200 });
@@ -34,7 +34,7 @@ public class BatchAdminPanel extends BasicAdminPanel {
 		final BatchIndex editedBatch = (BatchIndex) rec
 				.getAttributeAsObject("object");
 		final String oldName = editedBatch.getBatch_name();
-		editedBatch.setBatch_name(rec.getAttributeAsString("batch_name"));
+		editedBatch.setBatch_name(rec.getAttributeAsString("obj_name"));
 		dbService.saveBatch(editedBatch, new CommonAsyncCall<Boolean>() {
 			@Override
 			public void onSuccess(Boolean result) {
@@ -43,7 +43,7 @@ public class BatchAdminPanel extends BasicAdminPanel {
 
 			protected void failed() { // rollback in UI
 				editedBatch.setBatch_name(oldName);
-				rec.setAttribute("batch_name", oldName);
+				rec.setAttribute("obj_name", oldName);
 			}
 		});
 	}
@@ -68,7 +68,7 @@ public class BatchAdminPanel extends BasicAdminPanel {
 					rec.setAttribute("select", false);
 					rec.setAttribute("id", bi.getBatch_id());
 					rec.setAttribute("object", bi);
-					rec.setAttribute("batch_name", bi.getBatch_name());
+					rec.setAttribute("obj_name", bi.getBatch_name());
 					rec.setAttribute("reg_time", bi.getRegister_date());
 					listData[i] = rec;
 				}

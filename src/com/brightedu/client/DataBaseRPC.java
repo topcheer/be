@@ -20,6 +20,7 @@ import java.util.List;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.StudentClassified;
+import com.brightedu.model.edu.Subjects;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -41,23 +42,30 @@ public interface DataBaseRPC extends RemoteService {
 	
 	/*********************** 批次管理 ************************************/
 	public List<BatchIndex> getBatchList(int offset, int limit);
-	public List getBatchListAndTotalCounts(int offset, int limit);
+	public List<BatchIndex> getBatchListAndTotalCounts(int offset, int limit);
 	public boolean addBatch(String batch_name);
 	public boolean deleteBatch(List<Integer> batch_ids);
 	boolean saveBatch(BatchIndex editedBatch);
 	
 	/*********************** 学生类别管理 ************************************/
 	public List<StudentClassified> getStudentClassesList(int offset, int limit);
-	public List getStudentClasseshListAndTotalCounts(int offset, int limit);
+	public List<StudentClassified> getStudentClasseshListAndTotalCounts(int offset, int limit);
 	public boolean addStudentClass(String studentClassName);
 	public boolean deleteStudentClasses(List<Integer> studentClassesId);
 	boolean saveStudentClasses(StudentClassified studentClass);
 	
 	/***********************合作高校代码维护************************************/
 	public List<College> getCollegeList(int offset, int limit);
-	public List getCollegeListAndTotalCounts(int offset, int limit);
+	public List<College> getCollegeListAndTotalCounts(int offset, int limit);
 	public boolean addCollege(String collegeName);
 	public boolean deleteCollege(List<Integer> college_ids);
 	boolean saveCollege(College college);
+	
+	/***********************专业代码维护************************************/
+	public List<Subjects> getSubjectsList(int offset, int limit);
+	public List<Subjects> getSubjectsListAndTotalCounts(int offset, int limit);
+	public boolean addSubject(String subjectName);
+	public boolean deleteSubject(List<Integer> subject_ids);
+	boolean saveSubject(Subjects subject);
 	
 }

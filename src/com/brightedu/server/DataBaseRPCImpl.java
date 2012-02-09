@@ -15,7 +15,6 @@
  */
 package com.brightedu.server;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.session.RowBounds;
@@ -26,6 +25,7 @@ import com.brightedu.client.DataBaseRPC;
 import com.brightedu.dao.edu.BatchIndexMapper;
 import com.brightedu.dao.edu.CollegeMapper;
 import com.brightedu.dao.edu.StudentClassifiedMapper;
+import com.brightedu.dao.edu.SubjectsMapper;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.BatchIndexExample;
 import com.brightedu.model.edu.BatchIndexExample.Criteria;
@@ -33,6 +33,8 @@ import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.CollegeExample;
 import com.brightedu.model.edu.StudentClassified;
 import com.brightedu.model.edu.StudentClassifiedExample;
+import com.brightedu.model.edu.Subjects;
+import com.brightedu.model.edu.SubjectsExample;
 import com.brightedu.server.util.ConnectionManager;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -252,7 +254,7 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 			CollegeMapper cm = session.getMapper(CollegeMapper.class);
 			College co = new College();
 			co.setCollege_name(collegeName);
-			int count = cm.insertSelective(co);
+			int count = cm.insert(co);
 			session.commit();
 			return true;
 		} finally {
@@ -280,9 +282,86 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 	public boolean saveCollege(College college) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			CollegeMapper cm = session
-					.getMapper(CollegeMapper.class);
+			CollegeMapper cm = session.getMapper(CollegeMapper.class);
 			cm.updateByPrimaryKey(college);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+
+	/*********************** 专业代码维护 ************************************/
+	@Override
+	public List<Subjects> getSubjectsList(int offset, int limit) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			SubjectsExample ex = new SubjectsExample();
+			ex.setOrderByClause("subject_id");
+			List<Subjects> result = session.selectList(
+					"com.brightedu.dao.edu.SubjectsMapper.selectByExample", ex,
+					new RowBounds(offset, limit));
+			return result;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public List getSubjectsListAndTotalCounts(int offset, int limit) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			SubjectsExample ex = new SubjectsExample();
+			ex.setOrderByClause("subject_id");
+			List result = session.selectList(
+					"com.brightedu.dao.edu.SubjectsMapper.selectByExample", ex,
+					new RowBounds(offset, limit));
+			SubjectsMapper cm = session.getMapper(SubjectsMapper.class);
+			Integer counts = cm.countByExample(null);
+			result.add(counts);
+			return result;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean addSubject(String subjectName) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			SubjectsMapper cm = session.getMapper(SubjectsMapper.class);
+			Subjects co = new Subjects();
+			co.setSubject_name(subjectName);
+			int count = cm.insert(co);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean deleteSubject(List<Integer> subject_ids) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			SubjectsMapper cm = session.getMapper(SubjectsMapper.class);
+			SubjectsExample ex = new SubjectsExample();
+			SubjectsExample.Criteria cr = ex.createCriteria();
+			cr.andSubject_idIn(subject_ids);
+			cm.deleteByExample(ex);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean saveSubject(Subjects subject) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			SubjectsMapper cm = session.getMapper(SubjectsMapper.class);
+			cm.updateByPrimaryKey(subject);
 			session.commit();
 			return true;
 		} finally {

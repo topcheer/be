@@ -69,7 +69,7 @@ public abstract class AdminDialog extends Window {
 
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
-				if (event.getKeyName().toLowerCase().equals("enter")) {
+				if (event.getKeyName()!=null && event.getKeyName().toLowerCase().equals("enter")) {
 					add();
 				}
 			}

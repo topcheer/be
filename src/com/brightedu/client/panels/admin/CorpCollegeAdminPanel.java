@@ -35,7 +35,7 @@ public class CorpCollegeAdminPanel extends BasicAdminPanel {
 					rec.setAttribute("select", false);
 					rec.setAttribute("id", bi.getCollege_id());
 					rec.setAttribute("object", bi);
-					rec.setAttribute("college_name", bi.getCollege_name());
+					rec.setAttribute("obj_name", bi.getCollege_name());
 					rec.setAttribute("reg_time", bi.getRegister_date());
 					listData[i] = rec;
 				}
@@ -54,7 +54,7 @@ public class CorpCollegeAdminPanel extends BasicAdminPanel {
 
 	@Override
 	public ListGridField[] createGridFileds() {
-		return parseGridFields(new String[] { "college_name", "reg_time" },
+		return parseGridFields(new String[] { "obj_name", "reg_time" },
 				new String[] { "高校名称", "录入时间" }, new ListGridFieldType[] {
 						ListGridFieldType.TEXT, ListGridFieldType.DATE },
 				new boolean[] { true, false }, new int[] { -1, 200 });
@@ -75,7 +75,7 @@ public class CorpCollegeAdminPanel extends BasicAdminPanel {
 		final College editedBatch = (College) rec
 				.getAttributeAsObject("object");
 		final String oldName = editedBatch.getCollege_name();
-		editedBatch.setCollege_name(rec.getAttributeAsString("college_name"));
+		editedBatch.setCollege_name(rec.getAttributeAsString("obj_name"));
 		dbService.saveCollege(editedBatch, new CommonAsyncCall<Boolean>() {
 			@Override
 			public void onSuccess(Boolean result) {
@@ -84,7 +84,7 @@ public class CorpCollegeAdminPanel extends BasicAdminPanel {
 
 			protected void failed() { // rollback in UI
 				editedBatch.setCollege_name(oldName);
-				rec.setAttribute("batch_name", oldName);
+				rec.setAttribute("obj_name", oldName);
 			}
 		});
 	}

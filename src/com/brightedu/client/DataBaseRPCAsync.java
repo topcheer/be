@@ -5,6 +5,7 @@ import java.util.List;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.StudentClassified;
+import com.brightedu.model.edu.Subjects;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface DataBaseRPCAsync {
@@ -48,5 +49,18 @@ public interface DataBaseRPCAsync {
 			AsyncCallback<Boolean> callback);
 
 	void saveCollege(College college, AsyncCallback<Boolean> callback);
+
+	void addSubject(String subjectName, AsyncCallback<Boolean> callback);
+
+	void deleteSubject(List<Integer> subject_ids,
+			AsyncCallback<Boolean> callback);
+
+	void getSubjectsList(int offset, int limit,
+			AsyncCallback<List<Subjects>> callback);
+
+	void getSubjectsListAndTotalCounts(int offset, int limit,
+			AsyncCallback<List<Subjects>> callback);
+
+	void saveSubject(Subjects subject, AsyncCallback<Boolean> callback);
 
 }
