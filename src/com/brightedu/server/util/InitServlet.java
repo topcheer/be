@@ -9,5 +9,9 @@ public class InitServlet extends HttpServlet {
 		ConnectionManager.load();
 		Log.i("初始化完成");
 	}
+	
+	public void destroy(){
+		
+	}
 
 }
