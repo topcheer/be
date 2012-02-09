@@ -6,17 +6,22 @@ import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Label;
 
-public class BrightCanvas extends Canvas{
-	
-public static String ID;
-	
+public class BrightCanvas extends Canvas {
+
+	private static String ID;
+
 	private Label tipLabel = new Label();
-	
-	public BrightCanvas(){
+
+	public BrightCanvas() {
 		initTipsLabel();
 		ID = getID();
+		// setID(ID);
 	}
 	
+	public static String getCanvasID(){
+		return ID;
+	}
+
 	private void initTipsLabel() {
 
 		tipLabel.setParentElement(this);
@@ -26,26 +31,25 @@ public static String ID;
 		tipLabel.setWidth(200);
 		tipLabel.setHeight(100);
 		tipLabel.setTop(-120);
-//		tipLabel.setLeft(-220); // start off screen
+		// tipLabel.setLeft(-220); // start off screen
 		tipLabel.setValign(VerticalAlignment.CENTER);
 		tipLabel.setAlign(Alignment.CENTER);
 		tipLabel.setAnimateTime(1000); // milliseconds
 	}
 
-	public void showTip(String tip) {
+	protected void showTip(String tip) {
 		int width = getWidth();
-		final int left = width/2-tipLabel.getWidth()/2;
-//		Canvas ca = getById(BatchAdmin.ID);
+		final int left = width / 2 - tipLabel.getWidth() / 2;
+		// Canvas ca = getById(BatchAdmin.ID);
 		int height = getHeight();
 		tipLabel.setLeft(left);
 		tipLabel.setContents(tip);
-		tipLabel.animateMove(left, height/2-tipLabel.getHeight()/2);
+		tipLabel.animateMove(left, height / 2 - tipLabel.getHeight() / 2);
 		new Timer() {
 			public void run() {
 				tipLabel.animateMove(left, -120);
 			}
 		}.schedule(2500);
 	}
-
 
 }

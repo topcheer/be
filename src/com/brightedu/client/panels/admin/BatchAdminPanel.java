@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.brightedu.client.BrightCanvas;
+import com.brightedu.client.BrightEdu;
 import com.brightedu.client.CommonAsyncCall;
 import com.brightedu.client.panels.BasicAdminPanel;
 import com.brightedu.model.edu.BatchIndex;
@@ -40,7 +41,7 @@ public class BatchAdminPanel extends BasicAdminPanel {
 		final List<Integer> deleteIds = new ArrayList<Integer>();
 		for (int i = 0; i < recList.getLength(); i++) {
 			if (recList.get(i).getAttributeAsBoolean("select")) {
-				deleteIds.add(recList.get(i).getAttributeAsInt("batch_id"));
+				deleteIds.add(((BatchIndex)recList.get(i).getAttributeAsObject("batch_index")).getBatch_id());
 			}
 		}
 		if (deleteIds.size() == 0) {
@@ -56,7 +57,7 @@ public class BatchAdminPanel extends BasicAdminPanel {
 							new CommonAsyncCall<Boolean>() {
 								@Override
 								public void onSuccess(Boolean result) {
-									showTip("已删除！");
+									BrightEdu.showTips("已删除！");
 									gotoPage(currentPageIndex);
 								}
 							});
@@ -65,16 +66,13 @@ public class BatchAdminPanel extends BasicAdminPanel {
 		});
 	}
 
-	private void showTip(String tip) {
-		BrightCanvas ca = (BrightCanvas) getById(BrightCanvas.ID);
-		ca.showTip(tip);
-	}
+	
 
 	@Override
 	protected ListGrid createListGrid() {
 		ListGrid result = new ListGrid();
 		ListGridField selectField = new ListGridField("select", "选择", 100);
-		ListGridField indexField = new ListGridField("batch_id", "批次代码", 100);
+		ListGridField indexField = new ListGridField("batch_index", "批次代码", 100);
 		ListGridField nameField = new ListGridField("batch_name", "批次名称");
 		ListGridField regTimeField = new ListGridField("reg_time", "录入时间", 200);
 		selectField.setType(ListGridFieldType.BOOLEAN);
@@ -96,16 +94,16 @@ public class BatchAdminPanel extends BasicAdminPanel {
 			@Override
 			public void onCellSaved(CellSavedEvent event) {
 				Record rec = event.getRecord();
-				BatchIndex editedBatch = new BatchIndex();
-				editedBatch.setBatch_id(rec.getAttributeAsInt("batch_id"));
+				BatchIndex editedBatch = (BatchIndex)rec.getAttributeAsObject("batch_index");
+//				editedBatch.setbatch_index(rec.getAttributeAsInt("batch_index"));
 				editedBatch.setBatch_name(rec
 						.getAttributeAsString("batch_name"));
-				editedBatch.setRegister_date(rec.getAttributeAsDate("reg_time"));
+//				editedBatch.setRegister_date(rec.getAttributeAsDate("reg_time"));
 				dbService.save(editedBatch, new CommonAsyncCall<Boolean>() {
 
 					@Override
 					public void onSuccess(Boolean result) {
-						showTip("保存成功!");
+						BrightEdu.showTips("保存成功!");
 					}
 				});
 			}
@@ -113,6 +111,7 @@ public class BatchAdminPanel extends BasicAdminPanel {
 		result.setEditEvent(ListGridEditEvent.DOUBLECLICK);
 		result.setFields(selectField, indexField, nameField, regTimeField);
 		//隐藏ID列，好看一点
+		//ID域放整个BatchIndex对象，这样有利于修改前后比较,以及一些无法显示的属性
 		result.hideField(indexField.getName());
 		return result;
 	}
@@ -120,6 +119,7 @@ public class BatchAdminPanel extends BasicAdminPanel {
 	protected void gotoPage(final int indexGoto, final boolean init) {
 		// 没烧到情况ds的方法，只好重新创建一次
 		// ds = createDataSource();
+//		resultList.
 		AsyncCallback<List<BatchIndex>> callback = new CommonAsyncCall<List<BatchIndex>>() {
 			@Override
 			public void onSuccess(List result) {
@@ -138,7 +138,7 @@ public class BatchAdminPanel extends BasicAdminPanel {
 					BatchIndex bi = (BatchIndex) result.get(i);
 					Record rec = new Record();
 					rec.setAttribute("select", false);
-					rec.setAttribute("batch_id", bi.getBatch_id());
+					rec.setAttribute("batch_index", bi);
 					rec.setAttribute("batch_name", bi.getBatch_name());
 					rec.setAttribute("reg_time", bi.getRegister_date());
 					listData[i] = rec;
@@ -183,6 +183,7 @@ public class BatchAdminPanel extends BasicAdminPanel {
 					public void onSuccess(Boolean result) {
 						showLastPageRecords(true);
 						destroy();
+						BrightEdu.showTips("已添加!");
 					}
 				});
 			} else {

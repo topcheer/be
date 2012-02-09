@@ -6,15 +6,17 @@ import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.events.KeyPressEvent;
-import com.smartgwt.client.widgets.events.KeyPressHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.FormItem;
+import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
+import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.LayoutSpacer;
 
 public abstract class AdminDialog extends Window {
 
 	IButton okBtn = new IButton("确定");
+	DynamicForm form;
 
 	public AdminDialog() {
 
@@ -30,7 +32,7 @@ public abstract class AdminDialog extends Window {
 		setShowModalMask(false);
 		setOverflow(Overflow.VISIBLE);
 
-		DynamicForm form = getContentForm();
+		form = getContentForm();
 		okBtn.addClickHandler(new ClickHandler() {
 
 			@Override
@@ -59,7 +61,7 @@ public abstract class AdminDialog extends Window {
 		setAutoSize(true);
 		setCanDragResize(true);
 
-		addKeyPressHandler(new KeyPressHandler() {
+		addFieldsKeyPressHandler(new KeyPressHandler() {
 
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
@@ -68,6 +70,13 @@ public abstract class AdminDialog extends Window {
 				}
 			}
 		});
+	}
+
+	public void addFieldsKeyPressHandler(KeyPressHandler pressHandler) {
+		FormItem[] items = form.getFields();
+		for (FormItem item : items) {
+			item.addKeyPressHandler(pressHandler);
+		}
 	}
 
 	protected abstract DynamicForm getContentForm();

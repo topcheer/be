@@ -12,11 +12,10 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.CloseClickEvent;
 import com.smartgwt.client.widgets.events.CloseClickHandler;
-import com.smartgwt.client.widgets.events.KeyDownEvent;
-import com.smartgwt.client.widgets.events.KeyDownHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.PasswordItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
+import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 
 public class LoginDialog extends Window {
@@ -26,6 +25,7 @@ public class LoginDialog extends Window {
 	PasswordItem passItem = new PasswordItem("密码");
 	IButton okBtn = new IButton("登录");
 	Label forgetPass = null;
+	DynamicForm loginForm = new DynamicForm();
 
 	public LoginDialog() {
 		// setWidth(250);
@@ -53,19 +53,19 @@ public class LoginDialog extends Window {
 				notLogin();
 			}
 		});
-		DynamicForm form = new DynamicForm();
+		
 		// form.setHeight100();
 		// form.setWidth100();
-		form.setAutoFocus(true);
-		form.setPadding(5);
-		form.setCellPadding(5);
+		loginForm.setAutoFocus(true);
+		loginForm.setPadding(5);
+		loginForm.setCellPadding(5);
 
-		form.setWrapItemTitles(false);
-		form.setLayoutAlign(VerticalAlignment.CENTER);
+		loginForm.setWrapItemTitles(false);
+		loginForm.setLayoutAlign(VerticalAlignment.CENTER);
 		// textItem.setLength(100);
 		//
 		// passItem.setLength(100);
-		form.setFields(userItem, passItem);
+		loginForm.setFields(userItem, passItem);
 
 		HLayout hLayout = new HLayout(10);
 		hLayout.setLayoutAlign(VerticalAlignment.BOTTOM);
@@ -78,19 +78,24 @@ public class LoginDialog extends Window {
 
 		hLayout.setAutoHeight();
 
-		addItem(form);
+		addItem(loginForm);
 
 		addItem(hLayout);
 
-		form.setOverflow(Overflow.VISIBLE);
-		form.setAutoWidth();
-		form.setAutoHeight();
+		loginForm.setOverflow(Overflow.VISIBLE);
+		loginForm.setAutoWidth();
+		loginForm.setAutoHeight();
 		setEdgeMarginSize(4);
 		// setEdgeOpacity(60);
 		setOpacity(80);
 		setEdgeOffset(5);
 		centerInPage();
 		
+	}
+	
+	public void addFiledsKeyPressHandler(KeyPressHandler pressHandler){
+		userItem.addKeyPressHandler(pressHandler);
+		passItem.addKeyPressHandler(pressHandler);
 	}
 
 	public IButton getOkBtn() {
