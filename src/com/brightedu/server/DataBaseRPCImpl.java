@@ -333,7 +333,7 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 			SubjectsMapper cm = session.getMapper(SubjectsMapper.class);
 			Subjects co = new Subjects();
 			co.setSubject_name(subjectName);
-			int count = cm.insert(co);
+			int count = cm.insertSelective(co);
 			session.commit();
 			return true;
 		} finally {
