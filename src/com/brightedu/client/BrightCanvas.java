@@ -28,7 +28,7 @@ public class BrightCanvas extends Canvas {
 		tipLabel.setTop(-120);
 		tipLabel.setValign(VerticalAlignment.CENTER);
 		tipLabel.setAlign(Alignment.CENTER);
-		tipLabel.setAnimateTime(800); // milliseconds
+		tipLabel.setAnimateTime(1200); // milliseconds
 	}
 
 	protected void showTip(String tip) {
@@ -42,7 +42,7 @@ public class BrightCanvas extends Canvas {
 			public void run() {
 				tipLabel.animateMove(left, -120);
 			}
-		}.schedule(1500);
+		}.schedule(1800);
 	}
 
 }

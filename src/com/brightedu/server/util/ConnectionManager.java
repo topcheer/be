@@ -1,6 +1,8 @@
 package com.brightedu.server.util;
 
 import java.beans.PropertyVetoException;
+import java.io.IOException;
+import java.io.Reader;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -12,6 +14,9 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -58,7 +63,20 @@ public class ConnectionManager {
 			Connection conn = getConnection(name);
 			releaseConnection(conn);
 		}
-
+		
+		try {
+			Reader reader = null;
+			reader = Resources.getResourceAsReader("/MapperConfig.xml");
+			sessionFactory = new SqlSessionFactoryBuilder().build(reader);
+		} catch (IOException e) {
+			Log.e(e.getMessage(), e);
+		}
+	}
+	
+	static SqlSessionFactory sessionFactory;
+	
+	public static SqlSessionFactory getSessionFactory(){
+		return sessionFactory;
 	}
 
 	private static void initJndiDataSource(Element pool) {

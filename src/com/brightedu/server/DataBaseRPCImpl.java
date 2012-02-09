@@ -31,77 +31,131 @@ import com.brightedu.dao.edu.BatchIndexMapper;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.BatchIndexExample;
 import com.brightedu.model.edu.BatchIndexExample.Criteria;
+import com.brightedu.model.edu.StudentClassified;
+import com.brightedu.server.util.ConnectionManager;
 import com.brightedu.server.util.Log;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class DataBaseRPCImpl extends RemoteServiceServlet implements
 		DataBaseRPC {
-	String resource = "com/brightedu/MapperConfig.xml";
-	Reader reader = null;
 
 	SqlSessionFactory sessionFactory;
-	SqlSession session;
 
 	public DataBaseRPCImpl() {
-		try {
-			reader = Resources.getResourceAsReader(resource);
-		} catch (IOException e) {
-			Log.e(e.getMessage(), e);
-		}
-		sessionFactory = new SqlSessionFactoryBuilder().build(reader);
-		session = sessionFactory.openSession();
+		sessionFactory = ConnectionManager.getSessionFactory();
 	}
 
+	/*********************** 批次管理 ************************************/
+
 	public List<BatchIndex> getBatchList(int offset, int limit) {
-		BatchIndexExample ex = new BatchIndexExample();
-		ex.setOrderByClause("batch_id");
-		List<BatchIndex> result = session.selectList(
-				"com.brightedu.dao.edu.BatchIndexMapper.selectByExample", ex,
-				new RowBounds(offset, limit));
-		return result;
+		SqlSession session = sessionFactory.openSession();
+		try {
+			BatchIndexExample ex = new BatchIndexExample();
+			ex.setOrderByClause("batch_id");
+			List<BatchIndex> result = session.selectList(
+					"com.brightedu.dao.edu.BatchIndexMapper.selectByExample",
+					ex, new RowBounds(offset, limit));
+			return result;
+		} finally {
+			session.close();
+		}
 
 	}
 
 	public List getBatchListAndTotalCounts(int offset, int limit) {
-		List batchList = getBatchList(offset, limit);
-		//避免影响缓存
-		List result = new ArrayList(batchList);
-		BatchIndexMapper bim = session.getMapper(BatchIndexMapper.class);
-		Integer counts = bim.countByExample(null);
-		result.add(counts);
-		return result;
+		SqlSession session = sessionFactory.openSession();
+		try {
+			List batchList = getBatchList(offset, limit);
+			// 避免影响缓存
+			List result = new ArrayList(batchList);
+			BatchIndexMapper bim = session.getMapper(BatchIndexMapper.class);
+			Integer counts = bim.countByExample(null);
+			result.add(counts);
+			return result;
+		} finally {
+			session.close();
+		}
 	}
 
 	@Override
 	public boolean addBatch(String batch_name) {
-
-		BatchIndexMapper bim = session.getMapper(BatchIndexMapper.class);
-		BatchIndex bi = new BatchIndex();
-		bi.setBatch_name(batch_name);
-		int count = bim.insertSelective(bi);
-		session.commit();
-		return true;
-
+		SqlSession session = sessionFactory.openSession();
+		try {
+			BatchIndexMapper bim = session.getMapper(BatchIndexMapper.class);
+			BatchIndex bi = new BatchIndex();
+			bi.setBatch_name(batch_name);
+			int count = bim.insertSelective(bi);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
 	}
 
 	@Override
 	public boolean deleteBatch(List<Integer> batch_ids) {
-		BatchIndexMapper bim = session.getMapper(BatchIndexMapper.class);
-//		int count = bim.deleteByPrimaryKey(batch_id);
-		BatchIndexExample ex = new BatchIndexExample();
-		Criteria cr = ex.createCriteria();
-		cr.andBatch_idIn(batch_ids);
-		bim.deleteByExample(ex);
-		session.commit();
-		return true;
-
+		SqlSession session = sessionFactory.openSession();
+		try {
+			BatchIndexMapper bim = session.getMapper(BatchIndexMapper.class);
+			// int count = bim.deleteByPrimaryKey(batch_id);
+			BatchIndexExample ex = new BatchIndexExample();
+			Criteria cr = ex.createCriteria();
+			cr.andBatch_idIn(batch_ids);
+			bim.deleteByExample(ex);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
 	}
 
 	@Override
-	public boolean save(BatchIndex editedBatch) {
-		BatchIndexMapper bim = session.getMapper(BatchIndexMapper.class);
-		bim.updateByPrimaryKey(editedBatch);
-		session.commit();
+	public boolean saveBatch(BatchIndex editedBatch) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			BatchIndexMapper bim = session.getMapper(BatchIndexMapper.class);
+			bim.updateByPrimaryKey(editedBatch);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public List<StudentClassified> getStudentClassesList(int offset, int limit) {
+		// BatchIndexExample ex = new BatchIndexExample();
+		// ex.setOrderByClause("batch_id");
+		// List<BatchIndex> result = session.selectList(
+		// "com.brightedu.dao.edu.BatchIndexMapper.selectByExample", ex,
+		// new RowBounds(offset, limit));
+		// return result;
+		return null;
+
+	}
+
+	/*********************** 学生类别管理 ************************************/
+	@Override
+	public List getStudentClasseshListAndTotalCounts(int offset, int limit) {
+
+		return null;
+	}
+
+	@Override
+	public boolean addStudentClass(String studentClassName) {
+
+		return true;
+	}
+
+	@Override
+	public boolean deleteStudentClasses(List<Integer> studentClassesId) {
+
+		return true;
+	}
+
+	@Override
+	public boolean saveStudentClasses(StudentClassified studentClass) {
+
 		return true;
 	}
 

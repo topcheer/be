@@ -33,7 +33,7 @@ public class StudentClassesAdminPanel extends BasicAdminPanel {
 
 	@Override
 	public void update(Record record) {
-
+		
 	}
 
 	@Override

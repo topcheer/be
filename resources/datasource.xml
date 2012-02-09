@@ -3,7 +3,7 @@
 	<!-- 持久层的数据源 -->
 
 	<pool name="edu" default="false" type="jdbc">
-		<param name="url" value="jdbc:postgresql://jmedu.wassecurity.net:5432/edu" />
+		<param name="url" value="jdbc:postgresql://localhost:55555/edu" />
 		<param name="driver" value="org.postgresql.Driver" />
 		<param name="user" value="edu" />
 		<param name="password" value="edu2012" />

@@ -41,7 +41,7 @@ public class BatchAdminPanel extends BasicAdminPanel {
 				.getAttributeAsObject("object");
 		final String oldName = editedBatch.getBatch_name();
 		editedBatch.setBatch_name(rec.getAttributeAsString("batch_name"));
-		dbService.save(editedBatch, new CommonAsyncCall<Boolean>() {
+		dbService.saveBatch(editedBatch, new CommonAsyncCall<Boolean>() {
 			@Override
 			public void onSuccess(Boolean result) {
 				BrightEdu.showTip("已保存!");

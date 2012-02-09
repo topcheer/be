@@ -18,6 +18,7 @@ package com.brightedu.client;
 import java.util.List;
 
 import com.brightedu.model.edu.BatchIndex;
+import com.brightedu.model.edu.StudentClassified;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -41,7 +42,14 @@ public interface DataBaseRPC extends RemoteService {
 	public List getBatchListAndTotalCounts(int offset, int limit);
 	public boolean addBatch(String batch_name);
 	public boolean deleteBatch(List<Integer> batch_ids);
-	boolean save(BatchIndex editedBatch);
+	boolean saveBatch(BatchIndex editedBatch);
+	
+	
+	public List<StudentClassified> getStudentClassesList(int offset, int limit);
+	public List getStudentClasseshListAndTotalCounts(int offset, int limit);
+	public boolean addStudentClass(String studentClassName);
+	public boolean deleteStudentClasses(List<Integer> studentClassesId);
+	boolean saveStudentClasses(StudentClassified studentClass);
 	
 	
 }
