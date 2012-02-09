@@ -254,7 +254,8 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 			CollegeMapper cm = session.getMapper(CollegeMapper.class);
 			College co = new College();
 			co.setCollege_name(collegeName);
-			int count = cm.insert(co);
+			
+			int count = cm.insertSelective(co);
 			session.commit();
 			return true;
 		} finally {
