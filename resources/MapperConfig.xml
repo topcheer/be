@@ -56,7 +56,7 @@
 	    <mapper resource="com/brightedu/xml/edu/RecruitAgentMapper.xml" />
 	    <mapper resource="com/brightedu/xml/edu/RefundmentAdminMapper.xml" />
 	    <mapper resource="com/brightedu/xml/edu/StudentChangeMapper.xml" />
-	    <mapper resource="com/brightedu/xml/edu/StudentClassifierMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/StudentClassifiedMapper.xml" />
 	    <mapper resource="com/brightedu/xml/edu/StudentInfoMapper.xml" />
 	    <mapper resource="com/brightedu/xml/edu/StudentStatusMapper.xml" />
 	    <mapper resource="com/brightedu/xml/edu/SubjectsMapper.xml" />
