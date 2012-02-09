@@ -42,4 +42,12 @@
   	<servlet-name>PaymentRPC</servlet-name>
   	<url-pattern>/brightedu/PaymentRPC</url-pattern>
   </servlet-mapping>
+  <servlet>
+  	<servlet-name>CallbackServlet</servlet-name>
+  	<servlet-class>com.brightedu.server.bank.CallbackServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>CallbackServlet</servlet-name>
+  	<url-pattern>/brightedu/CallbackServlet</url-pattern>
+  </servlet-mapping>
 </web-app>
