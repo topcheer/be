@@ -48,6 +48,9 @@
     <table  schema="edu" tableName="agent_relation" domainObjectName="AgentRelation" >
       <property name="useActualColumnNames" value="true"/>
     </table>  
+    <table  schema="edu" tableName="agent_type" domainObjectName="AgentType" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>      
      <table  schema="edu" tableName="agent_return" domainObjectName="AgentReturn" >
       <property name="useActualColumnNames" value="true"/>
     </table>  
@@ -127,9 +130,7 @@
   
   <!-- 改动后在这里生成新的模型 -->  
   
-       <table  schema="edu" tableName="bank_order" domainObjectName="BankOrder" >
-      <property name="useActualColumnNames" value="true"/>
-    </table>
+
    
   </context>
   
