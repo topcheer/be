@@ -42,9 +42,9 @@ public class PagingInterceptor implements Interceptor {
 				RowBounds.NO_ROW_OFFSET);
 		metaStatementHandler.setValue("delegate.rowBounds.limit",
 				RowBounds.NO_ROW_LIMIT);
-		if (Log.isDebugEnabled()) {
-			Log.d("生成分页SQL : " + boundSql.getSql());
-		}
+//		if (Log.isDebugEnabled()) {
+//			Log.d("生成分页SQL : " + boundSql.getSql());
+//		}
 		return invocation.proceed();
 	}
 
@@ -60,7 +60,7 @@ public class PagingInterceptor implements Interceptor {
 
 	private String getLimitString(String originalSQL, int offset, int limit) {
 		//postgresql
-		return originalSQL + " limit " + limit + " offset " + offset;
+		return originalSQL.trim() + " limit " + limit + " offset " + offset;
 	}
 
 }
