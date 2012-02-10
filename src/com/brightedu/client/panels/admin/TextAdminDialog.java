@@ -26,6 +26,7 @@ public class TextAdminDialog extends AdminDialog {
 	protected DynamicForm getContentForm() {
 		DynamicForm form = new DynamicForm();
 		form.setPadding(5);
+		form.setWidth100();
 		form.setFields(items);
 		return form;
 	}

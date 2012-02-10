@@ -20,7 +20,8 @@ public abstract class AdminDialog extends Window {
 
 	IButton okBtn = new IButton("确定");
 	DynamicForm form;
-
+	protected HLayout bottomLayout = new HLayout();
+	
 	public AdminDialog() {
 
 	}
@@ -49,18 +50,18 @@ public abstract class AdminDialog extends Window {
 		form.setAutoHeight();
 		addItem(form);
 
-		HLayout hLayout = new HLayout();
-		hLayout.addMember(new Label("  "));
-		hLayout.addMember(new LayoutSpacer());
-		hLayout.setPadding(5);
+		
+		bottomLayout.addMember(new Label("  "));
+		bottomLayout.addMember(new LayoutSpacer());
+		bottomLayout.setPadding(5);
 		okBtn.setWidth(70);
 		//
-		hLayout.addMember(okBtn);
+		bottomLayout.addMember(okBtn);
 
-		hLayout.setAutoHeight();
-		hLayout.setWidth100();
+		bottomLayout.setAutoHeight();
+		bottomLayout.setWidth100();
 
-		addItem(hLayout);
+		addItem(bottomLayout);
 
 		setAutoSize(true);
 		setCanDragResize(true);
@@ -76,7 +77,7 @@ public abstract class AdminDialog extends Window {
 		});
 	}
 	
-	private void add(){
+	protected void add(){
 		adminPanel.add(getAddedModel());
 	}
 	

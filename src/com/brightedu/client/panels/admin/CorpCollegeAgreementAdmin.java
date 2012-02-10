@@ -5,15 +5,21 @@ import com.brightedu.client.panels.FunctionPanel;
 import com.brightedu.client.panels.PanelFactory;
 import com.smartgwt.client.widgets.Canvas;
 
-public final class CorpCollegeAdmin extends FunctionPanel {
+/**
+ * 合作高校协议管理
+ * 
+ * @author chetwang
+ * 
+ */
+public final class CorpCollegeAgreementAdmin extends FunctionPanel {
 
-	public static String DESCRIPTION = "合作高校代码维护";
-
+	public static String DESCRIPTION = "合作高校协议管理";
 
 	public static class Factory implements PanelFactory {
 		String id;
+
 		public Canvas create() {
-			CorpCollegeAdmin panel = new CorpCollegeAdmin();
+			CorpCollegeAgreementAdmin panel = new CorpCollegeAgreementAdmin();
 			id = panel.getID();
 			return panel;
 		}
@@ -26,7 +32,7 @@ public final class CorpCollegeAdmin extends FunctionPanel {
 
 	@Override
 	public Canvas getViewPanel() {
-		BasicAdminPanel p = new CorpCollegeAdminPanel();
+		BasicAdminPanel p = new CorpCollegeAgreementAdminPanel();
 		return p;
 	}
 

@@ -2,6 +2,7 @@ package com.brightedu.client.panels;
 
 import com.brightedu.client.panels.admin.BatchAdmin;
 import com.brightedu.client.panels.admin.CorpCollegeAdmin;
+import com.brightedu.client.panels.admin.CorpCollegeAgreementAdmin;
 import com.brightedu.client.panels.admin.StudentClassesAdmin;
 import com.brightedu.client.panels.admin.SubjectsAdmin;
 
@@ -22,6 +23,9 @@ public class PanelData {
 		}
 		if (id.equals("subject_manage")) {
 			return new SubjectsAdmin.Factory();// 合作高校维护
+		}
+		if (id.equals("college_agreement_manage")) { // 高校协议管理
+			return new CorpCollegeAgreementAdmin.Factory();
 		}
 		return null;
 	}
