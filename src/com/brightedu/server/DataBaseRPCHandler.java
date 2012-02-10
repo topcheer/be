@@ -62,7 +62,6 @@ public class DataBaseRPCHandler implements InvocationHandler {
 						m = o.getClass().getMethod(
 								getStandardMethodName(f.getName()));
 						Object filedValue = m.invoke(o, null);
-						// Object filedValue = f.get(o);
 						sb.append(f.getName()).append("=")
 								.append(filedValue.toString()).append(" - ");
 					} catch (Exception e) {
@@ -81,8 +80,8 @@ public class DataBaseRPCHandler implements InvocationHandler {
 	}
 
 	private void audit(String content) {
-		// FIXME record audit content
-		Log.d("Audit -- "+content);
+		// FIXME record audit content, better be another manager thread
+		Log.i("Audit -- "+content);
 	}
 
 }
