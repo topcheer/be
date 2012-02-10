@@ -7,18 +7,24 @@
 		<function id="subject_manage" name="专业代码维护" />
 		<function id="college_agreement_manage" name="合作高校协议管理" />
 		<function id="fee_type_manage" name="费用类型维护" />
+		<function id="charge_type_manage" name="入账方式维护" />
 		<function id="agent_bank_account_manage" name="学生打款账号维护" />
 		<function id="agent_type_manage" name="机构类型维护" />
 		<function id="entrance_cost_manage" name="入学费用标准设置" />		
 		<function id="agent_agreement_fee_manage" name="招生点协议及返利系数管理" />
-
+		<function id="college_return_manage" name="高校返利（对今明）标准设置" />
+		<function id="student_status_type_manage" name="学生状态类型管理" />
+		<function id="user_type_manage" name="用户类型管理" />
+		<function id="user_manage" name="用户管理" />
 	</category>
 	
-	<!-- 招生点专用的导航 -->
+	<!-- 招生点、学习中心专用的导航 -->
 	<category id="student_manage" name="学生管理">
 		<function id="student_register" name="学生注册" />
 		<function id="student_batch_import" name="学生批量导入" />
+		<function id="student_derate_request" name="学费减免申请" />
 		<function id="agent_return_query" name="返利查询" />
+		<function id="student_change_manage" name="学生转专业管理" />
 	</category>	
 	
 	<!-- 财务专用的导航 -->
@@ -27,6 +33,7 @@
 		<function id="charge_batch_manage" name="批量生成学生应收费用" />
 		<function id="charge_batch_credit" name="批量生成已收费记录" />
 		<function id="agent_financial_manage" name="招生点返利统计管理" />
+		<function id="refund_manage" name="退费管理" />
 	</category>
 	
 	<!-- 学生专用的导航 -->
