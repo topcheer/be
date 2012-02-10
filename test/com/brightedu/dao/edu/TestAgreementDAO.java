@@ -11,10 +11,13 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Test;
 
+import com.brightedu.client.ds.Page;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.BatchIndexExample;
 import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.CollegeExample;
+import com.brightedu.model.edu.School;
+import com.brightedu.model.edu.SchoolExample;
 
 public class TestAgreementDAO {
 
@@ -27,11 +30,16 @@ public class TestAgreementDAO {
 		SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(reader); 
 		SqlSession session = sessionFactory.openSession(); 
 		
-		BatchIndexMapper cm = session.getMapper(BatchIndexMapper.class);
+		SchoolMapper cm = session.getMapper(SchoolMapper.class);
 		
-		BatchIndexExample ce = new BatchIndexExample();
-		ce.createCriteria().andBatch_idIsNotNull();
-		List<BatchIndex> colleges = cm.selectByExample(null);
+		SchoolExample ce = new SchoolExample();
+		Page page = new Page(10, 10);
+		ce.setPage(page);
+		
+		page.setCount(cm.countByExample(ce));
+		List<School> colleges = cm.selectByExample(ce);
+		System.out.println(page.getCurrent());
+		System.out.println(page.getTotal());
 		System.out.println(colleges.size());
 
 		session.close();
@@ -58,9 +66,13 @@ public class TestAgreementDAO {
 //			e.printStackTrace();
 //		}
 		
-				
+
 		
 	
+	}
+	public static void main(String[] args) throws IOException
+	{
+		new TestAgreementDAO().test();
 	}
 
 }
