@@ -259,8 +259,8 @@ public abstract class BasicAdminPanel extends VLayout {
 		}
 		ListGridField selectField = new ListGridField("select", "选择", 100);
 		// static hidden fields
-		ListGridField idField = new ListGridField("id", "id");// used for id
-		ListGridField objectField = new ListGridField("object", "object");// used
+		ListGridField idField = new ListGridField("id", "代码");// used for id
+		ListGridField objectField = new ListGridField("object", "完整对象");// used
 		ListGridField[] newFields = new ListGridField[fields.length + 3];
 		selectField.setType(ListGridFieldType.BOOLEAN);
 		selectField.setAlign(Alignment.CENTER);
