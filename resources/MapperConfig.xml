@@ -37,6 +37,7 @@
 	<mappers>
 	    <mapper resource="com/brightedu/xml/edu/AgentReturnAmountMapper.xml" />
 	    <mapper resource="com/brightedu/xml/edu/AgentRelationMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/AgentTypeMapper.xml" />
 	    <mapper resource="com/brightedu/xml/edu/AgentReturnMapper.xml" />
 	    <mapper resource="com/brightedu/xml/edu/AgentReturnTypeMapper.xml" />
 	    <mapper resource="com/brightedu/xml/edu/AgreeReturnMapper.xml" />
