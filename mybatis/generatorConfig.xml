@@ -12,7 +12,11 @@
   		<property name="targetPackage" value="com.brightedu"/>
   		<property name="targetProject" value="BrightEdu/src"/>
   	</plugin>
+  	
+  	<!-- 生成符合PostgreSQL的分页模型,using LIMIT and OFFSET -->
   	<plugin type="com.brightedu.util.PostgrePagingPlugin"></plugin>
+  	
+  	
     <!--  jdbcConnection driverClass="org.postgresql.Driver" 
     	connectionURL="jdbc:postgresql://jmedu.wassecurity.net:5432/edu" 
     	userId="edu" 
@@ -126,7 +130,7 @@
     <table  schema="edu" tableName="user_admin" domainObjectName="User" >
       <property name="useActualColumnNames" value="true"/>
     </table>  
-  -->    
+   --> 
   
   <!-- 改动后在这里生成新的模型 -->  
     <table schema="edu" tableName="sd_school" domainObjectName="School" >
