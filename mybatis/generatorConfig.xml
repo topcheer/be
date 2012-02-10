@@ -41,7 +41,7 @@
     <javaClientGenerator type="MIXEDMAPPER" targetPackage="com.brightedu.dao"  targetProject="BrightEdu/src">
       <property name="enableSubPackages" value="true" />
     </javaClientGenerator>
-  
+  <!-- 下列表已经生成模型，不需要再次批量生成，表有改动时只生成改过过的表及其关联表
     <table  schema="edu" tableName="ag_return_amount" domainObjectName="AgentReturnAmount" >
       <property name="useActualColumnNames" value="true"/>
     </table>  
@@ -93,13 +93,9 @@
     <table  schema="edu" tableName="entrance_cost" domainObjectName="EntranceCost" >
       <property name="useActualColumnNames" value="true"/>
     </table>  
-    
-    <table  schema="edu" tableName="fee_type" domainObjectName="FeeType" >
+     <table  schema="edu" tableName="fee_type" domainObjectName="FeeType" >
       <property name="useActualColumnNames" value="true"/>
     </table>  
-    <!-- table  schema="edu" tableName="receive_fund" domainObjectName="ReceiveFund" >
-      <property name="useActualColumnNames" value="true"/>
-    </table-->  
     <table  schema="edu" tableName="recruit_agent" domainObjectName="RecruitAgent" >
       <property name="useActualColumnNames" value="true"/>
     </table>  
@@ -127,7 +123,14 @@
     <table  schema="edu" tableName="user_admin" domainObjectName="User" >
       <property name="useActualColumnNames" value="true"/>
     </table>  
-        
+  -->    
+  
+  <!-- 改动后在这里生成新的模型 -->  
+  
+       <table  schema="edu" tableName="bank_order" domainObjectName="BankOrder" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+   
   </context>
   
 </generatorConfiguration>
