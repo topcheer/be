@@ -12,7 +12,7 @@
   		<property name="targetPackage" value="com.brightedu"/>
   		<property name="targetProject" value="BrightEdu/src"/>
   	</plugin>
-  	
+  	<plugin type="com.brightedu.util.PostgrePagingPlugin"></plugin>
     <!--  jdbcConnection driverClass="org.postgresql.Driver" 
     	connectionURL="jdbc:postgresql://jmedu.wassecurity.net:5432/edu" 
     	userId="edu" 
@@ -129,7 +129,9 @@
   -->    
   
   <!-- 改动后在这里生成新的模型 -->  
-  
+    <table schema="edu" tableName="sd_school" domainObjectName="School" >
+      <property name="useActualColumnNames" value="true"/>
+    </table> 
 
    
   </context>
