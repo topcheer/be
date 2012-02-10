@@ -35,7 +35,6 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 		DataBaseRPCHandler handler = new DataBaseRPCHandler(agt);
 		agent = (DataBaseRPC) Proxy.newProxyInstance(agt.getClass()
 				.getClassLoader(), agt.getClass().getInterfaces(), handler);
-		System.out.println("agentproxy: "+agent);
 	}
 
 	/*********************** 批次管理 ************************************/
