@@ -1,39 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
               http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-         version="2.5"
-         xmlns="http://java.sun.com/xml/ns/javaee">
+	version="2.5" xmlns="http://java.sun.com/xml/ns/javaee">
 
-  <!-- Servlets -->
-  <servlet>
-    <servlet-name>greetServlet</servlet-name>
-    <servlet-class>com.brightedu.server.GreetingServiceImpl</servlet-class>
-  </servlet>
-  
-  <servlet-mapping>
-    <servlet-name>greetServlet</servlet-name>
-    <url-pattern>/brightedu/greet</url-pattern>
-  </servlet-mapping>
-  
-   <servlet>
-    <servlet-name>init</servlet-name>
-    <servlet-class>com.brightedu.server.util.InitServlet</servlet-class>
-  	<load-on-startup>0</load-on-startup>
-  </servlet>
-  
-  <!-- Default page to serve -->
-  <welcome-file-list>
-    <welcome-file>BrightEdu.html</welcome-file>
-  </welcome-file-list>
-  <servlet>
-  	<servlet-name>DataBaseRPC</servlet-name>
-  	<servlet-class>com.brightedu.server.DataBaseRPCImpl</servlet-class>
-  </servlet>
-  <servlet-mapping>
-  	<servlet-name>DataBaseRPC</servlet-name>
-  	<url-pattern>/brightedu/DataBaseRPC</url-pattern>
-  </servlet-mapping>
+	<!-- Servlets -->
+	<servlet>
+		<servlet-name>greetServlet</servlet-name>
+		<servlet-class>com.brightedu.server.GreetingServiceImpl</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>greetServlet</servlet-name>
+		<url-pattern>/brightedu/greet</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>init</servlet-name>
+		<servlet-class>com.brightedu.server.util.InitServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+
+	<servlet>
+		<servlet-name>formwithfile</servlet-name>
+		<servlet-class>com.brightedu.server.FileFormServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>formwithfile</servlet-name>
+		<url-pattern>/brightedu/formwithfile</url-pattern>
+	</servlet-mapping>
+
+	<filter>
+		<filter-name>privfilter</filter-name>
+		<filter-class>com.brightedu.server.PrivilegeFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>privfilter</filter-name>
+		<url-pattern>/brightedu/greet</url-pattern>
+	</filter-mapping>
+
+	<!-- Default page to serve -->
+	<welcome-file-list>
+		<welcome-file>BrightEdu.html</welcome-file>
+	</welcome-file-list>
+	<servlet>
+		<servlet-name>DataBaseRPC</servlet-name>
+		<servlet-class>com.brightedu.server.DataBaseRPCImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DataBaseRPC</servlet-name>
+		<url-pattern>/brightedu/DataBaseRPC</url-pattern>
+	</servlet-mapping>
   <servlet>
   	<servlet-name>PaymentRPC</servlet-name>
   	<servlet-class>com.brightedu.server.PaymentRPCImpl</servlet-class>
