@@ -17,10 +17,7 @@ import org.mybatis.generator.api.dom.xml.Document;
 import org.mybatis.generator.api.dom.xml.TextElement;
 import org.mybatis.generator.api.dom.xml.XmlElement;
 
-/**
-* @author pan.wei
-* @date 2011-11-30 下午08:36:11
-*/
+
 public class PostgrePagingPlugin extends PluginAdapter {
 
 	@Override
@@ -37,18 +34,6 @@ public class PostgrePagingPlugin extends PluginAdapter {
 			IntrospectedTable introspectedTable) {
 		XmlElement parentElement = document.getRootElement();
 
-//		// 产生分页语句前半部分
-//		XmlElement paginationPrefixElement = new XmlElement("sql");
-//		paginationPrefixElement.addAttribute(new Attribute("id",
-//				"PostgreSqlPrefix"));
-//		XmlElement pageStart = new XmlElement("if");
-//		pageStart.addAttribute(new Attribute("test", "page != null"));
-//		pageStart.addElement(new TextElement(
-//				"select * from  "));
-//		paginationPrefixElement.addElement(pageStart);
-//		parentElement.addElement(paginationPrefixElement);
-
-		// 产生分页语句后半部分
 		XmlElement paginationSuffixElement = new XmlElement("sql");
 		paginationSuffixElement.addAttribute(new Attribute("id",
 				"PostgreSqlSuffix"));
@@ -66,9 +51,6 @@ public class PostgrePagingPlugin extends PluginAdapter {
 	public boolean sqlMapSelectByExampleWithoutBLOBsElementGenerated(
 			XmlElement element, IntrospectedTable introspectedTable) {
 
-//		XmlElement pageStart = new XmlElement("include"); //$NON-NLS-1$   
-//		pageStart.addAttribute(new Attribute("refid", "PostgreSqlPrefix"));
-//		element.getElements().add(0, pageStart);
 
 		XmlElement isNotNullElement = new XmlElement("include"); //$NON-NLS-1$   
 		isNotNullElement.addAttribute(new Attribute("refid",
