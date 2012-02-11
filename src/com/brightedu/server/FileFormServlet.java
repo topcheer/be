@@ -66,18 +66,7 @@ public class FileFormServlet extends HttpServlet {
 					if (slash > 0)
 						fileName = fileName.substring(slash + 1);
 					args.put("fileName", fileName);
-					// upload requests can come from smartGWT (args) or
-					// FCKEditor (request)
-					String contextName = args.get("context");
-					String model = args.get("model");
-					String path = args.get("path");
-					if (contextName == null) {
-						isGWT = false;
-						contextName = request.getParameter("context");
-						model = request.getParameter("model");
-						path = request.getParameter("path");
-
-					}
+					
 					InputStream in = null;
 					try {
 						in = item.openStream();

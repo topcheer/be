@@ -21,6 +21,7 @@ import java.util.List;
 import com.brightedu.client.DataBaseRPC;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.College;
+import com.brightedu.model.edu.RecruitAgent;
 import com.brightedu.model.edu.StudentClassified;
 import com.brightedu.model.edu.Subjects;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -142,5 +143,10 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 	public boolean saveSubject(Subjects subject) {
 		return agent.saveSubject(subject);
 	}
+	
+	/**************************获取agent列表************************************/
 
+	public List<RecruitAgent> getRecruitAgentList(int offset, int limit){
+		return agent.getRecruitAgentList(offset,limit);
+	}
 }

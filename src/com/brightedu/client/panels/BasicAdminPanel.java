@@ -40,8 +40,8 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public abstract class BasicAdminPanel extends VLayout {
 
-	protected final DataBaseRPCAsync dbService = GWT.create(DataBaseRPC.class);
-
+//	protected final DataBaseRPCAsync dbService = GWT.create(DataBaseRPC.class);
+	protected final DataBaseRPCAsync dbService = BrightEdu.createDataBaseRPC();
 	protected ToolStripButton addButton = new ToolStripButton("添加");
 	protected ToolStripButton delButton = new ToolStripButton("删除");
 	protected TextItem searchItem = new TextItem("搜索内容");

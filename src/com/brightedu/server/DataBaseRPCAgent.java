@@ -9,12 +9,15 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import com.brightedu.client.DataBaseRPC;
 import com.brightedu.dao.edu.BatchIndexMapper;
 import com.brightedu.dao.edu.CollegeMapper;
+import com.brightedu.dao.edu.RecruitAgentMapper;
 import com.brightedu.dao.edu.StudentClassifiedMapper;
 import com.brightedu.dao.edu.SubjectsMapper;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.BatchIndexExample;
 import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.CollegeExample;
+import com.brightedu.model.edu.RecruitAgent;
+import com.brightedu.model.edu.RecruitAgentExample;
 import com.brightedu.model.edu.StudentClassified;
 import com.brightedu.model.edu.StudentClassifiedExample;
 import com.brightedu.model.edu.Subjects;
@@ -201,9 +204,15 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		try {
 			CollegeExample ex = new CollegeExample();
 			ex.setOrderByClause("college_id");
-			List<College> result = session.selectList(
-					"com.brightedu.dao.edu.CollegeMapper.selectByExample", ex,
-					new RowBounds(offset, limit));
+			List<College> result = null;
+			if (offset == -1 && limit == -1) {
+				CollegeMapper cm = session.getMapper(CollegeMapper.class);
+				result = cm.selectByExample(null);
+			} else {
+				result = session.selectList(
+						"com.brightedu.dao.edu.CollegeMapper.selectByExample",
+						ex, new RowBounds(offset, limit));
+			}
 			return result;
 		} finally {
 			session.close();
@@ -347,6 +356,28 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			cm.updateByPrimaryKey(subject);
 			session.commit();
 			return true;
+		} finally {
+			session.close();
+		}
+	}
+
+	/************************** agent管理 ************************************/
+
+	public List<RecruitAgent> getRecruitAgentList(int offset, int limit) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			RecruitAgentExample ex = new RecruitAgentExample();
+			ex.setOrderByClause("agent_id");
+			List<RecruitAgent> result = null;
+			if (offset == -1 && limit == -1) {
+				RecruitAgentMapper cm = session.getMapper(RecruitAgentMapper.class);
+				result = cm.selectByExample(null);
+			} else {
+				result = session.selectList(
+						"com.brightedu.dao.edu.RecruitAgentMapper.selectByExample",
+						ex, new RowBounds(offset, limit));
+			}
+			return result;
 		} finally {
 			session.close();
 		}

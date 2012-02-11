@@ -1,18 +1,21 @@
 package com.brightedu.client.panels.admin;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.brightedu.client.CommonAsyncCall;
 import com.brightedu.client.panels.BasicAdminPanel;
+import com.brightedu.model.edu.College;
+import com.brightedu.model.edu.RecruitAgent;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.LoadEvent;
 import com.google.gwt.event.dom.client.LoadHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.NamedFrame;
 import com.smartgwt.client.data.Record;
-import com.smartgwt.client.types.ContentsType;
 import com.smartgwt.client.types.Encoding;
 import com.smartgwt.client.types.ListGridFieldType;
-import com.smartgwt.client.widgets.HTMLPane;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.ValuesManager;
@@ -85,7 +88,7 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 		private SelectItem collegeItem = new SelectItem("college", "合作高校");
 		private SelectItem agentItem = new SelectItem("agent", "我方学校");
 		private SelectItem statusItem = new SelectItem("status", "状态");
-		UploadItem fileItem = new UploadItem("agreement", "协议");
+		UploadItem fileItem = new UploadItem("agreement", "<nobr>协议</nobr>");
 		DynamicForm form = new DynamicForm();
 		ValuesManager vm = new ValuesManager();
 		boolean fakeFrameLoaded = false;
@@ -116,6 +119,30 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 			super.init();
 			setSize("325", "170");
 			form.setAction(GWT.getModuleBaseURL() + "formwithfile");
+			initData();
+		}
+
+		private void initData() {
+			AsyncCallback<List<College>> collegeCall = new CommonAsyncCall<List<College>>() {
+				public void onSuccess(List<College> result) {
+					LinkedHashMap<String, String> values = new LinkedHashMap<String, String>();
+					for (College c : result) {
+						values.put(c.getCollege_id() + "", c.getCollege_name());
+					}
+					collegeItem.setValueMap(values);
+				}
+			};
+			AsyncCallback<List<RecruitAgent>> agentCall = new CommonAsyncCall<List<RecruitAgent>>() {
+				public void onSuccess(List<RecruitAgent> result) {
+					LinkedHashMap<String, String> values = new LinkedHashMap<String, String>();
+					for (RecruitAgent r : result) {
+						values.put(r.getAgent_id() + "", r.getAgent_name());
+					}
+					agentItem.setValueMap(values);
+				}
+			};
+			dbService.getCollegeList(-1, -1, collegeCall);
+			dbService.getRecruitAgentList(-1, -1, agentCall);
 		}
 
 		@Override
@@ -139,16 +166,17 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 		@Override
 		protected DynamicForm getContentForm() {
 			// fileItem.setIcons(chooseIcon);
-			collegeItem.setValue("南开");
-			agentItem.setValue("今明本部");
+//			collegeItem.setValue("南开");
+//			agentItem.setValue("今明本部");
 			int len = 250;
 			collegeItem.setWidth(len);
 			agentItem.setWidth(len);
 			statusItem.setWidth(len);
 			// fileItem.disable();
-			fileItem.setWidth("100%");
-			fileItem.setHeight(30);
-			
+//			fileItem.setWidth("100%");
+//			fileItem.
+//			fileItem.setHeight(30);
+
 			form.setPadding(5);
 			form.setFields(collegeItem, agentItem, statusItem, fileItem);
 			form.setValuesManager(vm);

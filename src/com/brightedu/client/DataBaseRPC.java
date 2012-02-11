@@ -19,6 +19,7 @@ import java.util.List;
 
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.College;
+import com.brightedu.model.edu.RecruitAgent;
 import com.brightedu.model.edu.StudentClassified;
 import com.brightedu.model.edu.Subjects;
 import com.google.gwt.core.client.GWT;
@@ -68,4 +69,9 @@ public interface DataBaseRPC extends RemoteService {
 	public boolean deleteSubject(List<Integer> subject_ids);
 	boolean saveSubject(Subjects subject);
 	
+	/**
+	 * 获取agent列表
+	 * @return
+	 */
+	public List<RecruitAgent> getRecruitAgentList(int offset, int limit);
 }
