@@ -1,5 +1,6 @@
 package com.brightedu.client.panels;
 
+import com.brightedu.client.panels.admin.AgentTypeAdmin;
 import com.brightedu.client.panels.admin.BatchAdmin;
 import com.brightedu.client.panels.admin.CorpCollegeAdmin;
 import com.brightedu.client.panels.admin.CorpCollegeAgreementAdmin;
@@ -31,6 +32,9 @@ public class PanelData {
 		if (id.equals("college_agreement_manage")) { // 高校协议管理
 			return new CorpCollegeAgreementAdmin.Factory();
 		}
+		if (id.equals("agent_type_manage")) { // 机构类型维护
+			return new AgentTypeAdmin.Factory();
+		}		
 		return null;
 	}
 
