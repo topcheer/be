@@ -95,6 +95,7 @@ public class BrightEdu implements EntryPoint {
 
 	private void login(final LoginDialog loginDialog) {
 		String username = loginDialog.getUserItem().getValueAsString();
+		@SuppressWarnings("unused")
 		String password = loginDialog.getPassItem().getValueAsString();
 		User user = new User();
 		user.setUser_name(username);
