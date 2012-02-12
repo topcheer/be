@@ -91,46 +91,46 @@ public interface DataBaseRPC extends RemoteService {
 	
 	/*********************** 机构类型维护 ************************************/
 	
-	List<AgentType> getAgentTypeList(int offset, int limit);
-	List getAgentTypeListAndTotalCounts(int offset, int limit);
-	boolean addAgentType(AgentType agentType);
-	boolean deleteAgentType(List<Integer> agentType_ids);
-	boolean saveAgentType(AgentType agenttype);
+	public List<AgentType> getAgentTypeList(int offset, int limit);
+	public List<AgentType> getAgentTypeListAndTotalCounts(int offset, int limit);
+	public boolean addAgentType(AgentType agentType);
+	public boolean deleteAgentType(List<Integer> agentType_ids);
+	public boolean saveAgentType(AgentType agenttype);
 	
 	/*********************** 费用类型维护 ************************************/
-	List<FeeType> getFeeTypeList(int offset, int limit);
-	List getFeeTypeListAndTotalCounts(int offset, int limit);
-	boolean addFeeType(String typeName);
-	boolean deletFeeType(List<Integer> feeType_ids);
-	boolean saveFeeType(FeeType agenttype);
+	public List<FeeType> getFeeTypeList(int offset, int limit);
+	public List<FeeType> getFeeTypeListAndTotalCounts(int offset, int limit);
+	public boolean addFeeType(String typeName);
+	public boolean deletFeeType(List<Integer> feeType_ids);
+	public boolean saveFeeType(FeeType agenttype);
 	
 	/*********************** 入账类型维护 ************************************/
-	List<ChargeType> getChargeTypeList(int offset, int limit);
-	List getChargeTypeListAndTotalCounts(int offset, int limit);
-	boolean addChargeType(String typeName);
-	boolean deletChargeType(List<Integer> chargeType_ids);
-	boolean saveChargeType(ChargeType chargetype);
+	public List<ChargeType> getChargeTypeList(int offset, int limit);
+	public List<ChargeType> getChargeTypeListAndTotalCounts(int offset, int limit);
+	public boolean addChargeType(String typeName);
+	public boolean deletChargeType(List<Integer> chargeType_ids);
+	public boolean saveChargeType(ChargeType chargetype);
 
 	/*********************** 用户类型维护 ************************************/
-	List<UserType> getUserTypeList(int offset, int limit);
-	List getUserTypeListAndTotalCounts(int offset, int limit);
-	boolean addUserType(String typeName);
-	boolean deletUserType(List<Integer> UserType_ids);
-	boolean saveUserType(UserType Usertype);
+	public List<UserType> getUserTypeList(int offset, int limit);
+	public List<UserType> getUserTypeListAndTotalCounts(int offset, int limit);
+	public boolean addUserType(String typeName);
+	public boolean deletUserType(List<Integer> UserType_ids);
+	public boolean saveUserType(UserType Usertype);
 	
 	/*********************** 照片类型维护 ************************************/
-	List<PictureType> getPictureTypeList(int offset, int limit);
-	List getPictureTypeListAndTotalCounts(int offset, int limit);
-	boolean addPictureType(String typeName);
-	boolean deletPictureType(List<Integer> PictureType_ids);
-	boolean savePictureType(PictureType Picturetype);
+	public List<PictureType> getPictureTypeList(int offset, int limit);
+	public List<PictureType> getPictureTypeListAndTotalCounts(int offset, int limit);
+	public boolean addPictureType(String typeName);
+	public boolean deletPictureType(List<Integer> PictureType_ids);
+	public boolean savePictureType(PictureType Picturetype);
 	
 	/*********************** 学生状态类型维护 ************************************/
-	List<StudentStatus> getStudentStatusList(int offset, int limit);
-	List getStudentStatusListAndTotalCounts(int offset, int limit);
-	boolean addStudentStatus(String typeName);
-	boolean deletStudentStatus(List<Integer> StudentStatus_ids);
-	boolean saveStudentStatus(StudentStatus StudentStatus);
+	public List<StudentStatus> getStudentStatusList(int offset, int limit);
+	public List<StudentStatus> getStudentStatusListAndTotalCounts(int offset, int limit);
+	public boolean addStudentStatus(String typeName);
+	public boolean deletStudentStatus(List<Integer> StudentStatus_ids);
+	public boolean saveStudentStatus(StudentStatus StudentStatus);
 	
 	
 }
