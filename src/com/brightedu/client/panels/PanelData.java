@@ -4,6 +4,7 @@ import com.brightedu.client.panels.admin.AgentTypeAdmin;
 import com.brightedu.client.panels.admin.BatchAdmin;
 import com.brightedu.client.panels.admin.CorpCollegeAdmin;
 import com.brightedu.client.panels.admin.CorpCollegeAgreementAdmin;
+import com.brightedu.client.panels.admin.FeeTypeAdmin;
 import com.brightedu.client.panels.admin.StudentClassesAdmin;
 import com.brightedu.client.panels.admin.StudentTypeAdmin;
 import com.brightedu.client.panels.admin.SubjectsAdmin;
@@ -35,6 +36,9 @@ public class PanelData {
 		if (id.equals("agent_type_manage")) { // 机构类型维护
 			return new AgentTypeAdmin.Factory();
 		}		
+		if (id.equals("fee_type_manage")) { // 机构类型维护
+			return new FeeTypeAdmin.Factory();
+		}
 		return null;
 	}
 

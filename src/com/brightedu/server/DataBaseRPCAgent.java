@@ -10,6 +10,7 @@ import com.brightedu.client.DataBaseRPC;
 import com.brightedu.dao.edu.AgentTypeMapper;
 import com.brightedu.dao.edu.BatchIndexMapper;
 import com.brightedu.dao.edu.CollegeMapper;
+import com.brightedu.dao.edu.FeeTypeMapper;
 import com.brightedu.dao.edu.RecruitAgentMapper;
 import com.brightedu.dao.edu.StudentClassifiedMapper;
 import com.brightedu.dao.edu.StudentTypeMapper;
@@ -20,6 +21,8 @@ import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.BatchIndexExample;
 import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.CollegeExample;
+import com.brightedu.model.edu.FeeType;
+import com.brightedu.model.edu.FeeTypeExample;
 import com.brightedu.model.edu.RecruitAgent;
 import com.brightedu.model.edu.RecruitAgentExample;
 import com.brightedu.model.edu.StudentClassified;
@@ -545,6 +548,86 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		try {
 			AgentTypeMapper cm = session.getMapper(AgentTypeMapper.class);
 			cm.updateByPrimaryKey(agenttype);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+
+	/*********************** 费用类型维护 ************************************/
+	@Override
+	public List<FeeType> getFeeTypeList(int offset, int limit) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			FeeTypeExample ex = new FeeTypeExample();
+			ex.setOrderByClause("fee_id");
+			List<FeeType> result = session.selectList(
+					"com.brightedu.dao.edu.FeeTypeMapper.selectByExample", ex,
+					new RowBounds(offset, limit));
+			return result;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public List getFeeTypeListAndTotalCounts(int offset, int limit) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			FeeTypeExample ex = new FeeTypeExample();
+			ex.setOrderByClause("fee_id");
+			List result = session.selectList(
+					"com.brightedu.dao.edu.FeeTypeMapper.selectByExample", ex,
+					new RowBounds(offset, limit));
+			FeeTypeMapper cm = session.getMapper(FeeTypeMapper.class);
+			Integer counts = cm.countByExample(null);
+			result.add(counts);
+			return result;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean addFeeType(String typeName) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			FeeTypeMapper scm = session
+					.getMapper(FeeTypeMapper.class);
+			FeeType sc = new FeeType();
+			sc.setFee_name(typeName);
+			int count = scm.insertSelective(sc);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean deletFeeType(List<Integer> feeType_ids) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			FeeTypeMapper scm = session
+					.getMapper(FeeTypeMapper.class);
+			FeeTypeExample ex = new FeeTypeExample();
+			FeeTypeExample.Criteria cr = ex.createCriteria();
+			cr.andFee_idIn(feeType_ids);
+			scm.deleteByExample(ex);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean saveFeeType(FeeType agenttype) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			FeeTypeMapper bim = session.getMapper(FeeTypeMapper.class);
+			bim.updateByPrimaryKey(agenttype);
 			session.commit();
 			return true;
 		} finally {
