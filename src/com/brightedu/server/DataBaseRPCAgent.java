@@ -12,10 +12,13 @@ import com.brightedu.dao.edu.BatchIndexMapper;
 import com.brightedu.dao.edu.ChargeTypeMapper;
 import com.brightedu.dao.edu.CollegeMapper;
 import com.brightedu.dao.edu.FeeTypeMapper;
+import com.brightedu.dao.edu.PictureTypeMapper;
 import com.brightedu.dao.edu.RecruitAgentMapper;
 import com.brightedu.dao.edu.StudentClassifiedMapper;
+import com.brightedu.dao.edu.StudentStatusMapper;
 import com.brightedu.dao.edu.StudentTypeMapper;
 import com.brightedu.dao.edu.SubjectsMapper;
+import com.brightedu.dao.edu.UserTypeMapper;
 import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.AgentTypeExample;
 import com.brightedu.model.edu.BatchIndex;
@@ -26,15 +29,21 @@ import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.CollegeExample;
 import com.brightedu.model.edu.FeeType;
 import com.brightedu.model.edu.FeeTypeExample;
+import com.brightedu.model.edu.PictureType;
+import com.brightedu.model.edu.PictureTypeExample;
 import com.brightedu.model.edu.RecruitAgent;
 import com.brightedu.model.edu.RecruitAgentExample;
 import com.brightedu.model.edu.StudentClassified;
 import com.brightedu.model.edu.StudentClassifiedExample;
+import com.brightedu.model.edu.StudentStatus;
+import com.brightedu.model.edu.StudentStatusExample;
 import com.brightedu.model.edu.StudentType;
 import com.brightedu.model.edu.StudentTypeExample;
 import com.brightedu.model.edu.Subjects;
 import com.brightedu.model.edu.SubjectsExample;
+import com.brightedu.model.edu.UserType;
 import com.brightedu.model.edu.BatchIndexExample.Criteria;
+import com.brightedu.model.edu.UserTypeExample;
 import com.brightedu.server.util.ConnectionManager;
 
 public class DataBaseRPCAgent implements DataBaseRPC {
@@ -709,6 +718,248 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		SqlSession session = sessionFactory.openSession();
 		try {
 			ChargeTypeMapper bim = session.getMapper(ChargeTypeMapper.class);
+			bim.updateByPrimaryKey(agenttype);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+	
+	/*********************** 用户类型维护 ************************************/
+	@Override
+	public List<UserType> getUserTypeList(int offset, int limit) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			UserTypeExample ex = new UserTypeExample();
+			ex.setOrderByClause("user_type_id");
+			List<UserType> result = session.selectList(
+					"com.brightedu.dao.edu.UserTypeMapper.selectByExample", ex,
+					new RowBounds(offset, limit));
+			return result;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public List getUserTypeListAndTotalCounts(int offset, int limit) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			UserTypeExample ex = new UserTypeExample();
+			ex.setOrderByClause("user_type_id");
+			List result = session.selectList(
+					"com.brightedu.dao.edu.UserTypeMapper.selectByExample", ex,
+					new RowBounds(offset, limit));
+			UserTypeMapper cm = session.getMapper(UserTypeMapper.class);
+			Integer counts = cm.countByExample(null);
+			result.add(counts);
+			return result;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean addUserType(String typeName) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			UserTypeMapper scm = session
+					.getMapper(UserTypeMapper.class);
+			UserType sc = new UserType();
+			sc.setUser_type_name(typeName);
+			int count = scm.insertSelective(sc);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean deletUserType(List<Integer> UserType_ids) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			UserTypeMapper scm = session
+					.getMapper(UserTypeMapper.class);
+			UserTypeExample ex = new UserTypeExample();
+			UserTypeExample.Criteria cr = ex.createCriteria();
+			cr.andUser_type_idIn(UserType_ids);
+			scm.deleteByExample(ex);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean saveUserType(UserType agenttype) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			UserTypeMapper bim = session.getMapper(UserTypeMapper.class);
+			bim.updateByPrimaryKey(agenttype);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+	
+	/*********************** 照片类型维护 ************************************/
+	
+	@Override
+	public List<PictureType> getPictureTypeList(int offset, int limit) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			PictureTypeExample ex = new PictureTypeExample();
+			ex.setOrderByClause("pic_type_id");
+			List<PictureType> result = session.selectList(
+					"com.brightedu.dao.edu.PictureTypeMapper.selectByExample", ex,
+					new RowBounds(offset, limit));
+			return result;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public List getPictureTypeListAndTotalCounts(int offset, int limit) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			PictureTypeExample ex = new PictureTypeExample();
+			ex.setOrderByClause("pic_type_id");
+			List result = session.selectList(
+					"com.brightedu.dao.edu.PictureTypeMapper.selectByExample", ex,
+					new RowBounds(offset, limit));
+			PictureTypeMapper cm = session.getMapper(PictureTypeMapper.class);
+			Integer counts = cm.countByExample(null);
+			result.add(counts);
+			return result;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean addPictureType(String typeName) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			PictureTypeMapper scm = session
+					.getMapper(PictureTypeMapper.class);
+			PictureType sc = new PictureType();
+			sc.setPic_type_name(typeName);
+			int count = scm.insertSelective(sc);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean deletPictureType(List<Integer> PictureType_ids) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			PictureTypeMapper scm = session
+					.getMapper(PictureTypeMapper.class);
+			PictureTypeExample ex = new PictureTypeExample();
+			PictureTypeExample.Criteria cr = ex.createCriteria();
+			cr.andPic_type_idIn(PictureType_ids);
+			scm.deleteByExample(ex);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean savePictureType(PictureType agenttype) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			PictureTypeMapper bim = session.getMapper(PictureTypeMapper.class);
+			bim.updateByPrimaryKey(agenttype);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+	
+	/*********************** 学生状态类型维护 ************************************/
+	
+	@Override
+	public List<StudentStatus> getStudentStatusList(int offset, int limit) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			StudentStatusExample ex = new StudentStatusExample();
+			ex.setOrderByClause("stu_status_id");
+			List<StudentStatus> result = session.selectList(
+					"com.brightedu.dao.edu.StudentStatusMapper.selectByExample", ex,
+					new RowBounds(offset, limit));
+			return result;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public List getStudentStatusListAndTotalCounts(int offset, int limit) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			StudentStatusExample ex = new StudentStatusExample();
+			ex.setOrderByClause("stu_status_id");
+			List result = session.selectList(
+					"com.brightedu.dao.edu.StudentStatusMapper.selectByExample", ex,
+					new RowBounds(offset, limit));
+			StudentStatusMapper cm = session.getMapper(StudentStatusMapper.class);
+			Integer counts = cm.countByExample(null);
+			result.add(counts);
+			return result;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean addStudentStatus(String typeName) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			StudentStatusMapper scm = session
+					.getMapper(StudentStatusMapper.class);
+			StudentStatus sc = new StudentStatus();
+			sc.setStu_status_name(typeName);
+			int count = scm.insertSelective(sc);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean deletStudentStatus(List<Integer> StudentStatus_ids) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			StudentStatusMapper scm = session
+					.getMapper(StudentStatusMapper.class);
+			StudentStatusExample ex = new StudentStatusExample();
+			StudentStatusExample.Criteria cr = ex.createCriteria();
+			cr.andStu_status_idIn(StudentStatus_ids);
+			scm.deleteByExample(ex);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean saveStudentStatus(StudentStatus agenttype) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			StudentStatusMapper bim = session.getMapper(StudentStatusMapper.class);
 			bim.updateByPrimaryKey(agenttype);
 			session.commit();
 			return true;

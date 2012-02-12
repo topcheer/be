@@ -6,9 +6,12 @@ import com.brightedu.client.panels.admin.ChargeTypeAdmin;
 import com.brightedu.client.panels.admin.CorpCollegeAdmin;
 import com.brightedu.client.panels.admin.CorpCollegeAgreementAdmin;
 import com.brightedu.client.panels.admin.FeeTypeAdmin;
+import com.brightedu.client.panels.admin.PictureTypeAdmin;
 import com.brightedu.client.panels.admin.StudentClassesAdmin;
+import com.brightedu.client.panels.admin.StudentStatusAdmin;
 import com.brightedu.client.panels.admin.StudentTypeAdmin;
 import com.brightedu.client.panels.admin.SubjectsAdmin;
+import com.brightedu.client.panels.admin.UserTypeAdmin;
 
 public class PanelData {
 
@@ -42,6 +45,16 @@ public class PanelData {
 		}
 		if (id.equals("charge_type_manage")) { // 机构类型维护
 			return new ChargeTypeAdmin.Factory();
+		}
+
+		if (id.equals("user_type_manage")) { // 用户类型维护
+			return new UserTypeAdmin.Factory();
+		}
+		if (id.equals("pic_type_manage")) { // 照片类型维护
+			return new PictureTypeAdmin.Factory();
+		}
+		if (id.equals("student_status_type_manage")) { // 学生状态类型维护
+			return new StudentStatusAdmin.Factory();
 		}
 		return null;
 	}

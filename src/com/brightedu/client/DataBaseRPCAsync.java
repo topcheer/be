@@ -7,10 +7,13 @@ import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.ChargeType;
 import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.FeeType;
+import com.brightedu.model.edu.PictureType;
 import com.brightedu.model.edu.RecruitAgent;
 import com.brightedu.model.edu.StudentClassified;
+import com.brightedu.model.edu.StudentStatus;
 import com.brightedu.model.edu.StudentType;
 import com.brightedu.model.edu.Subjects;
+import com.brightedu.model.edu.UserType;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface DataBaseRPCAsync {
@@ -121,5 +124,46 @@ public interface DataBaseRPCAsync {
 			AsyncCallback<Boolean> callback);
 
 	void saveChargeType(ChargeType chargetype, AsyncCallback<Boolean> callback);
+
+	void addUserType(String typeName, AsyncCallback<Boolean> callback);
+
+	void deletUserType(List<Integer> UserType_ids,
+			AsyncCallback<Boolean> callback);
+
+	void getUserTypeList(int offset, int limit,
+			AsyncCallback<List<UserType>> callback);
+
+	void getUserTypeListAndTotalCounts(int offset, int limit,
+			AsyncCallback<List<UserType>> callback);
+
+	void saveUserType(UserType Usertype, AsyncCallback<Boolean> callback);
+
+	void addPictureType(String typeName, AsyncCallback<Boolean> callback);
+
+	void deletPictureType(List<Integer> PictureType_ids,
+			AsyncCallback<Boolean> callback);
+
+	void getPictureTypeList(int offset, int limit,
+			AsyncCallback<List<PictureType>> callback);
+
+	void getPictureTypeListAndTotalCounts(int offset, int limit,
+			AsyncCallback<List<PictureType>> callback);
+
+	void savePictureType(PictureType Picturetype,
+			AsyncCallback<Boolean> callback);
+
+	void addStudentStatus(String typeName, AsyncCallback<Boolean> callback);
+
+	void deletStudentStatus(List<Integer> StudentStatus_ids,
+			AsyncCallback<Boolean> callback);
+
+	void getStudentStatusList(int offset, int limit,
+			AsyncCallback<List<StudentStatus>> callback);
+
+	void getStudentStatusListAndTotalCounts(int offset, int limit,
+			AsyncCallback<List<StudentStatus>> callback);
+
+	void saveStudentStatus(StudentStatus StudentStatus,
+			AsyncCallback<Boolean> callback);
 
 }

@@ -22,10 +22,13 @@ import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.ChargeType;
 import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.FeeType;
+import com.brightedu.model.edu.PictureType;
 import com.brightedu.model.edu.RecruitAgent;
 import com.brightedu.model.edu.StudentClassified;
 import com.brightedu.model.edu.StudentType;
 import com.brightedu.model.edu.Subjects;
+import com.brightedu.model.edu.UserType;
+import com.brightedu.model.edu.StudentStatus;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -107,4 +110,27 @@ public interface DataBaseRPC extends RemoteService {
 	boolean addChargeType(String typeName);
 	boolean deletChargeType(List<Integer> chargeType_ids);
 	boolean saveChargeType(ChargeType chargetype);
+
+	/*********************** 用户类型维护 ************************************/
+	List<UserType> getUserTypeList(int offset, int limit);
+	List getUserTypeListAndTotalCounts(int offset, int limit);
+	boolean addUserType(String typeName);
+	boolean deletUserType(List<Integer> UserType_ids);
+	boolean saveUserType(UserType Usertype);
+	
+	/*********************** 照片类型维护 ************************************/
+	List<PictureType> getPictureTypeList(int offset, int limit);
+	List getPictureTypeListAndTotalCounts(int offset, int limit);
+	boolean addPictureType(String typeName);
+	boolean deletPictureType(List<Integer> PictureType_ids);
+	boolean savePictureType(PictureType Picturetype);
+	
+	/*********************** 学生状态类型维护 ************************************/
+	List<StudentStatus> getStudentStatusList(int offset, int limit);
+	List getStudentStatusListAndTotalCounts(int offset, int limit);
+	boolean addStudentStatus(String typeName);
+	boolean deletStudentStatus(List<Integer> StudentStatus_ids);
+	boolean saveStudentStatus(StudentStatus StudentStatus);
+	
+	
 }

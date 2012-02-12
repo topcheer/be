@@ -24,10 +24,13 @@ import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.ChargeType;
 import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.FeeType;
+import com.brightedu.model.edu.PictureType;
 import com.brightedu.model.edu.RecruitAgent;
 import com.brightedu.model.edu.StudentClassified;
+import com.brightedu.model.edu.StudentStatus;
 import com.brightedu.model.edu.StudentType;
 import com.brightedu.model.edu.Subjects;
+import com.brightedu.model.edu.UserType;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class DataBaseRPCImpl extends RemoteServiceServlet implements
@@ -252,6 +255,85 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 	public boolean saveChargeType(ChargeType chargetype) {
 		return agent.saveChargeType(chargetype);
 	}
+	/*********************** 用户类型维护 ************************************/
+	@Override
+	public List<UserType> getUserTypeList(int offset, int limit) {
+		return agent.getUserTypeList(offset, limit);
+	}
+
+	@Override
+	public List getUserTypeListAndTotalCounts(int offset, int limit) {
+		return agent.getUserTypeListAndTotalCounts(offset, limit);
+	}
+
+	@Override
+	public boolean addUserType(String typeName) {
+		return agent.addUserType(typeName);
+	}
+
+	@Override
+	public boolean deletUserType(List<Integer> UserType_ids) {
+		return agent.deletUserType(UserType_ids);
+	}
+
+	@Override
+	public boolean saveUserType(UserType Usertype) {
+		return agent.saveUserType(Usertype);
+	}
+	
+	/*********************** 照片类型维护 ************************************/
+	@Override
+	public List<PictureType> getPictureTypeList(int offset, int limit) {
+		return agent.getPictureTypeList(offset, limit);
+	}
+
+	@Override
+	public List getPictureTypeListAndTotalCounts(int offset, int limit) {
+		return agent.getPictureTypeListAndTotalCounts(offset, limit);
+	}
+
+	@Override
+	public boolean addPictureType(String typeName) {
+		return agent.addPictureType(typeName);
+	}
+
+	@Override
+	public boolean deletPictureType(List<Integer> PictureType_ids) {
+		return agent.deletPictureType(PictureType_ids);
+	}
+
+	@Override
+	public boolean savePictureType(PictureType Picturetype) {
+		return agent.savePictureType(Picturetype);
+	}
+	
+	/*********************** 学生状态类型维护 ************************************/
+	@Override
+	public List<StudentStatus> getStudentStatusList(int offset, int limit) {
+		return agent.getStudentStatusList(offset, limit);
+	}
+
+	@Override
+	public List getStudentStatusListAndTotalCounts(int offset, int limit) {
+		return agent.getStudentStatusListAndTotalCounts(offset, limit);
+	}
+
+	@Override
+	public boolean addStudentStatus(String typeName) {
+		return agent.addStudentStatus(typeName);
+	}
+
+	@Override
+	public boolean deletStudentStatus(List<Integer> StudentStatus_ids) {
+		return agent.deletStudentStatus(StudentStatus_ids);
+	}
+
+	@Override
+	public boolean saveStudentStatus(StudentStatus studentStatus) {
+		return agent.saveStudentStatus(studentStatus);
+	}
+	
+
 	
 	/**************************获取agent列表************************************/
 
