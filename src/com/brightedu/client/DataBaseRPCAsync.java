@@ -86,7 +86,7 @@ public interface DataBaseRPCAsync {
 			AsyncCallback<List<AgentType>> callback);
 
 	void getAgentTypeListAndTotalCounts(int offset, int limit,
-			AsyncCallback<List> callback);
+			AsyncCallback<List<AgentType>> callback);
 
 	void addAgentType(AgentType agentType, AsyncCallback<Boolean> callback);
 
