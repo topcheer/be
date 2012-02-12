@@ -2,6 +2,7 @@ package com.brightedu.client.panels;
 
 import com.brightedu.client.panels.admin.AgentTypeAdmin;
 import com.brightedu.client.panels.admin.BatchAdmin;
+import com.brightedu.client.panels.admin.ChargeTypeAdmin;
 import com.brightedu.client.panels.admin.CorpCollegeAdmin;
 import com.brightedu.client.panels.admin.CorpCollegeAgreementAdmin;
 import com.brightedu.client.panels.admin.FeeTypeAdmin;
@@ -38,6 +39,9 @@ public class PanelData {
 		}		
 		if (id.equals("fee_type_manage")) { // 机构类型维护
 			return new FeeTypeAdmin.Factory();
+		}
+		if (id.equals("charge_type_manage")) { // 机构类型维护
+			return new ChargeTypeAdmin.Factory();
 		}
 		return null;
 	}

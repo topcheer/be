@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import com.brightedu.client.DataBaseRPC;
 import com.brightedu.dao.edu.AgentTypeMapper;
 import com.brightedu.dao.edu.BatchIndexMapper;
+import com.brightedu.dao.edu.ChargeTypeMapper;
 import com.brightedu.dao.edu.CollegeMapper;
 import com.brightedu.dao.edu.FeeTypeMapper;
 import com.brightedu.dao.edu.RecruitAgentMapper;
@@ -19,6 +20,8 @@ import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.AgentTypeExample;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.BatchIndexExample;
+import com.brightedu.model.edu.ChargeType;
+import com.brightedu.model.edu.ChargeTypeExample;
 import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.CollegeExample;
 import com.brightedu.model.edu.FeeType;
@@ -627,6 +630,85 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		SqlSession session = sessionFactory.openSession();
 		try {
 			FeeTypeMapper bim = session.getMapper(FeeTypeMapper.class);
+			bim.updateByPrimaryKey(agenttype);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+	/*********************** 入账类型维护 ************************************/
+	@Override
+	public List<ChargeType> getChargeTypeList(int offset, int limit) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			ChargeTypeExample ex = new ChargeTypeExample();
+			ex.setOrderByClause("charge_type_id");
+			List<ChargeType> result = session.selectList(
+					"com.brightedu.dao.edu.ChargeTypeMapper.selectByExample", ex,
+					new RowBounds(offset, limit));
+			return result;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public List getChargeTypeListAndTotalCounts(int offset, int limit) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			ChargeTypeExample ex = new ChargeTypeExample();
+			ex.setOrderByClause("charge_type_id");
+			List result = session.selectList(
+					"com.brightedu.dao.edu.ChargeTypeMapper.selectByExample", ex,
+					new RowBounds(offset, limit));
+			ChargeTypeMapper cm = session.getMapper(ChargeTypeMapper.class);
+			Integer counts = cm.countByExample(null);
+			result.add(counts);
+			return result;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean addChargeType(String typeName) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			ChargeTypeMapper scm = session
+					.getMapper(ChargeTypeMapper.class);
+			ChargeType sc = new ChargeType();
+			sc.setCharge_type_name(typeName);
+			int count = scm.insertSelective(sc);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean deletChargeType(List<Integer> ChargeType_ids) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			ChargeTypeMapper scm = session
+					.getMapper(ChargeTypeMapper.class);
+			ChargeTypeExample ex = new ChargeTypeExample();
+			ChargeTypeExample.Criteria cr = ex.createCriteria();
+			cr.andCharge_type_idIn(ChargeType_ids);
+			scm.deleteByExample(ex);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean saveChargeType(ChargeType agenttype) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			ChargeTypeMapper bim = session.getMapper(ChargeTypeMapper.class);
 			bim.updateByPrimaryKey(agenttype);
 			session.commit();
 			return true;

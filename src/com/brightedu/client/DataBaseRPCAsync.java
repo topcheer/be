@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.BatchIndex;
+import com.brightedu.model.edu.ChargeType;
 import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.FeeType;
 import com.brightedu.model.edu.RecruitAgent;
@@ -107,5 +108,18 @@ public interface DataBaseRPCAsync {
 	void deletFeeType(List<Integer> feeType_ids, AsyncCallback<Boolean> callback);
 
 	void saveFeeType(FeeType agenttype, AsyncCallback<Boolean> callback);
+
+	void getChargeTypeList(int offset, int limit,
+			AsyncCallback<List<ChargeType>> callback);
+
+	void getChargeTypeListAndTotalCounts(int offset, int limit,
+			AsyncCallback<List<ChargeType>> callback);
+
+	void addChargeType(String typeName, AsyncCallback<Boolean> callback);
+
+	void deletChargeType(List<Integer> chargeType_ids,
+			AsyncCallback<Boolean> callback);
+
+	void saveChargeType(ChargeType chargetype, AsyncCallback<Boolean> callback);
 
 }

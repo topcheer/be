@@ -19,6 +19,7 @@ import java.util.List;
 
 import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.BatchIndex;
+import com.brightedu.model.edu.ChargeType;
 import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.FeeType;
 import com.brightedu.model.edu.RecruitAgent;
@@ -99,4 +100,11 @@ public interface DataBaseRPC extends RemoteService {
 	boolean addFeeType(String typeName);
 	boolean deletFeeType(List<Integer> feeType_ids);
 	boolean saveFeeType(FeeType agenttype);
+	
+	/*********************** 入账类型维护 ************************************/
+	List<ChargeType> getChargeTypeList(int offset, int limit);
+	List getChargeTypeListAndTotalCounts(int offset, int limit);
+	boolean addChargeType(String typeName);
+	boolean deletChargeType(List<Integer> chargeType_ids);
+	boolean saveChargeType(ChargeType chargetype);
 }

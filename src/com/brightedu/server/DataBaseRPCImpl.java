@@ -21,6 +21,7 @@ import java.util.List;
 import com.brightedu.client.DataBaseRPC;
 import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.BatchIndex;
+import com.brightedu.model.edu.ChargeType;
 import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.FeeType;
 import com.brightedu.model.edu.RecruitAgent;
@@ -224,6 +225,32 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 	@Override
 	public boolean saveFeeType(FeeType agenttype) {
 		return agent.saveFeeType(agenttype);
+	}
+
+	/*********************** 入账类型维护 ************************************/
+	@Override
+	public List<ChargeType> getChargeTypeList(int offset, int limit) {
+		return agent.getChargeTypeList(offset, limit);
+	}
+
+	@Override
+	public List getChargeTypeListAndTotalCounts(int offset, int limit) {
+		return agent.getChargeTypeListAndTotalCounts(offset, limit);
+	}
+
+	@Override
+	public boolean addChargeType(String typeName) {
+		return agent.addChargeType(typeName);
+	}
+
+	@Override
+	public boolean deletChargeType(List<Integer> chargeType_ids) {
+		return agent.deletChargeType(chargeType_ids);
+	}
+
+	@Override
+	public boolean saveChargeType(ChargeType chargetype) {
+		return agent.saveChargeType(chargetype);
 	}
 	
 	/**************************获取agent列表************************************/
