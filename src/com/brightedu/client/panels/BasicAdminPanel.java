@@ -275,6 +275,8 @@ public abstract class BasicAdminPanel extends VLayout {
 		resultList.setFields(newFields);
 		resultList.setCanEdit(true);
 		resultList.setEditEvent(ListGridEditEvent.DOUBLECLICK);
+		//disable context menu
+		resultList.setShowHeaderContextMenu(false);
 	}
 
 	private void del() {
