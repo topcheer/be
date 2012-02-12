@@ -11,7 +11,7 @@ Target Server Type    : PGSQL
 Target Server Version : 80409
 File Encoding         : 65001
 
-Date: 2012-02-12 19:57:25
+Date: 2012-02-12 21:23:57
 */
 
 
@@ -269,6 +269,8 @@ COMMENT ON COLUMN "edu"."charge_type"."charge_type_name" IS '收费类型名称'
 -- ----------------------------
 INSERT INTO "edu"."charge_type" VALUES ('1', '网银');
 INSERT INTO "edu"."charge_type" VALUES ('2', '汇款');
+INSERT INTO "edu"."charge_type" VALUES ('3', '直缴');
+INSERT INTO "edu"."charge_type" VALUES ('4', '代缴');
 
 -- ----------------------------
 -- Table structure for "edu"."co_college"
@@ -507,7 +509,7 @@ WITH (OIDS=FALSE)
 -- ----------------------------
 DROP TABLE "edu"."pic_type";
 CREATE TABLE "edu"."pic_type" (
-"pic_type_id" numeric(5) NOT NULL,
+"pic_type_id" numeric(5) DEFAULT fun_table_seq('pic_type'::character varying, 'pic_type_id'::character varying, 'next'::character varying) NOT NULL,
 "pic_type_name" varchar(255) NOT NULL
 )
 WITH (OIDS=FALSE)
@@ -518,6 +520,10 @@ COMMENT ON TABLE "edu"."pic_type" IS '照片类型';
 -- ----------------------------
 -- Records of pic_type
 -- ----------------------------
+INSERT INTO "edu"."pic_type" VALUES ('1', '身份证');
+INSERT INTO "edu"."pic_type" VALUES ('2', '个人免冠照');
+INSERT INTO "edu"."pic_type" VALUES ('3', '毕业证书');
+INSERT INTO "edu"."pic_type" VALUES ('5', '网站截图');
 
 -- ----------------------------
 -- Table structure for "edu"."recruit_agent"
@@ -1778,8 +1784,8 @@ COMMENT ON TABLE "edu"."student_pic" IS '学生照片';
 -- ----------------------------
 DROP TABLE "edu"."student_status";
 CREATE TABLE "edu"."student_status" (
-"stu_status_id" numeric(5) NOT NULL,
-"stu_status_name" numeric(255) NOT NULL
+"stu_status_id" numeric(5) DEFAULT fun_table_seq('student_status'::character varying, 'stu_status_id'::character varying, 'next'::character varying) NOT NULL,
+"stu_status_name" varchar(255) NOT NULL
 )
 WITH (OIDS=FALSE)
 
@@ -1789,6 +1795,11 @@ COMMENT ON COLUMN "edu"."student_status"."stu_status_id" IS '学生状态表';
 -- ----------------------------
 -- Records of student_status
 -- ----------------------------
+INSERT INTO "edu"."student_status" VALUES ('1', '正常');
+INSERT INTO "edu"."student_status" VALUES ('2', '休学');
+INSERT INTO "edu"."student_status" VALUES ('3', '退学');
+INSERT INTO "edu"."student_status" VALUES ('4', '毕业');
+INSERT INTO "edu"."student_status" VALUES ('5', '肄业');
 
 -- ----------------------------
 -- Table structure for "edu"."student_type"
@@ -1902,11 +1913,12 @@ INSERT INTO "edu"."table_sequence" VALUES ('agree_return', 'agree_return_id', '0
 INSERT INTO "edu"."table_sequence" VALUES ('bank_order', 'order_id', '0');
 INSERT INTO "edu"."table_sequence" VALUES ('batch_index', 'batch_id', '77');
 INSERT INTO "edu"."table_sequence" VALUES ('charge_admin', 'charge_id', '0');
-INSERT INTO "edu"."table_sequence" VALUES ('charge_type', 'charge_type_id', '2');
+INSERT INTO "edu"."table_sequence" VALUES ('charge_type', 'charge_type_id', '5');
 INSERT INTO "edu"."table_sequence" VALUES ('co_college', 'college_id', '13');
 INSERT INTO "edu"."table_sequence" VALUES ('college_agreement', 'agreement_id', '0');
 INSERT INTO "edu"."table_sequence" VALUES ('derate_request', 'derate_id', '0');
 INSERT INTO "edu"."table_sequence" VALUES ('fee_type', 'fee_id', '14');
+INSERT INTO "edu"."table_sequence" VALUES ('pic_type', 'pic_type_id', '6');
 INSERT INTO "edu"."table_sequence" VALUES ('receive_fund', 'fund_id', '0');
 INSERT INTO "edu"."table_sequence" VALUES ('recruit_agent', 'agent_id', '0');
 INSERT INTO "edu"."table_sequence" VALUES ('refundment_admin', 'refund_id', '0');
@@ -1914,10 +1926,11 @@ INSERT INTO "edu"."table_sequence" VALUES ('student_change', 'change_id', '0');
 INSERT INTO "edu"."table_sequence" VALUES ('student_classified', 'classified_id', '8');
 INSERT INTO "edu"."table_sequence" VALUES ('student_info', 'student_id', '0');
 INSERT INTO "edu"."table_sequence" VALUES ('student_major_category', 'student_major_category_id', '3');
+INSERT INTO "edu"."table_sequence" VALUES ('student_status', 'stu_status_id', '6');
 INSERT INTO "edu"."table_sequence" VALUES ('student_type', 'student_type_id', '4');
 INSERT INTO "edu"."table_sequence" VALUES ('subjects', 'subject_id', '45');
 INSERT INTO "edu"."table_sequence" VALUES ('user_admin', 'user_id', '0');
-INSERT INTO "edu"."table_sequence" VALUES ('user_type', 'user_type_id', '0');
+INSERT INTO "edu"."table_sequence" VALUES ('user_type', 'user_type_id', '7');
 
 -- ----------------------------
 -- Table structure for "edu"."user_admin"
@@ -1954,7 +1967,7 @@ COMMENT ON COLUMN "edu"."user_admin"."update_date" IS '更改时间';
 -- ----------------------------
 DROP TABLE "edu"."user_type";
 CREATE TABLE "edu"."user_type" (
-"user_type_id" numeric(5) NOT NULL,
+"user_type_id" numeric(5) DEFAULT fun_table_seq('user_type'::character varying, 'user_type_id'::character varying, 'next'::character varying) NOT NULL,
 "user_type_name" varchar(255) NOT NULL
 )
 WITH (OIDS=FALSE)
@@ -1965,6 +1978,12 @@ COMMENT ON TABLE "edu"."user_type" IS '用户类型';
 -- ----------------------------
 -- Records of user_type
 -- ----------------------------
+INSERT INTO "edu"."user_type" VALUES ('1', '全局管理员');
+INSERT INTO "edu"."user_type" VALUES ('2', '学生');
+INSERT INTO "edu"."user_type" VALUES ('3', '财务');
+INSERT INTO "edu"."user_type" VALUES ('4', '招生点操作员');
+INSERT INTO "edu"."user_type" VALUES ('5', '学习中心管理员');
+INSERT INTO "edu"."user_type" VALUES ('6', '学习中心老师');
 
 -- ----------------------------
 -- Alter Sequences Owned By 
