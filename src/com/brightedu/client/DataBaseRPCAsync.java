@@ -6,6 +6,7 @@ import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.RecruitAgent;
 import com.brightedu.model.edu.StudentClassified;
+import com.brightedu.model.edu.StudentType;
 import com.brightedu.model.edu.Subjects;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -65,5 +66,19 @@ public interface DataBaseRPCAsync {
 	void saveSubject(Subjects subject, AsyncCallback<Boolean> callback);
 
 	void getRecruitAgentList(int offset, int limit,AsyncCallback<List<RecruitAgent>> callback);
+
+	void getStudentTypeList(int offset, int limit,
+			AsyncCallback<List<StudentType>> callback);
+
+	void getStudentTypeListAndTotalCounts(int offset, int limit,
+			AsyncCallback<List<StudentType>> callback);
+
+	void addStudentType(String studentClassName, AsyncCallback<Boolean> callback);
+
+	void deleteStudentType(List<Integer> studentClassesId,
+			AsyncCallback<Boolean> callback);
+
+	void saveStudentType(StudentType studentType,
+			AsyncCallback<Boolean> callback);
 
 }

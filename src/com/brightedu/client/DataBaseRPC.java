@@ -21,6 +21,7 @@ import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.RecruitAgent;
 import com.brightedu.model.edu.StudentClassified;
+import com.brightedu.model.edu.StudentType;
 import com.brightedu.model.edu.Subjects;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -48,12 +49,19 @@ public interface DataBaseRPC extends RemoteService {
 	public boolean deleteBatch(List<Integer> batch_ids);
 	boolean saveBatch(BatchIndex editedBatch);
 	
-	/*********************** 学生类别管理 ************************************/
+	/*********************** 学生层次管理 ************************************/
 	public List<StudentClassified> getStudentClassesList(int offset, int limit);
 	public List<StudentClassified> getStudentClasseshListAndTotalCounts(int offset, int limit);
 	public boolean addStudentClass(String studentClassName);
 	public boolean deleteStudentClasses(List<Integer> studentClassesId);
 	boolean saveStudentClasses(StudentClassified studentClass);
+
+	/*********************** 学生层次管理 ************************************/
+	public List<StudentType> getStudentTypeList(int offset, int limit);
+	public List<StudentType> getStudentTypeListAndTotalCounts(int offset, int limit);
+	public boolean addStudentType(String studentClassName);
+	public boolean deleteStudentType(List<Integer> studentClassesId);
+	boolean saveStudentType(StudentType studentType);
 	
 	/***********************合作高校代码维护************************************/
 	public List<College> getCollegeList(int offset, int limit);
