@@ -11,6 +11,7 @@ import com.brightedu.dao.edu.BatchIndexMapper;
 import com.brightedu.dao.edu.CollegeMapper;
 import com.brightedu.dao.edu.RecruitAgentMapper;
 import com.brightedu.dao.edu.StudentClassifiedMapper;
+import com.brightedu.dao.edu.StudentTypeMapper;
 import com.brightedu.dao.edu.SubjectsMapper;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.BatchIndexExample;
@@ -20,6 +21,8 @@ import com.brightedu.model.edu.RecruitAgent;
 import com.brightedu.model.edu.RecruitAgentExample;
 import com.brightedu.model.edu.StudentClassified;
 import com.brightedu.model.edu.StudentClassifiedExample;
+import com.brightedu.model.edu.StudentType;
+import com.brightedu.model.edu.StudentTypeExample;
 import com.brightedu.model.edu.Subjects;
 import com.brightedu.model.edu.SubjectsExample;
 import com.brightedu.model.edu.BatchIndexExample.Criteria;
@@ -111,7 +114,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		}
 	}
 
-	/*********************** 学生类别管理 ************************************/
+	/*********************** 学生层次管理 ************************************/
 	@Override
 	public List<StudentClassified> getStudentClassesList(int offset, int limit) {
 		SqlSession session = sessionFactory.openSession();
@@ -196,6 +199,92 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		}
 	}
 
+	/*********************** 学生类型管理 ************************************/
+	@Override
+	public List<StudentType> getStudentTypeList(int offset, int limit) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			StudentTypeExample ex = new StudentTypeExample();
+			ex.setOrderByClause("student_type_id");
+			List<StudentType> result = session
+					.selectList(
+							"com.brightedu.dao.edu.StudentTypeMapper.selectByExample",
+							ex, new RowBounds(offset, limit));
+			return result;
+		} finally {
+			session.close();
+		}
+
+	}
+
+	@Override
+	public List getStudentTypeListAndTotalCounts(int offset, int limit) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			StudentTypeExample ex = new StudentTypeExample();
+			ex.setOrderByClause("student_type_id");
+			List result = session
+					.selectList(
+							"com.brightedu.dao.edu.StudentTypeMapper.selectByExample",
+							ex, new RowBounds(offset, limit));
+			StudentTypeMapper scm = session
+					.getMapper(StudentTypeMapper.class);
+			Integer counts = scm.countByExample(null);
+			result.add(counts);
+			return result;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean addStudentType(String studentTypeName) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			StudentTypeMapper scm = session
+					.getMapper(StudentTypeMapper.class);
+			StudentType st = new StudentType();
+			st.setStudent_type_name(studentTypeName);
+			int count = scm.insertSelective(st);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean deleteStudentType(List<Integer> studentTypeId) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			StudentTypeMapper scm = session
+					.getMapper(StudentTypeMapper.class);
+			StudentTypeExample ex = new StudentTypeExample();
+			StudentTypeExample.Criteria cr = ex.createCriteria();
+			cr.andStudent_type_idIn(studentTypeId);
+			scm.deleteByExample(ex);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean saveStudentType(StudentType studenttype) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			StudentTypeMapper scm = session
+					.getMapper(StudentTypeMapper.class);
+			scm.updateByPrimaryKey(studenttype);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+
+	
 	/*********************** 合作高校代码维护 ************************************/
 
 	@Override

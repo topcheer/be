@@ -23,6 +23,7 @@ import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.RecruitAgent;
 import com.brightedu.model.edu.StudentClassified;
+import com.brightedu.model.edu.StudentType;
 import com.brightedu.model.edu.Subjects;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -64,7 +65,7 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 		return agent.saveBatch(editedBatch);
 	}
 
-	/*********************** 学生类别管理 ************************************/
+	/*********************** 学生层次管理 ************************************/
 	@Override
 	public List<StudentClassified> getStudentClassesList(int offset, int limit) {
 		return agent.getStudentClassesList(offset, limit);
@@ -90,6 +91,33 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 		return agent.saveStudentClasses(studentClass);
 	}
 
+	/*********************** 学生类型管理 ************************************/
+	@Override
+	public List<StudentType> getStudentTypeList(int offset, int limit) {
+		return agent.getStudentTypeList(offset, limit);
+	}
+
+	@Override
+	public List getStudentTypeListAndTotalCounts(int offset, int limit) {
+		return agent.getStudentTypeListAndTotalCounts(offset, limit);
+	}
+
+	@Override
+	public boolean addStudentType(String studentClassName) {
+		return agent.addStudentType(studentClassName);
+	}
+
+	@Override
+	public boolean deleteStudentType(List<Integer> studentClassesId) {
+		return agent.deleteStudentType(studentClassesId);
+	}
+
+	@Override
+	public boolean saveStudentType(StudentType studentClass) {
+		return agent.saveStudentType(studentClass);
+	}
+
+	
 	/*********************** 合作高校代码维护 ************************************/
 
 	@Override
