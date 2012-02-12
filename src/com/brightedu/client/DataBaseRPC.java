@@ -17,6 +17,7 @@ package com.brightedu.client;
 
 import java.util.List;
 
+import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.RecruitAgent;
@@ -82,4 +83,12 @@ public interface DataBaseRPC extends RemoteService {
 	 * @return
 	 */
 	public List<RecruitAgent> getRecruitAgentList(int offset, int limit);
+	
+	/*********************** 机构类型维护 ************************************/
+	
+	List<AgentType> getAgentTypeList(int offset, int limit);
+	List getAgentTypeListAndTotalCounts(int offset, int limit);
+	boolean addAgentType(AgentType agentType);
+	boolean deleteAgentType(List<Integer> agentType_ids);
+	boolean saveAgentType(AgentType agenttype);
 }

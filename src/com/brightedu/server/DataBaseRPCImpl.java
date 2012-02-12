@@ -19,6 +19,7 @@ import java.lang.reflect.Proxy;
 import java.util.List;
 
 import com.brightedu.client.DataBaseRPC;
+import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.RecruitAgent;
@@ -170,6 +171,32 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 	@Override
 	public boolean saveSubject(Subjects subject) {
 		return agent.saveSubject(subject);
+	}
+
+	/*********************** 机构类型维护 ************************************/
+	@Override
+	public List<AgentType> getAgentTypeList(int offset, int limit) {
+		return agent.getAgentTypeList(offset, limit);
+	}
+
+	@Override
+	public List getAgentTypeListAndTotalCounts(int offset, int limit) {
+		return agent.getAgentTypeListAndTotalCounts(offset, limit);
+	}
+
+	@Override
+	public boolean addAgentType(AgentType typeName) {
+		return agent.addAgentType(typeName);
+	}
+
+	@Override
+	public boolean deleteAgentType(List<Integer> agentType_ids) {
+		return agent.deleteAgentType(agentType_ids);
+	}
+
+	@Override
+	public boolean saveAgentType(AgentType agenttype) {
+		return agent.saveAgentType(agenttype);
 	}
 	
 	/**************************获取agent列表************************************/

@@ -2,6 +2,7 @@ package com.brightedu.client;
 
 import java.util.List;
 
+import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.RecruitAgent;
@@ -80,5 +81,18 @@ public interface DataBaseRPCAsync {
 
 	void saveStudentType(StudentType studentType,
 			AsyncCallback<Boolean> callback);
+
+	void getAgentTypeList(int offset, int limit,
+			AsyncCallback<List<AgentType>> callback);
+
+	void getAgentTypeListAndTotalCounts(int offset, int limit,
+			AsyncCallback<List> callback);
+
+	void addAgentType(AgentType agentType, AsyncCallback<Boolean> callback);
+
+	void deleteAgentType(List<Integer> agentType_ids,
+			AsyncCallback<Boolean> callback);
+
+	void saveAgentType(AgentType agenttype, AsyncCallback<Boolean> callback);
 
 }

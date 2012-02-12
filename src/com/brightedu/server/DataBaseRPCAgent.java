@@ -7,12 +7,15 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import com.brightedu.client.DataBaseRPC;
+import com.brightedu.dao.edu.AgentTypeMapper;
 import com.brightedu.dao.edu.BatchIndexMapper;
 import com.brightedu.dao.edu.CollegeMapper;
 import com.brightedu.dao.edu.RecruitAgentMapper;
 import com.brightedu.dao.edu.StudentClassifiedMapper;
 import com.brightedu.dao.edu.StudentTypeMapper;
 import com.brightedu.dao.edu.SubjectsMapper;
+import com.brightedu.model.edu.AgentType;
+import com.brightedu.model.edu.AgentTypeExample;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.BatchIndexExample;
 import com.brightedu.model.edu.College;
@@ -467,6 +470,83 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 						ex, new RowBounds(offset, limit));
 			}
 			return result;
+		} finally {
+			session.close();
+		}
+	}
+	
+	/*********************** 机构类型维护 ************************************/
+	@Override
+	public List<AgentType> getAgentTypeList(int offset, int limit) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			AgentTypeExample ex = new AgentTypeExample();
+			ex.setOrderByClause("agent_type_id");
+			List<AgentType> result = session.selectList(
+					"com.brightedu.dao.edu.AgentTypeMapper.selectByExample", ex,
+					new RowBounds(offset, limit));
+			return result;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public List getAgentTypeListAndTotalCounts(int offset, int limit) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			AgentTypeExample ex = new AgentTypeExample();
+			ex.setOrderByClause("agent_type_id");
+			List result = session.selectList(
+					"com.brightedu.dao.edu.AgentTypeMapper.selectByExample", ex,
+					new RowBounds(offset, limit));
+			AgentTypeMapper cm = session.getMapper(AgentTypeMapper.class);
+			Integer counts = cm.countByExample(null);
+			result.add(counts);
+			return result;
+		} finally {
+			session.close();
+		}
+
+	}
+
+	@Override
+	public boolean addAgentType(AgentType agentType) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			AgentTypeMapper cm = session.getMapper(AgentTypeMapper.class);
+			int count = cm.insertSelective(agentType);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean deleteAgentType(List<Integer> agentType_ids) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			AgentTypeMapper cm = session.getMapper(AgentTypeMapper.class);
+			AgentTypeExample ex = new AgentTypeExample();
+			AgentTypeExample.Criteria cr = ex.createCriteria();
+			cr.andAgent_type_idIn(agentType_ids);
+			cm.deleteByExample(ex);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean saveAgentType(AgentType agenttype) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			AgentTypeMapper cm = session.getMapper(AgentTypeMapper.class);
+			cm.updateByPrimaryKey(agenttype);
+			session.commit();
+			return true;
 		} finally {
 			session.close();
 		}
