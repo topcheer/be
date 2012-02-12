@@ -7,7 +7,7 @@ import com.smartgwt.client.widgets.Canvas;
 
 public class StudentClassesAdmin extends FunctionPanel {
 
-	public static String DESCRIPTION = "学生类别代码维护";
+	public static String DESCRIPTION = "学生层次代码维护";
 
 	public static class Factory implements PanelFactory {
 		private String id;

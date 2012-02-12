@@ -64,7 +64,7 @@ public class StudentClassesAdminPanel extends BasicAdminPanel {
 	@Override
 	public ListGridField[] createGridFileds() {
 		return parseGridFields(new String[] { "obj_name", "reg_time" },
-				new String[] { "学生类别名称", "录入时间" }, new ListGridFieldType[] {
+				new String[] { "学生层次名称", "录入时间" }, new ListGridFieldType[] {
 						ListGridFieldType.TEXT, ListGridFieldType.DATE },
 				new boolean[] { true, false }, new int[] { -1, 200 });
 	}
@@ -102,7 +102,7 @@ public class StudentClassesAdminPanel extends BasicAdminPanel {
 	@Override
 	public AdminDialog createAdminDialog() {
 		TextAdminDialog text = new TextAdminDialog();
-		text.titles = new String[] { "类别" };
+		text.titles = new String[] { "层次" };
 		text.adminPanel = this;
 		return text;
 	}
