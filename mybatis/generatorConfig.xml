@@ -132,12 +132,35 @@
     </table>  
    --> 
   
-  <!-- 改动后在这里生成新的模型 -->  
+  <!-- 改动后在这里生成新的模型 
     <table schema="edu" tableName="sd_school" domainObjectName="School" >
       <property name="useActualColumnNames" value="true"/>
     </table> 
 
-   
+    <table schema="edu" tableName="sd_ethnic_group" domainObjectName="EthnicGroup" >
+      <property name="useActualColumnNames" value="true"/>
+    </table> 
+    <table schema="edu" tableName="sd_political_status" domainObjectName="PoliticalStatus" >
+      <property name="useActualColumnNames" value="true"/>
+    </table> 
+    <table schema="edu" tableName="pic_type" domainObjectName="PictureType" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>    
+    
+    -->  
+    
+     <table schema="edu" tableName="student_type" domainObjectName="StudentType" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>   
+      <table schema="edu" tableName="student_major_category" domainObjectName="MajorCategory" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>  
+     <table schema="edu" tableName="student_pic" domainObjectName="StudentPicture" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>    
+     <table schema="edu" tableName="student_info" domainObjectName="StudentInfo" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>        
   </context>
   
 </generatorConfiguration>

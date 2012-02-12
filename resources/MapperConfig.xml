@@ -63,6 +63,15 @@
 	    <mapper resource="com/brightedu/xml/edu/SubjectsMapper.xml" />
 	    <mapper resource="com/brightedu/xml/edu/UserTypeMapper.xml" />
 	    <mapper resource="com/brightedu/xml/edu/UserMapper.xml" />
+
+	    <mapper resource="com/brightedu/xml/edu/EthnicGroupMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/PoliticalStatusMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/PictureTypeMapper.xml" />
+	    
+	    <mapper resource="com/brightedu/xml/edu/StudentTypeMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/MajorCategoryMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/StudentPictureMapper.xml" />
+
 	</mappers>
 
 
