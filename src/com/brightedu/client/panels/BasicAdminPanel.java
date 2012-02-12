@@ -5,10 +5,8 @@ import java.util.List;
 
 import com.brightedu.client.BrightEdu;
 import com.brightedu.client.CommonAsyncCall;
-import com.brightedu.client.DataBaseRPC;
 import com.brightedu.client.DataBaseRPCAsync;
 import com.brightedu.client.panels.admin.AdminDialog;
-import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.Alignment;
@@ -408,6 +406,7 @@ public abstract class BasicAdminPanel extends VLayout {
 		return dialog;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	protected DeleteAsync delAsync = new DeleteAsync();
 	
 	private class DeleteAsync<T> extends CommonAsyncCall<T>{
