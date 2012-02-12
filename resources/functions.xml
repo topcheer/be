@@ -14,8 +14,9 @@
 		<function id="entrance_cost_manage" name="入学费用标准设置" />		
 		<function id="agent_agreement_fee_manage" name="招生点协议及返利系数管理" />
 		<function id="college_return_manage" name="高校返利（对今明）标准设置" />
-		<function id="student_status_type_manage" name="学生状态类型管理" />
-		<function id="user_type_manage" name="用户类型管理" />
+		<function id="student_status_type_manage" name="学生状态类型维护" />
+		<function id="user_type_manage" name="用户类型维护" />
+		<function id="pic_type_manage" name="照片类型维护" />		
 		<function id="user_manage" name="用户管理" />
 	</category>
 	
