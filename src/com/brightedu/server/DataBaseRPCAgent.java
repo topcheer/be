@@ -62,7 +62,8 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			if (offset != -1 || limit != -1) {
 				ex.setPage(new Page(offset, limit));
 			}
-			ex.setOrderByClause("batch_id");
+			ex.setOrderByClause("batch_id desc");
+
 			BatchIndexMapper map = session.getMapper(BatchIndexMapper.class);
 			List result = map.selectByExample(ex);
 			if (needTotalCounts) {
@@ -133,7 +134,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			if (offset != -1 || limit != -1) {
 				ex.setPage(new Page(offset, limit));
 			}
-			ex.setOrderByClause("classified_id");
+			ex.setOrderByClause("classified_id desc");
 			List result = mp.selectByExample(ex);
 			if (needTotalCounts) {
 				Integer counts = mp.countByExample(null);
@@ -201,7 +202,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		try {
 			StudentTypeMapper mp = session.getMapper(StudentTypeMapper.class);
 			StudentTypeExample ex = new StudentTypeExample();
-			ex.setOrderByClause("student_type_id");
+			ex.setOrderByClause("student_type_id desc");
 			if (offset != -1 || limit != -1) {
 				ex.setPage(new Page(offset, limit));
 			}
@@ -271,7 +272,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		SqlSession session = sessionFactory.openSession();
 		try {
 			CollegeExample ex = new CollegeExample();
-			ex.setOrderByClause("college_id");
+			ex.setOrderByClause("college_id desc");
 			CollegeMapper cm = session.getMapper(CollegeMapper.class);
 			if (offset != -1 || limit != -1) {
 				ex.setPage(new Page(offset, limit));
@@ -339,7 +340,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		SqlSession session = sessionFactory.openSession();
 		try {
 			SubjectsExample ex = new SubjectsExample();
-			ex.setOrderByClause("subject_id");
+			ex.setOrderByClause("subject_id desc");
 			if (offset != -1 || limit != -1) {
 				ex.setPage(new Page(offset, limit));
 			}
@@ -406,7 +407,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		SqlSession session = sessionFactory.openSession();
 		try {
 			RecruitAgentExample ex = new RecruitAgentExample();
-			ex.setOrderByClause("agent_id");
+			ex.setOrderByClause("agent_id desc");
 
 			RecruitAgentMapper cm = session.getMapper(RecruitAgentMapper.class);
 			if (offset != -1 || limit != -1) {
@@ -430,7 +431,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		SqlSession session = sessionFactory.openSession();
 		try {
 			AgentTypeExample ex = new AgentTypeExample();
-			ex.setOrderByClause("agent_type_id");
+			ex.setOrderByClause("agent_type_id desc");
 			if (offset != -1 || limit != -1) {
 				ex.setPage(new Page(offset, limit));
 			}
@@ -497,7 +498,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		SqlSession session = sessionFactory.openSession();
 		try {
 			FeeTypeExample ex = new FeeTypeExample();
-			ex.setOrderByClause("fee_id");
+			ex.setOrderByClause("fee_id desc");
 			FeeTypeMapper mp = session.getMapper(FeeTypeMapper.class);
 			if (offset != -1 || limit != -1) {
 				ex.setPage(new Page(offset, limit));
@@ -564,7 +565,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		try {
 			ChargeTypeMapper mp = session.getMapper(ChargeTypeMapper.class);
 			ChargeTypeExample ex = new ChargeTypeExample();
-			ex.setOrderByClause("charge_type_id");
+			ex.setOrderByClause("charge_type_id desc");
 			if (offset != -1 || limit != -1) {
 				ex.setPage(new Page(offset, limit));
 			}
@@ -629,7 +630,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		SqlSession session = sessionFactory.openSession();
 		try {
 			UserTypeExample ex = new UserTypeExample();
-			ex.setOrderByClause("user_type_id");
+			ex.setOrderByClause("user_type_id desc");
 			UserTypeMapper mp = session.getMapper(UserTypeMapper.class);
 			if (offset != -1 || limit != -1) {
 				ex.setPage(new Page(offset, limit));
@@ -697,7 +698,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		try {
 			PictureTypeMapper mp = session.getMapper(PictureTypeMapper.class);
 			PictureTypeExample ex = new PictureTypeExample();
-			ex.setOrderByClause("pic_type_id");
+			ex.setOrderByClause("pic_type_id desc");
 			if (offset != -1 || limit != -1) {
 				ex.setPage(new Page(offset, limit));
 			}
@@ -765,7 +766,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			StudentStatusMapper mp = session
 					.getMapper(StudentStatusMapper.class);
 			StudentStatusExample ex = new StudentStatusExample();
-			ex.setOrderByClause("stu_status_id");
+			ex.setOrderByClause("stu_status_id desc");
 			if (offset != -1 || limit != -1) {
 				ex.setPage(new Page(offset, limit));
 			}

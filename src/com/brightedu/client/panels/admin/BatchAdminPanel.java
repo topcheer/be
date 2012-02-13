@@ -49,6 +49,7 @@ public class BatchAdminPanel extends BasicAdminPanel {
 	}
 
 	public void gotoPage(final int indexGoto, final boolean init) {
+		
 		AsyncCallback<List<BatchIndex>> callback = new CommonAsyncCall<List<BatchIndex>>() {
 			@Override
 			public void onSuccess(List result) {
@@ -86,6 +87,10 @@ public class BatchAdminPanel extends BasicAdminPanel {
 		text.adminPanel = this;
 		return text;
 	}
+	
+//	public void afterAdd(){
+//		gotoPage(1, true);
+//	}
 
 	@Override
 	public void add(Object model) {

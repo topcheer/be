@@ -120,7 +120,7 @@ public abstract class AdminDialog extends Window {
 
 		@Override
 		public void onSuccess(T result) {
-			adminPanel.showLastPageRecords(true);
+			adminPanel.afterAdd();
 			hide();
 			BrightEdu.showTip("已添加!");
 		}

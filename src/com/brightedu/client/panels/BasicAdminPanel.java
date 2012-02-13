@@ -403,6 +403,11 @@ public abstract class BasicAdminPanel extends VLayout {
 	public abstract void add(Object model);
 
 	public abstract AdminDialog createAdminDialog();
+	
+	public void afterAdd(){
+//		showLastPageRecords(true);
+		gotoPage(1, true);
+	}
 
 	public AdminDialog getAdminDialog() {
 		return dialog;
