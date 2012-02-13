@@ -47,14 +47,16 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 
 	/*********************** 批次管理 ************************************/
 
-	public List<BatchIndex> getBatchList(int offset, int limit) {
-		return agent.getBatchList(offset, limit);
+	public List<BatchIndex> getBatchList(int offset, int limit,
+			boolean needTotalCounts) {
+		return agent.getBatchList(offset, limit, needTotalCounts);
 
 	}
 
-	public List getBatchListAndTotalCounts(int offset, int limit) {
-		return agent.getBatchListAndTotalCounts(offset, limit);
-	}
+	//
+	// public List getBatchListAndTotalCounts(int offset, int limit) {
+	// return agent.getBatchListAndTotalCounts(offset, limit);
+	// }
 
 	@Override
 	public boolean addBatch(String batch_name) {
@@ -73,13 +75,9 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 
 	/*********************** 学生层次管理 ************************************/
 	@Override
-	public List<StudentClassified> getStudentClassesList(int offset, int limit) {
-		return agent.getStudentClassesList(offset, limit);
-	}
-
-	@Override
-	public List getStudentClasseshListAndTotalCounts(int offset, int limit) {
-		return agent.getStudentClasseshListAndTotalCounts(offset, limit);
+	public List<StudentClassified> getStudentClassesList(int offset, int limit,
+			boolean needTotalCounts) {
+		return agent.getStudentClassesList(offset, limit, needTotalCounts);
 	}
 
 	@Override
@@ -99,13 +97,9 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 
 	/*********************** 学生类型管理 ************************************/
 	@Override
-	public List<StudentType> getStudentTypeList(int offset, int limit) {
-		return agent.getStudentTypeList(offset, limit);
-	}
-
-	@Override
-	public List getStudentTypeListAndTotalCounts(int offset, int limit) {
-		return agent.getStudentTypeListAndTotalCounts(offset, limit);
+	public List<StudentType> getStudentTypeList(int offset, int limit,
+			boolean needTotalCounts) {
+		return agent.getStudentTypeList(offset, limit, needTotalCounts);
 	}
 
 	@Override
@@ -123,18 +117,12 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 		return agent.saveStudentType(studentClass);
 	}
 
-	
 	/*********************** 合作高校代码维护 ************************************/
 
 	@Override
-	public List<College> getCollegeList(int offset, int limit) {
-		return agent.getCollegeList(offset, limit);
-	}
-
-	@Override
-	public List getCollegeListAndTotalCounts(int offset, int limit) {
-		return agent.getCollegeListAndTotalCounts(offset, limit);
-
+	public List<College> getCollegeList(int offset, int limit,
+			boolean needTotalCounts) {
+		return agent.getCollegeList(offset, limit, needTotalCounts);
 	}
 
 	@Override
@@ -154,13 +142,9 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 
 	/*********************** 专业代码维护 ************************************/
 	@Override
-	public List<Subjects> getSubjectsList(int offset, int limit) {
-		return agent.getSubjectsList(offset, limit);
-	}
-
-	@Override
-	public List getSubjectsListAndTotalCounts(int offset, int limit) {
-		return agent.getSubjectsListAndTotalCounts(offset, limit);
+	public List<Subjects> getSubjectsList(int offset, int limit,
+			boolean needTotalCounts) {
+		return agent.getSubjectsList(offset, limit, needTotalCounts);
 	}
 
 	@Override
@@ -180,13 +164,9 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 
 	/*********************** 机构类型维护 ************************************/
 	@Override
-	public List<AgentType> getAgentTypeList(int offset, int limit) {
-		return agent.getAgentTypeList(offset, limit);
-	}
-
-	@Override
-	public List getAgentTypeListAndTotalCounts(int offset, int limit) {
-		return agent.getAgentTypeListAndTotalCounts(offset, limit);
+	public List<AgentType> getAgentTypeList(int offset, int limit,
+			boolean needTotalCounts) {
+		return agent.getAgentTypeList(offset, limit, needTotalCounts);
 	}
 
 	@Override
@@ -206,13 +186,9 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 
 	/*********************** 费用类型维护 ************************************/
 	@Override
-	public List<FeeType> getFeeTypeList(int offset, int limit) {
-		return agent.getFeeTypeList(offset, limit);
-	}
-
-	@Override
-	public List getFeeTypeListAndTotalCounts(int offset, int limit) {
-		return agent.getFeeTypeListAndTotalCounts(offset, limit);
+	public List<FeeType> getFeeTypeList(int offset, int limit,
+			boolean needTotalCounts) {
+		return agent.getFeeTypeList(offset, limit, needTotalCounts);
 	}
 
 	@Override
@@ -232,13 +208,9 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 
 	/*********************** 入账类型维护 ************************************/
 	@Override
-	public List<ChargeType> getChargeTypeList(int offset, int limit) {
-		return agent.getChargeTypeList(offset, limit);
-	}
-
-	@Override
-	public List getChargeTypeListAndTotalCounts(int offset, int limit) {
-		return agent.getChargeTypeListAndTotalCounts(offset, limit);
+	public List<ChargeType> getChargeTypeList(int offset, int limit,
+			boolean needTotalCounts) {
+		return agent.getChargeTypeList(offset, limit, needTotalCounts);
 	}
 
 	@Override
@@ -255,15 +227,12 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 	public boolean saveChargeType(ChargeType chargetype) {
 		return agent.saveChargeType(chargetype);
 	}
+
 	/*********************** 用户类型维护 ************************************/
 	@Override
-	public List<UserType> getUserTypeList(int offset, int limit) {
-		return agent.getUserTypeList(offset, limit);
-	}
-
-	@Override
-	public List getUserTypeListAndTotalCounts(int offset, int limit) {
-		return agent.getUserTypeListAndTotalCounts(offset, limit);
+	public List<UserType> getUserTypeList(int offset, int limit,
+			boolean needTotaoCounts) {
+		return agent.getUserTypeList(offset, limit, needTotaoCounts);
 	}
 
 	@Override
@@ -280,16 +249,12 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 	public boolean saveUserType(UserType Usertype) {
 		return agent.saveUserType(Usertype);
 	}
-	
+
 	/*********************** 照片类型维护 ************************************/
 	@Override
-	public List<PictureType> getPictureTypeList(int offset, int limit) {
-		return agent.getPictureTypeList(offset, limit);
-	}
-
-	@Override
-	public List getPictureTypeListAndTotalCounts(int offset, int limit) {
-		return agent.getPictureTypeListAndTotalCounts(offset, limit);
+	public List<PictureType> getPictureTypeList(int offset, int limit,
+			boolean needTotaoCounts) {
+		return agent.getPictureTypeList(offset, limit, needTotaoCounts);
 	}
 
 	@Override
@@ -306,16 +271,12 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 	public boolean savePictureType(PictureType Picturetype) {
 		return agent.savePictureType(Picturetype);
 	}
-	
+
 	/*********************** 学生状态类型维护 ************************************/
 	@Override
-	public List<StudentStatus> getStudentStatusList(int offset, int limit) {
-		return agent.getStudentStatusList(offset, limit);
-	}
-
-	@Override
-	public List getStudentStatusListAndTotalCounts(int offset, int limit) {
-		return agent.getStudentStatusListAndTotalCounts(offset, limit);
+	public List<StudentStatus> getStudentStatusList(int offset, int limit,
+			boolean needTotaoCounts) {
+		return agent.getStudentStatusList(offset, limit, needTotaoCounts);
 	}
 
 	@Override
@@ -332,12 +293,11 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 	public boolean saveStudentStatus(StudentStatus studentStatus) {
 		return agent.saveStudentStatus(studentStatus);
 	}
-	
 
-	
-	/**************************获取agent列表************************************/
+	/************************** 获取agent列表 ************************************/
 
-	public List<RecruitAgent> getRecruitAgentList(int offset, int limit){
-		return agent.getRecruitAgentList(offset,limit);
+	public List<RecruitAgent> getRecruitAgentList(int offset, int limit,
+			boolean needTotalCounts) {
+		return agent.getRecruitAgentList(offset, limit, needTotalCounts);
 	}
 }

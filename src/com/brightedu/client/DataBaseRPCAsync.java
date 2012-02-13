@@ -18,11 +18,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface DataBaseRPCAsync {
 
-	void getBatchList(int offset, int limit,
+	void getBatchList(int offset, int limit, boolean needTotalCounts,
 			AsyncCallback<List<BatchIndex>> callback);
-
-	void getBatchListAndTotalCounts(int offset, int limit,
-			AsyncCallback<List<BatchIndex>> callbac);
 
 	void addBatch(String batch_name, AsyncCallback<Boolean> callback);
 
@@ -30,7 +27,7 @@ public interface DataBaseRPCAsync {
 
 	void saveBatch(BatchIndex editedBatch, AsyncCallback<Boolean> callback);
 
-	void getStudentClassesList(int offset, int limit,
+	void getStudentClassesList(int offset, int limit, boolean needTotalCounts,
 			AsyncCallback<List<StudentClassified>> callback);
 
 	void addStudentClass(String studentClassName,
@@ -39,16 +36,10 @@ public interface DataBaseRPCAsync {
 	void deleteStudentClasses(List<Integer> studentClassesId,
 			AsyncCallback<Boolean> callback);
 
-	void getStudentClasseshListAndTotalCounts(int offset, int limit,
-			AsyncCallback<List<StudentClassified>> callback);
-
 	void saveStudentClasses(StudentClassified studentClass,
 			AsyncCallback<Boolean> callback);
 
-	void getCollegeList(int offset, int limit,
-			AsyncCallback<List<College>> callback);
-
-	void getCollegeListAndTotalCounts(int offset, int limit,
+	void getCollegeList(int offset, int limit, boolean needTotalCounts,
 			AsyncCallback<List<College>> callback);
 
 	void addCollege(String collegeName, AsyncCallback<Boolean> callback);
@@ -63,20 +54,15 @@ public interface DataBaseRPCAsync {
 	void deleteSubject(List<Integer> subject_ids,
 			AsyncCallback<Boolean> callback);
 
-	void getSubjectsList(int offset, int limit,
-			AsyncCallback<List<Subjects>> callback);
-
-	void getSubjectsListAndTotalCounts(int offset, int limit,
+	void getSubjectsList(int offset, int limit, boolean needTotalCounts,
 			AsyncCallback<List<Subjects>> callback);
 
 	void saveSubject(Subjects subject, AsyncCallback<Boolean> callback);
 
-	void getRecruitAgentList(int offset, int limit,AsyncCallback<List<RecruitAgent>> callback);
+	void getRecruitAgentList(int offset, int limit, boolean needTotalCounts,
+			AsyncCallback<List<RecruitAgent>> callback);
 
-	void getStudentTypeList(int offset, int limit,
-			AsyncCallback<List<StudentType>> callback);
-
-	void getStudentTypeListAndTotalCounts(int offset, int limit,
+	void getStudentTypeList(int offset, int limit, boolean needTotalCounts,
 			AsyncCallback<List<StudentType>> callback);
 
 	void addStudentType(String studentClassName, AsyncCallback<Boolean> callback);
@@ -87,10 +73,7 @@ public interface DataBaseRPCAsync {
 	void saveStudentType(StudentType studentType,
 			AsyncCallback<Boolean> callback);
 
-	void getAgentTypeList(int offset, int limit,
-			AsyncCallback<List<AgentType>> callback);
-
-	void getAgentTypeListAndTotalCounts(int offset, int limit,
+	void getAgentTypeList(int offset, int limit, boolean needTotalCounts,
 			AsyncCallback<List<AgentType>> callback);
 
 	void addAgentType(AgentType agentType, AsyncCallback<Boolean> callback);
@@ -100,10 +83,7 @@ public interface DataBaseRPCAsync {
 
 	void saveAgentType(AgentType agenttype, AsyncCallback<Boolean> callback);
 
-	void getFeeTypeList(int offset, int limit,
-			AsyncCallback<List<FeeType>> callback);
-
-	void getFeeTypeListAndTotalCounts(int offset, int limit,
+	void getFeeTypeList(int offset, int limit, boolean needTotalCounts,
 			AsyncCallback<List<FeeType>> callback);
 
 	void addFeeType(String typeName, AsyncCallback<Boolean> callback);
@@ -112,10 +92,7 @@ public interface DataBaseRPCAsync {
 
 	void saveFeeType(FeeType agenttype, AsyncCallback<Boolean> callback);
 
-	void getChargeTypeList(int offset, int limit,
-			AsyncCallback<List<ChargeType>> callback);
-
-	void getChargeTypeListAndTotalCounts(int offset, int limit,
+	void getChargeTypeList(int offset, int limit, boolean needTotalCounts,
 			AsyncCallback<List<ChargeType>> callback);
 
 	void addChargeType(String typeName, AsyncCallback<Boolean> callback);
@@ -130,10 +107,7 @@ public interface DataBaseRPCAsync {
 	void deletUserType(List<Integer> UserType_ids,
 			AsyncCallback<Boolean> callback);
 
-	void getUserTypeList(int offset, int limit,
-			AsyncCallback<List<UserType>> callback);
-
-	void getUserTypeListAndTotalCounts(int offset, int limit,
+	void getUserTypeList(int offset, int limit, boolean needTotalCounts,
 			AsyncCallback<List<UserType>> callback);
 
 	void saveUserType(UserType Usertype, AsyncCallback<Boolean> callback);
@@ -143,10 +117,7 @@ public interface DataBaseRPCAsync {
 	void deletPictureType(List<Integer> PictureType_ids,
 			AsyncCallback<Boolean> callback);
 
-	void getPictureTypeList(int offset, int limit,
-			AsyncCallback<List<PictureType>> callback);
-
-	void getPictureTypeListAndTotalCounts(int offset, int limit,
+	void getPictureTypeList(int offset, int limit, boolean needTotalCounts,
 			AsyncCallback<List<PictureType>> callback);
 
 	void savePictureType(PictureType Picturetype,
@@ -157,10 +128,7 @@ public interface DataBaseRPCAsync {
 	void deletStudentStatus(List<Integer> StudentStatus_ids,
 			AsyncCallback<Boolean> callback);
 
-	void getStudentStatusList(int offset, int limit,
-			AsyncCallback<List<StudentStatus>> callback);
-
-	void getStudentStatusListAndTotalCounts(int offset, int limit,
+	void getStudentStatusList(int offset, int limit, boolean needTotalCounts,
 			AsyncCallback<List<StudentStatus>> callback);
 
 	void saveStudentStatus(StudentStatus StudentStatus,

@@ -43,13 +43,8 @@ public class CorpCollegeAdminPanel extends BasicAdminPanel {
 				setCurrentPage(indexGoto);
 			}
 		};
-		if (init) {
-			dbService.getCollegeListAndTotalCounts((indexGoto - 1)
-					* currentRowsInOnePage, currentRowsInOnePage, callback);
-		} else {
-			dbService.getCollegeList((indexGoto - 1) * currentRowsInOnePage,
-					currentRowsInOnePage, callback);
-		}
+		dbService.getCollegeList((indexGoto - 1) * currentRowsInOnePage,
+				currentRowsInOnePage, init, callback);
 	}
 
 	@Override

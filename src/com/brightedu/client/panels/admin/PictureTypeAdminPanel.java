@@ -26,10 +26,10 @@ public class PictureTypeAdminPanel extends BasicAdminPanel {
 	}
 
 	public ListGridField[] createGridFileds() {
-		return parseGridFields(new String[] { "obj_name"},
-				new String[] { "照片类型" }, new ListGridFieldType[] {
-						ListGridFieldType.TEXT },
-				new boolean[] { true}, new int[] { -1 });
+		return parseGridFields(new String[] { "obj_name" },
+				new String[] { "照片类型" },
+				new ListGridFieldType[] { ListGridFieldType.TEXT },
+				new boolean[] { true }, new int[] { -1 });
 	}
 
 	public void update(final Record rec) {
@@ -71,20 +71,15 @@ public class PictureTypeAdminPanel extends BasicAdminPanel {
 					rec.setAttribute("id", bi.getPic_type_id());
 					rec.setAttribute("object", bi);
 					rec.setAttribute("obj_name", bi.getPic_type_name());
-					
+
 					listData[i] = rec;
 				}
 				resultList.setData(listData);
 				setCurrentPage(indexGoto);
 			}
 		};
-		if (init) {
-			dbService.getPictureTypeListAndTotalCounts((indexGoto - 1)
-					* currentRowsInOnePage, currentRowsInOnePage, callback);
-		} else {
-			dbService.getPictureTypeList((indexGoto - 1) * currentRowsInOnePage,
-					currentRowsInOnePage, callback);
-		}
+		dbService.getPictureTypeList((indexGoto - 1) * currentRowsInOnePage,
+				currentRowsInOnePage, init, callback);
 	}
 
 	public AdminDialog createAdminDialog() {

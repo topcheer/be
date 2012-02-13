@@ -76,13 +76,8 @@ public class BatchAdminPanel extends BasicAdminPanel {
 				setCurrentPage(indexGoto);
 			}
 		};
-		if (init) {
-			dbService.getBatchListAndTotalCounts((indexGoto - 1)
-					* currentRowsInOnePage, currentRowsInOnePage, callback);
-		} else {
-			dbService.getBatchList((indexGoto - 1) * currentRowsInOnePage,
-					currentRowsInOnePage, callback);
-		}
+		dbService.getBatchList((indexGoto - 1) * currentRowsInOnePage,
+				currentRowsInOnePage, init, callback);
 	}
 
 	public AdminDialog createAdminDialog() {

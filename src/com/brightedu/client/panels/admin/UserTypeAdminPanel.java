@@ -25,10 +25,10 @@ public class UserTypeAdminPanel extends BasicAdminPanel {
 	}
 
 	public ListGridField[] createGridFileds() {
-		return parseGridFields(new String[] { "obj_name"},
-				new String[] { "用户类型" }, new ListGridFieldType[] {
-						ListGridFieldType.TEXT },
-				new boolean[] { true}, new int[] { -1 });
+		return parseGridFields(new String[] { "obj_name" },
+				new String[] { "用户类型" },
+				new ListGridFieldType[] { ListGridFieldType.TEXT },
+				new boolean[] { true }, new int[] { -1 });
 	}
 
 	public void update(final Record rec) {
@@ -70,20 +70,15 @@ public class UserTypeAdminPanel extends BasicAdminPanel {
 					rec.setAttribute("id", bi.getUser_type_id());
 					rec.setAttribute("object", bi);
 					rec.setAttribute("obj_name", bi.getUser_type_name());
-					
+
 					listData[i] = rec;
 				}
 				resultList.setData(listData);
 				setCurrentPage(indexGoto);
 			}
 		};
-		if (init) {
-			dbService.getUserTypeListAndTotalCounts((indexGoto - 1)
-					* currentRowsInOnePage, currentRowsInOnePage, callback);
-		} else {
-			dbService.getUserTypeList((indexGoto - 1) * currentRowsInOnePage,
-					currentRowsInOnePage, callback);
-		}
+		dbService.getUserTypeList((indexGoto - 1) * currentRowsInOnePage,
+				currentRowsInOnePage, init, callback);
 	}
 
 	public AdminDialog createAdminDialog() {

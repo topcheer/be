@@ -25,9 +25,6 @@ import com.smartgwt.client.widgets.grid.ListGridField;
 
 public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 
-	private Map<String, String> colleges;
-	private Map<String, String> agents;
-
 	@Override
 	public void gotoPage(int indexGoto, boolean init) {
 
@@ -35,7 +32,6 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 
 	@Override
 	public ListGridField[] createGridFileds() {
-		initCollegesAndAgents();
 		ListGridField[] fields = parseGridFields(new String[] { "college",
 				"agent", "status", "user", "modify_date", "create_date",
 				"agreement" }, new String[] { "合作高校", "我方学校", "状态", "处理人",
@@ -49,10 +45,6 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 
 		return fields;
 		// http://stackoverflow.com/questions/3053462/open-save-file-in-smartgwt
-	}
-
-	private void initCollegesAndAgents() {
-
 	}
 
 	@Override
@@ -141,8 +133,8 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 					agentItem.setValueMap(values);
 				}
 			};
-			dbService.getCollegeList(-1, -1, collegeCall);
-			dbService.getRecruitAgentList(-1, -1, agentCall);
+			dbService.getCollegeList(-1, -1, false, collegeCall);
+			dbService.getRecruitAgentList(-1, -1, false, agentCall);
 		}
 
 		@Override
@@ -165,17 +157,10 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 
 		@Override
 		protected DynamicForm getContentForm() {
-			// fileItem.setIcons(chooseIcon);
-//			collegeItem.setValue("南开");
-//			agentItem.setValue("今明本部");
 			int len = 250;
 			collegeItem.setWidth(len);
 			agentItem.setWidth(len);
 			statusItem.setWidth(len);
-			// fileItem.disable();
-//			fileItem.setWidth("100%");
-//			fileItem.
-//			fileItem.setHeight(30);
 
 			form.setPadding(5);
 			form.setFields(collegeItem, agentItem, statusItem, fileItem);

@@ -2,11 +2,11 @@ package com.brightedu.server;
 
 import java.util.List;
 
-import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import com.brightedu.client.DataBaseRPC;
+import com.brightedu.client.ds.Page;
 import com.brightedu.dao.edu.AgentTypeMapper;
 import com.brightedu.dao.edu.BatchIndexMapper;
 import com.brightedu.dao.edu.ChargeTypeMapper;
@@ -23,6 +23,7 @@ import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.AgentTypeExample;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.BatchIndexExample;
+import com.brightedu.model.edu.BatchIndexExample.Criteria;
 import com.brightedu.model.edu.ChargeType;
 import com.brightedu.model.edu.ChargeTypeExample;
 import com.brightedu.model.edu.College;
@@ -42,7 +43,6 @@ import com.brightedu.model.edu.StudentTypeExample;
 import com.brightedu.model.edu.Subjects;
 import com.brightedu.model.edu.SubjectsExample;
 import com.brightedu.model.edu.UserType;
-import com.brightedu.model.edu.BatchIndexExample.Criteria;
 import com.brightedu.model.edu.UserTypeExample;
 import com.brightedu.server.util.ConnectionManager;
 
@@ -55,33 +55,21 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 
 	/*********************** 批次管理 ************************************/
 
-	public List<BatchIndex> getBatchList(int offset, int limit) {
+	public List getBatchList(int offset, int limit, boolean needTotalCounts) {
 		SqlSession session = sessionFactory.openSession();
 		try {
 			BatchIndexExample ex = new BatchIndexExample();
+			if (offset != -1 || limit != -1) {
+				ex.setPage(new Page(offset, limit));
+			}
 			ex.setOrderByClause("batch_id");
-			List<BatchIndex> result = session.selectList(
-					"com.brightedu.dao.edu.BatchIndexMapper.selectByExample",
-					ex, new RowBounds(offset, limit));
+			BatchIndexMapper map = session.getMapper(BatchIndexMapper.class);
+			List result = map.selectByExample(ex);
+			if (needTotalCounts) {
+				Integer counts = map.countByExample(null);
+				result.add(counts);
+			}
 			return result;
-		} finally {
-			session.close();
-		}
-
-	}
-
-	public List getBatchListAndTotalCounts(int offset, int limit) {
-		SqlSession session = sessionFactory.openSession();
-		try {
-			BatchIndexExample ex = new BatchIndexExample();
-			ex.setOrderByClause("batch_id");
-			List batchList = session.selectList(
-					"com.brightedu.dao.edu.BatchIndexMapper.selectByExample",
-					ex, new RowBounds(offset, limit));
-			BatchIndexMapper bim = session.getMapper(BatchIndexMapper.class);
-			Integer counts = bim.countByExample(null);
-			batchList.add(counts);
-			return batchList;
 		} finally {
 			session.close();
 		}
@@ -134,40 +122,28 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 
 	/*********************** 学生层次管理 ************************************/
 	@Override
-	public List<StudentClassified> getStudentClassesList(int offset, int limit) {
+	public List getStudentClassesList(int offset, int limit,
+			boolean needTotalCounts) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			StudentClassifiedExample ex = new StudentClassifiedExample();
-			ex.setOrderByClause("classified_id");
-			List<StudentClassified> result = session
-					.selectList(
-							"com.brightedu.dao.edu.StudentClassifiedMapper.selectByExample",
-							ex, new RowBounds(offset, limit));
-			return result;
-		} finally {
-			session.close();
-		}
-
-	}
-
-	@Override
-	public List getStudentClasseshListAndTotalCounts(int offset, int limit) {
-		SqlSession session = sessionFactory.openSession();
-		try {
-			StudentClassifiedExample ex = new StudentClassifiedExample();
-			ex.setOrderByClause("classified_id");
-			List result = session
-					.selectList(
-							"com.brightedu.dao.edu.StudentClassifiedMapper.selectByExample",
-							ex, new RowBounds(offset, limit));
-			StudentClassifiedMapper scm = session
+			StudentClassifiedMapper mp = session
 					.getMapper(StudentClassifiedMapper.class);
-			Integer counts = scm.countByExample(null);
-			result.add(counts);
+
+			StudentClassifiedExample ex = new StudentClassifiedExample();
+			if (offset != -1 || limit != -1) {
+				ex.setPage(new Page(offset, limit));
+			}
+			ex.setOrderByClause("classified_id");
+			List result = mp.selectByExample(ex);
+			if (needTotalCounts) {
+				Integer counts = mp.countByExample(null);
+				result.add(counts);
+			}
 			return result;
 		} finally {
 			session.close();
 		}
+
 	}
 
 	@Override
@@ -219,36 +195,24 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 
 	/*********************** 学生类型管理 ************************************/
 	@Override
-	public List<StudentType> getStudentTypeList(int offset, int limit) {
+	public List<StudentType> getStudentTypeList(int offset, int limit,
+			boolean needTotalCounts) {
 		SqlSession session = sessionFactory.openSession();
 		try {
+			StudentTypeMapper mp = session.getMapper(StudentTypeMapper.class);
 			StudentTypeExample ex = new StudentTypeExample();
 			ex.setOrderByClause("student_type_id");
-			List<StudentType> result = session
-					.selectList(
-							"com.brightedu.dao.edu.StudentTypeMapper.selectByExample",
-							ex, new RowBounds(offset, limit));
-			return result;
-		} finally {
-			session.close();
-		}
-
-	}
-
-	@Override
-	public List getStudentTypeListAndTotalCounts(int offset, int limit) {
-		SqlSession session = sessionFactory.openSession();
-		try {
-			StudentTypeExample ex = new StudentTypeExample();
-			ex.setOrderByClause("student_type_id");
-			List result = session
-					.selectList(
-							"com.brightedu.dao.edu.StudentTypeMapper.selectByExample",
-							ex, new RowBounds(offset, limit));
-			StudentTypeMapper scm = session
-					.getMapper(StudentTypeMapper.class);
-			Integer counts = scm.countByExample(null);
-			result.add(counts);
+			if (offset != -1 || limit != -1) {
+				ex.setPage(new Page(offset, limit));
+			}
+			List result = mp.selectByExample(ex);
+			if (needTotalCounts) {
+				Integer counts = mp.countByExample(null);
+				result.add(counts);
+			}
+			// List<StudentType> result = session.selectList(
+			// "com.brightedu.dao.edu.StudentTypeMapper.selectByExample",
+			// ex, new RowBounds(offset, limit));
 			return result;
 		} finally {
 			session.close();
@@ -259,8 +223,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	public boolean addStudentType(String studentTypeName) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			StudentTypeMapper scm = session
-					.getMapper(StudentTypeMapper.class);
+			StudentTypeMapper scm = session.getMapper(StudentTypeMapper.class);
 			StudentType st = new StudentType();
 			st.setStudent_type_name(studentTypeName);
 			int count = scm.insertSelective(st);
@@ -275,8 +238,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	public boolean deleteStudentType(List<Integer> studentTypeId) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			StudentTypeMapper scm = session
-					.getMapper(StudentTypeMapper.class);
+			StudentTypeMapper scm = session.getMapper(StudentTypeMapper.class);
 			StudentTypeExample ex = new StudentTypeExample();
 			StudentTypeExample.Criteria cr = ex.createCriteria();
 			cr.andStudent_type_idIn(studentTypeId);
@@ -292,8 +254,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	public boolean saveStudentType(StudentType studenttype) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			StudentTypeMapper scm = session
-					.getMapper(StudentTypeMapper.class);
+			StudentTypeMapper scm = session.getMapper(StudentTypeMapper.class);
 			scm.updateByPrimaryKey(studenttype);
 			session.commit();
 			return true;
@@ -302,47 +263,28 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		}
 	}
 
-	
 	/*********************** 合作高校代码维护 ************************************/
 
 	@Override
-	public List<College> getCollegeList(int offset, int limit) {
+	public List<College> getCollegeList(int offset, int limit,
+			boolean needTotalCounts) {
 		SqlSession session = sessionFactory.openSession();
 		try {
 			CollegeExample ex = new CollegeExample();
 			ex.setOrderByClause("college_id");
-			List<College> result = null;
-			if (offset == -1 && limit == -1) {
-				CollegeMapper cm = session.getMapper(CollegeMapper.class);
-				result = cm.selectByExample(null);
-			} else {
-				result = session.selectList(
-						"com.brightedu.dao.edu.CollegeMapper.selectByExample",
-						ex, new RowBounds(offset, limit));
+			CollegeMapper cm = session.getMapper(CollegeMapper.class);
+			if (offset != -1 || limit != -1) {
+				ex.setPage(new Page(offset, limit));
+			}
+			List result = cm.selectByExample(ex);
+			if (needTotalCounts) {
+				Integer counts = cm.countByExample(null);
+				result.add(counts);
 			}
 			return result;
 		} finally {
 			session.close();
 		}
-	}
-
-	@Override
-	public List getCollegeListAndTotalCounts(int offset, int limit) {
-		SqlSession session = sessionFactory.openSession();
-		try {
-			CollegeExample ex = new CollegeExample();
-			ex.setOrderByClause("college_id");
-			List result = session.selectList(
-					"com.brightedu.dao.edu.CollegeMapper.selectByExample", ex,
-					new RowBounds(offset, limit));
-			CollegeMapper cm = session.getMapper(CollegeMapper.class);
-			Integer counts = cm.countByExample(null);
-			result.add(counts);
-			return result;
-		} finally {
-			session.close();
-		}
-
 	}
 
 	@Override
@@ -392,32 +334,21 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 
 	/*********************** 专业代码维护 ************************************/
 	@Override
-	public List<Subjects> getSubjectsList(int offset, int limit) {
+	public List<Subjects> getSubjectsList(int offset, int limit,
+			boolean needTotalCounts) {
 		SqlSession session = sessionFactory.openSession();
 		try {
 			SubjectsExample ex = new SubjectsExample();
 			ex.setOrderByClause("subject_id");
-			List<Subjects> result = session.selectList(
-					"com.brightedu.dao.edu.SubjectsMapper.selectByExample", ex,
-					new RowBounds(offset, limit));
-			return result;
-		} finally {
-			session.close();
-		}
-	}
-
-	@Override
-	public List getSubjectsListAndTotalCounts(int offset, int limit) {
-		SqlSession session = sessionFactory.openSession();
-		try {
-			SubjectsExample ex = new SubjectsExample();
-			ex.setOrderByClause("subject_id");
-			List result = session.selectList(
-					"com.brightedu.dao.edu.SubjectsMapper.selectByExample", ex,
-					new RowBounds(offset, limit));
-			SubjectsMapper cm = session.getMapper(SubjectsMapper.class);
-			Integer counts = cm.countByExample(null);
-			result.add(counts);
+			if (offset != -1 || limit != -1) {
+				ex.setPage(new Page(offset, limit));
+			}
+			SubjectsMapper mp = session.getMapper(SubjectsMapper.class);
+			List result = mp.selectByExample(ex);
+			if (needTotalCounts) {
+				Integer counts = mp.countByExample(null);
+				result.add(counts);
+			}
 			return result;
 		} finally {
 			session.close();
@@ -470,65 +401,57 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 
 	/************************** agent管理 ************************************/
 
-	public List<RecruitAgent> getRecruitAgentList(int offset, int limit) {
+	public List<RecruitAgent> getRecruitAgentList(int offset, int limit,
+			boolean needTotalCounts) {
 		SqlSession session = sessionFactory.openSession();
 		try {
 			RecruitAgentExample ex = new RecruitAgentExample();
 			ex.setOrderByClause("agent_id");
-			List<RecruitAgent> result = null;
-			if (offset == -1 && limit == -1) {
-				RecruitAgentMapper cm = session.getMapper(RecruitAgentMapper.class);
-				result = cm.selectByExample(null);
-			} else {
-				result = session.selectList(
-						"com.brightedu.dao.edu.RecruitAgentMapper.selectByExample",
-						ex, new RowBounds(offset, limit));
+
+			RecruitAgentMapper cm = session.getMapper(RecruitAgentMapper.class);
+			if (offset != -1 || limit != -1) {
+				ex.setPage(new Page(offset, limit));
+			}
+			List result = cm.selectByExample(ex);
+			if (needTotalCounts) {
+				Integer counts = cm.countByExample(null);
+				result.add(counts);
 			}
 			return result;
 		} finally {
 			session.close();
 		}
 	}
-	
+
 	/*********************** 机构类型维护 ************************************/
 	@Override
-	public List<AgentType> getAgentTypeList(int offset, int limit) {
+	public List<AgentType> getAgentTypeList(int offset, int limit,
+			boolean needTotalCounts) {
 		SqlSession session = sessionFactory.openSession();
 		try {
 			AgentTypeExample ex = new AgentTypeExample();
 			ex.setOrderByClause("agent_type_id");
-			List<AgentType> result = session.selectList(
-					"com.brightedu.dao.edu.AgentTypeMapper.selectByExample", ex,
-					new RowBounds(offset, limit));
+			if (offset != -1 || limit != -1) {
+				ex.setPage(new Page(offset, limit));
+			}
+			AgentTypeMapper mp = session.getMapper(AgentTypeMapper.class);
+			List result = mp.selectByExample(ex);
+			if (needTotalCounts) {
+				Integer counts = mp.countByExample(null);
+				result.add(counts);
+			}
 			return result;
 		} finally {
 			session.close();
 		}
-	}
-
-	@Override
-	public List getAgentTypeListAndTotalCounts(int offset, int limit) {
-		SqlSession session = sessionFactory.openSession();
-		try {
-			AgentTypeExample ex = new AgentTypeExample();
-			ex.setOrderByClause("agent_type_id");
-			List result = session.selectList(
-					"com.brightedu.dao.edu.AgentTypeMapper.selectByExample", ex,
-					new RowBounds(offset, limit));
-			AgentTypeMapper cm = session.getMapper(AgentTypeMapper.class);
-			Integer counts = cm.countByExample(null);
-			result.add(counts);
-			return result;
-		} finally {
-			session.close();
-		}
-
 	}
 
 	@Override
 	public boolean addAgentType(AgentType agentType) {
 		SqlSession session = sessionFactory.openSession();
 		try {
+			AgentTypeExample ex = new AgentTypeExample();
+			Page p = new Page();
 			AgentTypeMapper cm = session.getMapper(AgentTypeMapper.class);
 			int count = cm.insertSelective(agentType);
 			session.commit();
@@ -569,32 +492,20 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 
 	/*********************** 费用类型维护 ************************************/
 	@Override
-	public List<FeeType> getFeeTypeList(int offset, int limit) {
+	public List<FeeType> getFeeTypeList(int offset, int limit,
+			boolean needTotalCounts) {
 		SqlSession session = sessionFactory.openSession();
 		try {
 			FeeTypeExample ex = new FeeTypeExample();
 			ex.setOrderByClause("fee_id");
-			List<FeeType> result = session.selectList(
-					"com.brightedu.dao.edu.FeeTypeMapper.selectByExample", ex,
-					new RowBounds(offset, limit));
-			return result;
-		} finally {
-			session.close();
-		}
-	}
-
-	@Override
-	public List getFeeTypeListAndTotalCounts(int offset, int limit) {
-		SqlSession session = sessionFactory.openSession();
-		try {
-			FeeTypeExample ex = new FeeTypeExample();
-			ex.setOrderByClause("fee_id");
-			List result = session.selectList(
-					"com.brightedu.dao.edu.FeeTypeMapper.selectByExample", ex,
-					new RowBounds(offset, limit));
-			FeeTypeMapper cm = session.getMapper(FeeTypeMapper.class);
-			Integer counts = cm.countByExample(null);
-			result.add(counts);
+			FeeTypeMapper mp = session.getMapper(FeeTypeMapper.class);
+			if (offset != -1 || limit != -1) {
+				ex.setPage(new Page(offset, limit));
+			}
+			List result = mp.selectByExample(ex);
+			if (needTotalCounts) {
+				result.add(mp.countByExample(null));
+			}
 			return result;
 		} finally {
 			session.close();
@@ -605,8 +516,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	public boolean addFeeType(String typeName) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			FeeTypeMapper scm = session
-					.getMapper(FeeTypeMapper.class);
+			FeeTypeMapper scm = session.getMapper(FeeTypeMapper.class);
 			FeeType sc = new FeeType();
 			sc.setFee_name(typeName);
 			int count = scm.insertSelective(sc);
@@ -621,8 +531,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	public boolean deletFeeType(List<Integer> feeType_ids) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			FeeTypeMapper scm = session
-					.getMapper(FeeTypeMapper.class);
+			FeeTypeMapper scm = session.getMapper(FeeTypeMapper.class);
 			FeeTypeExample ex = new FeeTypeExample();
 			FeeTypeExample.Criteria cr = ex.createCriteria();
 			cr.andFee_idIn(feeType_ids);
@@ -646,34 +555,23 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			session.close();
 		}
 	}
+
 	/*********************** 入账类型维护 ************************************/
 	@Override
-	public List<ChargeType> getChargeTypeList(int offset, int limit) {
+	public List<ChargeType> getChargeTypeList(int offset, int limit,
+			boolean needTotalCounts) {
 		SqlSession session = sessionFactory.openSession();
 		try {
+			ChargeTypeMapper mp = session.getMapper(ChargeTypeMapper.class);
 			ChargeTypeExample ex = new ChargeTypeExample();
 			ex.setOrderByClause("charge_type_id");
-			List<ChargeType> result = session.selectList(
-					"com.brightedu.dao.edu.ChargeTypeMapper.selectByExample", ex,
-					new RowBounds(offset, limit));
-			return result;
-		} finally {
-			session.close();
-		}
-	}
-
-	@Override
-	public List getChargeTypeListAndTotalCounts(int offset, int limit) {
-		SqlSession session = sessionFactory.openSession();
-		try {
-			ChargeTypeExample ex = new ChargeTypeExample();
-			ex.setOrderByClause("charge_type_id");
-			List result = session.selectList(
-					"com.brightedu.dao.edu.ChargeTypeMapper.selectByExample", ex,
-					new RowBounds(offset, limit));
-			ChargeTypeMapper cm = session.getMapper(ChargeTypeMapper.class);
-			Integer counts = cm.countByExample(null);
-			result.add(counts);
+			if (offset != -1 || limit != -1) {
+				ex.setPage(new Page(offset, limit));
+			}
+			List result = mp.selectByExample(ex);
+			if (needTotalCounts) {
+				result.add(mp.countByExample(null));
+			}
 			return result;
 		} finally {
 			session.close();
@@ -684,8 +582,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	public boolean addChargeType(String typeName) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			ChargeTypeMapper scm = session
-					.getMapper(ChargeTypeMapper.class);
+			ChargeTypeMapper scm = session.getMapper(ChargeTypeMapper.class);
 			ChargeType sc = new ChargeType();
 			sc.setCharge_type_name(typeName);
 			int count = scm.insertSelective(sc);
@@ -700,8 +597,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	public boolean deletChargeType(List<Integer> ChargeType_ids) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			ChargeTypeMapper scm = session
-					.getMapper(ChargeTypeMapper.class);
+			ChargeTypeMapper scm = session.getMapper(ChargeTypeMapper.class);
 			ChargeTypeExample ex = new ChargeTypeExample();
 			ChargeTypeExample.Criteria cr = ex.createCriteria();
 			cr.andCharge_type_idIn(ChargeType_ids);
@@ -725,35 +621,23 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			session.close();
 		}
 	}
-	
+
 	/*********************** 用户类型维护 ************************************/
 	@Override
-	public List<UserType> getUserTypeList(int offset, int limit) {
+	public List<UserType> getUserTypeList(int offset, int limit,
+			boolean needTotalCounts) {
 		SqlSession session = sessionFactory.openSession();
 		try {
 			UserTypeExample ex = new UserTypeExample();
 			ex.setOrderByClause("user_type_id");
-			List<UserType> result = session.selectList(
-					"com.brightedu.dao.edu.UserTypeMapper.selectByExample", ex,
-					new RowBounds(offset, limit));
-			return result;
-		} finally {
-			session.close();
-		}
-	}
-
-	@Override
-	public List getUserTypeListAndTotalCounts(int offset, int limit) {
-		SqlSession session = sessionFactory.openSession();
-		try {
-			UserTypeExample ex = new UserTypeExample();
-			ex.setOrderByClause("user_type_id");
-			List result = session.selectList(
-					"com.brightedu.dao.edu.UserTypeMapper.selectByExample", ex,
-					new RowBounds(offset, limit));
-			UserTypeMapper cm = session.getMapper(UserTypeMapper.class);
-			Integer counts = cm.countByExample(null);
-			result.add(counts);
+			UserTypeMapper mp = session.getMapper(UserTypeMapper.class);
+			if (offset != -1 || limit != -1) {
+				ex.setPage(new Page(offset, limit));
+			}
+			List result = mp.selectByExample(ex);
+			if (needTotalCounts) {
+				result.add(mp.countByExample(null));
+			}
 			return result;
 		} finally {
 			session.close();
@@ -764,8 +648,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	public boolean addUserType(String typeName) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			UserTypeMapper scm = session
-					.getMapper(UserTypeMapper.class);
+			UserTypeMapper scm = session.getMapper(UserTypeMapper.class);
 			UserType sc = new UserType();
 			sc.setUser_type_name(typeName);
 			int count = scm.insertSelective(sc);
@@ -780,8 +663,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	public boolean deletUserType(List<Integer> UserType_ids) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			UserTypeMapper scm = session
-					.getMapper(UserTypeMapper.class);
+			UserTypeMapper scm = session.getMapper(UserTypeMapper.class);
 			UserTypeExample ex = new UserTypeExample();
 			UserTypeExample.Criteria cr = ex.createCriteria();
 			cr.andUser_type_idIn(UserType_ids);
@@ -805,36 +687,24 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			session.close();
 		}
 	}
-	
+
 	/*********************** 照片类型维护 ************************************/
-	
-	@Override
-	public List<PictureType> getPictureTypeList(int offset, int limit) {
-		SqlSession session = sessionFactory.openSession();
-		try {
-			PictureTypeExample ex = new PictureTypeExample();
-			ex.setOrderByClause("pic_type_id");
-			List<PictureType> result = session.selectList(
-					"com.brightedu.dao.edu.PictureTypeMapper.selectByExample", ex,
-					new RowBounds(offset, limit));
-			return result;
-		} finally {
-			session.close();
-		}
-	}
 
 	@Override
-	public List getPictureTypeListAndTotalCounts(int offset, int limit) {
+	public List<PictureType> getPictureTypeList(int offset, int limit,
+			boolean needTotalCounts) {
 		SqlSession session = sessionFactory.openSession();
 		try {
+			PictureTypeMapper mp = session.getMapper(PictureTypeMapper.class);
 			PictureTypeExample ex = new PictureTypeExample();
 			ex.setOrderByClause("pic_type_id");
-			List result = session.selectList(
-					"com.brightedu.dao.edu.PictureTypeMapper.selectByExample", ex,
-					new RowBounds(offset, limit));
-			PictureTypeMapper cm = session.getMapper(PictureTypeMapper.class);
-			Integer counts = cm.countByExample(null);
-			result.add(counts);
+			if (offset != -1 || limit != -1) {
+				ex.setPage(new Page(offset, limit));
+			}
+			List result = mp.selectByExample(ex);
+			if (needTotalCounts) {
+				result.add(mp.countByExample(null));
+			}
 			return result;
 		} finally {
 			session.close();
@@ -845,8 +715,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	public boolean addPictureType(String typeName) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			PictureTypeMapper scm = session
-					.getMapper(PictureTypeMapper.class);
+			PictureTypeMapper scm = session.getMapper(PictureTypeMapper.class);
 			PictureType sc = new PictureType();
 			sc.setPic_type_name(typeName);
 			int count = scm.insertSelective(sc);
@@ -861,8 +730,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	public boolean deletPictureType(List<Integer> PictureType_ids) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			PictureTypeMapper scm = session
-					.getMapper(PictureTypeMapper.class);
+			PictureTypeMapper scm = session.getMapper(PictureTypeMapper.class);
 			PictureTypeExample ex = new PictureTypeExample();
 			PictureTypeExample.Criteria cr = ex.createCriteria();
 			cr.andPic_type_idIn(PictureType_ids);
@@ -886,36 +754,25 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			session.close();
 		}
 	}
-	
+
 	/*********************** 学生状态类型维护 ************************************/
-	
-	@Override
-	public List<StudentStatus> getStudentStatusList(int offset, int limit) {
-		SqlSession session = sessionFactory.openSession();
-		try {
-			StudentStatusExample ex = new StudentStatusExample();
-			ex.setOrderByClause("stu_status_id");
-			List<StudentStatus> result = session.selectList(
-					"com.brightedu.dao.edu.StudentStatusMapper.selectByExample", ex,
-					new RowBounds(offset, limit));
-			return result;
-		} finally {
-			session.close();
-		}
-	}
 
 	@Override
-	public List getStudentStatusListAndTotalCounts(int offset, int limit) {
+	public List<StudentStatus> getStudentStatusList(int offset, int limit,
+			boolean needTotalCounts) {
 		SqlSession session = sessionFactory.openSession();
 		try {
+			StudentStatusMapper mp = session
+					.getMapper(StudentStatusMapper.class);
 			StudentStatusExample ex = new StudentStatusExample();
 			ex.setOrderByClause("stu_status_id");
-			List result = session.selectList(
-					"com.brightedu.dao.edu.StudentStatusMapper.selectByExample", ex,
-					new RowBounds(offset, limit));
-			StudentStatusMapper cm = session.getMapper(StudentStatusMapper.class);
-			Integer counts = cm.countByExample(null);
-			result.add(counts);
+			if (offset != -1 || limit != -1) {
+				ex.setPage(new Page(offset, limit));
+			}
+			List result = mp.selectByExample(ex);
+			if (needTotalCounts) {
+				result.add(mp.countByExample(null));
+			}
 			return result;
 		} finally {
 			session.close();
@@ -959,7 +816,8 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	public boolean saveStudentStatus(StudentStatus agenttype) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			StudentStatusMapper bim = session.getMapper(StudentStatusMapper.class);
+			StudentStatusMapper bim = session
+					.getMapper(StudentStatusMapper.class);
 			bim.updateByPrimaryKey(agenttype);
 			session.commit();
 			return true;

@@ -47,13 +47,8 @@ public class StudentTypeAdminPanel extends BasicAdminPanel {
 				setCurrentPage(indexGoto);
 			}
 		};
-		if (init) {
-			dbService.getStudentTypeListAndTotalCounts((indexGoto - 1)
-					* currentRowsInOnePage, currentRowsInOnePage, callback);
-		} else {
-			dbService.getStudentTypeList((indexGoto - 1)
-					* currentRowsInOnePage, currentRowsInOnePage, callback);
-		}
+		dbService.getStudentTypeList((indexGoto - 1) * currentRowsInOnePage,
+				currentRowsInOnePage, init, callback);
 	}
 
 	@Override
@@ -64,8 +59,8 @@ public class StudentTypeAdminPanel extends BasicAdminPanel {
 	@Override
 	public ListGridField[] createGridFileds() {
 		return parseGridFields(new String[] { "obj_name" },
-				new String[] { "学生类型名称" }, new ListGridFieldType[] {
-						ListGridFieldType.TEXT },
+				new String[] { "学生类型名称" },
+				new ListGridFieldType[] { ListGridFieldType.TEXT },
 				new boolean[] { true }, new int[] { -1 });
 	}
 

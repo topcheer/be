@@ -47,13 +47,8 @@ public class StudentClassesAdminPanel extends BasicAdminPanel {
 				setCurrentPage(indexGoto);
 			}
 		};
-		if (init) {
-			dbService.getStudentClasseshListAndTotalCounts((indexGoto - 1)
-					* currentRowsInOnePage, currentRowsInOnePage, callback);
-		} else {
-			dbService.getStudentClassesList((indexGoto - 1)
-					* currentRowsInOnePage, currentRowsInOnePage, callback);
-		}
+		dbService.getStudentClassesList((indexGoto - 1) * currentRowsInOnePage,
+				currentRowsInOnePage, init, callback);
 	}
 
 	@Override

@@ -24,10 +24,10 @@ public class ChargeTypeAdminPanel extends BasicAdminPanel {
 	}
 
 	public ListGridField[] createGridFileds() {
-		return parseGridFields(new String[] { "obj_name"},
-				new String[] { "入账方式" }, new ListGridFieldType[] {
-						ListGridFieldType.TEXT },
-				new boolean[] { true}, new int[] { -1 });
+		return parseGridFields(new String[] { "obj_name" },
+				new String[] { "入账方式" },
+				new ListGridFieldType[] { ListGridFieldType.TEXT },
+				new boolean[] { true }, new int[] { -1 });
 	}
 
 	public void update(final Record rec) {
@@ -69,20 +69,15 @@ public class ChargeTypeAdminPanel extends BasicAdminPanel {
 					rec.setAttribute("id", bi.getCharge_type_id());
 					rec.setAttribute("object", bi);
 					rec.setAttribute("obj_name", bi.getCharge_type_name());
-					
+
 					listData[i] = rec;
 				}
 				resultList.setData(listData);
 				setCurrentPage(indexGoto);
 			}
 		};
-		if (init) {
-			dbService.getChargeTypeListAndTotalCounts((indexGoto - 1)
-					* currentRowsInOnePage, currentRowsInOnePage, callback);
-		} else {
-			dbService.getChargeTypeList((indexGoto - 1) * currentRowsInOnePage,
-					currentRowsInOnePage, callback);
-		}
+		dbService.getChargeTypeList((indexGoto - 1) * currentRowsInOnePage,
+				currentRowsInOnePage, init, callback);
 	}
 
 	public AdminDialog createAdminDialog() {

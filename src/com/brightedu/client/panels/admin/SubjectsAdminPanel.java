@@ -44,13 +44,8 @@ public class SubjectsAdminPanel extends BasicAdminPanel {
 				setCurrentPage(indexGoto);
 			}
 		};
-		if (init) {
-			dbService.getSubjectsListAndTotalCounts((indexGoto - 1)
-					* currentRowsInOnePage, currentRowsInOnePage, callback);
-		} else {
-			dbService.getSubjectsList((indexGoto - 1) * currentRowsInOnePage,
-					currentRowsInOnePage, callback);
-		}
+		dbService.getSubjectsList((indexGoto - 1) * currentRowsInOnePage,
+				currentRowsInOnePage, init, callback);
 	}
 
 	@Override

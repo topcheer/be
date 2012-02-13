@@ -25,10 +25,10 @@ public class FeeTypeAdminPanel extends BasicAdminPanel {
 	}
 
 	public ListGridField[] createGridFileds() {
-		return parseGridFields(new String[] { "obj_name"},
-				new String[] { "费用名称" }, new ListGridFieldType[] {
-						ListGridFieldType.TEXT },
-				new boolean[] { true}, new int[] { -1 });
+		return parseGridFields(new String[] { "obj_name" },
+				new String[] { "费用名称" },
+				new ListGridFieldType[] { ListGridFieldType.TEXT },
+				new boolean[] { true }, new int[] { -1 });
 	}
 
 	public void update(final Record rec) {
@@ -70,20 +70,15 @@ public class FeeTypeAdminPanel extends BasicAdminPanel {
 					rec.setAttribute("id", bi.getFee_id());
 					rec.setAttribute("object", bi);
 					rec.setAttribute("obj_name", bi.getFee_name());
-					
+
 					listData[i] = rec;
 				}
 				resultList.setData(listData);
 				setCurrentPage(indexGoto);
 			}
 		};
-		if (init) {
-			dbService.getFeeTypeListAndTotalCounts((indexGoto - 1)
-					* currentRowsInOnePage, currentRowsInOnePage, callback);
-		} else {
-			dbService.getFeeTypeList((indexGoto - 1) * currentRowsInOnePage,
-					currentRowsInOnePage, callback);
-		}
+		dbService.getFeeTypeList((indexGoto - 1) * currentRowsInOnePage,
+				currentRowsInOnePage, init, callback);
 	}
 
 	public AdminDialog createAdminDialog() {

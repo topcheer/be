@@ -27,10 +27,10 @@ public class StudentStatusAdminPanel extends BasicAdminPanel {
 	}
 
 	public ListGridField[] createGridFileds() {
-		return parseGridFields(new String[] { "obj_name"},
-				new String[] { "学生状态" }, new ListGridFieldType[] {
-						ListGridFieldType.TEXT },
-				new boolean[] { true}, new int[] { -1 });
+		return parseGridFields(new String[] { "obj_name" },
+				new String[] { "学生状态" },
+				new ListGridFieldType[] { ListGridFieldType.TEXT },
+				new boolean[] { true }, new int[] { -1 });
 	}
 
 	public void update(final Record rec) {
@@ -38,17 +38,18 @@ public class StudentStatusAdminPanel extends BasicAdminPanel {
 				.getAttributeAsObject("object");
 		final String oldName = editedBatch.getStu_status_name();
 		editedBatch.setStu_status_name(rec.getAttributeAsString("obj_name"));
-		dbService.saveStudentStatus(editedBatch, new CommonAsyncCall<Boolean>() {
-			@Override
-			public void onSuccess(Boolean result) {
-				BrightEdu.showTip("已保存!");
-			}
+		dbService.saveStudentStatus(editedBatch,
+				new CommonAsyncCall<Boolean>() {
+					@Override
+					public void onSuccess(Boolean result) {
+						BrightEdu.showTip("已保存!");
+					}
 
-			protected void failed() { // rollback in UI
-				editedBatch.setStu_status_name(oldName);
-				rec.setAttribute("obj_name", oldName);
-			}
-		});
+					protected void failed() { // rollback in UI
+						editedBatch.setStu_status_name(oldName);
+						rec.setAttribute("obj_name", oldName);
+					}
+				});
 	}
 
 	public void gotoPage(final int indexGoto, final boolean init) {
@@ -72,20 +73,15 @@ public class StudentStatusAdminPanel extends BasicAdminPanel {
 					rec.setAttribute("id", bi.getStu_status_id());
 					rec.setAttribute("object", bi);
 					rec.setAttribute("obj_name", bi.getStu_status_name());
-					
+
 					listData[i] = rec;
 				}
 				resultList.setData(listData);
 				setCurrentPage(indexGoto);
 			}
 		};
-		if (init) {
-			dbService.getStudentStatusListAndTotalCounts((indexGoto - 1)
-					* currentRowsInOnePage, currentRowsInOnePage, callback);
-		} else {
-			dbService.getStudentStatusList((indexGoto - 1) * currentRowsInOnePage,
-					currentRowsInOnePage, callback);
-		}
+		dbService.getStudentStatusList((indexGoto - 1) * currentRowsInOnePage,
+				currentRowsInOnePage, init, callback);
 	}
 
 	public AdminDialog createAdminDialog() {
