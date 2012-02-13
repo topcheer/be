@@ -22,6 +22,7 @@ import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.DragDataAction;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.types.TitleOrientation;
+import com.smartgwt.client.types.VisibilityMode;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
@@ -32,6 +33,8 @@ import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.layout.HLayout;
+import com.smartgwt.client.widgets.layout.SectionStack;
+import com.smartgwt.client.widgets.layout.SectionStackSection;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 public class RecruitPlanManagePanel extends VLayout {
@@ -40,9 +43,20 @@ public class RecruitPlanManagePanel extends VLayout {
 	
 	public RecruitPlanManagePanel()
 	{
-		
         //Canvas canvas = new Canvas();   
 		setPadding(5);
+		setAlign(Alignment.CENTER);
+		SectionStack aStack = new SectionStack();   
+		aStack.setWidth("90%");
+		aStack.setHeight100();
+		aStack.setVisibilityMode(VisibilityMode.MULTIPLE);
+		SectionStackSection conditionSection = new SectionStackSection ("条件");
+		SectionStackSection selectionSection = new SectionStackSection ("选择 - 将左边列表中的专业拖动到右边列表中");
+		conditionSection.setExpanded(true);
+		selectionSection.setExpanded(true);
+		
+
+	
 		HLayout queryBar = new HLayout();
 		
 		queryBar.setPadding(3);
@@ -57,6 +71,7 @@ public class RecruitPlanManagePanel extends VLayout {
 		batchItem.setOptionDataSource(BatchDS.getInstance());
 		batchItem.setValueField("batchID");
 		batchItem.setDisplayField("batchName");
+		batchItem.setMultiple(true);
 		
 		SelectItem collegeItem =  new SelectItem("collegeID","大学");
 		collegeItem.setOptionDataSource(CollegeDS.getInstance());
@@ -73,28 +88,37 @@ public class RecruitPlanManagePanel extends VLayout {
 		df.setItems(batchItem,collegeItem,levelItem);
 		queryBar.addMember(df);
 		
-		IButton saveButton = new IButton("保存");
-		saveButton.setLeft(500);
-		queryBar.addMember(saveButton);
+
 		
-		saveButton.addClickHandler(new ClickHandler(){
-			@Override
-			public void onClick(ClickEvent event) {
-								
-			}});
+		conditionSection.addItem(queryBar);
+		aStack.addSection(conditionSection);
 		
+		
+		
+//		
+//		IButton saveButton = new IButton("保存");
+//		saveButton.setLeft(500);
+//		queryBar.addMember(saveButton);
+//		
+//		saveButton.addClickHandler(new ClickHandler(){
+//			@Override
+//			public void onClick(ClickEvent event) {
+//								
+//			}});
+//		
 		
         HLayout hl = new HLayout();
         hl.setHeight(500);
 		
         ListGrid subjectList = new ListGrid();   
+        
         subjectList.setWidth(300);   
         subjectList.setHeight(350);   
         subjectList.setShowAllRecords(true);   
         subjectList.setCanReorderRecords(true);   
         subjectList.setCanDragRecordsOut(true);   
         subjectList.setCanAcceptDroppedRecords(true);   
-        subjectList.setDragDataAction(DragDataAction.MOVE);   
+        subjectList.setDragDataAction(DragDataAction.COPY);   
  
         ListGridField pkField = new ListGridField("subjectID", "id");
         ListGridField subjectField = new ListGridField("subjectName", "专业");   
@@ -122,8 +146,11 @@ public class RecruitPlanManagePanel extends VLayout {
         
         hl.addMember(selectedList);
         //canvas.addChild(countryGrid2); 
-        addMember(queryBar);
-        addMember(hl);
+        selectionSection.addItem(hl);
+        
+        aStack.addSection(selectionSection);
+        addMember(aStack);
+        //addMember(hl);
         
         draw();
         
