@@ -2,6 +2,7 @@
 <functions>
 	<category id="system_manage" name="系统管理">
 		<function id="batch_manage" name="批次代码维护" />
+		<function id="recurit_plan_manage" name="招生计划管理" />
 		<function id="student_type_manage" name="学生类型代码维护" />
 		<function id="student_class_manage" name="学生层次代码维护" />
 		<function id="college_manage" name="合作高校代码维护" />
