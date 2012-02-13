@@ -1,5 +1,6 @@
 package com.brightedu.server;
 
+import java.sql.ResultSet;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -45,9 +46,11 @@ import com.brightedu.model.edu.SubjectsExample;
 import com.brightedu.model.edu.UserType;
 import com.brightedu.model.edu.UserTypeExample;
 import com.brightedu.server.util.ConnectionManager;
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class DataBaseRPCAgent implements DataBaseRPC {
 	SqlSessionFactory sessionFactory;
+	DataBaseRPCImpl remoteServlet;
 
 	public DataBaseRPCAgent() {
 		sessionFactory = ConnectionManager.getSessionFactory();
@@ -825,5 +828,13 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		} finally {
 			session.close();
 		}
+	}
+
+	public DataBaseRPCImpl getRemoteServlet() {
+		return remoteServlet;
+	}
+
+	public void setRemoteServlet(DataBaseRPCImpl remoteServlet) {
+		this.remoteServlet = remoteServlet;
 	}
 }

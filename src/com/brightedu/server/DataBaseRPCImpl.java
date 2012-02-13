@@ -18,6 +18,8 @@ package com.brightedu.server;
 import java.lang.reflect.Proxy;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import com.brightedu.client.DataBaseRPC;
 import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.BatchIndex;
@@ -40,9 +42,15 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 
 	public DataBaseRPCImpl() {
 		DataBaseRPCAgent agt = new DataBaseRPCAgent();
+		agt.setRemoteServlet(this);
 		DataBaseRPCHandler handler = new DataBaseRPCHandler(agt);
 		agent = (DataBaseRPC) Proxy.newProxyInstance(agt.getClass()
 				.getClassLoader(), agt.getClass().getInterfaces(), handler);
+
+	}
+
+	public HttpSession getSession() {
+		return this.getThreadLocalRequest().getSession();
 	}
 
 	/*********************** 批次管理 ************************************/
@@ -50,13 +58,7 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 	public List<BatchIndex> getBatchList(int offset, int limit,
 			boolean needTotalCounts) {
 		return agent.getBatchList(offset, limit, needTotalCounts);
-
 	}
-
-	//
-	// public List getBatchListAndTotalCounts(int offset, int limit) {
-	// return agent.getBatchListAndTotalCounts(offset, limit);
-	// }
 
 	@Override
 	public boolean addBatch(String batch_name) {

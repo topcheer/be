@@ -199,7 +199,7 @@ public abstract class BasicAdminPanel extends VLayout {
 
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
-				if (event.getKeyName().toLowerCase().equals("enter")) {
+				if (event.getKeyName()!=null && event.getKeyName().toLowerCase().equals("enter")) {
 					if (currentPageIndexField.getValue() != null) {
 						int indexGoto = Integer.parseInt(currentPageIndexField
 								.getValue().toString());

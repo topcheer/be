@@ -118,6 +118,12 @@ public class AgentTypeAdminPanel extends BasicAdminPanel {
 		private TextItem agentTypeNameItem = new TextItem("agentTypeName",
 				"机构类型");
 		private BooleanItem isReturnItem = new BooleanItem("is_retrun", "是否有返利");
+		int len = 250;
+
+		public void init() {
+			super.init();
+			setSize(len + 70 + "", "120");
+		}
 
 		@Override
 		protected Object getAddedModel() {
@@ -131,7 +137,6 @@ public class AgentTypeAdminPanel extends BasicAdminPanel {
 		@Override
 		protected DynamicForm getContentForm() {
 			form = new DynamicForm();
-			int len = 250;
 			agentTypeNameItem.setWidth(len);
 			isReturnItem.setWidth(len);
 			isReturnItem.setValue(false);

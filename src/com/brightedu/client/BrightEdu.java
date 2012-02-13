@@ -45,7 +45,8 @@ public class BrightEdu implements EntryPoint {
 
 	private static final GreetingServiceAsync greetingService = GWT
 			.create(GreetingService.class);
-	private static final DataBaseRPCAsync dbService = GWT.create(DataBaseRPC.class);
+	private static final DataBaseRPCAsync dbService = GWT
+			.create(DataBaseRPC.class);
 
 	private String auth;
 
@@ -79,8 +80,10 @@ public class BrightEdu implements EntryPoint {
 
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
-				if (event.getKeyName().toLowerCase().equals("enter")) {
-					login(loginDialog);
+				if (event.getKeyName() != null) {
+					if (event.getKeyName().toLowerCase().equals("enter")) {
+						login(loginDialog);
+					}
 				}
 			}
 		});
@@ -276,7 +279,7 @@ public class BrightEdu implements EntryPoint {
 		mainTabSet.addTab(tab);
 
 		BrightCanvas canvas = new BrightCanvas();
-//		canvas.setBackgroundImage("[SKIN]/shared/background.gif");
+		// canvas.setBackgroundImage("[SKIN]/shared/background.gif");
 		canvas.setWidth100();
 		canvas.setHeight100();
 		canvas.addChild(mainTabSet);

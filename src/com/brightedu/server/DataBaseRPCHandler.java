@@ -4,27 +4,31 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.List;
+import java.util.Date;
 
+import javax.servlet.http.HttpSession;
+
+import com.brightedu.model.edu.User;
 import com.brightedu.server.util.Log;
 
 public class DataBaseRPCHandler implements InvocationHandler {
 	// 要代理的原始对象
-	private Object objOriginal;
+	private DataBaseRPCAgent rpcAgent;
 
 	public DataBaseRPCHandler(Object obj) {
-		this.objOriginal = obj;
+		this.rpcAgent = (DataBaseRPCAgent) obj;
 	}
 
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args)
 			throws Throwable {
-		Object result;
-
 		// 方法调用之前,校验权限
-
+		HttpSession session = rpcAgent.getRemoteServlet().getSession();
+		User user = (User) session.getAttribute("user");
+		System.out.println("-----user: " + user.getUser_name() + "     "
+				+ method.getName());
 		// 调用原始对象的方法
-		result = method.invoke(this.objOriginal, args);
+		Object result = method.invoke(this.rpcAgent, args);
 
 		// 方法调用之后，录入audit
 		String methodName = method.getName();
@@ -45,10 +49,12 @@ public class DataBaseRPCHandler implements InvocationHandler {
 
 	private String getObjectAudit(Object o) {
 		StringBuilder sb = new StringBuilder();
-		if (o instanceof String || o instanceof Integer || o instanceof Long) {
+		if (o instanceof String || o instanceof Integer || o instanceof Long
+				|| o instanceof Date || o instanceof Double
+				|| o instanceof Float) {
 			sb.append(o);
-		} else if (o instanceof List) {
-			List ol = (List) o;
+		} else if (o instanceof Iterable) {
+			Iterable ol = (Iterable) o;
 			for (Object olo : ol) {
 				sb.append(" #").append(getObjectAudit(olo)).append("#");
 			}
@@ -81,7 +87,7 @@ public class DataBaseRPCHandler implements InvocationHandler {
 
 	private void audit(String content) {
 		// FIXME record audit content, better be another manager thread
-		Log.i("Audit -- "+content);
+		Log.i("Audit -- " + content);
 	}
 
 }

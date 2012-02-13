@@ -14,12 +14,17 @@ public class TextAdminDialog extends AdminDialog {
 	}
 
 	public void init() {
+		int maxTitleLen = 0;
 		items = new TextItem[titles.length];
 		for (int i = 0; i < titles.length; i++) {
 			items[i] = new TextItem(titles[i]);
+			if (titles[i].length() > maxTitleLen) {
+				maxTitleLen = titles[i].length();
+			}
 		}
-		super.init();		
-		setSize("200", "80");
+		super.init();
+
+		setSize(180 + 10 * maxTitleLen + "", 80+(items.length-1)*25+"");
 	}
 
 	@Override

@@ -1,8 +1,9 @@
 package com.brightedu.server;
 
+import javax.servlet.http.HttpSession;
+
 import com.brightedu.client.GreetingService;
 import com.brightedu.model.edu.User;
-
 import com.brightedu.server.util.AuthManager;
 import com.brightedu.server.util.Log;
 import com.brightedu.shared.FieldVerifier;
@@ -54,7 +55,13 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 	}
 
 	public String login(User user) {
-		Log.d("User login: "+user.getUser_name());
-		return AuthManager.getFunctions(new String[]{"system_manage"});
+		if (user.getUser_name() == null) {
+			user.setUser_name("test");
+			user.setUser_id(1234);
+		}
+		Log.d("User login: " + user.getUser_name());
+		HttpSession session = this.getThreadLocalRequest().getSession();
+		session.setAttribute("user", user);
+		return AuthManager.getFunctions(new String[] { "system_manage" });
 	}
 }
