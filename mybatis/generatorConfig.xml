@@ -167,9 +167,15 @@
        <table  schema="edu" tableName="student_status" domainObjectName="StudentStatus" >
       <property name="useActualColumnNames" value="true"/>
     </table>
-       -->  
-       
-               
+      
+    <table  schema="edu" tableName="current_batch" domainObjectName="CurrentBatch" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>      
+        <table  schema="edu" tableName="college_subject" domainObjectName="CollegeSubject" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>     
+    
+     -->             
   </context>
   
 </generatorConfiguration>
