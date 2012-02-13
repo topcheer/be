@@ -7,6 +7,7 @@ import com.brightedu.client.panels.admin.CorpCollegeAdmin;
 import com.brightedu.client.panels.admin.CorpCollegeAgreementAdmin;
 import com.brightedu.client.panels.admin.FeeTypeAdmin;
 import com.brightedu.client.panels.admin.PictureTypeAdmin;
+import com.brightedu.client.panels.admin.RecruitPlanManage;
 import com.brightedu.client.panels.admin.StudentClassesAdmin;
 import com.brightedu.client.panels.admin.StudentStatusAdmin;
 import com.brightedu.client.panels.admin.StudentTypeAdmin;
@@ -56,6 +57,10 @@ public class PanelData {
 		if (id.equals("student_status_type_manage")) { // 学生状态类型维护
 			return new StudentStatusAdmin.Factory();
 		}
+		if (id.equals("recurit_plan_manage")) { // 学生状态类型维护
+			return new RecruitPlanManage.Factory();
+		}		
+		
 		return null;
 	}
 
