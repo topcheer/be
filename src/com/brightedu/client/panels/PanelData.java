@@ -57,7 +57,7 @@ public class PanelData {
 		if (id.equals("student_status_type_manage")) { // 学生状态类型维护
 			return new StudentStatusAdmin.Factory();
 		}
-		if (id.equals("recurit_plan_manage")) { // 学生状态类型维护
+		if (id.equals("recurit_plan_manage")) { //招生计划管理设置
 			return new RecruitPlanManage.Factory();
 		}		
 		
