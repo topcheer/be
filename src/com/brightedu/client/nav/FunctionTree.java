@@ -28,7 +28,7 @@ public class FunctionTree extends TreeGrid {
 		setLoadDataOnDemand(false);
 		setCanSort(false);
 		
-		TreeGridField field = new TreeGridField("name","功能导航",300);
+		TreeGridField field = new TreeGridField("name","<b>功能导航</b>",300);
 //		field.setCanFilter(true);
 //		field.setName("name");
 //		field.setTitle("<b>Samples</b>");
@@ -39,6 +39,7 @@ public class FunctionTree extends TreeGrid {
 		setFields(field);
 		
 		Tree tree = new Tree();
+		
 		tree.setModelType(TreeModelType.PARENT);
 		tree.setNameProperty("name");
 		tree.setOpenProperty("isOpen");

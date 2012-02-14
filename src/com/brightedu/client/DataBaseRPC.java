@@ -86,14 +86,6 @@ public interface DataBaseRPC extends RemoteService {
 
 	boolean saveSubject(Subjects subject);
 
-	/**
-	 * 获取agent列表
-	 * 
-	 * @return
-	 */
-	public List<RecruitAgent> getRecruitAgentList(int offset, int limit,
-			boolean needTotalCounts);
-
 	/*********************** 机构类型维护 ************************************/
 
 	public List<AgentType> getAgentTypeList(int offset, int limit,
@@ -131,9 +123,9 @@ public interface DataBaseRPC extends RemoteService {
 
 	public boolean addUserType(String typeName);
 
-	public boolean deletUserType(List<Integer> UserType_ids);
+	public boolean deletUserType(List<Integer> userType_ids);
 
-	public boolean saveUserType(UserType Usertype);
+	public boolean saveUserType(UserType usertype);
 
 	/*********************** 照片类型维护 ************************************/
 	public List<PictureType> getPictureTypeList(int offset, int limit,
@@ -141,9 +133,9 @@ public interface DataBaseRPC extends RemoteService {
 
 	public boolean addPictureType(String typeName);
 
-	public boolean deletPictureType(List<Integer> PictureType_ids);
+	public boolean deletPictureType(List<Integer> pictureType_ids);
 
-	public boolean savePictureType(PictureType Picturetype);
+	public boolean savePictureType(PictureType picturetype);
 
 	/*********************** 学生状态类型维护 ************************************/
 	public List<StudentStatus> getStudentStatusList(int offset, int limit,
@@ -151,9 +143,19 @@ public interface DataBaseRPC extends RemoteService {
 
 	public boolean addStudentStatus(String typeName);
 
-	public boolean deletStudentStatus(List<Integer> StudentStatus_ids);
+	public boolean deletStudentStatus(List<Integer> studentStatus_ids);
 
-	public boolean saveStudentStatus(StudentStatus StudentStatus);
+	public boolean saveStudentStatus(StudentStatus studentStatus);
+
+	/*********************** RecruitAgent维护 ************************************/
+	public List<RecruitAgent> getRecruitAgentList(int offset, int limit,
+			boolean needTotalCounts);
+
+	public boolean addRecruitAgent(RecruitAgent agent);
+
+	public boolean deletRecruitAgent(List<Integer> agent_ids);
+
+	public boolean saveRecruitAgent(RecruitAgent agent);
 
 	/*********************** 招生计划维护 ************************************/
 	List<CollegeSubject> getCollegeSubjectList(int college, int level,

@@ -1,6 +1,6 @@
 package com.brightedu.server;
 
-import java.sql.ResultSet;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -46,10 +46,10 @@ import com.brightedu.model.edu.StudentType;
 import com.brightedu.model.edu.StudentTypeExample;
 import com.brightedu.model.edu.Subjects;
 import com.brightedu.model.edu.SubjectsExample;
+import com.brightedu.model.edu.User;
 import com.brightedu.model.edu.UserType;
 import com.brightedu.model.edu.UserTypeExample;
 import com.brightedu.server.util.ConnectionManager;
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class DataBaseRPCAgent implements DataBaseRPC {
 	SqlSessionFactory sessionFactory;
@@ -401,30 +401,6 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			cm.updateByPrimaryKey(subject);
 			session.commit();
 			return true;
-		} finally {
-			session.close();
-		}
-	}
-
-	/************************** agent管理 ************************************/
-
-	public List<RecruitAgent> getRecruitAgentList(int offset, int limit,
-			boolean needTotalCounts) {
-		SqlSession session = sessionFactory.openSession();
-		try {
-			RecruitAgentExample ex = new RecruitAgentExample();
-			ex.setOrderByClause("agent_id desc");
-
-			RecruitAgentMapper cm = session.getMapper(RecruitAgentMapper.class);
-			if (offset != -1 || limit != -1) {
-				ex.setPage(new Page(offset, limit));
-			}
-			List result = cm.selectByExample(ex);
-			if (needTotalCounts) {
-				Integer counts = cm.countByExample(null);
-				result.add(counts);
-			}
-			return result;
 		} finally {
 			session.close();
 		}
@@ -840,6 +816,79 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	public void setRemoteServlet(DataBaseRPCImpl remoteServlet) {
 		this.remoteServlet = remoteServlet;
 	}
+
+
+	/************************** agent管理 ************************************/
+
+	public List<RecruitAgent> getRecruitAgentList(int offset, int limit,
+			boolean needTotalCounts) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			RecruitAgentExample ex = new RecruitAgentExample();
+			ex.setOrderByClause("agent_id desc");
+
+			RecruitAgentMapper cm = session.getMapper(RecruitAgentMapper.class);
+			if (offset != -1 || limit != -1) {
+				ex.setPage(new Page(offset, limit));
+			}
+			List result = cm.selectByExample(ex);
+			if (needTotalCounts) {
+				Integer counts = cm.countByExample(null);
+				result.add(counts);
+			}
+			return result;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean addRecruitAgent(RecruitAgent agent) {
+		SqlSession session = sessionFactory.openSession();
+		User user = (User) this.getRemoteServlet().getSession()
+				.getAttribute("user");
+		agent.setUser_id(user.getUser_id());
+		try {
+			RecruitAgentMapper mp = session.getMapper(RecruitAgentMapper.class);
+			mp.insertSelective(agent);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean deletRecruitAgent(List<Integer> agent_ids) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			RecruitAgentMapper scm = session
+					.getMapper(RecruitAgentMapper.class);
+			RecruitAgentExample ex = new RecruitAgentExample();
+			RecruitAgentExample.Criteria cr = ex.createCriteria();
+			cr.andAgent_idIn(agent_ids);
+			scm.deleteByExample(ex);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean saveRecruitAgent(RecruitAgent agent) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			RecruitAgentMapper bim = session
+					.getMapper(RecruitAgentMapper.class);
+			bim.updateByPrimaryKey(agent);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+
 	
 	/*********************** 招生计划维护 ************************************/
 

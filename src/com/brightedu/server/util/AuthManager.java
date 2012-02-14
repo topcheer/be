@@ -21,15 +21,22 @@ public class AuthManager {
 	static URL functionConfigURL = AuthManager.class
 			.getResource("/functions.xml");
 
-	public static void load() {
+	static {
 		FileWatchdog watchDog = new FileWatchdog(functionConfigURL.getPath()) {
 
 			@Override
 			protected void doOnChange() {
+				Log.i("Reload AuthManager Configuration");
 				treeMenuDoc = Utils.getXMLDocument(functionConfigURL);
 			}
 		};
-		watchDog.setDelay(2000);
+		watchDog.setDelay(5000);
+		watchDog.setName("AuthManager Watcher");
+		watchDog.start();
+	}
+
+	public static void load() {
+
 		treeMenuDoc = Utils.getXMLDocument(functionConfigURL);
 	}
 

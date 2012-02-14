@@ -15,7 +15,7 @@ public class Log {
 			log4jConfigLocation = Log.class.getResource("/log4j.properties")
 					.getFile();
 		}
-		PropertyConfigurator.configureAndWatch(log4jConfigLocation, 3000);
+		PropertyConfigurator.configureAndWatch(log4jConfigLocation, 5000);
 	}
 
 	public static boolean isDebugEnabled() {

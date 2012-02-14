@@ -110,7 +110,7 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 			bottomLayout.addMember(busyImg);
 			super.init();
 			setSize("325", "170");
-			form.setAction(GWT.getModuleBaseURL() + "formwithfile");
+			form.setAction(GWT.getModuleBaseURL() + "formwithfile?action=collegeagreement");
 			initData();
 		}
 
@@ -133,6 +133,7 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 					agentItem.setValueMap(values);
 				}
 			};
+//			collegeItem.setValue(11);
 			dbService.getCollegeList(-1, -1, false, collegeCall);
 			dbService.getRecruitAgentList(-1, -1, false, agentCall);
 		}
@@ -146,6 +147,7 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 		protected void add() {
 			busyImg.setVisible(true);
 			okBtn.disable();
+//			Object o = collegeItem.getValue();
 			form.submitForm();
 		}
 

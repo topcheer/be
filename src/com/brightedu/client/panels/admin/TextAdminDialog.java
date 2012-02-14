@@ -1,5 +1,6 @@
 package com.brightedu.client.panels.admin;
 
+import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 
@@ -23,7 +24,8 @@ public class TextAdminDialog extends AdminDialog {
 			}
 		}
 		super.init();
-
+		
+		setOverflow(Overflow.HIDDEN);
 		setSize(180 + 10 * maxTitleLen + "", 80+(items.length-1)*25+"");
 	}
 

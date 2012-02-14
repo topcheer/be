@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<functions>
+<functions> 
 	<category id="system_manage" name="系统管理">
 		<function id="batch_manage" name="批次代码维护" />
 		<function id="recurit_plan_manage" name="招生计划管理" />
@@ -12,6 +12,7 @@
 		<function id="charge_type_manage" name="入账方式维护" />
 		<function id="agent_bank_account_manage" name="学生打款账号维护" />
 		<function id="agent_type_manage" name="机构类型维护" />
+		<function id="agent_manage" name="机构维护" />
 		<function id="entrance_cost_manage" name="入学费用标准设置" />		
 		<function id="agent_agreement_fee_manage" name="招生点协议及返利系数管理" />
 		<function id="college_return_manage" name="高校返利（对今明）标准设置" />

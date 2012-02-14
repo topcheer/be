@@ -298,6 +298,7 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 	}
 	
 
+
 	/*********************** 招生计划维护 ************************************/
 	@Override
 	public List<CollegeSubject> getCollegeSubjectList(int college, int level, int batch) {
@@ -316,10 +317,27 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 
 	
 	
-	/************************** 获取agent列表 ************************************/
+
+	/************************** RecruitAgent维护 ************************************/
+
 
 	public List<RecruitAgent> getRecruitAgentList(int offset, int limit,
 			boolean needTotalCounts) {
 		return agent.getRecruitAgentList(offset, limit, needTotalCounts);
+	}
+
+	@Override
+	public boolean addRecruitAgent(RecruitAgent ra) {
+		return agent.addRecruitAgent(ra);
+	}
+
+	@Override
+	public boolean deletRecruitAgent(List<Integer> agent_ids) {
+		return agent.deletRecruitAgent(agent_ids);
+	}
+
+	@Override
+	public boolean saveRecruitAgent(RecruitAgent ra) {
+		return agent.saveRecruitAgent(ra);
 	}
 }

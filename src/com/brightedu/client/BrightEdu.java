@@ -234,10 +234,12 @@ public class BrightEdu implements EntryPoint {
 		hLayout.setHeight100();
 
 		VLayout sideNavLayout = new VLayout();
+		sideNavLayout.setStyleName("test");
 		sideNavLayout.setHeight100();
 		sideNavLayout.setWidth(200);
 		sideNavLayout.setShowResizeBar(true);
 		FunctionTree sideNav = new FunctionTree();
+		
 		sideNav.addLeafClickHandler(new LeafClickHandler() {
 			public void onLeafClick(LeafClickEvent event) {
 				TreeNode node = event.getLeaf();
@@ -245,12 +247,13 @@ public class BrightEdu implements EntryPoint {
 			}
 		});
 		sideNavLayout.addMember(sideNav);
-
 		hLayout.addMember(sideNavLayout);
+//		sideNav.setStyleName("test");
+//		sideNav.setWidth(200);
+//		sideNav.setShowResizeBar(true);
+//		hLayout.addMember(sideNav);
 
-		// mainTabSet = new BrightTabSet();
 		mainTabSet = new TabSet();
-		// BrightTabSet.ID = mainTabSet.getID();
 		Layout paneContainerProperties = new Layout();
 		paneContainerProperties.setLayoutMargin(0);
 		paneContainerProperties.setLayoutTopMargin(1);
@@ -294,22 +297,22 @@ public class BrightEdu implements EntryPoint {
 		hLayout.addMember(canvas);
 		main.addMember(hLayout);
 
-		if (SC.hasFirebug()) {
-			Label label = new Label();
-			label.setWidth100();
-			label.setHeight(50);
-			label.setValign(VerticalAlignment.CENTER);
-			label.setAlign(Alignment.CENTER);
-			label.setContents("请对当前站点关闭Firebug");
-
-			Window fbWindow = new Window();
-			fbWindow.setTitle("Firebug Detected");
-			fbWindow.setWidth100();
-			fbWindow.setHeight(80);
-			fbWindow.addItem(label);
-			fbWindow.setRedrawOnResize(true);
-			main.addMember(fbWindow);
-		}
+//		if (SC.hasFirebug()) {
+//			Label label = new Label();
+//			label.setWidth100();
+//			label.setHeight(50);
+//			label.setValign(VerticalAlignment.CENTER);
+//			label.setAlign(Alignment.CENTER);
+//			label.setContents("请对当前站点关闭Firebug");
+//
+//			Window fbWindow = new Window();
+//			fbWindow.setTitle("Firebug Detected");
+//			fbWindow.setWidth100();
+//			fbWindow.setHeight(80);
+//			fbWindow.addItem(label);
+//			fbWindow.setRedrawOnResize(true);
+//			main.addMember(fbWindow);
+//		}
 		main.draw();
 	}
 

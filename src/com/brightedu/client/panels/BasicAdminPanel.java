@@ -67,16 +67,17 @@ public abstract class BasicAdminPanel extends VLayout {
 
 	public BasicAdminPanel() {
 		init();
-		postInit();
 	}
+	
+	
 
 	/**
 	 * other init actions for UI only
 	 */
-	protected void postInit() {
+	public void postInit() {
 	}
 
-	private void init() {
+	public void init() {
 		initListGrid();
 		addButton.setAutoFit(true);
 		delButton.setAutoFit(true);
@@ -249,6 +250,7 @@ public abstract class BasicAdminPanel extends VLayout {
 		pagetools.addMember(refreButton);
 		addMember(pagetools);
 		initPages();
+		postInit();
 	}
 
 	private void initListGrid() {
@@ -424,5 +426,9 @@ public abstract class BasicAdminPanel extends VLayout {
 			gotoPage(currentPageIndex);
 		}
 		
+	}
+
+	public ListGrid getResultList() {
+		return resultList;
 	}
 }

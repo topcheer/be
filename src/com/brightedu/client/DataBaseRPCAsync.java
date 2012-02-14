@@ -135,6 +135,13 @@ public interface DataBaseRPCAsync {
 	void saveStudentStatus(StudentStatus StudentStatus,
 			AsyncCallback<Boolean> callback);
 
+	void addRecruitAgent(RecruitAgent agent, AsyncCallback<Boolean> callback);
+
+	void deletRecruitAgent(List<Integer> agent_ids,
+			AsyncCallback<Boolean> callback);
+
+	void saveRecruitAgent(RecruitAgent agent, AsyncCallback<Boolean> callback);
+
 	void getCollegeSubjectList(int college, int level, int batch,
 			AsyncCallback<List<CollegeSubject>> callback);
 
