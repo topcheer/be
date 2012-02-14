@@ -11,12 +11,14 @@ import com.brightedu.client.ds.CollegeSubjectData;
 import com.brightedu.client.ds.LevelDS;
 import com.brightedu.client.ds.SubjectDS;
 import com.brightedu.model.edu.CollegeSubject;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.DragDataAction;
 import com.smartgwt.client.types.ListGridEditEvent;
 import com.smartgwt.client.types.ValidatorType;
 import com.smartgwt.client.types.VisibilityMode;
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.TransferImgButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -30,6 +32,8 @@ import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.events.CellDoubleClickEvent;
 import com.smartgwt.client.widgets.grid.events.CellDoubleClickHandler;
+import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
+import com.smartgwt.client.widgets.grid.events.RecordDoubleClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.HStack;
 import com.smartgwt.client.widgets.layout.SectionStack;
@@ -229,6 +233,27 @@ public class RecruitPlanManagePanel extends VLayout {
 				selectedList.transferSelectedData(subjectList);
 				
 			}});
+        
+        selectedList.addRecordDoubleClickHandler(new RecordDoubleClickHandler(){
+
+
+			@Override
+			public void onRecordDoubleClick(RecordDoubleClickEvent event) {
+				
+				selectedList.removeData(event.getRecord());
+				
+			}});
+        
+//        new Timer(){
+//
+//			@Override
+//			public void run() {
+//				
+//				SC.say("Helllo Forever");
+//				
+//			}}.scheduleRepeating(3000);
+        
+        
 	}
 	
 	protected void reload()
@@ -246,10 +271,33 @@ public class RecruitPlanManagePanel extends VLayout {
 
 	protected void saveMe()
 	{
+		Integer collegeId = (Integer)collegeItem.getValue();
+		Integer batchId = (Integer)batchItem.getValue();
+		Integer levelId = (Integer)levelItem.getValue();
+		
 		if(selectedList.getRecords().length == 0) 
 			
 			{
-				BrightEdu.showTip("没有啥东西好存的,你在开玩笑?");
+				
+				CollegeSubject cs = new CollegeSubject();
+				cs.setBatch_id(batchId);
+				cs.setClassified_id(levelId);
+				cs.setCollege_id(collegeId);
+		
+				dbService.deletCollegeSubject(cs, new AsyncCallback(){
+		
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+		
+					@Override
+					public void onSuccess(Object result) {
+						
+						BrightEdu.showTip("没有啥东西好存的,开玩笑? 我顺便把所有的组合全删了，你没意见吧？");
+					}});
+			
 				return;
 			}
 		
@@ -258,10 +306,6 @@ public class RecruitPlanManagePanel extends VLayout {
 		//保存界面上的组合
 		
 		//step 1 , 删除所有已经存在的组合
-		
-		Integer collegeId = (Integer)collegeItem.getValue();
-		Integer batchId = (Integer)batchItem.getValue();
-		Integer levelId = (Integer)levelItem.getValue();
 //		
 //		CollegeSubject cs = new CollegeSubject();
 //		cs.setBatch_id(batchId);
