@@ -10,24 +10,13 @@ import com.brightedu.client.ds.CollegeDS;
 import com.brightedu.client.ds.CollegeSubjectData;
 import com.brightedu.client.ds.LevelDS;
 import com.brightedu.client.ds.SubjectDS;
-import com.brightedu.model.edu.BatchIndex;
-import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.CollegeSubject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-
-import com.smartgwt.client.data.DataSource;
-import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
-import com.smartgwt.client.data.fields.DataSourceIntegerField;
-import com.smartgwt.client.data.fields.DataSourceTextField;
-import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.DragDataAction;
 import com.smartgwt.client.types.ListGridEditEvent;
-import com.smartgwt.client.types.ListGridFieldType;
-import com.smartgwt.client.types.TitleOrientation;
+import com.smartgwt.client.types.ValidatorType;
 import com.smartgwt.client.types.VisibilityMode;
-import com.smartgwt.client.util.SC;
-import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.TransferImgButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -36,6 +25,7 @@ import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
+import com.smartgwt.client.widgets.form.validator.Validator;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.events.CellDoubleClickEvent;
@@ -47,6 +37,8 @@ import com.smartgwt.client.widgets.layout.SectionStackSection;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 public class RecruitPlanManagePanel extends VLayout {
+	
+	//本功能模块在Firefox 10.0开发模式下死活不工作， IE下工作一切正常
 	
 	protected static final DataBaseRPCAsync dbService = BrightEdu.createDataBaseRPC();
 	SectionStack aStack = new SectionStack();   
@@ -151,6 +143,13 @@ public class RecruitPlanManagePanel extends VLayout {
         
         pkField.setHidden(true);
         lolField.setCanEdit(true);
+        Validator numberVd = new Validator();
+        numberVd.setType(ValidatorType.INTEGERRANGE);
+        numberVd.setValidateOnChange(true);
+        numberVd.setAttribute("min", 1);
+        numberVd.setAttribute("max", 6);
+        lolField.setValidators(numberVd);
+        
         
         subjectList.setFields(pkField, subjectField);   
         subjectList.setDataSource(SubjectDS.getInstance());
@@ -166,7 +165,7 @@ public class RecruitPlanManagePanel extends VLayout {
         arrowImg.setLeft(10);
         arrowImg.setRight(10);
         hl.addMember(arrowImg);  
-
+        
         selectedList.setWidth(350);   
         selectedList.setHeight(350);   
         selectedList.setShowAllRecords(true);   
