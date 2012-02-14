@@ -33,7 +33,7 @@ public class PostgrePagingPlugin extends PluginAdapter {
 	public boolean sqlMapDocumentGenerated(Document document,
 			IntrospectedTable introspectedTable) {
 		XmlElement parentElement = document.getRootElement();
-
+		
 		XmlElement paginationSuffixElement = new XmlElement("sql");
 		paginationSuffixElement.addAttribute(new Attribute("id",
 				"PostgreSqlSuffix"));
@@ -42,6 +42,7 @@ public class PostgrePagingPlugin extends PluginAdapter {
 		pageEnd.addElement(new TextElement(
 				"<![CDATA[  OFFSET #{page.offset} LIMIT #{page.length} ]]>"));
 		paginationSuffixElement.addElement(pageEnd);
+
 		parentElement.addElement(paginationSuffixElement);
 
 		return super.sqlMapDocumentGenerated(document, introspectedTable);
