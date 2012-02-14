@@ -72,7 +72,7 @@
 	    <mapper resource="com/brightedu/xml/edu/MajorCategoryMapper.xml" />
 	    <mapper resource="com/brightedu/xml/edu/StudentPictureMapper.xml" />
 	    <mapper resource="com/brightedu/xml/edu/CurrentBatchMapper.xml" />
-
+		<mapper resource="com/brightedu/xml/edu/CollegeSubjectViewMapper.xml" />
 	</mappers>
 
 
