@@ -17,9 +17,9 @@ public class BatchDS extends DataSource{
     private static BatchDS instance = null;   
     
     public static BatchDS getInstance() {   
-        if (instance == null) {   
+    	if(instance != null) instance.destroy(); 
             instance = new BatchDS("batchDS");   
-        }   
+
         return instance;   
     }  
 	public BatchDS(String id) {

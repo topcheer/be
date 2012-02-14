@@ -18,9 +18,9 @@ public class LevelDS extends DataSource{
     private static LevelDS instance = null;   
     
     public static LevelDS getInstance() {   
-        if (instance == null) {   
+    	if(instance != null) instance.destroy(); 
             instance = new LevelDS("levelDS");   
-        }   
+      
         return instance;   
     }  
 	public LevelDS(String id) {

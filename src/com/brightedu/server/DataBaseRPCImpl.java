@@ -26,6 +26,7 @@ import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.ChargeType;
 import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.CollegeSubject;
+import com.brightedu.model.edu.CollegeSubjectView;
 import com.brightedu.model.edu.FeeType;
 import com.brightedu.model.edu.PictureType;
 import com.brightedu.model.edu.RecruitAgent;
@@ -301,7 +302,7 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 
 	/*********************** 招生计划维护 ************************************/
 	@Override
-	public List<CollegeSubject> getCollegeSubjectList(int college, int level, int batch) {
+	public List<CollegeSubjectView> getCollegeSubjectList(int college, int level, int batch) {
 		return agent.getCollegeSubjectList(college, level, batch);
 	}
 

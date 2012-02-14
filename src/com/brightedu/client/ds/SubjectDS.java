@@ -17,27 +17,24 @@ public class SubjectDS extends DataSource{
     private static SubjectDS instance = null;   
     
     public static SubjectDS getInstance() {   
-        if (instance == null) {   
+    		if(instance != null) instance.destroy(); 
             instance = new SubjectDS("subjectDS");   
-        }   
+ 
         return instance;   
     }  
 	public SubjectDS(String id) {
 		
-        setID(id);   
+        setID(id);
         setClientOnly(true);       
         
         DataSourceIntegerField pkField = new DataSourceIntegerField("subjectID");   
         pkField.setHidden(true);   
-        pkField.setPrimaryKey(true);   
+        //pkField.setPrimaryKey(true);   
   
         DataSourceTextField subjectNameField = new DataSourceTextField("subjectName", "专业", 128, true);   
         DataSourceIntegerField lolField = new DataSourceIntegerField("lol", "学制(年)", 50, true);   
   
         setFields(pkField, subjectNameField,lolField);   
-       
-        
-        setClientOnly(true);       
 		
         BrightEdu.createDataBaseRPC().getSubjectsList(-1, -1, false, new AsyncCallback<List<Subjects>>(){
 
@@ -62,9 +59,6 @@ public class SubjectDS extends DataSource{
 				}
 				
 			}
-
-
-        	
         });
 	}
 	

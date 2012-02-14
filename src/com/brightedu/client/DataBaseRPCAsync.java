@@ -7,6 +7,7 @@ import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.ChargeType;
 import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.CollegeSubject;
+import com.brightedu.model.edu.CollegeSubjectView;
 import com.brightedu.model.edu.FeeType;
 import com.brightedu.model.edu.PictureType;
 import com.brightedu.model.edu.RecruitAgent;
@@ -143,7 +144,7 @@ public interface DataBaseRPCAsync {
 	void saveRecruitAgent(RecruitAgent agent, AsyncCallback<Boolean> callback);
 
 	void getCollegeSubjectList(int college, int level, int batch,
-			AsyncCallback<List<CollegeSubject>> callback);
+			AsyncCallback<List<CollegeSubjectView>> callback);
 
 	void addCollegeSubject(List<CollegeSubject> collegeSubjects,
 			AsyncCallback<Boolean> callback);

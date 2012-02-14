@@ -16,9 +16,9 @@ public class CollegeDS extends DataSource{
     private static CollegeDS instance = null;   
     
     public static CollegeDS getInstance() {   
-        if (instance == null) {   
+    	if(instance != null) instance.destroy(); 
             instance = new CollegeDS("collegeDS");   
-        }   
+
         return instance;   
     }  
 	public CollegeDS(String id) {

@@ -13,6 +13,7 @@ import com.brightedu.dao.edu.BatchIndexMapper;
 import com.brightedu.dao.edu.ChargeTypeMapper;
 import com.brightedu.dao.edu.CollegeMapper;
 import com.brightedu.dao.edu.CollegeSubjectMapper;
+import com.brightedu.dao.edu.CollegeSubjectViewMapper;
 import com.brightedu.dao.edu.FeeTypeMapper;
 import com.brightedu.dao.edu.PictureTypeMapper;
 import com.brightedu.dao.edu.RecruitAgentMapper;
@@ -32,6 +33,8 @@ import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.CollegeExample;
 import com.brightedu.model.edu.CollegeSubject;
 import com.brightedu.model.edu.CollegeSubjectExample;
+import com.brightedu.model.edu.CollegeSubjectView;
+import com.brightedu.model.edu.CollegeSubjectViewExample;
 import com.brightedu.model.edu.FeeType;
 import com.brightedu.model.edu.FeeTypeExample;
 import com.brightedu.model.edu.PictureType;
@@ -893,19 +896,19 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	/*********************** 招生计划维护 ************************************/
 
 	@Override
-	public List<CollegeSubject> getCollegeSubjectList(int college, int level,
+	public List<CollegeSubjectView> getCollegeSubjectList(int college, int level,
 			int batch) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			CollegeSubjectMapper mp = session
-					.getMapper(CollegeSubjectMapper.class);
-			CollegeSubjectExample ex = new CollegeSubjectExample();
-			ex.setOrderByClause("subject_id");
+			CollegeSubjectViewMapper mp = session
+					.getMapper(CollegeSubjectViewMapper.class);
+			CollegeSubjectViewExample ex = new CollegeSubjectViewExample();
+			//ex.setOrderByClause("subeject_id");
 			ex.createCriteria().andBatch_idEqualTo(batch)
 								.andCollege_idEqualTo(college)
 								.andClassified_idEqualTo(level);
 			
-			List<CollegeSubject> result = mp.selectByExample(ex);
+			List<CollegeSubjectView> result = mp.selectByExample(ex);
 			return result;
 			
 		} finally {

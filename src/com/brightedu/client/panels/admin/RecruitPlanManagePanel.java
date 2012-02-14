@@ -7,6 +7,7 @@ import com.brightedu.client.BrightEdu;
 import com.brightedu.client.DataBaseRPCAsync;
 import com.brightedu.client.ds.BatchDS;
 import com.brightedu.client.ds.CollegeDS;
+import com.brightedu.client.ds.CollegeSubjectData;
 import com.brightedu.client.ds.LevelDS;
 import com.brightedu.client.ds.SubjectDS;
 import com.brightedu.model.edu.BatchIndex;
@@ -48,11 +49,23 @@ import com.smartgwt.client.widgets.layout.VLayout;
 public class RecruitPlanManagePanel extends VLayout {
 	
 	protected static final DataBaseRPCAsync dbService = BrightEdu.createDataBaseRPC();
+	SectionStack aStack = new SectionStack();   
+	SectionStackSection conditionSection = new SectionStackSection ("条件");
+	SectionStackSection selectionSection = new SectionStackSection ("选择 - 将左边列表中的专业拖动到右边列表中");
+	SectionStackSection actionSection = new SectionStackSection ("操作");
+	 
 	SelectItem batchItem =  new SelectItem("batchID","批次");
 	SelectItem levelItem =  new SelectItem("levelID","层次");
 	SelectItem collegeItem =  new SelectItem("collegeID","大学");
-	final ListGrid subjectList = new ListGrid();   
-	final ListGrid selectedList = new ListGrid();  
+	
+	ListGrid subjectList = new ListGrid();   
+	ListGrid selectedList = new ListGrid();  
+	
+    ListGridField pkField = new ListGridField("subjectID", "id");
+    ListGridField subjectField = new ListGridField("subjectName", "专业");   
+    ListGridField lolField = new ListGridField("lol", "学制(年)");  
+   
+	DynamicForm df = new DynamicForm();
 	
 	public RecruitPlanManagePanel()
 	{
@@ -63,16 +76,13 @@ public class RecruitPlanManagePanel extends VLayout {
 	protected void init()
 	{
 		setPadding(5);
-		SectionStack aStack = new SectionStack();   
+
 		aStack.setWidth100();
 		aStack.setHeight(600);
 		aStack.setVisibilityMode(VisibilityMode.MULTIPLE);
-		SectionStackSection conditionSection = new SectionStackSection ("条件");
-		SectionStackSection selectionSection = new SectionStackSection ("选择 - 将左边列表中的专业拖动到右边列表中");
+
 		conditionSection.setExpanded(true);
 		selectionSection.setExpanded(true);
-		
-		DynamicForm df = new DynamicForm();
 		
 		
 		batchItem.setOptionDataSource(BatchDS.getInstance());
@@ -137,21 +147,15 @@ public class RecruitPlanManagePanel extends VLayout {
         subjectList.setCanAcceptDroppedRecords(true);   
         subjectList.setDragDataAction(DragDataAction.COPY);   
  
-        ListGridField pkField = new ListGridField("subjectID", "id");
-        ListGridField subjectField = new ListGridField("subjectName", "专业");   
-        pkField.setHidden(true);
-        ListGridField lolField = new ListGridField("lol", "学制(年)");  
+
         
+        pkField.setHidden(true);
         lolField.setCanEdit(true);
         
         subjectList.setFields(pkField, subjectField);   
         subjectList.setDataSource(SubjectDS.getInstance());
-        
- 
 
         hl.addMember(subjectList);
-        
-        
         
         TransferImgButton arrowImg = new TransferImgButton(TransferImgButton.RIGHT);   
         arrowImg.addClickHandler(new ClickHandler() {   
@@ -162,10 +166,9 @@ public class RecruitPlanManagePanel extends VLayout {
         arrowImg.setLeft(10);
         arrowImg.setRight(10);
         hl.addMember(arrowImg);  
-        
+
         selectedList.setWidth(350);   
         selectedList.setHeight(350);   
-        //selectedList.setLeft(400);   
         selectedList.setShowAllRecords(true);   
         selectedList.setEmptyMessage("拖动左边的项目到这里");   
         selectedList.setCanReorderFields(true);   
@@ -173,7 +176,9 @@ public class RecruitPlanManagePanel extends VLayout {
         selectedList.setCanAcceptDroppedRecords(true);   
         selectedList.setCanRemoveRecords(true);
         selectedList.setDragDataAction(DragDataAction.MOVE);   
+        
         selectedList.setFields(pkField, subjectField,lolField);   
+        
         selectedList.setEditEvent(ListGridEditEvent.CLICK);
         selectedList.setPreventDuplicates(true);
         selectedList.setDuplicateDragMessage("所选专业已经在已选择列表中,请仔细检查");
@@ -184,7 +189,6 @@ public class RecruitPlanManagePanel extends VLayout {
         selectionSection.addItem(hl);
         aStack.addSection(selectionSection);
         
-        SectionStackSection actionSection = new SectionStackSection ("操作");
         actionSection.setShowHeader(true);
         actionSection.setExpanded(true);
         
@@ -216,16 +220,18 @@ public class RecruitPlanManagePanel extends VLayout {
         draw();
         
         subjectList.fetchData();
-        
-		subjectList.addCellDoubleClickHandler(new CellDoubleClickHandler(){
 
+        subjectList.addCellDoubleClickHandler(new CellDoubleClickHandler(){
+        
+        
+        	
 			@Override
 			public void onCellDoubleClick(CellDoubleClickEvent event) {
 				selectedList.transferSelectedData(subjectList);
 				
 			}});
-        //canvas.draw();   
-
+        
+       
 		
 	}
 	
@@ -233,8 +239,18 @@ public class RecruitPlanManagePanel extends VLayout {
 	{
 		//检查所选的组合是否有记录已经存在与college_subject表中，如果有，初始化selectedList列表
 		
+		Integer collegeId = (Integer)collegeItem.getValue();
+		Integer batchId = (Integer)batchItem.getValue();
+		Integer levelId = (Integer)levelItem.getValue();
 		
+		//selectedList.setDataSource(new CollegeSubjectDS().getInstance(collegeId, levelId, batchId));
+		//selectedList.setDataSource(CollegeSubjectData.getInstance(collegeId, levelId, batchId));
+		//selectedList.setData(CollegeSubjectData.getData(collegeId, levelId, batchId));
+		//selectedList.redraw();
 		
+		selectedList.setData(CollegeSubjectData.getData(collegeId, levelId, batchId));
+		selectedList.redraw();
+	
 	}
 
 	protected void saveMe()
