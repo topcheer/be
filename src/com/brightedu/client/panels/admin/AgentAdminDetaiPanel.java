@@ -21,6 +21,8 @@ public class AgentAdminDetaiPanel extends VLayout {
 				admin.master.update(rec);
 			}
 		});
+		
+		detailedForm.getSaveBtn().disable();
 	}
 
 	public AgentAdminEditorForm getDetailedForm() {

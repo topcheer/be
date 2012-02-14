@@ -19,15 +19,15 @@ import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 
 public class AgentAdminMasterPanel extends BasicAdminPanel {
 	AgentAdmin admin;
+	LinkedHashMap<String, String> agentTypes;
 
 	public AgentAdminMasterPanel(AgentAdmin agentadmin) {
 		this.admin = agentadmin;
-		admin.detailed.getDetailedForm().getSaveBtn().disable();
+
 		resultList.addSelectionChangedHandler(new SelectionChangedHandler() {
 
 			@Override
 			public void onSelectionChanged(SelectionEvent event) {
-				System.out.println("Selection changed");
 				if (event.getState()) {
 					admin.detailed.getDetailedForm().setValue(
 							(RecruitAgent) event.getRecord()
@@ -35,12 +35,11 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 					admin.detailed.getDetailedForm().getSaveBtn().enable();
 				} else {
 					admin.detailed.getDetailedForm().setValue(
-							new RecruitAgent());
+							new RecruitAgent());// empty all fields
 					admin.detailed.getDetailedForm().getSaveBtn().disable();
 				}
 			}
 		});
-
 	}
 
 	@Override
@@ -82,13 +81,28 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 
 	@Override
 	public ListGridField[] createGridFileds() {
-		ListGridField[] fields = parseGridFields(new String[] { "obj_name",
-				"agent_type", "responsible_person" }, new String[] { "机构名称",
-				"机构类型", "负责人" }, new ListGridFieldType[] {
+		final ListGridField[] fields = parseGridFields(new String[] {
+				"obj_name", "agent_type", "responsible_person" }, new String[] {
+				"机构名称", "机构类型", "负责人" }, new ListGridFieldType[] {
 				ListGridFieldType.TEXT, ListGridFieldType.TEXT,
 				ListGridFieldType.TEXT, ListGridFieldType.TEXT },
 				new boolean[] { false, false, false, false }, new int[] { -1,
 						-1, -1, -1 });
+		dbService.getAgentTypeList(-1, -1, false,
+				new CommonAsyncCall<List<AgentType>>() {
+
+					@Override
+					public void onSuccess(List<AgentType> result) {
+						agentTypes = new LinkedHashMap<String, String>();
+						for (AgentType at : result) {
+							agentTypes.put(at.getAgent_type_id() + "",
+									at.getAgent_type_name());
+						}
+						fields[1].setValueMap(agentTypes);
+						admin.detailed.getDetailedForm().agent_typeItem
+								.setValueMap(agentTypes);
+					}
+				});
 		return fields;
 	}
 
@@ -125,7 +139,7 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 			}
 
 			protected void failed() { // rollback in UI
-				// List UI would be changed
+				// List UI would not be changed
 			}
 		});
 	}
@@ -156,20 +170,8 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 
 			@Override
 			protected DynamicForm getContentForm() {
-				dbService.getAgentTypeList(-1, -1, false,
-						new CommonAsyncCall<List<AgentType>>() {
 
-							@Override
-							public void onSuccess(List<AgentType> result) {
-								LinkedHashMap<String, String> agentTypes = new LinkedHashMap<String, String>();
-								for (AgentType at : result) {
-									agentTypes.put(at.getAgent_type_id() + "",
-											at.getAgent_type_name());
-								}
-								form.agent_typeItem.setValueMap(agentTypes);
-							}
-						});
-
+				form.agent_typeItem.setValueMap(agentTypes);
 				return form;
 			}
 

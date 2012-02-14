@@ -34,6 +34,8 @@ public class AgentAdminEditorForm extends DynamicForm {
 
 	ButtonItem saveBtn = new ButtonItem("save", "修改");
 
+
+
 	public AgentAdminEditorForm() {
 		init();
 	}
@@ -62,7 +64,6 @@ public class AgentAdminEditorForm extends DynamicForm {
 		// save();
 		// }
 		// });
-
 
 	}
 
@@ -117,5 +118,7 @@ public class AgentAdminEditorForm extends DynamicForm {
 	public ButtonItem getSaveBtn() {
 		return saveBtn;
 	}
+
+
 
 }
