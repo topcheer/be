@@ -1,3 +1,10 @@
 Mybatis Eclipse Plugin update site
 http://mybatis.googlecode.com/svn/sub-projects/generator/trunk/eclipse/UpdateSite/
 
+
+模型代码生成特别说明
+
+修改过的数据表或view,重新生成的时候要把com.brightedu.xml.edu下面相应的xml删除先，
+不然的话，生成的代码会有重复，运行时会出错，因为generator缺省是merge那个文件，但是这个功能好像有bug
+
+

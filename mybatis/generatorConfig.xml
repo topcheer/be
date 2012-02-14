@@ -175,12 +175,17 @@
       <property name="useActualColumnNames" value="true"/>
     </table>     
     
-     -->  
+    
      
       <table  schema="edu" tableName="college_subject_view" domainObjectName="CollegeSubjectView" >
       <property name="useActualColumnNames" value="true"/>
     </table>      
-                
+          -->  
+      <table  schema="edu" tableName="entrance_cost" domainObjectName="EntranceCost" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>  
+     
+                 
   </context>
   
 </generatorConfiguration>
