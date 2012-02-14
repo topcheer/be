@@ -21,6 +21,7 @@ import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.ChargeType;
 import com.brightedu.model.edu.College;
+import com.brightedu.model.edu.CollegeSubject;
 import com.brightedu.model.edu.FeeType;
 import com.brightedu.model.edu.PictureType;
 import com.brightedu.model.edu.RecruitAgent;
@@ -153,5 +154,13 @@ public interface DataBaseRPC extends RemoteService {
 	public boolean deletStudentStatus(List<Integer> StudentStatus_ids);
 
 	public boolean saveStudentStatus(StudentStatus StudentStatus);
+
+	/*********************** 招生计划维护 ************************************/
+	List<CollegeSubject> getCollegeSubjectList(int college, int level,
+			int batch);
+
+	boolean addCollegeSubject(List<CollegeSubject> collegeSubjects);
+
+	boolean deletCollegeSubject(CollegeSubject collegeSubjects);
 
 }

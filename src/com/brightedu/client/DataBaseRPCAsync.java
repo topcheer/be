@@ -6,6 +6,7 @@ import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.ChargeType;
 import com.brightedu.model.edu.College;
+import com.brightedu.model.edu.CollegeSubject;
 import com.brightedu.model.edu.FeeType;
 import com.brightedu.model.edu.PictureType;
 import com.brightedu.model.edu.RecruitAgent;
@@ -132,6 +133,15 @@ public interface DataBaseRPCAsync {
 			AsyncCallback<List<StudentStatus>> callback);
 
 	void saveStudentStatus(StudentStatus StudentStatus,
+			AsyncCallback<Boolean> callback);
+
+	void getCollegeSubjectList(int college, int level, int batch,
+			AsyncCallback<List<CollegeSubject>> callback);
+
+	void addCollegeSubject(List<CollegeSubject> collegeSubjects,
+			AsyncCallback<Boolean> callback);
+
+	void deletCollegeSubject(CollegeSubject collegeSubjects,
 			AsyncCallback<Boolean> callback);
 
 }

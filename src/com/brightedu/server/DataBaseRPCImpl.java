@@ -25,6 +25,7 @@ import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.ChargeType;
 import com.brightedu.model.edu.College;
+import com.brightedu.model.edu.CollegeSubject;
 import com.brightedu.model.edu.FeeType;
 import com.brightedu.model.edu.PictureType;
 import com.brightedu.model.edu.RecruitAgent;
@@ -295,7 +296,26 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 	public boolean saveStudentStatus(StudentStatus studentStatus) {
 		return agent.saveStudentStatus(studentStatus);
 	}
+	
 
+	/*********************** 招生计划维护 ************************************/
+	@Override
+	public List<CollegeSubject> getCollegeSubjectList(int college, int level, int batch) {
+		return agent.getCollegeSubjectList(college, level, batch);
+	}
+
+	@Override
+	public boolean addCollegeSubject(List<CollegeSubject> collegeSubjects) {
+		return agent.addCollegeSubject(collegeSubjects);
+	}
+
+	@Override
+	public boolean deletCollegeSubject(CollegeSubject collegeSubjects) {
+		return agent.deletCollegeSubject(collegeSubjects);
+	}
+
+	
+	
 	/************************** 获取agent列表 ************************************/
 
 	public List<RecruitAgent> getRecruitAgentList(int offset, int limit,
