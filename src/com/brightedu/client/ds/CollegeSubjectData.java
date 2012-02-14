@@ -3,6 +3,8 @@ package com.brightedu.client.ds;
 import java.util.Iterator;
 import java.util.List;
 
+import org.mortbay.log.Log;
+
 import com.brightedu.client.BrightEdu;
 import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.CollegeSubject;
@@ -61,8 +63,8 @@ public class CollegeSubjectData {
 					rc.setAttribute("subjectID",bi.getSubeject_id());
 					rc.setAttribute("subjectName", bi.getSubject_name());
 					rc.setAttribute("lol",bi.getLength_of_schooling());
-					System.out.println(bi.getSubeject_id() + " " + bi.getSubject_name() + " " + bi.getLength_of_schooling());
-					if(data == null)System.out.println("instance is null");
+//					System.out.println(bi.getSubeject_id() + " " + bi.getSubject_name() + " " + bi.getLength_of_schooling());
+//					if(data == null)System.out.println("instance is null");
 					data.add(rc);
 					
 				}
