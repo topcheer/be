@@ -196,8 +196,8 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public boolean addFeeType(String typeName) {
-		return agent.addFeeType(typeName);
+	public boolean addFeeType(FeeType feeType) {
+		return agent.addFeeType(feeType);
 	}
 
 	@Override

@@ -88,7 +88,7 @@ public interface DataBaseRPCAsync {
 	void getFeeTypeList(int offset, int limit, boolean needTotalCounts,
 			AsyncCallback<List<FeeType>> callback);
 
-	void addFeeType(String typeName, AsyncCallback<Boolean> callback);
+	void addFeeType(FeeType typeName, AsyncCallback<Boolean> callback);
 
 	void deletFeeType(List<Integer> feeType_ids, AsyncCallback<Boolean> callback);
 

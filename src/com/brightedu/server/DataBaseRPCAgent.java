@@ -499,13 +499,11 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	}
 
 	@Override
-	public boolean addFeeType(String typeName) {
+	public boolean addFeeType(FeeType feetype) {
 		SqlSession session = sessionFactory.openSession();
 		try {
 			FeeTypeMapper scm = session.getMapper(FeeTypeMapper.class);
-			FeeType sc = new FeeType();
-			sc.setFee_name(typeName);
-			int count = scm.insertSelective(sc);
+			int count = scm.insertSelective(feetype);
 			session.commit();
 			return true;
 		} finally {

@@ -51,7 +51,6 @@ public class PanelData {
 		if (id.equals("charge_type_manage")) { // 机构类型维护
 			return new ChargeTypeAdmin.Factory();
 		}
-
 		if (id.equals("user_type_manage")) { // 用户类型维护
 			return new UserTypeAdmin.Factory();
 		}
@@ -64,7 +63,9 @@ public class PanelData {
 		if (id.equals("recurit_plan_manage")) { //招生计划管理设置
 			return new RecruitPlanManage.Factory();
 		}		
-
+		if (id.equals("entrance_cost_manage")) { //入学费用标准设置
+			return new RecruitPlanManage.Factory();
+		}
 		return null;
 	}
 

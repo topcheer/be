@@ -102,7 +102,7 @@ public interface DataBaseRPC extends RemoteService {
 	public List<FeeType> getFeeTypeList(int offset, int limit,
 			boolean needTotalCounts);
 
-	public boolean addFeeType(String typeName);
+	public boolean addFeeType(FeeType typeName);
 
 	public boolean deletFeeType(List<Integer> feeType_ids);
 
