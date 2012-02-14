@@ -229,9 +229,6 @@ public class RecruitPlanManagePanel extends VLayout {
 				selectedList.transferSelectedData(subjectList);
 				
 			}});
-        
-       
-		
 	}
 	
 	protected void reload()
@@ -242,13 +239,8 @@ public class RecruitPlanManagePanel extends VLayout {
 		Integer batchId = (Integer)batchItem.getValue();
 		Integer levelId = (Integer)levelItem.getValue();
 		
-		//selectedList.setDataSource(new CollegeSubjectDS().getInstance(collegeId, levelId, batchId));
-		//selectedList.setDataSource(CollegeSubjectData.getInstance(collegeId, levelId, batchId));
-		//selectedList.setData(CollegeSubjectData.getData(collegeId, levelId, batchId));
-		//selectedList.redraw();
-		
 		selectedList.setData(CollegeSubjectData.getData(collegeId, levelId, batchId));
-		selectedList.redraw();
+
 	
 	}
 
@@ -270,28 +262,29 @@ public class RecruitPlanManagePanel extends VLayout {
 		Integer collegeId = (Integer)collegeItem.getValue();
 		Integer batchId = (Integer)batchItem.getValue();
 		Integer levelId = (Integer)levelItem.getValue();
-		
-		CollegeSubject cs = new CollegeSubject();
-		cs.setBatch_id(batchId);
-		cs.setClassified_id(levelId);
-		cs.setCollege_id(collegeId);
-
-		dbService.deletCollegeSubject(cs, new AsyncCallback(){
-
-			@Override
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onSuccess(Object result) {
-				
-				
-			}});
+//		
+//		CollegeSubject cs = new CollegeSubject();
+//		cs.setBatch_id(batchId);
+//		cs.setClassified_id(levelId);
+//		cs.setCollege_id(collegeId);
+//
+//		dbService.deletCollegeSubject(cs, new AsyncCallback(){
+//
+//			@Override
+//			public void onFailure(Throwable caught) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//
+//			@Override
+//			public void onSuccess(Object result) {
+//				
+//				
+//			}});
 		
 		
 		//step 2 , 插入所有选中的组合
+		// 改动 :: dbService.addCollegeSubject 里先把原有的全删了,所以step1不要了
 		
 		ArrayList<CollegeSubject> lst = new ArrayList<CollegeSubject>();
 		
@@ -315,7 +308,7 @@ public class RecruitPlanManagePanel extends VLayout {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
+
 				
 			}
 

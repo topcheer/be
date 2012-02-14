@@ -923,6 +923,14 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			CollegeSubjectMapper mp = session
 					.getMapper(CollegeSubjectMapper.class);
 			
+			//先删除比较保险,连续调用两个RPC可能导致还没删除就已经开始插入了
+			
+			CollegeSubjectExample ex = new CollegeSubjectExample();
+			ex.createCriteria().andBatch_idEqualTo(collegeSubjects.get(0).getBatch_id())
+								.andClassified_idEqualTo(collegeSubjects.get(0).getClassified_id())
+								.andCollege_idEqualTo(collegeSubjects.get(0).getCollege_id());
+			mp.deleteByExample(ex);		
+			
 			for(int i =0; i< collegeSubjects.size(); i++)
 			{
 				mp.insertSelective(collegeSubjects.get(i));
