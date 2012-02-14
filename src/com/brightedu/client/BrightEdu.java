@@ -16,6 +16,7 @@ import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.ImgButton;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.Window;
@@ -161,22 +162,28 @@ public class BrightEdu implements EntryPoint {
 		topBar.setWidth100();
 		// topBar。
 		// topBar.addSpacer(6);
-		ImgButton homeBtn = new ImgButton();
-		homeBtn.setSrc("jm_toolstrip.png");
-		// sgwtHomeButton.setWidth(24);
-		// sgwtHomeButton.setHeight(24);
-		homeBtn.setPrompt("今明教育在线");
-		// sgwtHomeButton.setHoverStyle("interactImageHover");
-		homeBtn.setShowRollOver(false);
-		homeBtn.setShowDownIcon(false);
-		homeBtn.setShowDown(false);
-		homeBtn.addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
+		Img c = new Img();
+		c.setSrc("jm_banner.png");
+		c.setPrompt("今明教育在线");
+		c.setWidth(375);
+		c.setHeight(56);
+//		c.addc
+//		ImgButton homeBtn = new ImgButton();
+//		homeBtn.setSrc("jm_toolstrip.png");
+//		// sgwtHomeButton.setWidth(24);
+//		// sgwtHomeButton.setHeight(24);
+//		homeBtn.setPrompt("今明教育在线");
+//		// sgwtHomeButton.setHoverStyle("interactImageHover");
+//		homeBtn.setShowRollOver(false);
+//		homeBtn.setShowDownIcon(false);
+//		homeBtn.setShowDown(false);
+		c.addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
 			public void onClick(ClickEvent event) {
 				com.google.gwt.user.client.Window.open(
 						"http://www.jmedu.com.cn/", "今明教育在线", null);
 			}
 		});
-		topBar.addMember(homeBtn);
+		topBar.addMember(c);
 		topBar.addSpacer(6);
 
 		topBar.addFill();
