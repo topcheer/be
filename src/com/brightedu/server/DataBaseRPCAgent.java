@@ -851,7 +851,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		agent.setUser_id(user.getUser_id());
 		try {
 			RecruitAgentMapper mp = session.getMapper(RecruitAgentMapper.class);
-			mp.insertSelective(agent);
+			int i = mp.insertSelective(agent);
 			session.commit();
 			return true;
 		} finally {

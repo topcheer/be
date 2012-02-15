@@ -15,6 +15,7 @@
  */
 package com.brightedu.server;
 
+import java.io.IOException;
 import java.lang.reflect.Proxy;
 import java.util.List;
 
@@ -35,6 +36,7 @@ import com.brightedu.model.edu.StudentStatus;
 import com.brightedu.model.edu.StudentType;
 import com.brightedu.model.edu.Subjects;
 import com.brightedu.model.edu.UserType;
+import com.brightedu.server.util.Log;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class DataBaseRPCImpl extends RemoteServiceServlet implements
@@ -53,6 +55,14 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 
 	public HttpSession getSession() {
 		return this.getThreadLocalRequest().getSession();
+	}
+	
+	public void redirect(String url){
+		try {
+			this.getThreadLocalResponse().sendRedirect(url);
+		} catch (IOException e) {
+			Log.e("", e);
+		}
 	}
 
 	/*********************** 批次管理 ************************************/

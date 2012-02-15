@@ -1,8 +1,10 @@
 package com.brightedu.server;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.util.HashMap;
+import java.text.SimpleDateFormat;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +17,7 @@ import org.apache.commons.fileupload.util.Streams;
 
 import com.brightedu.model.edu.CollegeAgreement;
 import com.brightedu.server.util.Log;
+import com.brightedu.server.util.ServerProperties;
 
 /**
  * @author chetwang
@@ -63,7 +66,7 @@ public class FileFormServlet extends HttpServlet {
 
 	private void processCollegeAgreement(HttpServletRequest request,
 			HttpServletResponse response) {
-		HashMap<String, String> args = new HashMap<String, String>();
+		// HashMap<String, String> args = new HashMap<String, String>();
 		boolean isGWT = true;
 		try {
 
@@ -75,66 +78,80 @@ public class FileFormServlet extends HttpServlet {
 				FileItemStream item = iter.next();
 				String name = item.getFieldName();
 				if (item.isFormField()) {
-					args.put(name, Streams.asString(item.openStream()));
+					if (name.equals("college")) {
+						agreement.setCollege_id(Integer.parseInt(Streams
+								.asString(item.openStream())));
+					} else if (name.equals("agent")) {
+						agreement.setAgent_id(Integer.parseInt(Streams
+								.asString(item.openStream())));
+					} else if (name.equals("status")) {
+						String status = (Streams.asString(item.openStream()));
+						System.out.println("status: " + status);
+						agreement.setAgreement_status(status.equals("true"));
+					} else {
+						Log.w("Unknown param form field: " + name);
+					}
 				} else {
-					request.getParameter("context");
-					args.put("contentType", item.getContentType());
+					String contentType = item.getContentType();
 					String fileName = item.getName();
 					int slash = fileName.lastIndexOf("/");
 					if (slash < 0)
 						slash = fileName.lastIndexOf("\\");
 					if (slash > 0)
 						fileName = fileName.substring(slash + 1);
-					args.put("fileName", fileName);
 
 					InputStream in = null;
 					try {
 						in = item.openStream();
-						// FIXME handle inputstream of an uploaded file
+						SimpleDateFormat sdf = new SimpleDateFormat(
+								"yyyyMMdd-HHmmss");
+						File agreementsDir = new File(
+								ServerProperties.getDataLocation()
+										+ "/agreement/");
+
+						if (in != null) {
+							byte[] buff = new byte[1024];
+							int totalLen = 0;
+							int readLen = 0;
+							while ((readLen = in.read(buff)) > 0) {
+								totalLen += readLen;
+							}
+						} else {
+							Log.e("no inputsteam created for " + fileName);
+						}
 					} catch (Exception e) {
-						e.printStackTrace();
+						Log.e("", e);
 
 					} finally {
 						if (in != null)
 							try {
-								byte[] buff = new byte[1024];
-								int totalLen = 0;
-								int readLen = 0;
-								while ((readLen = in.read(buff)) > 0) {
-									totalLen += readLen;
-								}
 								in.close();
-								System.out.println(args + ", file len="
-										+ totalLen);
 							} catch (Exception e) {
 								Log.e("", e);
 							}
 					}
 				}
 			}
+
+			// response.sendRedirect("/success.html");
 			// // TODO: need to handle conversion options and error reporting
-			response.setContentType("text/html");
-			response.setHeader("Pragma", "No-cache");
-			response.setDateHeader("Expires", 0);
-			response.setHeader("Cache-Control", "no-cache");
-			PrintWriter out = response.getWriter();
-			out.println("");
-			out.println("");
-			if (isGWT) {
-				out.println("");
-			} else
-				out.println(getEditorResponse());
-			out.println("");
-			out.println("");
-			out.flush();
+			response(response, "aaaaa", false);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 	}
 
-	private String getEditorResponse() {
-		StringBuffer sb = new StringBuffer(400);
-		sb.append("");
-		return sb.toString();
+	private void response(HttpServletResponse response, String msg,
+			boolean success) throws IOException {
+		PrintWriter out = response.getWriter();
+		out.println("<html>");
+		out.println("<head>");
+		out.println(success ? "success" : "failed");
+		out.println("</head>");
+		out.println("<body>");
+		out.println(msg);
+		out.println("</body>");
+		out.println("</html>");
+		out.flush();
 	}
 }

@@ -25,6 +25,11 @@ public class DataBaseRPCHandler implements InvocationHandler {
 		// 方法调用之前,校验权限
 		HttpSession session = rpcAgent.getRemoteServlet().getSession();
 		User user = (User) session.getAttribute("user");
+		if(user == null){
+			Log.d("session expired or user not login");
+			rpcAgent.getRemoteServlet().redirect("/NotAuthorized.html");
+			return null;
+		}
 		System.out.println("-----user: " + user.getUser_name() + "     "
 				+ method.getName());
 		// 调用原始对象的方法
