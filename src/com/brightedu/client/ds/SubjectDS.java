@@ -29,11 +29,11 @@ public class SubjectDS extends DataSource{
         
         DataSourceIntegerField pkField = new DataSourceIntegerField("subjectID");   
         pkField.setHidden(true);   
-        //pkField.setPrimaryKey(true);   
+        pkField.setPrimaryKey(true);   
   
         DataSourceTextField subjectNameField = new DataSourceTextField("subjectName", "专业", 128, true);   
         DataSourceIntegerField lolField = new DataSourceIntegerField("lol", "学制(年)", 50, true);   
-  
+        lolField.setCanEdit(true);
         setFields(pkField, subjectNameField,lolField);   
 		
         BrightEdu.createDataBaseRPC().getSubjectsList(-1, -1, false, new AsyncCallback<List<Subjects>>(){
