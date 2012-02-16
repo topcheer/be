@@ -252,42 +252,6 @@ public class RecruitPlanManagePanel extends VLayout {
 			@Override
 			public void onClick(ClickEvent event) {
 				
-//				Integer collegeId = (Integer)collegeItem.getValue();
-//				Integer batchId = (Integer)batchItem.getValue();
-//				Integer levelId = (Integer)levelItem.getValue();
-//				
-//				AsyncCallback<List<CollegeSubjectView>> callback = new AsyncCallback<List<CollegeSubjectView>>(){
-//
-//					@Override
-//					public void onFailure(Throwable caught) {
-//						// TODO Auto-generated method stub
-//						SC.say("获取招生计划时发生错误");
-//					}
-//
-//					@Override
-//					public void onSuccess(List<CollegeSubjectView> result) {
-//						// TODO Auto-generated method stub
-//						
-//						Iterator<CollegeSubjectView> biit = result.iterator();
-//						RecordList data = new RecordList();
-//						selectedList.setData(data);
-//						while(biit.hasNext())
-//						{
-//							CollegeSubjectView bi = biit.next();
-//							Record rc = new Record();
-//							rc.setAttribute("subjectID",bi.getSubeject_id());
-//							rc.setAttribute("subjectName", bi.getSubject_name());
-//							rc.setAttribute("lol",bi.getLength_of_schooling());
-//							data.add(rc);
-//						}
-//						
-//						selectedList.setData(data);
-//
-//					}
-//
-//		        };
-				
-//		        BrightEdu.createDataBaseRPC().getCollegeSubjectList(collegeId, levelId, batchId,callback );
 			}});
 		
 
@@ -427,7 +391,7 @@ public class RecruitPlanManagePanel extends VLayout {
 				cs.setClassified_id(levelId);
 				cs.setCollege_id(collegeId);
 		
-				dbService.deletCollegeSubject(cs, new AsyncCallback(){
+				dbService.deletCollegeSubject(cs, new AsyncCallback<Boolean>(){
 		
 					@Override
 					public void onFailure(Throwable caught) {
@@ -436,7 +400,7 @@ public class RecruitPlanManagePanel extends VLayout {
 					}
 		
 					@Override
-					public void onSuccess(Object result) {
+					public void onSuccess(Boolean result) {
 						
 						BrightEdu.showTip("没有啥东西好存的,开玩笑? 我顺便把所有的组合全删了，你没意见吧？");
 					}});
@@ -491,7 +455,7 @@ public class RecruitPlanManagePanel extends VLayout {
 			
 		}
 		
-		dbService.addCollegeSubject(lst, new AsyncCallback(){
+		dbService.addCollegeSubject(lst, new AsyncCallback<Boolean>(){
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -500,7 +464,7 @@ public class RecruitPlanManagePanel extends VLayout {
 			}
 
 			@Override
-			public void onSuccess(Object result) {
+			public void onSuccess(Boolean result) {
 					BrightEdu.showTip("保存成功");
 				
 			}});
