@@ -23,11 +23,11 @@ public class DataBaseRPCHandler implements InvocationHandler {
 	public Object invoke(Object proxy, Method method, Object[] args)
 			throws Throwable {
 		// 方法调用之前,校验权限
-		HttpSession session = rpcAgent.getRemoteServlet().getSession();
-		User user = (User) session.getAttribute("user");
+		
+		User user = (User) rpcAgent.getRemoteServlet().getUser();
 		if(user == null){
 			Log.d("session expired or user not login");
-			rpcAgent.getRemoteServlet().redirect("/NotAuthorized.html");
+			rpcAgent.getRemoteServlet().unAuthorized();
 			return null;
 		}
 		System.out.println("-----user: " + user.getUser_name() + "     "

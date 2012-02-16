@@ -1,22 +1,11 @@
 package com.brightedu.client.panels;
 
-import com.brightedu.client.panels.admin.AgentAdmin;
-import com.brightedu.client.panels.admin.AgentTypeAdmin;
-import com.brightedu.client.panels.admin.BatchAdmin;
-import com.brightedu.client.panels.admin.ChargeTypeAdmin;
-import com.brightedu.client.panels.admin.CorpCollegeAdmin;
-import com.brightedu.client.panels.admin.CorpCollegeAgreementAdmin;
-import com.brightedu.client.panels.admin.FeeTypeAdmin;
-import com.brightedu.client.panels.admin.PictureTypeAdmin;
-import com.brightedu.client.panels.admin.RecruitPlanManage;
-import com.brightedu.client.panels.admin.StudentClassesAdmin;
-import com.brightedu.client.panels.admin.StudentStatusAdmin;
-import com.brightedu.client.panels.admin.StudentTypeAdmin;
-import com.brightedu.client.panels.admin.SubjectsAdmin;
-import com.brightedu.client.panels.admin.UserTypeAdmin;
+import com.brightedu.client.panels.admin.*;
 
 public class PanelData {
 
+	//GWT client不支持反射，只好通过条件判断来生成PanelFactory
+	
 	public static PanelFactory getPanelFactory(String id) {
 		if (id == null)
 			return null;
@@ -42,13 +31,13 @@ public class PanelData {
 		if (id.equals("agent_type_manage")) { // 机构类型维护
 			return new AgentTypeAdmin.Factory();
 		}		
-		if(id.equals("agent_manage")){
+		if(id.equals("agent_manage")){ //机构维护
 			return new AgentAdmin.Factory();
 		}
-		if (id.equals("fee_type_manage")) { // 机构类型维护
+		if (id.equals("fee_type_manage")) { // 费用类型维护
 			return new FeeTypeAdmin.Factory();
 		}
-		if (id.equals("charge_type_manage")) { // 机构类型维护
+		if (id.equals("charge_type_manage")) { // 收费类型维护
 			return new ChargeTypeAdmin.Factory();
 		}
 		if (id.equals("user_type_manage")) { // 用户类型维护

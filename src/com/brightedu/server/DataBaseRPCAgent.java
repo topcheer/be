@@ -1,6 +1,6 @@
 package com.brightedu.server;
 
-import java.util.Date;
+import java.lang.reflect.Proxy;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -30,6 +30,7 @@ import com.brightedu.model.edu.BatchIndexExample.Criteria;
 import com.brightedu.model.edu.ChargeType;
 import com.brightedu.model.edu.ChargeTypeExample;
 import com.brightedu.model.edu.College;
+import com.brightedu.model.edu.CollegeAgreement;
 import com.brightedu.model.edu.CollegeExample;
 import com.brightedu.model.edu.CollegeSubject;
 import com.brightedu.model.edu.CollegeSubjectExample;
@@ -56,10 +57,18 @@ import com.brightedu.server.util.ConnectionManager;
 
 public class DataBaseRPCAgent implements DataBaseRPC {
 	SqlSessionFactory sessionFactory;
-	DataBaseRPCImpl remoteServlet;
+	BrightServlet remoteServlet;
 
 	public DataBaseRPCAgent() {
 		sessionFactory = ConnectionManager.getSessionFactory();
+	}
+	
+	public static DataBaseRPC createAgentProxy(BrightServlet servlet){
+		DataBaseRPCAgent agt = new DataBaseRPCAgent();
+		agt.setRemoteServlet(servlet);
+		DataBaseRPCHandler handler = new DataBaseRPCHandler(agt);
+		return (DataBaseRPC) Proxy.newProxyInstance(agt.getClass()
+				.getClassLoader(), agt.getClass().getInterfaces(), handler);
 	}
 
 	/*********************** 批次管理 ************************************/
@@ -808,14 +817,13 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		}
 	}
 
-	public DataBaseRPCImpl getRemoteServlet() {
+	public BrightServlet getRemoteServlet() {
 		return remoteServlet;
 	}
 
-	public void setRemoteServlet(DataBaseRPCImpl remoteServlet) {
+	public void setRemoteServlet(BrightServlet remoteServlet) {
 		this.remoteServlet = remoteServlet;
 	}
-
 
 	/************************** agent管理 ************************************/
 
@@ -844,8 +852,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	@Override
 	public boolean addRecruitAgent(RecruitAgent agent) {
 		SqlSession session = sessionFactory.openSession();
-		User user = (User) this.getRemoteServlet().getSession()
-				.getAttribute("user");
+		User user = (User) remoteServlet.getUser();
 		agent.setUser_id(user.getUser_id());
 		try {
 			RecruitAgentMapper mp = session.getMapper(RecruitAgentMapper.class);
@@ -888,25 +895,24 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		}
 	}
 
-	
 	/*********************** 招生计划维护 ************************************/
 
 	@Override
-	public List<CollegeSubjectView> getCollegeSubjectList(int college, int level,
-			int batch) {
+	public List<CollegeSubjectView> getCollegeSubjectList(int college,
+			int level, int batch) {
 		SqlSession session = sessionFactory.openSession();
 		try {
 			CollegeSubjectViewMapper mp = session
 					.getMapper(CollegeSubjectViewMapper.class);
 			CollegeSubjectViewExample ex = new CollegeSubjectViewExample();
-			//ex.setOrderByClause("subeject_id");
+			// ex.setOrderByClause("subeject_id");
 			ex.createCriteria().andBatch_idEqualTo(batch)
-								.andCollege_idEqualTo(college)
-								.andClassified_idEqualTo(level);
-			
+					.andCollege_idEqualTo(college)
+					.andClassified_idEqualTo(level);
+
 			List<CollegeSubjectView> result = mp.selectByExample(ex);
 			return result;
-			
+
 		} finally {
 			session.close();
 		}
@@ -918,23 +924,25 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		try {
 			CollegeSubjectMapper mp = session
 					.getMapper(CollegeSubjectMapper.class);
-			
-			//先删除比较保险,连续调用两个RPC可能导致还没删除就已经开始插入了
-			
+
+			// 先删除比较保险,连续调用两个RPC可能导致还没删除就已经开始插入了
+
 			CollegeSubjectExample ex = new CollegeSubjectExample();
-			ex.createCriteria().andBatch_idEqualTo(collegeSubjects.get(0).getBatch_id())
-								.andClassified_idEqualTo(collegeSubjects.get(0).getClassified_id())
-								.andCollege_idEqualTo(collegeSubjects.get(0).getCollege_id());
-			mp.deleteByExample(ex);		
-			
-			for(int i =0; i< collegeSubjects.size(); i++)
-			{
+			ex.createCriteria()
+					.andBatch_idEqualTo(collegeSubjects.get(0).getBatch_id())
+					.andClassified_idEqualTo(
+							collegeSubjects.get(0).getClassified_id())
+					.andCollege_idEqualTo(
+							collegeSubjects.get(0).getCollege_id());
+			mp.deleteByExample(ex);
+
+			for (int i = 0; i < collegeSubjects.size(); i++) {
 				mp.insertSelective(collegeSubjects.get(i));
 			}
-			
+
 			session.commit();
 			return true;
-			
+
 		} finally {
 			session.close();
 		}
@@ -946,17 +954,43 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		try {
 			CollegeSubjectMapper mp = session
 					.getMapper(CollegeSubjectMapper.class);
-			
+
 			CollegeSubjectExample ex = new CollegeSubjectExample();
-			ex.createCriteria().andBatch_idEqualTo(collegeSubjects.getBatch_id())
-								.andClassified_idEqualTo(collegeSubjects.getClassified_id())
-								.andCollege_idEqualTo(collegeSubjects.getCollege_id());
+			ex.createCriteria()
+					.andBatch_idEqualTo(collegeSubjects.getBatch_id())
+					.andClassified_idEqualTo(collegeSubjects.getClassified_id())
+					.andCollege_idEqualTo(collegeSubjects.getCollege_id());
 			mp.deleteByExample(ex);
 			session.commit();
 			return true;
-			
+
 		} finally {
 			session.close();
 		}
+	}
+
+	/*********************** 合作高校协议维护 ************************************/
+
+	@Override
+	public List<CollegeAgreement> getCollegeAgreementList(int offset, int limit,
+			boolean needTotalCounts) {
+		return null;
+	}
+
+	@Override
+	public boolean addCollegeAgreement(CollegeAgreement agreement) {
+		return false;
+	}
+
+	@Override
+	public boolean deleteCollegeAgreement(List<Integer> agreement_ids) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean saveCollegeAgreement(CollegeAgreement agreement) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

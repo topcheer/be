@@ -15,17 +15,14 @@
  */
 package com.brightedu.server;
 
-import java.io.IOException;
-import java.lang.reflect.Proxy;
 import java.util.List;
-
-import javax.servlet.http.HttpSession;
 
 import com.brightedu.client.DataBaseRPC;
 import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.ChargeType;
 import com.brightedu.model.edu.College;
+import com.brightedu.model.edu.CollegeAgreement;
 import com.brightedu.model.edu.CollegeSubject;
 import com.brightedu.model.edu.CollegeSubjectView;
 import com.brightedu.model.edu.FeeType;
@@ -36,34 +33,8 @@ import com.brightedu.model.edu.StudentStatus;
 import com.brightedu.model.edu.StudentType;
 import com.brightedu.model.edu.Subjects;
 import com.brightedu.model.edu.UserType;
-import com.brightedu.server.util.Log;
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
-public class DataBaseRPCImpl extends RemoteServiceServlet implements
-		DataBaseRPC {
-
-	DataBaseRPC agent;
-
-	public DataBaseRPCImpl() {
-		DataBaseRPCAgent agt = new DataBaseRPCAgent();
-		agt.setRemoteServlet(this);
-		DataBaseRPCHandler handler = new DataBaseRPCHandler(agt);
-		agent = (DataBaseRPC) Proxy.newProxyInstance(agt.getClass()
-				.getClassLoader(), agt.getClass().getInterfaces(), handler);
-
-	}
-
-	public HttpSession getSession() {
-		return this.getThreadLocalRequest().getSession();
-	}
-	
-	public void redirect(String url){
-		try {
-			this.getThreadLocalResponse().sendRedirect(url);
-		} catch (IOException e) {
-			Log.e("", e);
-		}
-	}
+public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 
 	/*********************** 批次管理 ************************************/
 
@@ -307,12 +278,11 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 	public boolean saveStudentStatus(StudentStatus studentStatus) {
 		return agent.saveStudentStatus(studentStatus);
 	}
-	
-
 
 	/*********************** 招生计划维护 ************************************/
 	@Override
-	public List<CollegeSubjectView> getCollegeSubjectList(int college, int level, int batch) {
+	public List<CollegeSubjectView> getCollegeSubjectList(int college,
+			int level, int batch) {
 		return agent.getCollegeSubjectList(college, level, batch);
 	}
 
@@ -326,11 +296,7 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 		return agent.deletCollegeSubject(collegeSubjects);
 	}
 
-	
-	
-
 	/************************** RecruitAgent维护 ************************************/
-
 
 	public List<RecruitAgent> getRecruitAgentList(int offset, int limit,
 			boolean needTotalCounts) {
@@ -351,4 +317,26 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 	public boolean saveRecruitAgent(RecruitAgent ra) {
 		return agent.saveRecruitAgent(ra);
 	}
+
+	@Override
+	public List<CollegeAgreement> getCollegeAgreementList(int offset,
+			int limit, boolean needTotalCounts) {
+		return agent.getCollegeAgreementList(offset, limit, needTotalCounts);
+	}
+
+	@Override
+	public boolean addCollegeAgreement(CollegeAgreement agreement) {
+		return agent.addCollegeAgreement(agreement);
+	}
+
+	@Override
+	public boolean deleteCollegeAgreement(List<Integer> agreement_ids) {
+		return agent.deleteCollegeAgreement(agreement_ids);
+	}
+
+	@Override
+	public boolean saveCollegeAgreement(CollegeAgreement agreement) {
+		return agent.saveCollegeAgreement(agreement);
+	}
+
 }

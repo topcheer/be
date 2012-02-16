@@ -21,6 +21,7 @@ import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.ChargeType;
 import com.brightedu.model.edu.College;
+import com.brightedu.model.edu.CollegeAgreement;
 import com.brightedu.model.edu.CollegeSubject;
 import com.brightedu.model.edu.CollegeSubjectView;
 import com.brightedu.model.edu.FeeType;
@@ -76,6 +77,16 @@ public interface DataBaseRPC extends RemoteService {
 	public boolean deleteCollege(List<Integer> college_ids);
 
 	boolean saveCollege(College college);
+	
+	/*********************** 合作高校协议维护 ************************************/
+	public List<CollegeAgreement> getCollegeAgreementList(int offset, int limit,
+			boolean needTotalCounts);
+
+	public boolean addCollegeAgreement(CollegeAgreement agreement); 
+
+	public boolean deleteCollegeAgreement(List<Integer> agreement_ids);
+
+	boolean saveCollegeAgreement(CollegeAgreement agreement);
 
 	/*********************** 专业代码维护 ************************************/
 	public List<Subjects> getSubjectsList(int offset, int limit,

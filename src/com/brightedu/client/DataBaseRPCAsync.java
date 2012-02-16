@@ -6,6 +6,7 @@ import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.ChargeType;
 import com.brightedu.model.edu.College;
+import com.brightedu.model.edu.CollegeAgreement;
 import com.brightedu.model.edu.CollegeSubject;
 import com.brightedu.model.edu.CollegeSubjectView;
 import com.brightedu.model.edu.FeeType;
@@ -150,6 +151,19 @@ public interface DataBaseRPCAsync {
 			AsyncCallback<Boolean> callback);
 
 	void deletCollegeSubject(CollegeSubject collegeSubjects,
+			AsyncCallback<Boolean> callback);
+
+	void saveCollegeAgreement(CollegeAgreement college,
+			AsyncCallback<Boolean> callback);
+
+	void deleteCollegeAgreement(List<Integer> college_ids,
+			AsyncCallback<Boolean> callback);
+
+	void getCollegeAgreementList(int offset, int limit,
+			boolean needTotalCounts,
+			AsyncCallback<List<CollegeAgreement>> callback);
+
+	void addCollegeAgreement(CollegeAgreement agreement,
 			AsyncCallback<Boolean> callback);
 
 }

@@ -4,9 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
+import java.io.RandomAccessFile;
+import java.util.Date;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -14,8 +14,12 @@ import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
+import org.apache.ibatis.session.SqlSession;
 
+import com.brightedu.client.DataBaseRPC;
+import com.brightedu.dao.edu.CollegeAgreementMapper;
 import com.brightedu.model.edu.CollegeAgreement;
+import com.brightedu.server.util.ConnectionManager;
 import com.brightedu.server.util.Log;
 import com.brightedu.server.util.ServerProperties;
 
@@ -23,12 +27,10 @@ import com.brightedu.server.util.ServerProperties;
  * @author chetwang
  * 
  */
-public class FileFormServlet extends HttpServlet {
+public class FileFormServlet extends BrightServlet {
 
-	public FileFormServlet() {
-	}
-
-	public void doPost(HttpServletRequest request, HttpServletResponse response) {
+	public void processPost(HttpServletRequest request,
+			HttpServletResponse response) {
 		process(request, response);
 	}
 
@@ -66,14 +68,16 @@ public class FileFormServlet extends HttpServlet {
 
 	private void processCollegeAgreement(HttpServletRequest request,
 			HttpServletResponse response) {
-		// HashMap<String, String> args = new HashMap<String, String>();
-		boolean isGWT = true;
 		try {
 
 			ServletFileUpload upload = new ServletFileUpload();
 			FileItemIterator iter = upload.getItemIterator(request);
 			// pick up parameters first and note actual FileItem
 			CollegeAgreement agreement = new CollegeAgreement();
+			agreement.setUser_id(getUser().getUser_id());
+			Date now = new Date();
+			agreement.setUpdate_date(now);
+			agreement.setRegister_date(now);
 			while (iter.hasNext()) {
 				FileItemStream item = iter.next();
 				String name = item.getFieldName();
@@ -92,49 +96,78 @@ public class FileFormServlet extends HttpServlet {
 						Log.w("Unknown param form field: " + name);
 					}
 				} else {
-					String contentType = item.getContentType();
-					String fileName = item.getName();
-					int slash = fileName.lastIndexOf("/");
-					if (slash < 0)
-						slash = fileName.lastIndexOf("\\");
-					if (slash > 0)
-						fileName = fileName.substring(slash + 1);
-
 					InputStream in = null;
 					try {
+						String fileName = item.getName();
+						agreement.setAgreement_name(fileName);
+						int slash = fileName.lastIndexOf("/");
+						if (slash < 0)
+							slash = fileName.lastIndexOf("\\");
+						if (slash > 0)
+							fileName = fileName.substring(slash + 1);
+
 						in = item.openStream();
-						SimpleDateFormat sdf = new SimpleDateFormat(
-								"yyyyMMdd-HHmmss");
+						// SimpleDateFormat sdf = new SimpleDateFormat(
+						// "yyyyMMdd-HHmmss");
 						File agreementsDir = new File(
 								ServerProperties.getDataLocation()
 										+ "/agreement/");
-
+						if (!agreementsDir.exists()) {
+							agreementsDir.mkdirs();
+						}
+						File agreementFile = new File(
+								ServerProperties.getDataLocation()
+										+ "/agreement/"
+										+ agreement.getCollege_id() + fileName);
+						RandomAccessFile raf = new RandomAccessFile(
+								agreementFile, "rw");
 						if (in != null) {
 							byte[] buff = new byte[1024];
-							int totalLen = 0;
 							int readLen = 0;
 							while ((readLen = in.read(buff)) > 0) {
-								totalLen += readLen;
+								raf.write(buff, 0, readLen);
 							}
+							raf.close();
+							Log.i("stored agreement in "
+									+ agreementFile.getAbsolutePath());
 						} else {
 							Log.e("no inputsteam created for " + fileName);
 						}
+
 					} catch (Exception e) {
 						Log.e("", e);
-
+						response(response, e.getMessage(), false);
+						return;
 					} finally {
-						if (in != null)
+						if (in != null) {
 							try {
 								in.close();
 							} catch (Exception e) {
 								Log.e("", e);
 							}
+						}
 					}
 				}
 			}
-			response(response, "aaaaa", true);
+
+			SqlSession session = ConnectionManager.getSessionFactory()
+					.openSession();
+			try {
+				CollegeAgreementMapper bim = session
+						.getMapper(CollegeAgreementMapper.class);
+				bim.insertSelective(agreement);
+				session.commit();
+			} finally {
+				session.close();
+			}
+			response(response, "", true);
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			Log.e(e.getMessage(), e);
+			try {
+				response(response, e.getMessage(), false);
+			} catch (IOException e1) {
+				Log.e(e1.getMessage(), e1);
+			}
 		}
 	}
 
@@ -148,4 +181,5 @@ public class FileFormServlet extends HttpServlet {
 		out.println("</body></html>");
 		out.flush();
 	}
+
 }

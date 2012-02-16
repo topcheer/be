@@ -3,11 +3,13 @@ package com.brightedu.client.panels.admin;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import com.brightedu.client.BrightEdu;
 import com.brightedu.client.CommonAsyncCall;
 import com.brightedu.client.frame.BrightFrame;
 import com.brightedu.client.frame.BrightFrame.LoadHandler;
 import com.brightedu.client.panels.BasicAdminPanel;
 import com.brightedu.model.edu.College;
+import com.brightedu.model.edu.CollegeAgreement;
 import com.brightedu.model.edu.RecruitAgent;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Event;
@@ -29,22 +31,51 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 	// Grids/grid cell widget
 	// id可以通过servlet参数传递
 	@Override
-	public void gotoPage(int indexGoto, boolean init) {
+	public void gotoPage(final int indexGoto, final boolean init) {
+		AsyncCallback<List<CollegeAgreement>> callback = new CommonAsyncCall<List<CollegeAgreement>>() {
+			@Override
+			public void onSuccess(List result) {
+				int size = result.size();
+				Record[] listData = init ? new Record[size - 1]
+						: new Record[size];
+				for (int i = 0; i < size; i++) {
+					if (i == size - 1) {
+						if (init) {
+							int counts = (Integer) result.get(size - 1);
+							setTotalCounts(counts);
+							break;
+						}
+					}
+					CollegeAgreement bi = (CollegeAgreement) result.get(i);
+					Record rec = new Record();
+					rec.setAttribute("select", false);
+					rec.setAttribute("id", bi.getAgreement_id());
+					rec.setAttribute("object", bi);
+					rec.setAttribute("college", bi.getCollege_id());
+					rec.setAttribute("agent", bi.getAgent_id());
+					rec.setAttribute("status", bi.getAgreement_status());
+					rec.setAttribute("modify_date", bi.getUpdate_date());
 
+					listData[i] = rec;
+				}
+				resultList.setData(listData);
+				setCurrentPage(indexGoto);
+			}
+		};
+
+		dbService.getCollegeAgreementList((indexGoto - 1)
+				* currentRowsInOnePage, currentRowsInOnePage, init, callback);
 	}
 
 	@Override
 	public ListGridField[] createGridFileds() {
 		ListGridField[] fields = parseGridFields(new String[] { "college",
-				"agent", "status", "user", "modify_date", "create_date",
-				"agreement" }, new String[] { "合作高校", "我方学校", "状态", "处理人",
-				"修改时间", "录入时间", "协议" }, new ListGridFieldType[] {
+				"agent", "status", "modify_date", "agreement" }, new String[] {
+				"合作高校", "我方学校", "状态", "修改时间", "协议" }, new ListGridFieldType[] {
 				ListGridFieldType.TEXT, ListGridFieldType.TEXT,
-				ListGridFieldType.TEXT, ListGridFieldType.TEXT,
-				ListGridFieldType.DATE, ListGridFieldType.DATE,
+				ListGridFieldType.TEXT, ListGridFieldType.DATE,
 				ListGridFieldType.IMAGEFILE }, new boolean[] { true, true,
-				true, false, false, false, false }, new int[] { -1, -1, 100,
-				100, 200, 200, 50 });
+				true, false, false }, new int[] { -1, -1, 100, 200, 50 });
 
 		return fields;
 		// http://stackoverflow.com/questions/3053462/open-save-file-in-smartgwt
@@ -67,7 +98,7 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 
 	@Override
 	public void add(Object model) {
-
+		// FORM形式的提交，不需要用到这个方法
 	}
 
 	@Override
@@ -108,6 +139,7 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 						} else {
 							// 保存成功
 							afterAdd();
+							BrightEdu.showTip("已添加!");
 						}
 						hide();
 					}
@@ -149,6 +181,7 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 
 		@Override
 		protected Object getAddedModel() {
+			// FORM 形式的提交，不需要用到这个方法
 			return null;
 		}
 
