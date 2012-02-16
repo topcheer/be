@@ -9,7 +9,6 @@ import com.brightedu.client.ds.BatchDS;
 import com.brightedu.client.ds.CollegeDS;
 //import com.brightedu.client.ds.CollegeSubjectData;
 import com.brightedu.client.ds.LevelDS;
-import com.brightedu.client.ds.SubjectDS;
 import com.brightedu.model.edu.CollegeSubject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.data.RecordList;
@@ -155,7 +154,7 @@ public class EntranceCostManagePanel extends VLayout {
         
         
         subjectList.setFields(pkField, subjectField);   
-        subjectList.setDataSource(SubjectDS.getInstance());
+//        subjectList.setDataSource(SubjectDS.getInstance());
 
         hl.addMember(subjectList);
         
