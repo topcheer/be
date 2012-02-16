@@ -31,6 +31,7 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.SpacerItem;
+import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.validator.Validator;
@@ -63,12 +64,15 @@ public class RecruitPlanManagePanel extends VLayout {
 	
 	ListGrid subjectList = new ListGrid();   
 	
-	ListGrid selectedList = new ListGrid();  
+	ListGrid selectedList2 = new ListGrid();  
 	
     ListGridField pkField = new ListGridField("subjectID", "id");
     ListGridField subjectField = new ListGridField("subjectName", "专业");   
-
     ListGridField lolField = new ListGridField("lol", "学制(年)"); 
+
+    ListGridField pkField2 = new ListGridField("subjectID", "id");
+    ListGridField subjectField2 = new ListGridField("subjectName", "专业");   
+    ListGridField lolField2 = new ListGridField("lol", "学制(年)"); 
     
 	DynamicForm df = new DynamicForm();
 	HLayout hl = new HLayout();
@@ -153,7 +157,7 @@ public class RecruitPlanManagePanel extends VLayout {
         hl.setHeight(350);
 		
         
-        
+//        
         subjectList.setWidth(180);   
         subjectList.setHeight(350);   
         subjectList.setShowAllRecords(true);   
@@ -167,47 +171,57 @@ public class RecruitPlanManagePanel extends VLayout {
        
         
         pkField.setHidden(true);
+        lolField.setHidden(true);
+        
+        pkField2.setHidden(true);
        
         
-        lolField.setCanEdit(true);
-        lolField.setWidth(100);
+        lolField2.setCanEdit(true);
+        lolField2.setWidth(100);
         
         
         numberVd.setType(ValidatorType.INTEGERRANGE);
         numberVd.setValidateOnChange(true);
         numberVd.setAttribute("min", 1);
         numberVd.setAttribute("max", 6);
-        lolField.setValidators(numberVd);
+        
+        lolField2.setValidators(numberVd);
+        
+        TextItem ti = new TextItem();
+        
+        ti.setMask("#");
+        
+        lolField2.setEditorType(ti);
         
         
-        subjectList.setFields(pkField, subjectField);   
-        //subjectList.setDataSource(SubjectDS.getInstance());
-
+        subjectList.setFields(pkField, subjectField,lolField);   
+//        //subjectList.setDataSource(SubjectDS.getInstance());
+//
         hl.addMember(subjectList);
         LayoutSpacer spacer = new LayoutSpacer();
         spacer.setWidth(10);
         hl.addMember(spacer);
         
-        selectedList.setWidth(250);   
-        selectedList.setLeft(250);
+        selectedList2.setWidth(250);   
+        selectedList2.setLeft(250);
         
-        selectedList.setHeight(350);   
+        selectedList2.setHeight(350);   
         //selectedList.setShowAllRecords(true);   
-        selectedList.setEmptyMessage("拖动左边的项目到这里");   
-        selectedList.setCanReorderFields(true);   
-        selectedList.setCanDragRecordsOut(false);   
-        selectedList.setCanAcceptDroppedRecords(true);   
-        //selectedList.setCanRemoveRecords(true);
-        selectedList.setShowHeaderContextMenu(false);
+        selectedList2.setEmptyMessage("拖动左边的项目到这里");   
+        selectedList2.setCanReorderFields(true);   
+        selectedList2.setCanDragRecordsOut(false);   
+        selectedList2.setCanAcceptDroppedRecords(true);   
+        selectedList2.setCanRemoveRecords(true);
+        selectedList2.setShowHeaderContextMenu(false);
         //selectedList.setDragDataAction(DragDataAction.MOVE);   
         
-        selectedList.setFields(pkField, subjectField,lolField);   
+        selectedList2.setFields(pkField2, subjectField2,lolField2);   
         
-        selectedList.setEditEvent(ListGridEditEvent.CLICK);
-        selectedList.setPreventDuplicates(true);
-        selectedList.setDuplicateDragMessage("所选专业已经在已选择列表中,请仔细检查");
+        selectedList2.setEditEvent(ListGridEditEvent.CLICK);
+        selectedList2.setPreventDuplicates(true);
+        selectedList2.setDuplicateDragMessage("所选专业已经在已选择列表中,请仔细检查");
 
-        hl.addMember(selectedList);
+        hl.addMember(selectedList2);
         
         //canvas.addChild(countryGrid2); 
         selectionSection.addItem(hl);
@@ -307,38 +321,68 @@ public class RecruitPlanManagePanel extends VLayout {
 					Record rc = new Record();
 					rc.setAttribute("subjectID",bi.getSubject_id());
 					rc.setAttribute("subjectName", bi.getSubject_name());
-					rc.setAttribute("lol",0);
+					rc.setAttribute("lol",new Integer(0));
+					
 					list.add(rc);
 				}
 				subjectList.setData(list);
+				//selectedList2.setData(list);
+				
 				
 			}
         });
+//        
+//		AsyncCallback<List<CollegeSubjectView>> callback = new AsyncCallback<List<CollegeSubjectView>>(){
+//
+//
+//			@Override
+//			public void onFailure(Throwable caught) {
+//				// TODO Auto-generated method stub
+//				SC.say("获取招生计划时发生错误");
+//			}
+//
+//			@Override
+//			public void onSuccess(List<CollegeSubjectView> result) {
+//				// TODO Auto-generated method stub
+//				
+//				Iterator<CollegeSubjectView> biit = result.iterator();
+//				RecordList data = new RecordList();
+//				//selectedList2.setData(data);
+//				while(biit.hasNext())
+//				{
+//					CollegeSubjectView bi = biit.next();
+//					Record rc = new Record();
+//					rc.setAttribute("subjectID",bi.getSubeject_id());
+//					rc.setAttribute("subjectName", bi.getSubject_name());
+//					rc.setAttribute("lol",bi.getLength_of_schooling() + "");
+//					data.add(rc);
+//				}
+//				
+//				selectedList2.setData(data);
+//
+//			}
+//
+//        };
+//		
+//        BrightEdu.createDataBaseRPC().getCollegeSubjectList(13, 3, 64,callback );
         
-		Record rc = new Record();
-		rc.setAttribute("subjectID",12);
-		rc.setAttribute("subjectName", "dummy");
-		rc.setAttribute("lol",3);
-	
-        selectedList.setData(new Record[]{rc});
-        
-         subjectList.addCellDoubleClickHandler(new CellDoubleClickHandler(){
-        
-        
-        	
-			@Override
-			public void onCellDoubleClick(CellDoubleClickEvent event) {
-				selectedList.transferSelectedData(subjectList);
-				
-			}});
-        
-        selectedList.addRecordDoubleClickHandler(new RecordDoubleClickHandler(){
+//         subjectList.addCellDoubleClickHandler(new CellDoubleClickHandler(){
+//        
+//        
+//        	
+//			@Override
+//			public void onCellDoubleClick(CellDoubleClickEvent event) {
+//				selectedList.transferSelectedData(subjectList);
+//				
+//			}});
+//        
+        selectedList2.addRecordDoubleClickHandler(new RecordDoubleClickHandler(){
 
 
 			@Override
 			public void onRecordDoubleClick(RecordDoubleClickEvent event) {
 				
-				selectedList.removeData(event.getRecord());
+				selectedList2.removeData(event.getRecord());
 				
 			}});
         
@@ -385,18 +429,18 @@ public class RecruitPlanManagePanel extends VLayout {
 				
 				Iterator<CollegeSubjectView> biit = result.iterator();
 				RecordList data = new RecordList();
-				selectedList.setData(data);
+				selectedList2.setData(data);
 				while(biit.hasNext())
 				{
 					CollegeSubjectView bi = biit.next();
 					Record rc = new Record();
 					rc.setAttribute("subjectID",bi.getSubeject_id());
 					rc.setAttribute("subjectName", bi.getSubject_name());
-					rc.setAttribute("lol",bi.getLength_of_schooling());
+					rc.setAttribute("lol",bi.getLength_of_schooling() + "");
 					data.add(rc);
 				}
 				
-				selectedList.setData(data);
+				selectedList2.setData(data);
 
 			}
 
@@ -417,7 +461,7 @@ public class RecruitPlanManagePanel extends VLayout {
 		Integer batchId = (Integer)batchItem.getValue();
 		Integer levelId = (Integer)levelItem.getValue();
 		
-		if(selectedList.getRecords().length == 0) 
+		if(selectedList2.getRecords().length == 0) 
 			
 			{
 				
@@ -474,7 +518,7 @@ public class RecruitPlanManagePanel extends VLayout {
 		
 		ArrayList<CollegeSubject> lst = new ArrayList<CollegeSubject>();
 		
-		RecordList data = selectedList.getRecordList();
+		RecordList data = selectedList2.getRecordList();
 		
 		for(int i = 0 ; i< data.getLength() ; i++)
 		{
