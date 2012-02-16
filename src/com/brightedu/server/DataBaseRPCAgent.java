@@ -1,6 +1,7 @@
 package com.brightedu.server;
 
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -1002,6 +1003,23 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			session.close();
 		}
 	}
+	
+	@Override
+	public Integer getCurrentBatch() {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			CurrentBatchMapper mp = session
+					.getMapper(CurrentBatchMapper.class);
+			ArrayList<CurrentBatch> cb = new ArrayList<CurrentBatch>();
+			cb = (ArrayList<CurrentBatch>) mp.selectByExample(null);
+			if(cb.size() == 0 ) return -1;
+			
+			return cb.get(0).getCurrent_batch_id();
+			
+		} finally {
+			session.close();
+		}
+	}
 
 	/*********************** 合作高校协议维护 ************************************/
 
@@ -1071,5 +1089,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			session.close();
 		}
 	}
+
+
 
 }

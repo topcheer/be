@@ -181,5 +181,6 @@ public interface DataBaseRPC extends RemoteService {
 	/*********************** 当前批次设置 ************************************/
 
 	public boolean addOrUpdateCurrentBatch(Integer batchNo);
+	public Integer getCurrentBatch();
 
 }

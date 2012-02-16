@@ -169,4 +169,6 @@ public interface DataBaseRPCAsync {
 	void addCollegeAgreement(CollegeAgreement agreement,
 			AsyncCallback<Boolean> callback);
 
+	void getCurrentBatch(AsyncCallback<Integer> callback);
+
 }
