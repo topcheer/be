@@ -13,9 +13,6 @@ import com.brightedu.client.ds.LevelDS;
 import com.brightedu.model.edu.CollegeSubject;
 import com.brightedu.model.edu.CollegeSubjectView;
 import com.brightedu.model.edu.Subjects;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
@@ -25,19 +22,16 @@ import com.smartgwt.client.types.ValidatorType;
 import com.smartgwt.client.types.VisibilityMode;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.TransferImgButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
-import com.smartgwt.client.widgets.form.fields.SpacerItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.validator.Validator;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
-import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.CellDoubleClickEvent;
 import com.smartgwt.client.widgets.grid.events.CellDoubleClickHandler;
 import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
@@ -331,52 +325,15 @@ public class RecruitPlanManagePanel extends VLayout {
 				
 			}
         });
-//        
-//		AsyncCallback<List<CollegeSubjectView>> callback = new AsyncCallback<List<CollegeSubjectView>>(){
-//
-//
-//			@Override
-//			public void onFailure(Throwable caught) {
-//				// TODO Auto-generated method stub
-//				SC.say("获取招生计划时发生错误");
-//			}
-//
-//			@Override
-//			public void onSuccess(List<CollegeSubjectView> result) {
-//				// TODO Auto-generated method stub
-//				
-//				Iterator<CollegeSubjectView> biit = result.iterator();
-//				RecordList data = new RecordList();
-//				//selectedList2.setData(data);
-//				while(biit.hasNext())
-//				{
-//					CollegeSubjectView bi = biit.next();
-//					Record rc = new Record();
-//					rc.setAttribute("subjectID",bi.getSubeject_id());
-//					rc.setAttribute("subjectName", bi.getSubject_name());
-//					rc.setAttribute("lol",bi.getLength_of_schooling() + "");
-//					data.add(rc);
-//				}
-//				
-//				selectedList2.setData(data);
-//
-//			}
-//
-//        };
-//		
-//        BrightEdu.createDataBaseRPC().getCollegeSubjectList(13, 3, 64,callback );
         
-//         subjectList.addCellDoubleClickHandler(new CellDoubleClickHandler(){
-//        
-//        
-//        	
-//			@Override
-//			public void onCellDoubleClick(CellDoubleClickEvent event) {
-//				selectedList.transferSelectedData(subjectList);
-//				
-//			}});
-//        
-        selectedList2.addRecordDoubleClickHandler(new RecordDoubleClickHandler(){
+         subjectList.addCellDoubleClickHandler(new CellDoubleClickHandler(){
+			@Override
+			public void onCellDoubleClick(CellDoubleClickEvent event) {
+				selectedList2.transferSelectedData(subjectList);
+				
+			}});
+
+         selectedList2.addRecordDoubleClickHandler(new RecordDoubleClickHandler(){
 
 
 			@Override
@@ -395,13 +352,13 @@ public class RecruitPlanManagePanel extends VLayout {
 //				
 //			}}.scheduleRepeating(3000);
         
-        GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler(){
-
-			@Override
-			public void onUncaughtException(Throwable e) {
-				// TODO Auto-generated method stub
-				e.printStackTrace();
-			}});
+//        GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler(){
+//
+//			@Override
+//			public void onUncaughtException(Throwable e) {
+//				// TODO Auto-generated method stub
+//				e.printStackTrace();
+//			}});
         
 	}
 	
