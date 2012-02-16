@@ -32,7 +32,7 @@ public interface DataBaseRPCAsync {
 	void getStudentClassesList(int offset, int limit, boolean needTotalCounts,
 			AsyncCallback<List<StudentClassified>> callback);
 
-	void addStudentClass(String studentClassName,
+	void addStudentClass(StudentClassified studentClass,
 			AsyncCallback<Boolean> callback);
 
 	void deleteStudentClasses(List<Integer> studentClassesId,

@@ -95,8 +95,8 @@ public class DataBaseRPCImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public boolean addStudentClass(String studentClassName) {
-		return agent.addStudentClass(studentClassName);
+	public boolean addStudentClass(StudentClassified studentClass) {
+		return agent.addStudentClass(studentClass);
 	}
 
 	@Override

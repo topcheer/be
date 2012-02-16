@@ -157,14 +157,12 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	}
 
 	@Override
-	public boolean addStudentClass(String studentClassName) {
+	public boolean addStudentClass(StudentClassified studentClass) {
 		SqlSession session = sessionFactory.openSession();
 		try {
 			StudentClassifiedMapper scm = session
 					.getMapper(StudentClassifiedMapper.class);
-			StudentClassified sc = new StudentClassified();
-			sc.setClassified_name(studentClassName);
-			int count = scm.insertSelective(sc);
+			int count = scm.insertSelective(studentClass);
 			session.commit();
 			return true;
 		} finally {

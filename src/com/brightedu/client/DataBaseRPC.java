@@ -51,7 +51,7 @@ public interface DataBaseRPC extends RemoteService {
 	public List<StudentClassified> getStudentClassesList(int offset, int limit,
 			boolean needTotalCounts);
 
-	public boolean addStudentClass(String studentClassName);
+	boolean addStudentClass(StudentClassified studentClass);
 
 	public boolean deleteStudentClasses(List<Integer> studentClassesId);
 
