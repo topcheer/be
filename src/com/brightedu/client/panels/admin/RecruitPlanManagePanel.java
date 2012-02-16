@@ -1,18 +1,23 @@
 package com.brightedu.client.panels.admin;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import com.brightedu.client.BrightEdu;
 
 import com.brightedu.client.DataBaseRPCAsync;
 import com.brightedu.client.ds.BatchDS;
 import com.brightedu.client.ds.CollegeDS;
-//import com.brightedu.client.ds.CollegeSubjectData;
 import com.brightedu.client.ds.LevelDS;
-import com.brightedu.client.ds.SubjectDS;
 import com.brightedu.model.edu.CollegeSubject;
+import com.brightedu.model.edu.CollegeSubjectView;
+import com.brightedu.model.edu.Subjects;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.DragDataAction;
 import com.smartgwt.client.types.ListGridEditEvent;
@@ -25,24 +30,26 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
+import com.smartgwt.client.widgets.form.fields.SpacerItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.validator.Validator;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
+import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.CellDoubleClickEvent;
 import com.smartgwt.client.widgets.grid.events.CellDoubleClickHandler;
 import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordDoubleClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.HStack;
+import com.smartgwt.client.widgets.layout.LayoutSpacer;
 import com.smartgwt.client.widgets.layout.SectionStack;
 import com.smartgwt.client.widgets.layout.SectionStackSection;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 public class RecruitPlanManagePanel extends VLayout {
 	
-	//本功能模块在Firefox 10.0开发模式下死活不工作， IE下工作一切正常
 	
 	protected static final DataBaseRPCAsync dbService = BrightEdu.createDataBaseRPC();
 	SectionStack aStack = new SectionStack();   
@@ -55,13 +62,21 @@ public class RecruitPlanManagePanel extends VLayout {
 	SelectItem collegeItem =  new SelectItem("collegeID","大学");
 	
 	ListGrid subjectList = new ListGrid();   
+	
 	ListGrid selectedList = new ListGrid();  
 	
     ListGridField pkField = new ListGridField("subjectID", "id");
     ListGridField subjectField = new ListGridField("subjectName", "专业");   
-    ListGridField lolField = new ListGridField("lol", "学制(年)");  
-   
+
+    ListGridField lolField = new ListGridField("lol", "学制(年)"); 
+    
 	DynamicForm df = new DynamicForm();
+	HLayout hl = new HLayout();
+	Validator numberVd = new Validator();
+	//TransferImgButton arrowImg = new TransferImgButton(TransferImgButton.RIGHT);   
+	HStack buttonStack = new HStack();
+	IButton saveButton = new IButton("保存");
+	IButton cloneButton = new IButton("克隆...");
 	
 	public RecruitPlanManagePanel()
 	{
@@ -73,6 +88,7 @@ public class RecruitPlanManagePanel extends VLayout {
 	{
 		setPadding(5);
 
+		
 		aStack.setWidth100();
 		aStack.setHeight(600);
 		aStack.setVisibilityMode(VisibilityMode.MULTIPLE);
@@ -84,7 +100,10 @@ public class RecruitPlanManagePanel extends VLayout {
 		batchItem.setOptionDataSource(BatchDS.getInstance());
 		batchItem.setValueField("batchID");
 		batchItem.setDisplayField("batchName");
+
+		
 		batchItem.setDefaultToFirstOption(true);
+		
 		batchItem.addChangedHandler(new ChangedHandler(){
 
 			@Override
@@ -129,25 +148,31 @@ public class RecruitPlanManagePanel extends VLayout {
 		aStack.addSection(conditionSection);
 		
 		
-        HLayout hl = new HLayout();
+        
         hl.setPadding(4);
-        hl.setHeight(400);
+        hl.setHeight(350);
 		
         
         
-        subjectList.setWidth(300);   
+        subjectList.setWidth(180);   
         subjectList.setHeight(350);   
         subjectList.setShowAllRecords(true);   
         subjectList.setCanReorderRecords(true);   
         subjectList.setCanDragRecordsOut(true);   
         subjectList.setCanAcceptDroppedRecords(true);   
         subjectList.setDragDataAction(DragDataAction.COPY);   
- 
-
+        subjectList.setShowHeaderContextMenu(false);
+        
+        subjectField.setWidth(150);
+       
         
         pkField.setHidden(true);
+       
+        
         lolField.setCanEdit(true);
-        Validator numberVd = new Validator();
+        lolField.setWidth(100);
+        
+        
         numberVd.setType(ValidatorType.INTEGERRANGE);
         numberVd.setValidateOnChange(true);
         numberVd.setAttribute("min", 1);
@@ -156,36 +181,32 @@ public class RecruitPlanManagePanel extends VLayout {
         
         
         subjectList.setFields(pkField, subjectField);   
-        subjectList.setDataSource(SubjectDS.getInstance());
+        //subjectList.setDataSource(SubjectDS.getInstance());
 
         hl.addMember(subjectList);
+        LayoutSpacer spacer = new LayoutSpacer();
+        spacer.setWidth(10);
+        hl.addMember(spacer);
         
-        TransferImgButton arrowImg = new TransferImgButton(TransferImgButton.RIGHT);   
-        arrowImg.addClickHandler(new ClickHandler() {   
-            public void onClick(ClickEvent event) {   
-            	selectedList.transferSelectedData(subjectList);   
-            }   
-        }); 
-        arrowImg.setLeft(10);
-        arrowImg.setRight(10);
-        hl.addMember(arrowImg);  
+        selectedList.setWidth(250);   
+        selectedList.setLeft(250);
         
-        selectedList.setWidth(350);   
         selectedList.setHeight(350);   
-        selectedList.setShowAllRecords(true);   
+        //selectedList.setShowAllRecords(true);   
         selectedList.setEmptyMessage("拖动左边的项目到这里");   
         selectedList.setCanReorderFields(true);   
-        selectedList.setCanDragRecordsOut(true);   
+        selectedList.setCanDragRecordsOut(false);   
         selectedList.setCanAcceptDroppedRecords(true);   
-        selectedList.setCanRemoveRecords(true);
-        selectedList.setDragDataAction(DragDataAction.MOVE);   
+        //selectedList.setCanRemoveRecords(true);
+        selectedList.setShowHeaderContextMenu(false);
+        //selectedList.setDragDataAction(DragDataAction.MOVE);   
         
         selectedList.setFields(pkField, subjectField,lolField);   
         
         selectedList.setEditEvent(ListGridEditEvent.CLICK);
         selectedList.setPreventDuplicates(true);
         selectedList.setDuplicateDragMessage("所选专业已经在已选择列表中,请仔细检查");
-        
+
         hl.addMember(selectedList);
         
         //canvas.addChild(countryGrid2); 
@@ -195,11 +216,11 @@ public class RecruitPlanManagePanel extends VLayout {
         actionSection.setShowHeader(true);
         actionSection.setExpanded(true);
         
-        HStack buttonStack = new HStack();
+        
         buttonStack.setHeight(50);
         buttonStack.setLayoutMargin(10);
         
-		IButton saveButton = new IButton("保存");
+		
 		saveButton.setLeft(30);
 		saveButton.addClickHandler(new ClickHandler(){
 
@@ -211,20 +232,97 @@ public class RecruitPlanManagePanel extends VLayout {
 		
 		buttonStack.addMember(saveButton);
 
-		IButton cloneButton = new IButton("克隆...");
+		
 		cloneButton.setLeft(30);
 		buttonStack.addMember(cloneButton);
 		
 		actionSection.addItem(buttonStack);
 		aStack.addSection(actionSection);
+		
+		cloneButton.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				
+//				Integer collegeId = (Integer)collegeItem.getValue();
+//				Integer batchId = (Integer)batchItem.getValue();
+//				Integer levelId = (Integer)levelItem.getValue();
+//				
+//				AsyncCallback<List<CollegeSubjectView>> callback = new AsyncCallback<List<CollegeSubjectView>>(){
+//
+//					@Override
+//					public void onFailure(Throwable caught) {
+//						// TODO Auto-generated method stub
+//						SC.say("获取招生计划时发生错误");
+//					}
+//
+//					@Override
+//					public void onSuccess(List<CollegeSubjectView> result) {
+//						// TODO Auto-generated method stub
+//						
+//						Iterator<CollegeSubjectView> biit = result.iterator();
+//						RecordList data = new RecordList();
+//						selectedList.setData(data);
+//						while(biit.hasNext())
+//						{
+//							CollegeSubjectView bi = biit.next();
+//							Record rc = new Record();
+//							rc.setAttribute("subjectID",bi.getSubeject_id());
+//							rc.setAttribute("subjectName", bi.getSubject_name());
+//							rc.setAttribute("lol",bi.getLength_of_schooling());
+//							data.add(rc);
+//						}
+//						
+//						selectedList.setData(data);
+//
+//					}
+//
+//		        };
+				
+//		        BrightEdu.createDataBaseRPC().getCollegeSubjectList(collegeId, levelId, batchId,callback );
+			}});
+		
 
 		addMember(aStack);
         
-        draw();
+        show();
         
-        subjectList.fetchData();
+        BrightEdu.createDataBaseRPC().getSubjectsList(-1, -1, false, new AsyncCallback<List<Subjects>>(){
 
-        subjectList.addCellDoubleClickHandler(new CellDoubleClickHandler(){
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				SC.say("获取批次时发生错误");
+			}
+
+			@Override
+			public void onSuccess(List<Subjects> result) {
+				RecordList list = new RecordList();
+				// TODO Auto-generated method stub
+				Iterator<Subjects> biit = result.iterator();
+				
+				while(biit.hasNext())
+				{
+					Subjects bi = biit.next();
+					Record rc = new Record();
+					rc.setAttribute("subjectID",bi.getSubject_id());
+					rc.setAttribute("subjectName", bi.getSubject_name());
+					rc.setAttribute("lol",0);
+					list.add(rc);
+				}
+				subjectList.setData(list);
+				
+			}
+        });
+        
+		Record rc = new Record();
+		rc.setAttribute("subjectID",12);
+		rc.setAttribute("subjectName", "dummy");
+		rc.setAttribute("lol",3);
+	
+        selectedList.setData(new Record[]{rc});
+        
+         subjectList.addCellDoubleClickHandler(new CellDoubleClickHandler(){
         
         
         	
@@ -253,6 +351,13 @@ public class RecruitPlanManagePanel extends VLayout {
 //				
 //			}}.scheduleRepeating(3000);
         
+        GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler(){
+
+			@Override
+			public void onUncaughtException(Throwable e) {
+				// TODO Auto-generated method stub
+				e.printStackTrace();
+			}});
         
 	}
 	
@@ -264,7 +369,44 @@ public class RecruitPlanManagePanel extends VLayout {
 		Integer batchId = (Integer)batchItem.getValue();
 		Integer levelId = (Integer)levelItem.getValue();
 		
-		//selectedList.setData(CollegeSubjectData.getData(collegeId, levelId, batchId));
+
+		AsyncCallback<List<CollegeSubjectView>> callback = new AsyncCallback<List<CollegeSubjectView>>(){
+
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				SC.say("获取招生计划时发生错误");
+			}
+
+			@Override
+			public void onSuccess(List<CollegeSubjectView> result) {
+				// TODO Auto-generated method stub
+				
+				Iterator<CollegeSubjectView> biit = result.iterator();
+				RecordList data = new RecordList();
+				selectedList.setData(data);
+				while(biit.hasNext())
+				{
+					CollegeSubjectView bi = biit.next();
+					Record rc = new Record();
+					rc.setAttribute("subjectID",bi.getSubeject_id());
+					rc.setAttribute("subjectName", bi.getSubject_name());
+					rc.setAttribute("lol",bi.getLength_of_schooling());
+					data.add(rc);
+				}
+				
+				selectedList.setData(data);
+
+			}
+
+        };
+		
+        BrightEdu.createDataBaseRPC().getCollegeSubjectList(collegeId, levelId, batchId,callback );
+        
+        
+        
+		
 
 	
 	}
