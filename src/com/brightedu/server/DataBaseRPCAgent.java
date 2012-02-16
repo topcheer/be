@@ -12,6 +12,7 @@ import com.brightedu.client.ds.Page;
 import com.brightedu.dao.edu.AgentTypeMapper;
 import com.brightedu.dao.edu.BatchIndexMapper;
 import com.brightedu.dao.edu.ChargeTypeMapper;
+import com.brightedu.dao.edu.CollegeAgreementMapper;
 import com.brightedu.dao.edu.CollegeMapper;
 import com.brightedu.dao.edu.CollegeSubjectMapper;
 import com.brightedu.dao.edu.CollegeSubjectViewMapper;
@@ -33,6 +34,7 @@ import com.brightedu.model.edu.ChargeType;
 import com.brightedu.model.edu.ChargeTypeExample;
 import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.CollegeAgreement;
+import com.brightedu.model.edu.CollegeAgreementExample;
 import com.brightedu.model.edu.CollegeExample;
 import com.brightedu.model.edu.CollegeSubject;
 import com.brightedu.model.edu.CollegeSubjectExample;
@@ -65,8 +67,8 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	public DataBaseRPCAgent() {
 		sessionFactory = ConnectionManager.getSessionFactory();
 	}
-	
-	public static DataBaseRPC createAgentProxy(BrightServlet servlet){
+
+	public static DataBaseRPC createAgentProxy(BrightServlet servlet) {
 		DataBaseRPCAgent agt = new DataBaseRPCAgent();
 		agt.setRemoteServlet(servlet);
 		DataBaseRPCHandler handler = new DataBaseRPCHandler(agt);
@@ -1004,26 +1006,70 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	/*********************** 合作高校协议维护 ************************************/
 
 	@Override
-	public List<CollegeAgreement> getCollegeAgreementList(int offset, int limit,
-			boolean needTotalCounts) {
-		return null;
+	public List<CollegeAgreement> getCollegeAgreementList(int offset,
+			int limit, boolean needTotalCounts) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			CollegeAgreementMapper mp = session
+					.getMapper(CollegeAgreementMapper.class);
+			CollegeAgreementExample ex = new CollegeAgreementExample();
+			ex.setOrderByClause("agreement_id desc");
+			List result = mp.selectByExample(ex);
+			if (needTotalCounts) {
+				Integer counts = mp.countByExample(null);
+				result.add(counts);
+			}
+			return result;
+
+		} finally {
+			session.close();
+		}
 	}
 
 	@Override
 	public boolean addCollegeAgreement(CollegeAgreement agreement) {
-		return false;
+		SqlSession session = ConnectionManager.getSessionFactory()
+				.openSession();
+		try {
+			CollegeAgreementMapper bim = session
+					.getMapper(CollegeAgreementMapper.class);
+			bim.insertSelective(agreement);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
 	}
 
 	@Override
 	public boolean deleteCollegeAgreement(List<Integer> agreement_ids) {
-		// TODO Auto-generated method stub
-		return false;
+		SqlSession session = sessionFactory.openSession();
+		try {
+			CollegeAgreementMapper cm = session
+					.getMapper(CollegeAgreementMapper.class);
+			CollegeAgreementExample ex = new CollegeAgreementExample();
+			CollegeAgreementExample.Criteria cr = ex.createCriteria();
+			cr.andAgreement_idIn(agreement_ids);
+			cm.deleteByExample(ex);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
 	}
 
 	@Override
 	public boolean saveCollegeAgreement(CollegeAgreement agreement) {
-		// TODO Auto-generated method stub
-		return false;
+		SqlSession session = sessionFactory.openSession();
+		try {
+			CollegeAgreementMapper bim = session
+					.getMapper(CollegeAgreementMapper.class);
+			bim.updateByPrimaryKey(agreement);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
 	}
 
 }

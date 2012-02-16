@@ -52,6 +52,33 @@ import com.google.gwt.user.server.rpc.UnexpectedException;
 public class BrightServlet extends AbstractRemoteServiceServlet implements
 		SerializationPolicyProvider {
 
+	/******************* 自定义代码 *********************************************/
+	protected DataBaseRPC agent = null;
+
+	public void init() {
+		agent = DataBaseRPCAgent.createAgentProxy(this);
+	}
+
+	public User getUser() {
+		HttpSession session = getThreadLocalRequest().getSession();
+		User user = (User) session.getAttribute("user");
+		return user;
+	}
+
+	public void unAuthorized() {
+		redirect("/NotAuthorized.html");
+	}
+
+	public void redirect(String url) {
+		try {
+			getThreadLocalResponse().sendRedirect(url);
+		} catch (IOException e) {
+			Log.e("redirect " + url + " error", e);
+		}
+	}
+
+	/********************* 自定义代码结束 ********************************************/
+
 	/**
 	 * Used by HybridServiceServlet.
 	 */
@@ -386,28 +413,4 @@ public class BrightServlet extends AbstractRemoteServiceServlet implements
 				responsePayload, gzipEncode);
 	}
 
-	/******************* 自定义代码 *********************************************/
-	protected DataBaseRPC agent = null;
-
-	public void init() {
-		agent = DataBaseRPCAgent.createAgentProxy(this);
-	}
-
-	public User getUser() {
-		HttpSession session = getThreadLocalRequest().getSession();
-		User user = (User) session.getAttribute("user");
-		return user;
-	}
-
-	public void unAuthorized() {
-		redirect("/NotAuthorized.html");
-	}
-
-	public void redirect(String url) {
-		try {
-			getThreadLocalResponse().sendRedirect(url);
-		} catch (IOException e) {
-			Log.e("redirect " + url + " error", e);
-		}
-	}
 }

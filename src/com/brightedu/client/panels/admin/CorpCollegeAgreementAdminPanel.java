@@ -15,21 +15,118 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.data.Record;
+import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Encoding;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.util.SC;
+import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Img;
+import com.smartgwt.client.widgets.ImgButton;
+import com.smartgwt.client.widgets.events.ClickEvent;
+import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.ValuesManager;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.UploadItem;
+import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
+import com.smartgwt.client.widgets.grid.ListGridRecord;
+import com.smartgwt.client.widgets.layout.HLayout;
+// Grids/appearence/rollover controls
+// Grids/grid cell widget
+// id可以通过servlet参数传递
 
 public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 
-	// Grids/appearence/rollover controls
-	// Grids/grid cell widget
-	// id可以通过servlet参数传递
+	LinkedHashMap<String, String> colleges;
+	LinkedHashMap<String, String> agents;
+	LinkedHashMap<String, String> statusMap;
+
+	ListGridField[] fields;
+
+	public void init() {
+
+		colleges = new LinkedHashMap<String, String>();
+		agents = new LinkedHashMap<String, String>();
+		statusMap = new LinkedHashMap<String, String>();
+		statusMap.put("true", "有效");
+		statusMap.put("false", "无效");
+		super.init();
+		AsyncCallback<List<College>> collegeCall = new CommonAsyncCall<List<College>>() {
+			public void onSuccess(List<College> result) {
+				for (College c : result) {
+					colleges.put(c.getCollege_id() + "", c.getCollege_name());
+				}
+				fields[0].setValueMap(colleges); // 合作高校
+			}
+		};
+		AsyncCallback<List<RecruitAgent>> agentCall = new CommonAsyncCall<List<RecruitAgent>>() {
+			public void onSuccess(List<RecruitAgent> result) {
+				for (RecruitAgent r : result) {
+					agents.put(r.getAgent_id() + "", r.getAgent_name());
+				}
+				fields[1].setValueMap(agents);// 我方高校
+			}
+		};
+		fields[2].setValueMap(statusMap); // 状态
+		dbService.getCollegeList(-1, -1, false, collegeCall);
+		dbService.getRecruitAgentList(-1, -1, false, agentCall);
+	}
+
+	public ListGrid createResultList() {
+		ListGrid grid = new ListGrid() {
+			@Override
+			protected Canvas createRecordComponent(final ListGridRecord record,
+					Integer colNum) {
+
+				String fieldName = this.getFieldName(colNum);
+				if (fieldName.equals("agreement")) {
+					HLayout recordCanvas = new HLayout(3);
+					recordCanvas.setHeight(22);
+					recordCanvas.setAlign(Alignment.CENTER);
+					ImgButton editImg = new ImgButton();
+					editImg.setShowDown(false);
+					editImg.setShowRollOver(false);
+					editImg.setLayoutAlign(Alignment.CENTER);
+					editImg.setSrc("edit.png");
+					editImg.setPrompt("上传新协议");
+					editImg.setHeight(16);
+					editImg.setWidth(16);
+					editImg.addClickHandler(new ClickHandler() {
+						public void onClick(ClickEvent event) {
+							SC.say("Edit！");
+						}
+					});
+
+					ImgButton openImg = new ImgButton();
+					openImg.setShowDown(false);
+					openImg.setShowRollOver(false);
+					openImg.setAlign(Alignment.CENTER);
+					openImg.setSrc("open.gif");
+					openImg.setPrompt("打开/下载协议");
+					openImg.setHeight(16);
+					openImg.setWidth(16);
+					openImg.addClickHandler(new ClickHandler() {
+						public void onClick(ClickEvent event) {
+							SC.say("Open");
+						}
+					});
+
+					recordCanvas.addMember(openImg);
+					recordCanvas.addMember(editImg);
+					return recordCanvas;
+				} else {
+					return null;
+				}
+
+			}
+		};
+		grid.setShowRecordComponents(true);          
+		grid.setShowRecordComponentsByCell(true);  
+		return grid;
+	}
+
 	@Override
 	public void gotoPage(final int indexGoto, final boolean init) {
 		AsyncCallback<List<CollegeAgreement>> callback = new CommonAsyncCall<List<CollegeAgreement>>() {
@@ -69,14 +166,13 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 
 	@Override
 	public ListGridField[] createGridFileds() {
-		ListGridField[] fields = parseGridFields(new String[] { "college",
-				"agent", "status", "modify_date", "agreement" }, new String[] {
-				"合作高校", "我方学校", "状态", "修改时间", "协议" }, new ListGridFieldType[] {
+		fields = parseGridFields(new String[] { "college", "agent", "status",
+				"modify_date", "agreement" }, new String[] { "合作高校", "我方学校",
+				"状态", "修改时间", "协议" }, new ListGridFieldType[] {
 				ListGridFieldType.TEXT, ListGridFieldType.TEXT,
 				ListGridFieldType.TEXT, ListGridFieldType.DATE,
-				ListGridFieldType.IMAGEFILE }, new boolean[] { true, true,
-				true, false, false }, new int[] { -1, -1, 100, 200, 50 });
-
+				null }, new boolean[] { true, true, true,
+				false, false }, new int[] { -1, -1, 100, 200, 80 });
 		return fields;
 		// http://stackoverflow.com/questions/3053462/open-save-file-in-smartgwt
 	}
@@ -88,7 +184,7 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 
 	@Override
 	public void deleteRecords(List<Integer> deleteIds) {
-
+		dbService.deleteCollegeAgreement(deleteIds, delAsync);
 	}
 
 	@Override
@@ -153,48 +249,18 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 			setSize("325", "170");
 			form.setAction(GWT.getModuleBaseURL()
 					+ "formwithfile?action=collegeagreement");
-			initData();
-		}
-
-		private void initData() {
-			AsyncCallback<List<College>> collegeCall = new CommonAsyncCall<List<College>>() {
-				public void onSuccess(List<College> result) {
-					LinkedHashMap<String, String> values = new LinkedHashMap<String, String>();
-					for (College c : result) {
-						values.put(c.getCollege_id() + "", c.getCollege_name());
-					}
-					collegeItem.setValueMap(values);
-				}
-			};
-			AsyncCallback<List<RecruitAgent>> agentCall = new CommonAsyncCall<List<RecruitAgent>>() {
-				public void onSuccess(List<RecruitAgent> result) {
-					LinkedHashMap<String, String> values = new LinkedHashMap<String, String>();
-					for (RecruitAgent r : result) {
-						values.put(r.getAgent_id() + "", r.getAgent_name());
-					}
-					agentItem.setValueMap(values);
-				}
-			};
-			dbService.getCollegeList(-1, -1, false, collegeCall);
-			dbService.getRecruitAgentList(-1, -1, false, agentCall);
+			agentItem.setValueMap(agents);
+			collegeItem.setValueMap(colleges);
 		}
 
 		@Override
 		protected Object getAddedModel() {
-			// FORM 形式的提交，不需要用到这个方法
+			// DO NOTHING, FORM 形式的提交，不需要用到这个方法
 			return null;
 		}
 
 		// here it is form submit action
 		protected void add() {
-			// String file = fileItem.getValueAsString();
-			// File f = new File(file);
-			// if (f.exists()) {
-			// busyImg.setVisible(true);
-			// okBtn.disable();
-			//
-			// form.submitForm();
-			// }
 			busyImg.setVisible(true);
 			okBtn.disable();
 			form.submitForm();
@@ -212,9 +278,7 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 			collegeItem.setWidth(len);
 			agentItem.setWidth(len);
 			statusItem.setWidth(len);
-			LinkedHashMap<String, String> statusMap = new LinkedHashMap<String, String>();
-			statusMap.put("true", "有效");
-			statusMap.put("false", "无效");
+
 			statusItem.setValueMap(statusMap);
 			form.setPadding(5);
 			form.setFields(collegeItem, agentItem, statusItem, fileItem);

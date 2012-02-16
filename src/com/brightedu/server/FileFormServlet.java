@@ -14,17 +14,13 @@ import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
-import org.apache.ibatis.session.SqlSession;
 
-import com.brightedu.client.DataBaseRPC;
-import com.brightedu.dao.edu.CollegeAgreementMapper;
 import com.brightedu.model.edu.CollegeAgreement;
-import com.brightedu.server.util.ConnectionManager;
 import com.brightedu.server.util.Log;
 import com.brightedu.server.util.ServerProperties;
 
 /**
- * @author chetwang
+ * @author chetwang, 主要处理文件上传的form
  * 
  */
 public class FileFormServlet extends BrightServlet {
@@ -150,16 +146,8 @@ public class FileFormServlet extends BrightServlet {
 				}
 			}
 
-			SqlSession session = ConnectionManager.getSessionFactory()
-					.openSession();
-			try {
-				CollegeAgreementMapper bim = session
-						.getMapper(CollegeAgreementMapper.class);
-				bim.insertSelective(agreement);
-				session.commit();
-			} finally {
-				session.close();
-			}
+			agent.addCollegeAgreement(agreement);
+
 			response(response, "", true);
 		} catch (Exception e) {
 			Log.e(e.getMessage(), e);

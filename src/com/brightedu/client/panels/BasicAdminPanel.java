@@ -38,13 +38,14 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public abstract class BasicAdminPanel extends VLayout {
 
-//	protected final DataBaseRPCAsync dbService = GWT.create(DataBaseRPC.class);
+	// protected final DataBaseRPCAsync dbService =
+	// GWT.create(DataBaseRPC.class);
 	protected final DataBaseRPCAsync dbService = BrightEdu.createDataBaseRPC();
 	protected ToolStripButton addButton = new ToolStripButton("添加");
 	protected ToolStripButton delButton = new ToolStripButton("删除");
 	protected TextItem searchItem = new TextItem("搜索内容");
 	protected SelectItem rangeItem = new SelectItem("搜索范围");
-	protected ListGrid resultList = new ListGrid();
+	protected ListGrid resultList;
 
 	protected SelectItem rowsPerPageItem = new SelectItem("每页行数");
 	protected ToolStripButton firstPageBtn = new ToolStripButton();
@@ -68,8 +69,6 @@ public abstract class BasicAdminPanel extends VLayout {
 	public BasicAdminPanel() {
 		init();
 	}
-	
-	
 
 	/**
 	 * other init actions for UI only
@@ -142,7 +141,7 @@ public abstract class BasicAdminPanel extends VLayout {
 		ToolStrip pagetools = new ToolStrip();
 		rowsPerPageItem.setValueMap("1", "2", "3", "10", "20", "50", "100",
 				"300");
-		
+
 		rowsPerPageItem.setWidth(60);
 		rowsPerPageItem.setValue(String.valueOf(currentRowsInOnePage));
 		rowsPerPageItem.addChangedHandler(new ChangedHandler() {
@@ -200,7 +199,8 @@ public abstract class BasicAdminPanel extends VLayout {
 
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
-				if (event.getKeyName()!=null && event.getKeyName().toLowerCase().equals("enter")) {
+				if (event.getKeyName() != null
+						&& event.getKeyName().toLowerCase().equals("enter")) {
 					if (currentPageIndexField.getValue() != null) {
 						int indexGoto = Integer.parseInt(currentPageIndexField
 								.getValue().toString());
@@ -254,6 +254,7 @@ public abstract class BasicAdminPanel extends VLayout {
 	}
 
 	private void initListGrid() {
+		resultList = createResultList();
 		ListGridField[] fields = createGridFileds();
 		if (fields == null) {
 			fields = new ListGridField[0];// only for select
@@ -261,7 +262,7 @@ public abstract class BasicAdminPanel extends VLayout {
 		ListGridField selectField = new ListGridField("select", "选择", 100);
 		// static hidden fields
 		ListGridField idField = new ListGridField("id", "代码");// used for id
-		
+
 		ListGridField objectField = new ListGridField("object", "完整对象");// used
 		ListGridField[] newFields = new ListGridField[fields.length + 3];
 		selectField.setType(ListGridFieldType.BOOLEAN);
@@ -277,7 +278,7 @@ public abstract class BasicAdminPanel extends VLayout {
 		resultList.setFields(newFields);
 		resultList.setCanEdit(true);
 		resultList.setEditEvent(ListGridEditEvent.DOUBLECLICK);
-		//disable context menu
+		// disable context menu
 		resultList.setShowHeaderContextMenu(false);
 	}
 
@@ -351,7 +352,7 @@ public abstract class BasicAdminPanel extends VLayout {
 	protected void setTotalCounts(int totalCounts) {
 		totalPageCounts = totalCounts % currentRowsInOnePage == 0 ? (totalCounts / currentRowsInOnePage)
 				: (totalCounts / currentRowsInOnePage + 1);
-		if(totalPageCounts==0){
+		if (totalPageCounts == 0) {
 			totalPageCounts = 1;
 		}
 		totalPageLabel.setContents(" 共 " + totalPageCounts + " 页");
@@ -373,7 +374,9 @@ public abstract class BasicAdminPanel extends VLayout {
 			if (width[i] > 0) {
 				fields[i].setWidth(width[i]);
 			}
-			fields[i].setType(types[i]);
+			if (types[i] != null) {
+				fields[i].setType(types[i]);
+			}
 			fields[i].setCanEdit(canEdit[i]);
 			fields[i].setAlign(Alignment.CENTER);
 			if (canEdit[i]) {
@@ -405,27 +408,31 @@ public abstract class BasicAdminPanel extends VLayout {
 	public abstract void add(Object model);
 
 	public abstract AdminDialog createAdminDialog();
-	
-	public void afterAdd(){
-//		showLastPageRecords(true);
+
+	public void afterAdd() {
+		// showLastPageRecords(true);
 		gotoPage(1, true);
 	}
 
 	public AdminDialog getAdminDialog() {
 		return dialog;
 	}
-	
+
 	@SuppressWarnings("rawtypes")
 	protected DeleteAsync delAsync = new DeleteAsync();
-	
-	private class DeleteAsync<T> extends CommonAsyncCall<T>{
+
+	private class DeleteAsync<T> extends CommonAsyncCall<T> {
 
 		@Override
 		public void onSuccess(T result) {
 			BrightEdu.showTip("已删除！");
 			gotoPage(currentPageIndex);
 		}
-		
+
+	}
+
+	public ListGrid createResultList() {
+		return new ListGrid();
 	}
 
 	public ListGrid getResultList() {
