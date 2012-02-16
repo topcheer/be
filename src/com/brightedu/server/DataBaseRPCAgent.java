@@ -1,6 +1,7 @@
 package com.brightedu.server;
 
 import java.lang.reflect.Proxy;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -14,6 +15,7 @@ import com.brightedu.dao.edu.ChargeTypeMapper;
 import com.brightedu.dao.edu.CollegeMapper;
 import com.brightedu.dao.edu.CollegeSubjectMapper;
 import com.brightedu.dao.edu.CollegeSubjectViewMapper;
+import com.brightedu.dao.edu.CurrentBatchMapper;
 import com.brightedu.dao.edu.FeeTypeMapper;
 import com.brightedu.dao.edu.PictureTypeMapper;
 import com.brightedu.dao.edu.RecruitAgentMapper;
@@ -36,6 +38,7 @@ import com.brightedu.model.edu.CollegeSubject;
 import com.brightedu.model.edu.CollegeSubjectExample;
 import com.brightedu.model.edu.CollegeSubjectView;
 import com.brightedu.model.edu.CollegeSubjectViewExample;
+import com.brightedu.model.edu.CurrentBatch;
 import com.brightedu.model.edu.FeeType;
 import com.brightedu.model.edu.FeeTypeExample;
 import com.brightedu.model.edu.PictureType;
@@ -968,6 +971,35 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			session.close();
 		}
 	}
+	
+	/*********************** 当前批次设置 ************************************/
+	@Override
+	public boolean addOrUpdateCurrentBatch(Integer batchNo) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			CurrentBatchMapper mp = session
+					.getMapper(CurrentBatchMapper.class);
+			CurrentBatch cb = new CurrentBatch();
+			cb.setCurrent_batch_id(batchNo);
+			cb.setUpdate_date(new Date());
+			
+			if(mp.countByExample(null)>0)
+			{
+				//update
+				mp.updateByExample(cb, null);
+			}
+			else
+			{
+				//insert
+				mp.insertSelective(cb);
+			}
+			session.commit();
+			return true;
+			
+		} finally {
+			session.close();
+		}
+	}
 
 	/*********************** 合作高校协议维护 ************************************/
 
@@ -993,4 +1025,5 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
 }

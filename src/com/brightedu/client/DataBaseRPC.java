@@ -176,5 +176,10 @@ public interface DataBaseRPC extends RemoteService {
 	public boolean addCollegeSubject(List<CollegeSubject> collegeSubjects);
 
 	public boolean deletCollegeSubject(CollegeSubject collegeSubjects);
+	
+
+	/*********************** 当前批次设置 ************************************/
+
+	public boolean addOrUpdateCurrentBatch(Integer batchNo);
 
 }

@@ -153,6 +153,9 @@ public interface DataBaseRPCAsync {
 	void deletCollegeSubject(CollegeSubject collegeSubjects,
 			AsyncCallback<Boolean> callback);
 
+	void addOrUpdateCurrentBatch(Integer batchNo,
+			AsyncCallback<Boolean> callback);
+
 	void saveCollegeAgreement(CollegeAgreement college,
 			AsyncCallback<Boolean> callback);
 

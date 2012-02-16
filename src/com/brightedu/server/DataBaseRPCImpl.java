@@ -318,6 +318,13 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 		return agent.saveRecruitAgent(ra);
 	}
 
+	/*********************** 当前批次设置 ************************************/
+	
+	public boolean addOrUpdateCurrentBatch(Integer batchNo) {
+		return agent.addOrUpdateCurrentBatch(batchNo);
+	}
+
+	
 	@Override
 	public List<CollegeAgreement> getCollegeAgreementList(int offset,
 			int limit, boolean needTotalCounts) {
@@ -338,5 +345,6 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	public boolean saveCollegeAgreement(CollegeAgreement agreement) {
 		return agent.saveCollegeAgreement(agreement);
 	}
+
 
 }
