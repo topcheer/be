@@ -7,7 +7,7 @@ import com.brightedu.client.BrightEdu;
 import com.brightedu.client.DataBaseRPCAsync;
 import com.brightedu.client.ds.BatchDS;
 import com.brightedu.client.ds.CollegeDS;
-import com.brightedu.client.ds.CollegeSubjectData;
+//import com.brightedu.client.ds.CollegeSubjectData;
 import com.brightedu.client.ds.LevelDS;
 import com.brightedu.client.ds.SubjectDS;
 import com.brightedu.model.edu.CollegeSubject;
@@ -253,7 +253,7 @@ public class EntranceCostManagePanel extends VLayout {
 		Integer batchId = (Integer)batchItem.getValue();
 		Integer levelId = (Integer)levelItem.getValue();
 		
-		selectedList.setData(CollegeSubjectData.getData(collegeId, levelId, batchId));
+		//selectedList.setData(CollegeSubjectData.getData(collegeId, levelId, batchId));
 
 	
 	}
