@@ -103,8 +103,8 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 					if (!fakeFrameLoaded) {
 						fakeFrameLoaded = true;
 					} else {
-						if (!frame.getInnerHtmlTitle().equals("success")) {
-							SC.warn("保存失败!" + frame.getInnerHtmlContent());
+						if (!frame.isSuccess()) {
+							SC.warn("保存失败!" + frame.getMessage());
 						} else {
 							// 保存成功
 							afterAdd();

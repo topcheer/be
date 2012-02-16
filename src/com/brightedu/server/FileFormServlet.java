@@ -132,10 +132,7 @@ public class FileFormServlet extends HttpServlet {
 					}
 				}
 			}
-
-			// response.sendRedirect("/success.html");
-			// // TODO: need to handle conversion options and error reporting
-			response(response, "aaaaa", false);
+			response(response, "aaaaa", true);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -144,14 +141,11 @@ public class FileFormServlet extends HttpServlet {
 	private void response(HttpServletResponse response, String msg,
 			boolean success) throws IOException {
 		PrintWriter out = response.getWriter();
-		out.println("<html>");
-		out.println("<head>");
+		out.println("<html><head><title>");
 		out.println(success ? "success" : "failed");
-		out.println("</head>");
-		out.println("<body>");
+		out.println("</title></head><body>");
 		out.println(msg);
-		out.println("</body>");
-		out.println("</html>");
+		out.println("</body></html>");
 		out.flush();
 	}
 }

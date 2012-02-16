@@ -144,18 +144,27 @@ code>', or '
 		}
 	}-*/;
 
-	public native String getInnerHtmlContent() /*-{
+	private native String getInnerHtmlContent() /*-{
 		var f = this.@com.brightedu.client.frame.BrightFrame::getFrameDocument()();
 		if (!f)
 			return null;
 		return f.body.innerHTML;
 	}-*/;
-	
-	public native String getInnerHtmlTitle()/*-{
+
+	private native String getInnerHtmlTitle()/*-{
 		var f = this.@com.brightedu.client.frame.BrightFrame::getFrameDocument()();
 		if (!f)
 			return null;
-		return f.title;
+		return f.head.innerHTML;
 	}-*/;
+
+	public boolean isSuccess() {
+		String title = getInnerHtmlTitle();
+		return title.contains("success");
+	}
+
+	public String getMessage() {
+		return getInnerHtmlContent().trim();
+	}
 
 }
