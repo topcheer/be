@@ -1,4 +1,10 @@
 dataLocation=data
 auditLevel=4
-localEncoding=UTF-8
+
+#Linux服务器端配置
+#localEncoding=UTF-8
+#servletEncoding=UTF-8
+
+#Windows开发机配置
+localEncoding=GBK
 servletEncoding=ISO8859-1

@@ -99,7 +99,8 @@ public class FileFormServlet extends BrightServlet {
 		File serverAgreementFile = new File(agreementSubDir
 				+ agreement_filename);
 		respContentType = decodeContentTypeForURL(respContentType);
-		response.setHeader("Content-Type", respContentType);
+		response.setHeader("Content-Type", respContentType + ";charset="
+				+ ServerProperties.getLocalEncoding());
 		response.setHeader("Content-Length",
 				String.valueOf(serverAgreementFile.length()));
 		response.setHeader(
