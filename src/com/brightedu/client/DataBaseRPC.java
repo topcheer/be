@@ -27,6 +27,7 @@ import com.brightedu.model.edu.CollegeSubjectView;
 import com.brightedu.model.edu.FeeType;
 import com.brightedu.model.edu.PictureType;
 import com.brightedu.model.edu.RecruitAgent;
+import com.brightedu.model.edu.RecruitPlan;
 import com.brightedu.model.edu.StudentClassified;
 import com.brightedu.model.edu.StudentStatus;
 import com.brightedu.model.edu.StudentType;
@@ -177,10 +178,11 @@ public interface DataBaseRPC extends RemoteService {
 
 	public boolean deletCollegeSubject(CollegeSubject collegeSubjects);
 	
-
+	public List<RecruitPlan> getRecruitPlanList(int batch);
+	
 	/*********************** 当前批次设置 ************************************/
-
 	public boolean addOrUpdateCurrentBatch(Integer batchNo);
 	public Integer getCurrentBatch();
+	
 
 }

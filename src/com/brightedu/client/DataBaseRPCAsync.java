@@ -12,6 +12,7 @@ import com.brightedu.model.edu.CollegeSubjectView;
 import com.brightedu.model.edu.FeeType;
 import com.brightedu.model.edu.PictureType;
 import com.brightedu.model.edu.RecruitAgent;
+import com.brightedu.model.edu.RecruitPlan;
 import com.brightedu.model.edu.StudentClassified;
 import com.brightedu.model.edu.StudentStatus;
 import com.brightedu.model.edu.StudentType;
@@ -170,5 +171,7 @@ public interface DataBaseRPCAsync {
 			AsyncCallback<Boolean> callback);
 
 	void getCurrentBatch(AsyncCallback<Integer> callback);
+
+	void getRecruitPlanList(int batch, AsyncCallback<List<RecruitPlan>> callback);
 
 }
