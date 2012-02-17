@@ -94,7 +94,7 @@ public class FileFormServlet extends BrightServlet {
 	private void getCollegeAgreement(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		String agreement_filename = request.getParameter("agreement_name"); // 带日期标签
-		agreement_filename = URLDecoder.decode(agreement_filename);
+		agreement_filename = URLDecoder.decode(agreement_filename,"ISO8859-1");
 		// String reqEncoding = request.getCharacterEncoding();
 		// Log.d("RequestEncoding: "+reqEncoding);
 		// agreement_filename = new String(

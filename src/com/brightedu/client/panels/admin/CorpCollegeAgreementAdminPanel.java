@@ -111,17 +111,18 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 						public void onClick(ClickEvent event) {
 							CollegeAgreement aggreement = (CollegeAgreement) record
 									.getAttributeAsObject("object");
-//							Window.open(
-//									GWT.getModuleBaseURL()
-//											+ "formwithfile?action=getcollegeagreement&agreement_name="
-//											+ aggreement.getAgreement_name(),
-//									"", null);
-							Window.open(
-									GWT.getModuleBaseURL()
-											+ "formwithfile?action=getcollegeagreement&agreement_name="
-											+ URL.encode(aggreement.getAgreement_name()),
-									"", null);
-							SC.say("Open "+aggreement.getAgreement_name());
+							String url = GWT.getModuleBaseURL()
+									+ "formwithfile?action=getcollegeagreement&agreement_name="
+									+ aggreement.getAgreement_name();
+							// Window.open(
+							// GWT.getModuleBaseURL()
+							// +
+							// "formwithfile?action=getcollegeagreement&agreement_name="
+							// + aggreement.getAgreement_name(),
+							// "", null);
+
+							Window.open(URL.encode(url), "", null);
+							SC.say("Open " + aggreement.getAgreement_name());
 						}
 					});
 
@@ -324,6 +325,5 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 			return form;
 		}
 	}
-	
-	
+
 }
