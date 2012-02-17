@@ -117,8 +117,7 @@ public class FileFormServlet extends BrightServlet {
 		Log.d("respContentType: " + respContentType);
 		response.setHeader("Content-Length",
 				String.valueOf(serverAgreementFile.length()));
-		String respName = new String(responseFileName.getBytes(ServerProperties
-				.getLocalEncoding()), ServerProperties.getServletEncoding());
+		String respName = new String(responseFileName.getBytes("UTF-8"), "ISO8859-1");
 		Log.d("respFileName: " + respName);
 		response.setHeader("Content-disposition", "attachment;filename=\""
 				+ respName + "\"");
