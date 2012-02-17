@@ -13,6 +13,7 @@ import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.CollegeAgreement;
 import com.brightedu.model.edu.RecruitAgent;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -110,10 +111,15 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 						public void onClick(ClickEvent event) {
 							CollegeAgreement aggreement = (CollegeAgreement) record
 									.getAttributeAsObject("object");
+//							Window.open(
+//									GWT.getModuleBaseURL()
+//											+ "formwithfile?action=getcollegeagreement&agreement_name="
+//											+ aggreement.getAgreement_name(),
+//									"", null);
 							Window.open(
 									GWT.getModuleBaseURL()
 											+ "formwithfile?action=getcollegeagreement&agreement_name="
-											+ aggreement.getAgreement_name(),
+											+ URL.encode(aggreement.getAgreement_name()),
 									"", null);
 							SC.say("Open "+aggreement.getAgreement_name());
 						}
