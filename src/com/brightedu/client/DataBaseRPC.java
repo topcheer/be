@@ -85,7 +85,7 @@ public interface DataBaseRPC extends RemoteService {
 
 	public boolean addCollegeAgreement(CollegeAgreement agreement); 
 
-	public boolean deleteCollegeAgreement(List<Integer> agreement_ids);
+	public boolean deleteCollegeAgreement(List<CollegeAgreement> agreements);
 
 	boolean saveCollegeAgreement(CollegeAgreement agreement);
 

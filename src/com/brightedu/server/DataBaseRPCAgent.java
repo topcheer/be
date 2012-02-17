@@ -1,5 +1,6 @@
 package com.brightedu.server;
 
+import java.io.File;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Date;
@@ -63,6 +64,8 @@ import com.brightedu.model.edu.User;
 import com.brightedu.model.edu.UserType;
 import com.brightedu.model.edu.UserTypeExample;
 import com.brightedu.server.util.ConnectionManager;
+import com.brightedu.server.util.Log;
+import com.brightedu.server.util.ServerProperties;
 
 public class DataBaseRPCAgent implements DataBaseRPC {
 	SqlSessionFactory sessionFactory;
@@ -992,48 +995,44 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			session.close();
 		}
 	}
-	
+
 	/*********************** 当前批次设置 ************************************/
 	@Override
 	public boolean addOrUpdateCurrentBatch(Integer batchNo) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			CurrentBatchMapper mp = session
-					.getMapper(CurrentBatchMapper.class);
+			CurrentBatchMapper mp = session.getMapper(CurrentBatchMapper.class);
 			CurrentBatch cb = new CurrentBatch();
 			cb.setCurrent_batch_id(batchNo);
 			cb.setUpdate_date(new Date());
-			
-			if(mp.countByExample(null)>0)
-			{
-				//update
+
+			if (mp.countByExample(null) > 0) {
+				// update
 				mp.updateByExample(cb, null);
-			}
-			else
-			{
-				//insert
+			} else {
+				// insert
 				mp.insertSelective(cb);
 			}
 			session.commit();
 			return true;
-			
+
 		} finally {
 			session.close();
 		}
 	}
-	
+
 	@Override
 	public Integer getCurrentBatch() {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			CurrentBatchMapper mp = session
-					.getMapper(CurrentBatchMapper.class);
+			CurrentBatchMapper mp = session.getMapper(CurrentBatchMapper.class);
 			ArrayList<CurrentBatch> cb = new ArrayList<CurrentBatch>();
 			cb = (ArrayList<CurrentBatch>) mp.selectByExample(null);
-			if(cb.size() == 0 ) return -1;
-			
+			if (cb.size() == 0)
+				return -1;
+
 			return cb.get(0).getCurrent_batch_id();
-			
+
 		} finally {
 			session.close();
 		}
@@ -1078,14 +1077,30 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	}
 
 	@Override
-	public boolean deleteCollegeAgreement(List<Integer> agreement_ids) {
+	public boolean deleteCollegeAgreement(List<CollegeAgreement> agreements) {
 		SqlSession session = sessionFactory.openSession();
 		try {
+			List<Integer> ids = new ArrayList<Integer>();
+			String agreementSubDir = new File(
+					ServerProperties.getDataLocation()).getAbsolutePath()
+					+ "/agreement/";
+			for (CollegeAgreement c : agreements) {
+				ids.add(c.getAgreement_id());
+				try {
+					File aggFile = new File(agreementSubDir
+							+ c.getAgreement_name());
+					if (aggFile.exists()) {
+						aggFile.delete();
+					}
+				} catch (Exception e) {
+					Log.e("", e);
+				}
+			}
 			CollegeAgreementMapper cm = session
 					.getMapper(CollegeAgreementMapper.class);
 			CollegeAgreementExample ex = new CollegeAgreementExample();
 			CollegeAgreementExample.Criteria cr = ex.createCriteria();
-			cr.andAgreement_idIn(agreement_ids);
+			cr.andAgreement_idIn(ids);
 			cm.deleteByExample(ex);
 			session.commit();
 			return true;
@@ -1107,8 +1122,6 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			session.close();
 		}
 	}
-
-
 
 
 

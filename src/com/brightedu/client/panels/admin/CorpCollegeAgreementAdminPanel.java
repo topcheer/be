@@ -1,5 +1,6 @@
 package com.brightedu.client.panels.admin;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -16,9 +17,11 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.data.Record;
+import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Encoding;
 import com.smartgwt.client.types.ListGridFieldType;
+import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Img;
@@ -107,9 +110,11 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 						public void onClick(ClickEvent event) {
 							CollegeAgreement aggreement = (CollegeAgreement) record
 									.getAttributeAsObject("object");
-							Window.Location.assign(GWT.getHostPageBaseURL()
-									+ "formwithfile?action=getcollegeagreement&agreement_name="
-									+ aggreement.getAgreement_name());
+							Window.open(
+									GWT.getModuleBaseURL()
+											+ "formwithfile?action=getcollegeagreement&agreement_name="
+											+ aggreement.getAgreement_name(),
+									"", null);
 							SC.say("Open");
 						}
 					});
@@ -183,8 +188,33 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 	}
 
 	@Override
-	public void deleteRecords(List<Integer> deleteIds) {
-		dbService.deleteCollegeAgreement(deleteIds, delAsync);
+	protected void del() {
+		RecordList recList = resultList.getDataAsRecordList();
+		final List<CollegeAgreement> deletedAggrements = new ArrayList<CollegeAgreement>();
+		for (int i = 0; i < recList.getLength(); i++) {
+			if (recList.get(i).getAttributeAsBoolean("select")) {
+				deletedAggrements.add((CollegeAgreement) recList.get(i)
+						.getAttributeAsObject("object"));
+			}
+		}
+		if (deletedAggrements.size() == 0) {
+			SC.say("请选择一些记录");
+			return;
+		}
+		SC.ask("确认", "你确认要删除选中的记录吗？", new BooleanCallback() {
+			@Override
+			public void execute(Boolean value) {
+				if (value) {
+					dbService.deleteCollegeAgreement(deletedAggrements,
+							delAsync);
+				}
+			}
+		});
+	}
+
+	@Override
+	public void deleteRecords(List deletedAggrements) {
+		// DO Nothing, as the delete action is completely done in del()
 	}
 
 	@Override
@@ -288,4 +318,6 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 			return form;
 		}
 	}
+	
+	
 }

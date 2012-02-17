@@ -324,18 +324,17 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	}
 
 	/*********************** 当前批次设置 ************************************/
-	
+
 	public boolean addOrUpdateCurrentBatch(Integer batchNo) {
 		return agent.addOrUpdateCurrentBatch(batchNo);
 	}
 
 	@Override
 	public Integer getCurrentBatch() {
-		
+
 		return agent.getCurrentBatch();
 	}
 
-	
 	@Override
 	public List<CollegeAgreement> getCollegeAgreementList(int offset,
 			int limit, boolean needTotalCounts) {
@@ -348,16 +347,14 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	}
 
 	@Override
-	public boolean deleteCollegeAgreement(List<Integer> agreement_ids) {
-		return agent.deleteCollegeAgreement(agreement_ids);
+	public boolean deleteCollegeAgreement(List<CollegeAgreement> agreements) {
+		return agent.deleteCollegeAgreement(agreements);
 	}
 
 	@Override
 	public boolean saveCollegeAgreement(CollegeAgreement agreement) {
 		return agent.saveCollegeAgreement(agreement);
 	}
-
-
 
 
 

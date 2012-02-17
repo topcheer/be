@@ -3,6 +3,7 @@ package com.brightedu.server.util;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
@@ -24,6 +25,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 public class Utils {
 
@@ -158,5 +162,26 @@ public class Utils {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public static String base64Encode(String s) {
+		BASE64Encoder en = new BASE64Encoder();
+		return en.encode(s.getBytes());
+	}
+
+	public static String base64Decode(String s) {
+		BASE64Decoder de = new BASE64Decoder();
+		try {
+			return new String(de.decodeBuffer(s));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static void main(String[] xx){
+		String agreement_filename = "as_234-df.doc.1_2344/FGSSDF";
+		System.out.println(agreement_filename
+				.replace("/", "#"));
 	}
 }

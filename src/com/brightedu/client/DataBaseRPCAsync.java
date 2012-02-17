@@ -160,7 +160,7 @@ public interface DataBaseRPCAsync {
 	void saveCollegeAgreement(CollegeAgreement college,
 			AsyncCallback<Boolean> callback);
 
-	void deleteCollegeAgreement(List<Integer> college_ids,
+	void deleteCollegeAgreement(List<CollegeAgreement> college_ids,
 			AsyncCallback<Boolean> callback);
 
 	void getCollegeAgreementList(int offset, int limit,

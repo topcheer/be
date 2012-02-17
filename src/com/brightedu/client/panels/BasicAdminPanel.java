@@ -282,7 +282,7 @@ public abstract class BasicAdminPanel extends VLayout {
 		resultList.setShowHeaderContextMenu(false);
 	}
 
-	private void del() {
+	protected void del() {
 		RecordList recList = resultList.getDataAsRecordList();
 		final List<Integer> deleteIds = new ArrayList<Integer>();
 		for (int i = 0; i < recList.getLength(); i++) {

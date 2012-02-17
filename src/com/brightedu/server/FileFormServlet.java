@@ -32,6 +32,7 @@ public class FileFormServlet extends BrightServlet {
 	private String agreementSubDir;
 
 	public void init() {
+		super.init();
 		agreementSubDir = new File(ServerProperties.getDataLocation())
 				.getAbsolutePath() + "/agreement/";
 		File agreementsDir = new File(agreementSubDir);
@@ -55,10 +56,22 @@ public class FileFormServlet extends BrightServlet {
 			if (ServletFileUpload.isMultipartContent(request)) {
 				processFiles(request, response);
 			} else {
-				// processQuery(request, response);
+				processQuery(request, response);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	private void processQuery(HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
+		String actionType = request.getParameter("action");
+		if (actionType != null && !actionType.trim().equals("")) {
+			if (actionType.toLowerCase().equals("getcollegeagreement")) {
+				getCollegeAgreement(request, response);
+			} else {
+				Log.e("Undefied action for FileFormServlet: " + actionType);
+			}
 		}
 	}
 
@@ -68,8 +81,6 @@ public class FileFormServlet extends BrightServlet {
 		if (actionType != null && !actionType.trim().equals("")) {
 			if (actionType.toLowerCase().equals("addcollegeagreement")) {
 				addCollegeAgreement(request, response);
-			} else if (actionType.toLowerCase().equals("getcollegeagreement")) {
-				getCollegeAgreement(request, response);
 			} else {
 				Log.e("Undefied action for FileFormServlet: " + actionType);
 			}
@@ -80,17 +91,20 @@ public class FileFormServlet extends BrightServlet {
 
 	private void getCollegeAgreement(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
-		// String agreement_id = request.getParameter("agreement_id");
 		String agreement_filename = request.getParameter("agreement_name"); // 带日期标签
 		String responseFileName = agreement_filename.substring(0,
 				agreement_filename.lastIndexOf("."));
+		String respContentType = agreement_filename
+				.substring(agreement_filename.lastIndexOf("-") + 1);
 		File serverAgreementFile = new File(agreementSubDir
 				+ agreement_filename);
-		response.setHeader("Content-Type", "image/jpeg");
+		respContentType = decodeContentTypeForURL(respContentType);
+		response.setHeader("Content-Type", respContentType);
 		response.setHeader("Content-Length",
 				String.valueOf(serverAgreementFile.length()));
 		response.setHeader("Content-disposition", "attachment;filename=\""
-				+ responseFileName + "\"");
+				+ new String(responseFileName.getBytes(), "ISO8859-1")
+				+ "\"");
 		BufferedInputStream bis = new BufferedInputStream(new FileInputStream(
 				serverAgreementFile));
 		BufferedOutputStream bos = new BufferedOutputStream(
@@ -140,7 +154,7 @@ public class FileFormServlet extends BrightServlet {
 					InputStream in = null;
 					try {
 						String fileName = item.getName();
-
+						String type = item.getContentType();
 						int slash = fileName.lastIndexOf("/");
 						if (slash < 0)
 							slash = fileName.lastIndexOf("\\");
@@ -149,11 +163,12 @@ public class FileFormServlet extends BrightServlet {
 
 						in = item.openStream();
 						SimpleDateFormat sdf = new SimpleDateFormat(
-								"yyyyMMdd-HHmmss");
+								"yyyyMMdd_HHmmss");
 
 						String serverFileName = fileName + "."
 								+ agreement.getCollege_id() + "_"
-								+ sdf.format(now);
+								+ sdf.format(now) + "-"
+								+ encodeContentTypeForURL(type);
 						File agreementFile = new File(agreementSubDir
 								+ serverFileName);
 						agreement.setAgreement_name(serverFileName);
@@ -212,4 +227,13 @@ public class FileFormServlet extends BrightServlet {
 		out.flush();
 	}
 
+	private String encodeContentTypeForURL(String realContentType) {
+		return realContentType.replace("/", "XYAZ").replace(".", "ABXC")
+				.replace("-", "UYXT");
+	}
+
+	private String decodeContentTypeForURL(String encodedContentType) {
+		return encodedContentType.replace("XYAZ", "/").replace("ABXC", ".")
+				.replace("UYXT", "-");
+	}
 }
