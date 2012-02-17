@@ -22,6 +22,7 @@ import org.apache.commons.fileupload.util.Streams;
 import com.brightedu.model.edu.CollegeAgreement;
 import com.brightedu.server.util.Log;
 import com.brightedu.server.util.ServerProperties;
+import com.google.gwt.http.client.URL;
 
 /**
  * @author chetwang, 主要处理文件上传的form
@@ -92,7 +93,7 @@ public class FileFormServlet extends BrightServlet {
 	private void getCollegeAgreement(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		String agreement_filename = request.getParameter("agreement_name"); // 带日期标签
-
+		agreement_filename = URL.decode(agreement_filename);
 //		String reqEncoding = request.getCharacterEncoding();
 //		Log.d("RequestEncoding: "+reqEncoding);
 //		agreement_filename = new String(
