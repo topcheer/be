@@ -1,10 +1,14 @@
 package com.brightedu.server;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +28,17 @@ import com.brightedu.server.util.ServerProperties;
  * 
  */
 public class FileFormServlet extends BrightServlet {
+
+	private String agreementSubDir;
+
+	public void init() {
+		agreementSubDir = new File(ServerProperties.getDataLocation())
+				.getAbsolutePath() + "/agreement/";
+		File agreementsDir = new File(agreementSubDir);
+		if (!agreementsDir.exists()) {
+			agreementsDir.mkdirs();
+		}
+	}
 
 	public void processPost(HttpServletRequest request,
 			HttpServletResponse response) {
@@ -48,21 +63,51 @@ public class FileFormServlet extends BrightServlet {
 	}
 
 	private void processFiles(HttpServletRequest request,
-			HttpServletResponse response) {
+			HttpServletResponse response) throws IOException {
 		String actionType = request.getParameter("action");
 		if (actionType != null && !actionType.trim().equals("")) {
-			if (actionType.toLowerCase().equals("collegeagreement")) {
-				processCollegeAgreement(request, response);
+			if (actionType.toLowerCase().equals("addcollegeagreement")) {
+				addCollegeAgreement(request, response);
+			} else if (actionType.toLowerCase().equals("getcollegeagreement")) {
+				getCollegeAgreement(request, response);
 			} else {
 				Log.e("Undefied action for FileFormServlet: " + actionType);
 			}
 		} else {
 			Log.e("empty action type for FileFormServlet");
 		}
-
 	}
 
-	private void processCollegeAgreement(HttpServletRequest request,
+	private void getCollegeAgreement(HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
+		// String agreement_id = request.getParameter("agreement_id");
+		String agreement_filename = request.getParameter("agreement_name"); // 带日期标签
+		String responseFileName = agreement_filename.substring(0,
+				agreement_filename.lastIndexOf("."));
+		File serverAgreementFile = new File(agreementSubDir
+				+ agreement_filename);
+		response.setHeader("Content-Type", "image/jpeg");
+		response.setHeader("Content-Length",
+				String.valueOf(serverAgreementFile.length()));
+		response.setHeader("Content-disposition", "attachment;filename=\""
+				+ responseFileName + "\"");
+		BufferedInputStream bis = new BufferedInputStream(new FileInputStream(
+				serverAgreementFile));
+		BufferedOutputStream bos = new BufferedOutputStream(
+				response.getOutputStream());
+		byte[] buf = new byte[1024];
+		while (true) {
+			int length = bis.read(buf);
+			if (length == -1)
+				break;
+			bos.write(buf, 0, length);
+		}
+		bos.flush();
+		bos.close();
+		bis.close();
+	}
+
+	private void addCollegeAgreement(HttpServletRequest request,
 			HttpServletResponse response) {
 		try {
 
@@ -95,7 +140,7 @@ public class FileFormServlet extends BrightServlet {
 					InputStream in = null;
 					try {
 						String fileName = item.getName();
-						agreement.setAgreement_name(fileName);
+
 						int slash = fileName.lastIndexOf("/");
 						if (slash < 0)
 							slash = fileName.lastIndexOf("\\");
@@ -103,18 +148,15 @@ public class FileFormServlet extends BrightServlet {
 							fileName = fileName.substring(slash + 1);
 
 						in = item.openStream();
-						// SimpleDateFormat sdf = new SimpleDateFormat(
-						// "yyyyMMdd-HHmmss");
-						File agreementsDir = new File(
-								ServerProperties.getDataLocation()
-										+ "/agreement/");
-						if (!agreementsDir.exists()) {
-							agreementsDir.mkdirs();
-						}
-						File agreementFile = new File(
-								ServerProperties.getDataLocation()
-										+ "/agreement/"
-										+ agreement.getCollege_id() + fileName);
+						SimpleDateFormat sdf = new SimpleDateFormat(
+								"yyyyMMdd-HHmmss");
+
+						String serverFileName = fileName + "."
+								+ agreement.getCollege_id() + "_"
+								+ sdf.format(now);
+						File agreementFile = new File(agreementSubDir
+								+ serverFileName);
+						agreement.setAgreement_name(serverFileName);
 						RandomAccessFile raf = new RandomAccessFile(
 								agreementFile, "rw");
 						if (in != null) {

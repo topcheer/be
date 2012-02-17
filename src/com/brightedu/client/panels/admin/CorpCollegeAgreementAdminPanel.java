@@ -248,7 +248,7 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 			super.init();
 			setSize("325", "170");
 			form.setAction(GWT.getModuleBaseURL()
-					+ "formwithfile?action=collegeagreement");
+					+ "formwithfile?action=addcollegeagreement");
 			agentItem.setValueMap(agents);
 			collegeItem.setValueMap(colleges);
 		}

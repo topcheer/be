@@ -6,8 +6,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Date;
 
-import javax.servlet.http.HttpSession;
-
 import com.brightedu.model.edu.User;
 import com.brightedu.server.util.Log;
 
@@ -38,7 +36,10 @@ public class DataBaseRPCHandler implements InvocationHandler {
 		// 方法调用之后，录入audit
 		String methodName = method.getName();
 		if (!methodName.startsWith("get")) {
-			StringBuilder sb = new StringBuilder(methodName);
+			StringBuilder sb = new StringBuilder();
+			sb.append("(UserID=").append(user.getUser_id());
+			sb.append(" UserName=").append(user.getUser_name()).append(")");
+			sb.append(methodName);
 			sb.append(":");
 			if (args != null) {
 				for (Object o : args) {

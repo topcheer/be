@@ -2,9 +2,11 @@ package com.brightedu.server.util;
 
 import javax.servlet.http.HttpServlet;
 
+
 public class InitServlet extends HttpServlet {
 
 	public void init() {
+		new ConfigurationFileWatcher().start();
 		ServerProperties.load();
 		AuthManager.load();
 		ConnectionManager.load();
@@ -12,7 +14,7 @@ public class InitServlet extends HttpServlet {
 	}
 
 	public void destroy() {
-
+		ConfigurationFileWatcher.clear();
 	}
 
 }

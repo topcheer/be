@@ -10,6 +10,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+
 public class AuthManager {
 
 	static Document treeMenuDoc;
@@ -22,22 +23,22 @@ public class AuthManager {
 			.getResource("/functions.xml");
 
 	static {
-		FileWatchdog watchDog = new FileWatchdog(functionConfigURL.getPath()) {
+		ConfigurationFileWatcher.watchFile(
+				ServerProperties.class.getResource("/functions.xml").getPath(),
+				new ConfigurationChangeListener() {
 
-			@Override
-			protected void doOnChange() {
-				Log.i("Reload AuthManager Configuration");
-				treeMenuDoc = Utils.getXMLDocument(functionConfigURL);
-			}
-		};
-		watchDog.setDelay(5000);
-		watchDog.setName("AuthManager Watcher");
-		watchDog.start();
+					@Override
+					public void configurationChanged() {
+						Log.i("Reload AuthManager");
+						load();
+					}
+				});
 	}
 
 	public static void load() {
 
 		treeMenuDoc = Utils.getXMLDocument(functionConfigURL);
+		Log.i("AuthManager Configuration loaded");
 	}
 
 	public static String getFunctions(String[] functionIds) {

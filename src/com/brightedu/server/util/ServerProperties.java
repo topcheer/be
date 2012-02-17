@@ -1,27 +1,28 @@
 package com.brightedu.server.util;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import org.apache.log4j.helpers.FileWatchdog;
 
 public class ServerProperties {
 
 	private static String dataLocation;
 
-	static {
-		FileWatchdog fwd = new FileWatchdog(ServerProperties.class.getResource(
-				"/server.props").getPath()) {
+	private static int auditLevel = 1;
 
-			@Override
-			protected void doOnChange() {
-				load();
-			}
-		};
-		fwd.setDelay(5000);
-		fwd.setName("Server Properties Watcher");
-		fwd.start();
+	static {
+		ConfigurationFileWatcher.watchFile(
+				ServerProperties.class.getResource("/server.props").getPath(),
+				new ConfigurationChangeListener() {
+
+					@Override
+					public void configurationChanged() {
+						Log.i("Reload ServerProperties");
+						load();
+					}
+				});
 	}
 
 	public static void load() {
@@ -30,14 +31,22 @@ public class ServerProperties {
 				.getResourceAsStream("/server.props");
 		try {
 			p.load(in);
+			in.close();
 		} catch (IOException e) {
 			Log.e("failed to load server.props", e);
 		}
 		dataLocation = p.getProperty("dataLocation");
+		auditLevel = Integer.parseInt(p.getProperty("auditLevel"));
+		Log.i("Data location: " + new File(dataLocation).getAbsolutePath());
+		Log.i("Audit Level: " + auditLevel);
 	}
 
 	public static String getDataLocation() {
 		return dataLocation;
+	}
+
+	public static int getAuditLevel() {
+		return auditLevel;
 	}
 
 }
