@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
+import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -93,11 +94,12 @@ public class FileFormServlet extends BrightServlet {
 	private void getCollegeAgreement(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		String agreement_filename = request.getParameter("agreement_name"); // 带日期标签
-		agreement_filename = URL.decode(agreement_filename);
-//		String reqEncoding = request.getCharacterEncoding();
-//		Log.d("RequestEncoding: "+reqEncoding);
-//		agreement_filename = new String(
-//				agreement_filename.getBytes(reqEncoding));
+		agreement_filename = URLDecoder.decode(agreement_filename,
+				ServerProperties.getLocalEncoding());
+		// String reqEncoding = request.getCharacterEncoding();
+		// Log.d("RequestEncoding: "+reqEncoding);
+		// agreement_filename = new String(
+		// agreement_filename.getBytes(reqEncoding));
 		String responseFileName = agreement_filename.substring(0,
 				agreement_filename.lastIndexOf("."));
 		String respContentType = agreement_filename
