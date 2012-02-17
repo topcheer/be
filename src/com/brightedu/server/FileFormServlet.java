@@ -98,17 +98,19 @@ public class FileFormServlet extends BrightServlet {
 				.substring(agreement_filename.lastIndexOf("-") + 1);
 		File serverAgreementFile = new File(agreementSubDir
 				+ agreement_filename);
+		Log.d("Server side file: " + serverAgreementFile.getAbsolutePath());
 		respContentType = decodeContentTypeForURL(respContentType);
-		response.setHeader("Content-Type", respContentType + ";charset="
-				+ ServerProperties.getLocalEncoding());
+		// response.setHeader("Content-Type", respContentType + ";charset="
+		// + ServerProperties.getLocalEncoding());
+		response.setHeader("Content-Type", respContentType);
+		Log.d("respContentType: " + respContentType);
 		response.setHeader("Content-Length",
 				String.valueOf(serverAgreementFile.length()));
-		response.setHeader(
-				"Content-disposition",
-				"attachment;filename=\""
-						+ new String(responseFileName.getBytes(ServerProperties
-								.getLocalEncoding()), ServerProperties
-								.getServletEncoding()) + "\"");
+		String respName = new String(responseFileName.getBytes(ServerProperties
+				.getLocalEncoding()), ServerProperties.getServletEncoding());
+		Log.d("respFileName: "+respName);
+		response.setHeader("Content-disposition", "attachment;filename=\""
+				+ respName + "\"");
 		BufferedInputStream bis = new BufferedInputStream(new FileInputStream(
 				serverAgreementFile));
 		BufferedOutputStream bos = new BufferedOutputStream(
