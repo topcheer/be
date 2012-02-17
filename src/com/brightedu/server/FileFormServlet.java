@@ -92,8 +92,11 @@ public class FileFormServlet extends BrightServlet {
 	private void getCollegeAgreement(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		String agreement_filename = request.getParameter("agreement_name"); // 带日期标签
-		agreement_filename = new String(agreement_filename.getBytes(ServerProperties.getLocalEncoding()));
-		
+
+		String reqEncoding = request.getCharacterEncoding();
+		Log.d("RequestEncoding: "+reqEncoding);
+		agreement_filename = new String(
+				agreement_filename.getBytes(reqEncoding));
 		String responseFileName = agreement_filename.substring(0,
 				agreement_filename.lastIndexOf("."));
 		String respContentType = agreement_filename
@@ -104,13 +107,14 @@ public class FileFormServlet extends BrightServlet {
 		respContentType = decodeContentTypeForURL(respContentType);
 		// response.setHeader("Content-Type", respContentType + ";charset="
 		// + ServerProperties.getLocalEncoding());
+		response.setCharacterEncoding(ServerProperties.getServletEncoding());
 		response.setHeader("Content-Type", respContentType);
 		Log.d("respContentType: " + respContentType);
 		response.setHeader("Content-Length",
 				String.valueOf(serverAgreementFile.length()));
 		String respName = new String(responseFileName.getBytes(ServerProperties
 				.getLocalEncoding()), ServerProperties.getServletEncoding());
-		Log.d("respFileName: "+respName);
+		Log.d("respFileName: " + respName);
 		response.setHeader("Content-disposition", "attachment;filename=\""
 				+ respName + "\"");
 		BufferedInputStream bis = new BufferedInputStream(new FileInputStream(
