@@ -73,6 +73,9 @@
 	    <mapper resource="com/brightedu/xml/edu/StudentPictureMapper.xml" />
 	    <mapper resource="com/brightedu/xml/edu/CurrentBatchMapper.xml" />
 		<mapper resource="com/brightedu/xml/edu/CollegeSubjectViewMapper.xml" />
+		
+		<mapper resource="com/brightedu/xml/edu/RecruitPlanMapper.xml" />
+		
 	</mappers>
 
 
