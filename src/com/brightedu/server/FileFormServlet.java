@@ -103,7 +103,7 @@ public class FileFormServlet extends BrightServlet {
 		response.setHeader("Content-Length",
 				String.valueOf(serverAgreementFile.length()));
 		response.setHeader("Content-disposition", "attachment;filename=\""
-				+ new String(responseFileName.getBytes(), "ISO8859-1")
+				+ new String(responseFileName.getBytes("GBK"), "ISO8859-1")
 				+ "\"");
 		BufferedInputStream bis = new BufferedInputStream(new FileInputStream(
 				serverAgreementFile));
