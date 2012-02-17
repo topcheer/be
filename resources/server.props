@@ -1,2 +1,4 @@
 dataLocation=data
 auditLevel=4
+localEncoding=UTF-8
+servletEncoding=ISO8859-1

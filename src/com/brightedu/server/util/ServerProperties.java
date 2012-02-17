@@ -5,12 +5,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-
 public class ServerProperties {
 
 	private static String dataLocation;
 
 	private static int auditLevel = 1;
+
+	private static String localEncoding = "UTF-8";
+	private static String servletEncoding = "ISO8859-1";
 
 	static {
 		ConfigurationFileWatcher.watchFile(
@@ -35,10 +37,14 @@ public class ServerProperties {
 		} catch (IOException e) {
 			Log.e("failed to load server.props", e);
 		}
-		dataLocation = p.getProperty("dataLocation");
-		auditLevel = Integer.parseInt(p.getProperty("auditLevel"));
+		dataLocation = p.getProperty("dataLocation","data");
+		auditLevel = Integer.parseInt(p.getProperty("auditLevel"),4);
+		localEncoding = p.getProperty("localEncoding","GBK");
+		servletEncoding = p.getProperty("servletEncoding","ISO8859-1");
 		Log.i("Data location: " + new File(dataLocation).getAbsolutePath());
 		Log.i("Audit Level: " + auditLevel);
+		Log.i("Local Encoding: " + localEncoding);
+		Log.i("Servlet Encoding: " + servletEncoding);
 	}
 
 	public static String getDataLocation() {
@@ -47,6 +53,14 @@ public class ServerProperties {
 
 	public static int getAuditLevel() {
 		return auditLevel;
+	}
+	
+	public static String getLocalEncoding(){
+		return localEncoding;
+	}
+	
+	public static String getServletEncoding(){
+		return servletEncoding;
 	}
 
 }

@@ -115,7 +115,7 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 											+ "formwithfile?action=getcollegeagreement&agreement_name="
 											+ aggreement.getAgreement_name(),
 									"", null);
-							SC.say("Open");
+//							SC.say("Open");
 						}
 					});
 
