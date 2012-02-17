@@ -38,7 +38,7 @@ public class ServerProperties {
 			Log.e("failed to load server.props", e);
 		}
 		dataLocation = p.getProperty("dataLocation","data");
-		auditLevel = Integer.parseInt(p.getProperty("auditLevel"),4);
+		auditLevel = Integer.parseInt(p.getProperty("auditLevel","4"));
 		localEncoding = p.getProperty("localEncoding","GBK");
 		servletEncoding = p.getProperty("servletEncoding","ISO8859-1");
 		Log.i("Data location: " + new File(dataLocation).getAbsolutePath());
