@@ -93,10 +93,10 @@ public class FileFormServlet extends BrightServlet {
 			HttpServletResponse response) throws IOException {
 		String agreement_filename = request.getParameter("agreement_name"); // 带日期标签
 
-		String reqEncoding = request.getCharacterEncoding();
-		Log.d("RequestEncoding: "+reqEncoding);
-		agreement_filename = new String(
-				agreement_filename.getBytes(reqEncoding));
+//		String reqEncoding = request.getCharacterEncoding();
+//		Log.d("RequestEncoding: "+reqEncoding);
+//		agreement_filename = new String(
+//				agreement_filename.getBytes(reqEncoding));
 		String responseFileName = agreement_filename.substring(0,
 				agreement_filename.lastIndexOf("."));
 		String respContentType = agreement_filename
