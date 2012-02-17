@@ -13,6 +13,7 @@ import com.brightedu.model.edu.CollegeAgreement;
 import com.brightedu.model.edu.RecruitAgent;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
@@ -20,7 +21,6 @@ import com.smartgwt.client.types.Encoding;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.ImgButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -33,9 +33,6 @@ import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
-// Grids/appearence/rollover controls
-// Grids/grid cell widget
-// id可以通过servlet参数传递
 
 public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 
@@ -46,7 +43,6 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 	ListGridField[] fields;
 
 	public void init() {
-
 		colleges = new LinkedHashMap<String, String>();
 		agents = new LinkedHashMap<String, String>();
 		statusMap = new LinkedHashMap<String, String>();
@@ -109,6 +105,11 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 					openImg.setWidth(16);
 					openImg.addClickHandler(new ClickHandler() {
 						public void onClick(ClickEvent event) {
+							CollegeAgreement aggreement = (CollegeAgreement) record
+									.getAttributeAsObject("object");
+							Window.Location.assign(GWT.getHostPageBaseURL()
+									+ "formwithfile?action=getcollegeagreement&agreement_name="
+									+ aggreement.getAgreement_name());
 							SC.say("Open");
 						}
 					});
@@ -122,8 +123,8 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 
 			}
 		};
-		grid.setShowRecordComponents(true);          
-		grid.setShowRecordComponentsByCell(true);  
+		grid.setShowRecordComponents(true);
+		grid.setShowRecordComponentsByCell(true);
 		return grid;
 	}
 
@@ -170,11 +171,10 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 				"modify_date", "agreement" }, new String[] { "合作高校", "我方学校",
 				"状态", "修改时间", "协议" }, new ListGridFieldType[] {
 				ListGridFieldType.TEXT, ListGridFieldType.TEXT,
-				ListGridFieldType.TEXT, ListGridFieldType.DATE,
-				null }, new boolean[] { true, true, true,
-				false, false }, new int[] { -1, -1, 100, 200, 80 });
+				ListGridFieldType.TEXT, ListGridFieldType.DATE, null },
+				new boolean[] { true, true, true, false, false }, new int[] {
+						-1, -1, 100, 200, 80 });
 		return fields;
-		// http://stackoverflow.com/questions/3053462/open-save-file-in-smartgwt
 	}
 
 	@Override
