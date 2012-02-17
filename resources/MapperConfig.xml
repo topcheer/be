@@ -76,6 +76,13 @@
 		
 		<mapper resource="com/brightedu/xml/edu/RecruitPlanMapper.xml" />
 		
+		<mapper resource="com/brightedu/xml/edu/RightsCategoryMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/RightsFunctionMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/RightsCategoryFunctionMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/RightsDefaultMapper.xml" />
+	    <mapper resource="com/brightedu/xml/edu/RightsOverrideMapper.xml" />
+    
+		
 	</mappers>
 
 
