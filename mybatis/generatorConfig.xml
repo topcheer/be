@@ -191,15 +191,16 @@
      <table  schema="edu" tableName="fee_type" domainObjectName="FeeType" >
       <property name="useActualColumnNames" value="true"/>
     </table>  
-    
-   
-    
-        <table  schema="edu" tableName="student_classified" domainObjectName="StudentClassified" >
+
+    <table  schema="edu" tableName="student_classified" domainObjectName="StudentClassified" >
       <property name="useActualColumnNames" value="true"/>
     </table>    
     
-     -->  
      
+     <table  schema="edu" tableName="recruit_plan_view" domainObjectName="RecruitPlan" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>  
+     --> 
                
   </context>
   
