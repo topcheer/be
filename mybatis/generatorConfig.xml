@@ -200,8 +200,27 @@
      <table  schema="edu" tableName="recruit_plan_view" domainObjectName="RecruitPlan" >
       <property name="useActualColumnNames" value="true"/>
     </table>  
-     --> 
-               
+    
+    <table  schema="edu" tableName="user_admin" domainObjectName="User" >
+      <property name="useActualColumnNames" value="true"/>
+    </table> 
+    
+   <table  schema="edu" tableName="rights_category" domainObjectName="RightsCategory" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>    
+   <table  schema="edu" tableName="rights_function" domainObjectName="RightsFunction" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>  
+       <table  schema="edu" tableName="rights_category_function" domainObjectName="RightsCategoryFunction" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>  
+       <table  schema="edu" tableName="rights_default" domainObjectName="RightsDefault" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>   
+       <table  schema="edu" tableName="rights_override" domainObjectName="RightsOverride" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>  
+     -->                  
   </context>
   
 </generatorConfiguration>
