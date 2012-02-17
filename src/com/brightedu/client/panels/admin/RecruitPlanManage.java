@@ -1,6 +1,5 @@
 package com.brightedu.client.panels.admin;
 
-import com.brightedu.client.panels.BasicAdminPanel;
 import com.brightedu.client.panels.FunctionPanel;
 import com.brightedu.client.panels.PanelFactory;
 import com.smartgwt.client.widgets.Canvas;

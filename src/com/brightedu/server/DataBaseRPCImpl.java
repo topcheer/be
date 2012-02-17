@@ -28,6 +28,7 @@ import com.brightedu.model.edu.CollegeSubjectView;
 import com.brightedu.model.edu.FeeType;
 import com.brightedu.model.edu.PictureType;
 import com.brightedu.model.edu.RecruitAgent;
+import com.brightedu.model.edu.RecruitPlan;
 import com.brightedu.model.edu.StudentClassified;
 import com.brightedu.model.edu.StudentStatus;
 import com.brightedu.model.edu.StudentType;
@@ -296,6 +297,10 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 		return agent.deletCollegeSubject(collegeSubjects);
 	}
 
+	@Override
+	public List<RecruitPlan> getRecruitPlanList(int batch) {
+		return agent.getRecruitPlanList(batch);
+	}
 	/************************** RecruitAgent维护 ************************************/
 
 	public List<RecruitAgent> getRecruitAgentList(int offset, int limit,
@@ -351,6 +356,8 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	public boolean saveCollegeAgreement(CollegeAgreement agreement) {
 		return agent.saveCollegeAgreement(agreement);
 	}
+
+
 
 
 

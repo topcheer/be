@@ -12,6 +12,7 @@ import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.CollegeSubject;
 import com.brightedu.model.edu.CollegeSubjectView;
+import com.brightedu.model.edu.RecruitPlan;
 import com.brightedu.model.edu.StudentClassified;
 import com.brightedu.model.edu.Subjects;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -19,11 +20,14 @@ import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.DragDataAction;
 import com.smartgwt.client.types.ListGridEditEvent;
+import com.smartgwt.client.types.Positioning;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.types.ValidatorType;
+import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.types.VisibilityMode;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
+import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -51,7 +55,10 @@ public class RecruitPlanManagePanel extends VLayout {
 	
 	
 	protected static final DataBaseRPCAsync dbService = BrightEdu.createDataBaseRPC();
-	SectionStack aStack = new SectionStack();   
+	
+	HLayout mainPanel = new HLayout();
+	
+	SectionStack leftStack = new SectionStack();   
 	SectionStackSection conditionSection = new SectionStackSection ("条件");
 	SectionStackSection selectionSection = new SectionStackSection ("选择 - 将左边列表中的专业拖动到右边列表中");
 	SectionStackSection actionSection = new SectionStackSection ("操作");
@@ -83,6 +90,17 @@ public class RecruitPlanManagePanel extends VLayout {
 	HiddenItem hi = new HiddenItem("currentBatch");
 	HiddenItem hi2 = new HiddenItem("default_lol");
 	
+	VLayout rightHand = new VLayout();
+	
+	Label lb = new Label("当前招生计划");
+	
+	ListGrid currentPlan = new ListGrid();
+	ListGridField collegeField = new ListGridField("college","大学");
+	ListGridField levelField = new ListGridField("level","层次");
+	ListGridField  subjField = new ListGridField("subject","专业");
+	ListGridField lolField3 = new ListGridField("lol2","学制");
+	
+	
 	public RecruitPlanManagePanel()
 	{
 		init();
@@ -94,13 +112,15 @@ public class RecruitPlanManagePanel extends VLayout {
 		setPadding(5);
 
 		
-		aStack.setWidth(700);
-		aStack.setHeight100();
-		aStack.setVisibilityMode(VisibilityMode.MULTIPLE);
+		
+
+		
+		leftStack.setWidth(600);
+		leftStack.setHeight100();
+		leftStack.setVisibilityMode(VisibilityMode.MULTIPLE);
 
 		conditionSection.setExpanded(true);
 		selectionSection.setExpanded(true);
-		
 
         BrightEdu.createDataBaseRPC().getBatchList(-1, -1, false, new AsyncCallback<List<BatchIndex>>(){
 
@@ -133,6 +153,7 @@ public class RecruitPlanManagePanel extends VLayout {
 			@Override
 			public void onChanged(ChangedEvent event) {
 				reload();
+				refreshCurrentList(new Integer(batchItem.getValueAsString()));
 				
 			}}
 		);
@@ -225,7 +246,7 @@ public class RecruitPlanManagePanel extends VLayout {
 		df.setTitleOrientation(TitleOrientation.TOP);
 		
 		conditionSection.addItem(df);
-		aStack.addSection(conditionSection);
+		leftStack.addSection(conditionSection);
 		
 		
         
@@ -262,16 +283,16 @@ public class RecruitPlanManagePanel extends VLayout {
         ti.setMask("#");
         
         lolField2.setEditorType(ti);
-        
+        subjectField2.setWidth(200);        
         
         subjectList.setFields(pkField, subjectField,lolField);   
         hl.addMember(subjectList);
         LayoutSpacer spacer = new LayoutSpacer();
         spacer.setWidth(20);
         hl.addMember(spacer);
-        
+      
         selectedList2.setWidth(350);   
-        subjectField2.setWidth(200);
+
         selectedList2.setHeight(350);   
         //selectedList.setShowAllRecords(true);   
         selectedList2.setEmptyMessage("拖动左边的项目到这里");   
@@ -292,7 +313,7 @@ public class RecruitPlanManagePanel extends VLayout {
         
         //canvas.addChild(countryGrid2); 
         selectionSection.addItem(hl);
-        aStack.addSection(selectionSection);
+        leftStack.addSection(selectionSection);
         
         actionSection.setShowHeader(true);
         actionSection.setExpanded(true);
@@ -321,7 +342,7 @@ public class RecruitPlanManagePanel extends VLayout {
 		buttonStack.addMember(cloneButton);
 		
 		actionSection.addItem(buttonStack);
-		aStack.addSection(actionSection);
+		leftStack.addSection(actionSection);
 		
 		cloneButton.addClickHandler(new ClickHandler(){
 
@@ -330,8 +351,26 @@ public class RecruitPlanManagePanel extends VLayout {
 				
 			}});
 		
-
-		addMember(aStack);
+		
+		currentPlan.setFields(collegeField,levelField,subjField,lolField3);
+		currentPlan.setShowCellContextMenus(false);
+		currentPlan.setShowHeaderContextMenu(false);
+		currentPlan.setHeight100();
+		
+		lb.setHeight(10);
+		
+		rightHand.addMember(lb);
+		rightHand.addMember(currentPlan);
+		mainPanel.setAlign(VerticalAlignment.TOP);
+		
+		mainPanel.setWidth100();
+		mainPanel.setHeight100();
+		mainPanel.addMember(leftStack);
+		LayoutSpacer sp2 = new LayoutSpacer();
+		sp2.setWidth(20);
+		mainPanel.addMember(sp2);
+		mainPanel.addMember(rightHand);
+		addMember(mainPanel);
         
         show();
         
@@ -402,6 +441,8 @@ public class RecruitPlanManagePanel extends VLayout {
 					bi.setValue(true);
 					hi.setValue(result);
 					
+					refreshCurrentList(result);
+					
 				}
 				else
 				{
@@ -410,7 +451,9 @@ public class RecruitPlanManagePanel extends VLayout {
 					hi.setValue(-1);
 				}
 				
-			}});
+			}
+
+         });
          bi.addChangedHandler(new ChangedHandler(){
 
 			@Override
@@ -512,7 +555,7 @@ public class RecruitPlanManagePanel extends VLayout {
 			
 		
 		Integer collegeId = new Integer(collegeItem.getValue().toString());
-		Integer batchId = new Integer(batchItem.getValue().toString());
+		final Integer batchId = new Integer(batchItem.getValue().toString());
 		Integer levelId = new Integer(levelItem.getValue().toString());
 		
 		if(selectedList2.getRecords().length == 0) 
@@ -528,7 +571,7 @@ public class RecruitPlanManagePanel extends VLayout {
 		
 					@Override
 					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
+						
 						
 					}
 		
@@ -574,6 +617,8 @@ public class RecruitPlanManagePanel extends VLayout {
 			@Override
 			public void onSuccess(Boolean result) {
 					BrightEdu.showTip("保存成功");
+					
+					refreshCurrentList(batchId);
 				
 			}});
 		
@@ -597,5 +642,44 @@ public class RecruitPlanManagePanel extends VLayout {
 		
 	}
 
+	private void refreshCurrentList(Integer result) {
+		
+		dbService.getRecruitPlanList(result, new AsyncCallback<List<RecruitPlan>>(){
 
+			@Override
+			public void onFailure(Throwable caught) {
+				
+				
+			}
+
+			@Override
+			public void onSuccess(List<RecruitPlan> result) {
+				
+				if (result.size() == 0)
+				{
+					lb.setContents("当前招生计划<b> [ 当前选中批次无招生计划 ] </b>");
+					return;
+				}
+				Iterator<RecruitPlan> rpit = result.iterator();
+				RecordList data = new RecordList();
+				String batchName = "";
+				while(rpit.hasNext())
+				{
+					RecruitPlan rp = rpit.next();
+					Record rc = new Record();
+					rc.setAttribute("college",rp.getCollege_name());
+					rc.setAttribute("level", rp.getClassified_name());
+					rc.setAttribute("subject", rp.getSubject_name());
+					rc.setAttribute("lol2",rp.getLength_of_schooling() + "");
+					batchName = rp.getBatch_name();
+					data.add(rc);
+				}
+				lb.setContents("当前招生计划<b> [ " + batchName + " ] </b>");
+				
+				currentPlan.setData(data);
+				
+			}}
+		);
+		
+	}
 }

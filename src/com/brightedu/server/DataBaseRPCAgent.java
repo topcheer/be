@@ -21,6 +21,7 @@ import com.brightedu.dao.edu.CurrentBatchMapper;
 import com.brightedu.dao.edu.FeeTypeMapper;
 import com.brightedu.dao.edu.PictureTypeMapper;
 import com.brightedu.dao.edu.RecruitAgentMapper;
+import com.brightedu.dao.edu.RecruitPlanMapper;
 import com.brightedu.dao.edu.StudentClassifiedMapper;
 import com.brightedu.dao.edu.StudentStatusMapper;
 import com.brightedu.dao.edu.StudentTypeMapper;
@@ -48,6 +49,8 @@ import com.brightedu.model.edu.PictureType;
 import com.brightedu.model.edu.PictureTypeExample;
 import com.brightedu.model.edu.RecruitAgent;
 import com.brightedu.model.edu.RecruitAgentExample;
+import com.brightedu.model.edu.RecruitPlan;
+import com.brightedu.model.edu.RecruitPlanExample;
 import com.brightedu.model.edu.StudentClassified;
 import com.brightedu.model.edu.StudentClassifiedExample;
 import com.brightedu.model.edu.StudentStatus;
@@ -953,7 +956,22 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			session.close();
 		}
 	}
+	@Override
+	public List<RecruitPlan> getRecruitPlanList(int batch) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			RecruitPlanMapper mp = session
+					.getMapper(RecruitPlanMapper.class);
+			RecruitPlanExample ex = new RecruitPlanExample();
+			ex.setOrderByClause("college_name,classified_name,subject_name");
+			ex.createCriteria().andBatch_idEqualTo(batch);
+			List<RecruitPlan> result = mp.selectByExample(ex);
+			return result;
 
+		} finally {
+			session.close();
+		}
+	}
 	@Override
 	public boolean deletCollegeSubject(CollegeSubject collegeSubjects) {
 		SqlSession session = sessionFactory.openSession();
@@ -1089,6 +1107,8 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			session.close();
 		}
 	}
+
+
 
 
 
