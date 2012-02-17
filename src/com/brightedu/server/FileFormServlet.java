@@ -100,8 +100,8 @@ public class FileFormServlet extends BrightServlet {
 		agreement_filename = URLDecoder.decode(agreement_filename,"UTF-8");
 		// String reqEncoding = request.getCharacterEncoding();
 		// Log.d("RequestEncoding: "+reqEncoding);
-		// agreement_filename = new String(
-		// agreement_filename.getBytes(reqEncoding));
+		 agreement_filename = new String(
+		 agreement_filename.getBytes("ISO8859-1"),"UTF-8");
 		String responseFileName = agreement_filename.substring(0,
 				agreement_filename.lastIndexOf("."));
 		String respContentType = agreement_filename
