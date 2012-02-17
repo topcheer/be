@@ -351,11 +351,15 @@ public class RecruitPlanManagePanel extends VLayout {
 				
 			}});
 		
-		
+		collegeField.setWidth(150);
+		levelField.setWidth(80);
+		subjField.setWidth(200);
+		//lolField3.setWidth(80);
 		currentPlan.setFields(collegeField,levelField,subjField,lolField3);
 		currentPlan.setShowCellContextMenus(false);
 		currentPlan.setShowHeaderContextMenu(false);
 		currentPlan.setHeight100();
+		
 		
 		lb.setHeight(10);
 		
