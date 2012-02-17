@@ -54,7 +54,10 @@ public class FileFormServlet extends BrightServlet {
 
 	private void process(HttpServletRequest request,
 			HttpServletResponse response) {
+		
 		try {
+			request.setCharacterEncoding("UTF-8");
+			response.setCharacterEncoding("UTF-8");
 			if (ServletFileUpload.isMultipartContent(request)) {
 				processFiles(request, response);
 			} else {
@@ -94,7 +97,7 @@ public class FileFormServlet extends BrightServlet {
 	private void getCollegeAgreement(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		String agreement_filename = request.getParameter("agreement_name"); // 带日期标签
-		agreement_filename = URLDecoder.decode(agreement_filename,"gb2312");
+		agreement_filename = URLDecoder.decode(agreement_filename,"UTF-8");
 		// String reqEncoding = request.getCharacterEncoding();
 		// Log.d("RequestEncoding: "+reqEncoding);
 		// agreement_filename = new String(
