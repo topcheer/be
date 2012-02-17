@@ -15,9 +15,11 @@ import com.brightedu.model.edu.CollegeSubjectView;
 import com.brightedu.model.edu.RecruitPlan;
 import com.brightedu.model.edu.StudentClassified;
 import com.brightedu.model.edu.Subjects;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
+import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.types.DragDataAction;
 import com.smartgwt.client.types.ListGridEditEvent;
 import com.smartgwt.client.types.Positioning;
@@ -343,7 +345,7 @@ public class RecruitPlanManagePanel extends VLayout {
 		
 		actionSection.addItem(buttonStack);
 		leftStack.addSection(actionSection);
-		
+		lb.setOpacity(100);
 		cloneButton.addClickHandler(new ClickHandler(){
 
 			@Override
