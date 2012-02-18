@@ -18,7 +18,9 @@ import com.brightedu.model.edu.Subjects;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
+import com.smartgwt.client.docs.FormLayout;
 import com.smartgwt.client.types.DragDataAction;
+import com.smartgwt.client.types.FormLayoutType;
 import com.smartgwt.client.types.ListGridEditEvent;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.types.ValidatorType;
@@ -64,7 +66,7 @@ public class RightsManagePanel extends VLayout {
 	SectionStackSection actionSection = new SectionStackSection ("操作");
 	
 	DynamicForm df = new DynamicForm();
-	
+
 	SelectItem categoryItem =  new SelectItem("categoryId","类别");
 	ButtonItem removeItem  = new ButtonItem("removeCategory","删除类别");
 	ButtonItem addItem  = new ButtonItem("addCategory","新增类别");
@@ -143,13 +145,21 @@ public class RightsManagePanel extends VLayout {
 
 
 		
-		
-		
+		df.setItemLayout(FormLayoutType.ABSOLUTE);
+		df.setMargin(5);
+		 
+		categoryItem.setWidth(120);
+		removeItem.setWidth(60);
+		removeItem.setLeft(130);
+		addItem.setWidth(60);
+		addItem.setLeft(200);
 		df.setItems(categoryItem,removeItem,addItem);
 		
 		df.setHeight(20);
 		df.setWidth100();
-		df.setTitleOrientation(TitleOrientation.TOP);
+		df.setTitleOrientation(TitleOrientation.LEFT);
+		
+		df.setPadding(10);
 		
 		conditionSection.addItem(df);
 		leftStack.addSection(conditionSection);
