@@ -20,6 +20,7 @@
 		<function id="user_type_manage" name="用户类型维护" />
 		<function id="pic_type_manage" name="照片类型维护" />		
 		<function id="user_manage" name="用户管理" />
+		<function id="rights_manage" name="权限基础数据设置" />
 	</category>
 	
 	<!-- 招生点、学习中心专用的导航 -->
