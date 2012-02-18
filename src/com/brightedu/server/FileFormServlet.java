@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -23,7 +24,6 @@ import org.apache.commons.fileupload.util.Streams;
 import com.brightedu.model.edu.CollegeAgreement;
 import com.brightedu.server.util.Log;
 import com.brightedu.server.util.ServerProperties;
-import com.google.gwt.http.client.URL;
 
 /**
  * @author chetwang, 主要处理文件上传的form
@@ -54,10 +54,10 @@ public class FileFormServlet extends BrightServlet {
 
 	private void process(HttpServletRequest request,
 			HttpServletResponse response) {
-		
+
 		try {
-//			request.setCharacterEncoding("UTF-8");
-//			response.setCharacterEncoding("UTF-8");
+			// request.setCharacterEncoding("UTF-8");
+			// response.setCharacterEncoding("UTF-8");
 			if (ServletFileUpload.isMultipartContent(request)) {
 				processFiles(request, response);
 			} else {
@@ -97,9 +97,11 @@ public class FileFormServlet extends BrightServlet {
 	private void getCollegeAgreement(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		String agreement_filename = request.getParameter("agreement_name"); // 带日期标签
-		agreement_filename = URLDecoder.decode(agreement_filename,"UTF-8");//这个是GWT URL encode的编码
-//		agreement_filename = new String(
-//				agreement_filename.getBytes("ISO8859-1"), "UTF-8");//这个是页面编码
+		agreement_filename = URLDecoder.decode(agreement_filename, "UTF-8");// 这个是GWT
+																			// URL
+																			// encode的编码
+		// agreement_filename = new String(
+		// agreement_filename.getBytes("ISO8859-1"), "UTF-8");//这个是页面编码
 		String responseFileName = agreement_filename.substring(0,
 				agreement_filename.lastIndexOf("."));
 		String respContentType = agreement_filename
@@ -110,13 +112,18 @@ public class FileFormServlet extends BrightServlet {
 		respContentType = decodeContentTypeForURL(respContentType);
 		// response.setHeader("Content-Type", respContentType + ";charset="
 		// + ServerProperties.getLocalEncoding());
-//		response.setCharacterEncoding(ServerProperties.getServletEncoding());
+		// response.setCharacterEncoding(ServerProperties.getServletEncoding());
 		response.setHeader("Content-Type", respContentType);
 		Log.d("respContentType: " + respContentType);
 		response.setHeader("Content-Length",
 				String.valueOf(serverAgreementFile.length()));
-		responseFileName= new String(responseFileName.getBytes("UTF-8"), "ISO8859-1");
-		Log.d("respFileName: " + responseFileName);
+		if (request.getHeader("User-Agent").toUpperCase().indexOf("MSIE") > 0)
+
+			responseFileName = URLEncoder.encode(responseFileName, "UTF-8");// IE浏览器
+		else {
+			responseFileName = new String(responseFileName.getBytes("UTF-8"),
+					"ISO8859-1");
+		}
 		response.setHeader("Content-disposition", "attachment;filename=\""
 				+ responseFileName + "\"");
 		BufferedInputStream bis = new BufferedInputStream(new FileInputStream(
