@@ -60,9 +60,15 @@ public class BrightServlet extends AbstractRemoteServiceServlet implements
 	}
 
 	public User getUser() {
-		HttpSession session = getThreadLocalRequest().getSession();
-		User user = (User) session.getAttribute("user");
-		return user;
+		HttpServletRequest req = getThreadLocalRequest();
+		if (req != null) {
+			HttpSession session = getThreadLocalRequest().getSession();
+			if (session != null) {
+				User user = (User) session.getAttribute("user");
+				return user;
+			}
+		}
+		return null;
 	}
 
 	public void unAuthorized() {
@@ -71,7 +77,10 @@ public class BrightServlet extends AbstractRemoteServiceServlet implements
 
 	public void redirect(String url) {
 		try {
-			getThreadLocalResponse().sendRedirect(url);
+			HttpServletResponse resp = getThreadLocalResponse();
+			if (resp != null) {
+				resp.sendRedirect(url);
+			}
 		} catch (IOException e) {
 			Log.e("redirect " + url + " error", e);
 		}

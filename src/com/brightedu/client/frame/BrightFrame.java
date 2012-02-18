@@ -144,14 +144,14 @@ code>', or '
 		}
 	}-*/;
 
-	private native String getInnerHtmlContent() /*-{
+	public native String getInnerHtmlContent() /*-{
 		var f = this.@com.brightedu.client.frame.BrightFrame::getFrameDocument()();
 		if (!f)
 			return null;
 		return f.body.innerHTML;
 	}-*/;
 
-	private native String getInnerHtmlTitle()/*-{
+	public native String getInnerHtmlTitle()/*-{
 		var f = this.@com.brightedu.client.frame.BrightFrame::getFrameDocument()();
 		if (!f)
 			return null;

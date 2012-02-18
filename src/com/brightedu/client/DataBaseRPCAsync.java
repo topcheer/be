@@ -1,5 +1,6 @@
 package com.brightedu.client;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.brightedu.model.edu.AgentType;
@@ -173,5 +174,8 @@ public interface DataBaseRPCAsync {
 	void getCurrentBatch(AsyncCallback<Integer> callback);
 
 	void getRecruitPlanList(int batch, AsyncCallback<List<RecruitPlan>> callback);
+
+	void getObjectById(String mapperClassName, int id,
+			AsyncCallback<Serializable> callback);
 
 }

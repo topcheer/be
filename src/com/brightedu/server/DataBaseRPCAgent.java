@@ -1,6 +1,8 @@
 package com.brightedu.server;
 
 import java.io.File;
+import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Date;
@@ -959,12 +961,12 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			session.close();
 		}
 	}
+
 	@Override
 	public List<RecruitPlan> getRecruitPlanList(int batch) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			RecruitPlanMapper mp = session
-					.getMapper(RecruitPlanMapper.class);
+			RecruitPlanMapper mp = session.getMapper(RecruitPlanMapper.class);
 			RecruitPlanExample ex = new RecruitPlanExample();
 			ex.setOrderByClause("college_name,classified_name,subject_name");
 			ex.createCriteria().andBatch_idEqualTo(batch);
@@ -975,6 +977,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			session.close();
 		}
 	}
+
 	@Override
 	public boolean deletCollegeSubject(CollegeSubject collegeSubjects) {
 		SqlSession session = sessionFactory.openSession();
@@ -1062,6 +1065,25 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	}
 
 	@Override
+	public Serializable getObjectById(String mapperClassName, int id) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			Class mapperClass = Class.forName(mapperClassName);
+			Object mapper = session.getMapper(mapperClass);
+
+			Method method = mapperClass.getMethod("selectByPrimaryKey",
+					Integer.class);
+			return (Serializable) method.invoke(mapper, id);
+
+		} catch (Exception e) {
+			Log.e("", e);
+		} finally {
+			session.close();
+		}
+		return null;
+	}
+
+	@Override
 	public boolean addCollegeAgreement(CollegeAgreement agreement) {
 		SqlSession session = ConnectionManager.getSessionFactory()
 				.openSession();
@@ -1122,7 +1144,5 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			session.close();
 		}
 	}
-
-
 
 }

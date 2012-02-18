@@ -1,4 +1,4 @@
-package com.brightedu.client.login;
+package com.brightedu.client.window;
 
 import com.brightedu.client.UiUtils;
 import com.smartgwt.client.types.Overflow;

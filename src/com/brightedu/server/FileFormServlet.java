@@ -18,9 +18,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
+import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
 
+import com.brightedu.dao.edu.CollegeAgreementMapper;
 import com.brightedu.model.edu.CollegeAgreement;
 import com.brightedu.server.util.Log;
 import com.brightedu.server.util.ServerProperties;
@@ -56,42 +58,54 @@ public class FileFormServlet extends BrightServlet {
 			HttpServletResponse response) {
 
 		try {
-			// request.setCharacterEncoding("UTF-8");
-			// response.setCharacterEncoding("UTF-8");
-			if (ServletFileUpload.isMultipartContent(request)) {
-				processFiles(request, response);
-			} else {
-				processQuery(request, response);
+			String actionType = request.getParameter("action");
+			if (actionType != null && !actionType.trim().equals("")) {
+				actionType = actionType.toLowerCase();
+				if (actionType.equals("getcollegeagreement")) {
+					getCollegeAgreement(request, response);
+				} else if (actionType.equals("addcollegeagreement")) {
+					addCollegeAgreement(request, response);
+				} else if (actionType.equals("updatecollegeagreement")) {
+					updateCollegeAgreementFile(request, response);
+				} else {
+					Log.e("Undefied action for FileFormServlet: " + actionType);
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void processQuery(HttpServletRequest request,
-			HttpServletResponse response) throws IOException {
-		String actionType = request.getParameter("action");
-		if (actionType != null && !actionType.trim().equals("")) {
-			if (actionType.toLowerCase().equals("getcollegeagreement")) {
-				getCollegeAgreement(request, response);
-			} else {
-				Log.e("Undefied action for FileFormServlet: " + actionType);
+	private void updateCollegeAgreementFile(HttpServletRequest request,
+			HttpServletResponse response) throws IOException,
+			FileUploadException {
+		int agreementId = Integer.parseInt(request.getParameter("id"));
+		CollegeAgreement agreement = (CollegeAgreement) agent.getObjectById(
+				CollegeAgreementMapper.class.getName(), agreementId);
+		// System.out.println(agreement.getAgreement_name());
+		ServletFileUpload upload = new ServletFileUpload();
+		FileItemIterator iter = upload.getItemIterator(request);
+		// pick up parameters first and note actual FileItem
+		agreement.setUser_id(getUser().getUser_id());
+		Date now = new Date();
+		agreement.setUpdate_date(now);
+		agreement.setRegister_date(now);
+		while (iter.hasNext()) {
+			FileItemStream item = iter.next();
+			if (!item.isFormField()) {
+				String serverFileName = createFile(item, response,
+						agreement.getAgent_id(), now);
+				if (serverFileName == null) {
+					response(response, "更新文件失败", false);
+					return;
+				} else {
+					agreement.setAgreement_name(serverFileName);
+					agent.saveCollegeAgreement(agreement);
+					response(response, serverFileName, true);
+				}
 			}
 		}
-	}
 
-	private void processFiles(HttpServletRequest request,
-			HttpServletResponse response) throws IOException {
-		String actionType = request.getParameter("action");
-		if (actionType != null && !actionType.trim().equals("")) {
-			if (actionType.toLowerCase().equals("addcollegeagreement")) {
-				addCollegeAgreement(request, response);
-			} else {
-				Log.e("Undefied action for FileFormServlet: " + actionType);
-			}
-		} else {
-			Log.e("empty action type for FileFormServlet");
-		}
 	}
 
 	private void getCollegeAgreement(HttpServletRequest request,
@@ -100,8 +114,6 @@ public class FileFormServlet extends BrightServlet {
 		agreement_filename = URLDecoder.decode(agreement_filename, "UTF-8");// 这个是GWT
 																			// URL
 																			// encode的编码
-		// agreement_filename = new String(
-		// agreement_filename.getBytes("ISO8859-1"), "UTF-8");//这个是页面编码
 		String responseFileName = agreement_filename.substring(0,
 				agreement_filename.lastIndexOf("."));
 		String respContentType = agreement_filename
@@ -172,55 +184,13 @@ public class FileFormServlet extends BrightServlet {
 						Log.w("Unknown param form field: " + name);
 					}
 				} else {
-					InputStream in = null;
-					try {
-						String fileName = item.getName();
-						String type = item.getContentType();
-						int slash = fileName.lastIndexOf("/");
-						if (slash < 0)
-							slash = fileName.lastIndexOf("\\");
-						if (slash > 0)
-							fileName = fileName.substring(slash + 1);
-
-						in = item.openStream();
-						SimpleDateFormat sdf = new SimpleDateFormat(
-								"yyyyMMdd_HHmmss");
-
-						String serverFileName = fileName + "."
-								+ agreement.getCollege_id() + "_"
-								+ sdf.format(now) + "-"
-								+ encodeContentTypeForURL(type);
-						File agreementFile = new File(agreementSubDir
-								+ serverFileName);
-						agreement.setAgreement_name(serverFileName);
-						RandomAccessFile raf = new RandomAccessFile(
-								agreementFile, "rw");
-						if (in != null) {
-							byte[] buff = new byte[1024];
-							int readLen = 0;
-							while ((readLen = in.read(buff)) > 0) {
-								raf.write(buff, 0, readLen);
-							}
-							raf.close();
-							Log.i("stored agreement in "
-									+ agreementFile.getAbsolutePath());
-						} else {
-							Log.e("no inputsteam created for " + fileName);
-						}
-
-					} catch (Exception e) {
-						Log.e("", e);
-						response(response, e.getMessage(), false);
+					String serverFileName = createFile(item, response,
+							agreement.getAgreement_id(), now);
+					if (serverFileName == null) {
+						response(response, "保存文件失败", false);
 						return;
-					} finally {
-						if (in != null) {
-							try {
-								in.close();
-							} catch (Exception e) {
-								Log.e("", e);
-							}
-						}
 					}
+					agreement.setAgreement_name(serverFileName);
 				}
 			}
 
@@ -235,6 +205,56 @@ public class FileFormServlet extends BrightServlet {
 				Log.e(e1.getMessage(), e1);
 			}
 		}
+	}
+
+	private String createFile(FileItemStream item,
+			HttpServletResponse response, int objectRelatedId, Date now)
+			throws IOException {
+		InputStream in = null;
+		String serverFileName = null;
+		try {
+			in = item.openStream();
+			String fileName = item.getName();
+			String type = item.getContentType();
+			int slash = fileName.lastIndexOf("/");
+			if (slash < 0)
+				slash = fileName.lastIndexOf("\\");
+			if (slash > 0)
+				fileName = fileName.substring(slash + 1);
+
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+
+			serverFileName = fileName + "." + objectRelatedId + "_"
+					+ sdf.format(now) + "-" + encodeContentTypeForURL(type);
+			File agreementFile = new File(agreementSubDir + serverFileName);
+
+			RandomAccessFile raf = new RandomAccessFile(agreementFile, "rw");
+			if (in != null) {
+				byte[] buff = new byte[1024];
+				int readLen = 0;
+				while ((readLen = in.read(buff)) > 0) {
+					raf.write(buff, 0, readLen);
+				}
+				raf.close();
+				Log.i("stored agreement in " + agreementFile.getAbsolutePath());
+			} else {
+				Log.e("no inputsteam created for " + fileName);
+			}
+
+		} catch (Exception e) {
+			Log.e("", e);
+			response(response, e.getMessage(), false);
+
+		} finally {
+			if (in != null) {
+				try {
+					in.close();
+				} catch (Exception e) {
+					Log.e("", e);
+				}
+			}
+		}
+		return serverFileName;
 	}
 
 	private void response(HttpServletResponse response, String msg,

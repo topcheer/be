@@ -15,6 +15,7 @@
  */
 package com.brightedu.client;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.brightedu.model.edu.AgentType;
@@ -183,6 +184,12 @@ public interface DataBaseRPC extends RemoteService {
 	/*********************** 当前批次设置 ************************************/
 	public boolean addOrUpdateCurrentBatch(Integer batchNo);
 	public Integer getCurrentBatch();
+
+	
+	
+	
+	/*******************通用方法***************************/
+	public Serializable getObjectById(String mapperClassName, int id);
 	
 
 }

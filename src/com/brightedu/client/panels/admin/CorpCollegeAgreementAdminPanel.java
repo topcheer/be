@@ -9,6 +9,7 @@ import com.brightedu.client.CommonAsyncCall;
 import com.brightedu.client.frame.BrightFrame;
 import com.brightedu.client.frame.BrightFrame.LoadHandler;
 import com.brightedu.client.panels.BasicAdminPanel;
+import com.brightedu.client.window.FileUpdateDialog;
 import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.CollegeAgreement;
 import com.brightedu.model.edu.RecruitAgent;
@@ -46,6 +47,8 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 
 	ListGridField[] fields;
 
+	FileUpdateDialog fileUpdate;
+
 	public void init() {
 		colleges = new LinkedHashMap<String, String>();
 		agents = new LinkedHashMap<String, String>();
@@ -59,6 +62,7 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 					colleges.put(c.getCollege_id() + "", c.getCollege_name());
 				}
 				fields[0].setValueMap(colleges); // 合作高校
+				resultList.redraw();
 			}
 		};
 		AsyncCallback<List<RecruitAgent>> agentCall = new CommonAsyncCall<List<RecruitAgent>>() {
@@ -67,6 +71,7 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 					agents.put(r.getAgent_id() + "", r.getAgent_name());
 				}
 				fields[1].setValueMap(agents);// 我方高校
+				resultList.redraw();
 			}
 		};
 		fields[2].setValueMap(statusMap); // 状态
@@ -95,7 +100,14 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 					editImg.setWidth(16);
 					editImg.addClickHandler(new ClickHandler() {
 						public void onClick(ClickEvent event) {
-							SC.say("Edit！");
+							if (fileUpdate == null) {
+								fileUpdate = new FileUpdateDialog("新协议",
+										"newCollegeAgreement", record);
+								fileUpdate.setActionURL(GWT.getModuleBaseURL()
+										+ "formwithfile?action=updatecollegeagreement&id="
+										+ record.getAttributeAsInt("id"));
+							}
+							fileUpdate.show();
 						}
 					});
 
@@ -115,8 +127,6 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 									+ "formwithfile?action=getcollegeagreement&agreement_name="
 									+ agreement.getAgreement_name();
 							Window.open(URL.encode(url), "", null);
-							
-//							SC.say("Open " + agreement.getAgreement_name());
 						}
 					});
 

@@ -220,7 +220,7 @@ public abstract class BasicAdminPanel extends VLayout {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				gotoPage(currentPageIndex);
+				refresh();
 			}
 		});
 		DynamicForm pageForm1 = new DynamicForm();
@@ -251,6 +251,10 @@ public abstract class BasicAdminPanel extends VLayout {
 		addMember(pagetools);
 		initPages();
 		postInit();
+	}
+	
+	public void refresh(){
+		gotoPage(currentPageIndex);
 	}
 
 	private void initListGrid() {

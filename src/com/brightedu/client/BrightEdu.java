@@ -1,11 +1,11 @@
 package com.brightedu.client;
 
-import com.brightedu.client.login.LoginDialog;
 import com.brightedu.client.nav.CommandTreeNode;
 import com.brightedu.client.nav.ExplorerTreeNode;
 import com.brightedu.client.nav.FunctionTree;
 import com.brightedu.client.panels.PanelData;
 import com.brightedu.client.panels.PanelFactory;
+import com.brightedu.client.window.LoginDialog;
 import com.brightedu.model.edu.User;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;

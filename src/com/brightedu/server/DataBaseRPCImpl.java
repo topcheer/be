@@ -15,6 +15,7 @@
  */
 package com.brightedu.server;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.brightedu.client.DataBaseRPC;
@@ -301,6 +302,7 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	public List<RecruitPlan> getRecruitPlanList(int batch) {
 		return agent.getRecruitPlanList(batch);
 	}
+
 	/************************** RecruitAgent维护 ************************************/
 
 	public List<RecruitAgent> getRecruitAgentList(int offset, int limit,
@@ -356,6 +358,11 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 		return agent.saveCollegeAgreement(agreement);
 	}
 
-
+	
+	/********************通用方法*****************************/
+	@Override
+	public Serializable getObjectById(String mapperClassName, int id) {
+		return agent.getObjectById(mapperClassName, id);
+	}
 
 }
