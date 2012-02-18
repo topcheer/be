@@ -21,6 +21,7 @@ import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.types.DragDataAction;
+import com.smartgwt.client.types.FormLayoutType;
 import com.smartgwt.client.types.ListGridEditEvent;
 import com.smartgwt.client.types.Positioning;
 import com.smartgwt.client.types.TitleOrientation;
@@ -84,11 +85,11 @@ public class RecruitPlanManagePanel extends VLayout {
 	DynamicForm df = new DynamicForm();
 	HLayout hl = new HLayout();
 	Validator numberVd = new Validator();
-	//TransferImgButton arrowImg = new TransferImgButton(TransferImgButton.RIGHT);   
+	
 	HStack buttonStack = new HStack();
 	IButton saveButton = new IButton("保存");
 	IButton cloneButton = new IButton("克隆...");
-	BooleanItem bi = new BooleanItem("使用当前批次");
+	BooleanItem useCurrent = new BooleanItem("当前批次");
 	HiddenItem hi = new HiddenItem("currentBatch");
 	HiddenItem hi2 = new HiddenItem("default_lol");
 	
@@ -112,29 +113,27 @@ public class RecruitPlanManagePanel extends VLayout {
 	protected void init()
 	{
 		setPadding(5);
-
 		
-		
-
-		
-		leftStack.setWidth(600);
+		leftStack.setWidth(520);
 		leftStack.setHeight100();
 		leftStack.setVisibilityMode(VisibilityMode.MULTIPLE);
 
 		conditionSection.setExpanded(true);
 		selectionSection.setExpanded(true);
 
+		
+		
         BrightEdu.createDataBaseRPC().getBatchList(-1, -1, false, new AsyncCallback<List<BatchIndex>>(){
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
+
 				SC.say("获取批次时发生错误");
 			}
 
 			@Override
 			public void onSuccess(List<BatchIndex> result) {
-				// TODO Auto-generated method stub
+
 				LinkedHashMap<String,String> list  = new LinkedHashMap<String,String>();
 				Iterator<BatchIndex> biit = result.iterator();
 				while(biit.hasNext())
@@ -165,13 +164,13 @@ public class RecruitPlanManagePanel extends VLayout {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
+
 				SC.say("获取批次时发生错误");
 			}
 
 			@Override
 			public void onSuccess(List<College> result) {
-				// TODO Auto-generated method stub
+
 				Iterator<College> biit = result.iterator();
 				LinkedHashMap<String,String> list  = new LinkedHashMap<String,String>();
 				while(biit.hasNext())
@@ -201,13 +200,13 @@ public class RecruitPlanManagePanel extends VLayout {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
+
 				SC.say("获取批次时发生错误");
 			}
 
 			@Override
 			public void onSuccess(List<StudentClassified> result) {
-				// TODO Auto-generated method stub
+
 				Iterator<StudentClassified> biit = result.iterator();
 				LinkedHashMap<String,String> levelMap = new LinkedHashMap<String,String>();
 				while(biit.hasNext())
@@ -239,13 +238,18 @@ public class RecruitPlanManagePanel extends VLayout {
 			}}
 		);
 		
-		
-		
-		df.setItems(batchItem,bi,collegeItem,levelItem,hi,hi2);
-		
-		df.setHeight(20);
-		df.setWidth100();
+		df.setMargin(5);
+		df.setNumCols(8);
+		batchItem.setWidth(120);
+		useCurrent.setWidth(120);
+		collegeItem.setWidth(120);
+		levelItem.setWidth(120);
 		df.setTitleOrientation(TitleOrientation.TOP);
+
+		df.setItems(batchItem,useCurrent,collegeItem,levelItem,hi,hi2);
+		
+
+		df.setWidth100();
 		
 		conditionSection.addItem(df);
 		leftStack.addSection(conditionSection);
@@ -253,10 +257,11 @@ public class RecruitPlanManagePanel extends VLayout {
 		
         
         hl.setPadding(4);
-        hl.setHeight(350);
-     
-        subjectList.setWidth(200);   
-        subjectList.setHeight(350);   
+        hl.setHeight(360);
+        hl.setWidth(580);
+        
+        subjectList.setWidth("190");   
+        subjectList.setHeight100();   
         subjectList.setShowAllRecords(true);   
         subjectList.setCanReorderRecords(true);   
         subjectList.setCanDragRecordsOut(true);   
@@ -285,7 +290,7 @@ public class RecruitPlanManagePanel extends VLayout {
         ti.setMask("#");
         
         lolField2.setEditorType(ti);
-        subjectField2.setWidth(200);        
+        subjectField2.setWidth(180);        
         
         subjectList.setFields(pkField, subjectField,lolField);   
         hl.addMember(subjectList);
@@ -293,17 +298,16 @@ public class RecruitPlanManagePanel extends VLayout {
         spacer.setWidth(20);
         hl.addMember(spacer);
       
-        selectedList2.setWidth(350);   
+        selectedList2.setWidth(280);   
 
-        selectedList2.setHeight(350);   
-        //selectedList.setShowAllRecords(true);   
+        selectedList2.setHeight100();   
+   
         selectedList2.setEmptyMessage("拖动左边的项目到这里");   
         selectedList2.setCanReorderFields(true);   
         selectedList2.setCanDragRecordsOut(false);   
         selectedList2.setCanAcceptDroppedRecords(true);   
         selectedList2.setCanRemoveRecords(true);
         selectedList2.setShowHeaderContextMenu(false);
-        //selectedList.setDragDataAction(DragDataAction.MOVE);   
         
         selectedList2.setFields(pkField2, subjectField2,lolField2);   
         
@@ -313,7 +317,6 @@ public class RecruitPlanManagePanel extends VLayout {
 
         hl.addMember(selectedList2);
         
-        //canvas.addChild(countryGrid2); 
         selectionSection.addItem(hl);
         leftStack.addSection(selectionSection);
         
@@ -345,7 +348,7 @@ public class RecruitPlanManagePanel extends VLayout {
 		
 		actionSection.addItem(buttonStack);
 		leftStack.addSection(actionSection);
-		lb.setOpacity(100);
+		
 		cloneButton.addClickHandler(new ClickHandler(){
 
 			@Override
@@ -353,17 +356,19 @@ public class RecruitPlanManagePanel extends VLayout {
 				
 			}});
 		
-		collegeField.setWidth(150);
-		levelField.setWidth(80);
-		subjField.setWidth(200);
-		//lolField3.setWidth(80);
-		currentPlan.setFields(collegeField,levelField,subjField,lolField3);
-		currentPlan.setShowCellContextMenus(false);
-		currentPlan.setShowHeaderContextMenu(false);
+		currentPlan.setWidth100();
 		currentPlan.setHeight100();
+		currentPlan.setShowHeaderContextMenu(false);
+		collegeField.setWidth(120);
+		levelField.setWidth(80);
+		subjField.setWidth(180);
+		currentPlan.setFields(collegeField,levelField,subjField,lolField3);
+
+		
 		
 		
 		lb.setHeight(10);
+		lb.setMargin(5);
 		
 		rightHand.addMember(lb);
 		rightHand.addMember(currentPlan);
@@ -384,14 +389,12 @@ public class RecruitPlanManagePanel extends VLayout {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
 				SC.say("获取批次时发生错误");
 			}
 
 			@Override
 			public void onSuccess(List<Subjects> result) {
 				RecordList list = new RecordList();
-				// TODO Auto-generated method stub
 				Iterator<Subjects> biit = result.iterator();
 				
 				while(biit.hasNext())
@@ -444,7 +447,7 @@ public class RecruitPlanManagePanel extends VLayout {
 					
 					batchItem.setValue(result);
 					batchItem.setDisabled(true);
-					bi.setValue(true);
+					useCurrent.setValue(true);
 					hi.setValue(result);
 					
 					refreshCurrentList(result);
@@ -452,15 +455,15 @@ public class RecruitPlanManagePanel extends VLayout {
 				}
 				else
 				{
-					bi.setValue(false);
-					bi.setDisabled(true);
+					useCurrent.setValue(false);
+					useCurrent.setDisabled(true);
 					hi.setValue(-1);
 				}
 				
 			}
 
          });
-         bi.addChangedHandler(new ChangedHandler(){
+         useCurrent.addChangedHandler(new ChangedHandler(){
 
 			@Override
 			public void onChanged(ChangedEvent event) {
@@ -472,28 +475,14 @@ public class RecruitPlanManagePanel extends VLayout {
 				{
 					batchItem.setValue(hi.getValue());
 					batchItem.setDisabled(true);
+					refreshCurrentList(new Integer(batchItem.getValueAsString()));
+					
 
 				}
 				
 			}});
          
          
-//        new Timer(){
-//
-//			@Override
-//			public void run() {
-//				
-//				SC.say("Helllo Forever");
-//				
-//			}}.scheduleRepeating(3000);
-        
-//        GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler(){
-//
-//			@Override
-//			public void onUncaughtException(Throwable e) {
-//				// TODO Auto-generated method stub
-//				e.printStackTrace();
-//			}});
         
 	}
 	
@@ -513,13 +502,13 @@ public class RecruitPlanManagePanel extends VLayout {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
+
 				SC.say("获取招生计划时发生错误");
 			}
 
 			@Override
 			public void onSuccess(List<CollegeSubjectView> result) {
-				// TODO Auto-generated method stub
+
 				
 				Iterator<CollegeSubjectView> biit = result.iterator();
 				RecordList data = new RecordList();
@@ -664,6 +653,7 @@ public class RecruitPlanManagePanel extends VLayout {
 				if (result.size() == 0)
 				{
 					lb.setContents("当前招生计划<b> [ 当前选中批次无招生计划 ] </b>");
+					currentPlan.setData(new RecordList());
 					return;
 				}
 				Iterator<RecruitPlan> rpit = result.iterator();
