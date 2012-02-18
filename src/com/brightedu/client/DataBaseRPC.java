@@ -29,6 +29,9 @@ import com.brightedu.model.edu.FeeType;
 import com.brightedu.model.edu.PictureType;
 import com.brightedu.model.edu.RecruitAgent;
 import com.brightedu.model.edu.RecruitPlan;
+import com.brightedu.model.edu.RightsCategory;
+import com.brightedu.model.edu.RightsCategoryFunctionKey;
+import com.brightedu.model.edu.RightsFunction;
 import com.brightedu.model.edu.StudentClassified;
 import com.brightedu.model.edu.StudentStatus;
 import com.brightedu.model.edu.StudentType;
@@ -186,10 +189,24 @@ public interface DataBaseRPC extends RemoteService {
 	public Integer getCurrentBatch();
 
 	
+
+	/************************ 权限基础数据设置 *********************************/
 	
+	public List<RightsCategory> getRightsCategory();
+	public List<RightsFunction> getRightsFunction();
+	public List<RightsCategoryFunctionKey> getRightsCategoryFunction(String categoryID);
+	public boolean addRightsCategory(RightsCategory category);
+	public boolean addRightsFunction(RightsFunction function);
+	public boolean addRightsCatetoryFunctions(List<RightsCategoryFunctionKey> rightsCategoryFunctionList);
+	public boolean deleteRightsCategory(RightsCategory category);
+	public boolean deleteRightsFunction(RightsFunction function);
+	public boolean deleteRightsCatetoryFunctions(String rightsCategoryFunctionList);
+	
+
 	
 	/*******************通用方法***************************/
 	public Serializable getObjectById(String mapperClassName, int id);
 	
+
 
 }

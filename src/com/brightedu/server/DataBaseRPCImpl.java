@@ -30,6 +30,9 @@ import com.brightedu.model.edu.FeeType;
 import com.brightedu.model.edu.PictureType;
 import com.brightedu.model.edu.RecruitAgent;
 import com.brightedu.model.edu.RecruitPlan;
+import com.brightedu.model.edu.RightsCategory;
+import com.brightedu.model.edu.RightsCategoryFunctionKey;
+import com.brightedu.model.edu.RightsFunction;
 import com.brightedu.model.edu.StudentClassified;
 import com.brightedu.model.edu.StudentStatus;
 import com.brightedu.model.edu.StudentType;
@@ -358,7 +361,60 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 		return agent.saveCollegeAgreement(agreement);
 	}
 
+
+	/************************ 权限基础数据设置 *********************************/
 	
+	@Override
+	public List<RightsCategory> getRightsCategory() {
+		return agent.getRightsCategory();
+	}
+
+	
+
+
+	@Override
+	public List<RightsFunction> getRightsFunction() {
+		return agent.getRightsFunction();
+	}
+
+	@Override
+	public List<RightsCategoryFunctionKey> getRightsCategoryFunction(
+			String categoryID) {
+		return agent.getRightsCategoryFunction(categoryID);
+	}
+
+	@Override
+	public boolean addRightsCategory(RightsCategory category) {
+		return agent.addRightsCategory(category);
+	}
+
+	@Override
+	public boolean addRightsFunction(RightsFunction function) {
+		return agent.addRightsFunction(function);
+	}
+
+	@Override
+	public boolean addRightsCatetoryFunctions(
+			List<RightsCategoryFunctionKey> rightsCategoryFunctionList) {
+		return agent.addRightsCatetoryFunctions(rightsCategoryFunctionList);
+	}
+
+	@Override
+	public boolean deleteRightsCategory(RightsCategory category) {
+		return agent.deleteRightsCategory(category);
+	}
+
+	@Override
+	public boolean deleteRightsFunction(RightsFunction function) {
+		return agent.deleteRightsFunction(function);
+	}
+
+	@Override
+	public boolean deleteRightsCatetoryFunctions(
+			String rightsCategoryFunctionList) {
+		return agent.deleteRightsCatetoryFunctions(rightsCategoryFunctionList);
+	}
+
 	/********************通用方法*****************************/
 	@Override
 	public Serializable getObjectById(String mapperClassName, int id) {

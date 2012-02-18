@@ -25,6 +25,9 @@ import com.brightedu.dao.edu.FeeTypeMapper;
 import com.brightedu.dao.edu.PictureTypeMapper;
 import com.brightedu.dao.edu.RecruitAgentMapper;
 import com.brightedu.dao.edu.RecruitPlanMapper;
+import com.brightedu.dao.edu.RightsCategoryFunctionMapper;
+import com.brightedu.dao.edu.RightsCategoryMapper;
+import com.brightedu.dao.edu.RightsFunctionMapper;
 import com.brightedu.dao.edu.StudentClassifiedMapper;
 import com.brightedu.dao.edu.StudentStatusMapper;
 import com.brightedu.dao.edu.StudentTypeMapper;
@@ -54,6 +57,10 @@ import com.brightedu.model.edu.RecruitAgent;
 import com.brightedu.model.edu.RecruitAgentExample;
 import com.brightedu.model.edu.RecruitPlan;
 import com.brightedu.model.edu.RecruitPlanExample;
+import com.brightedu.model.edu.RightsCategory;
+import com.brightedu.model.edu.RightsCategoryFunctionExample;
+import com.brightedu.model.edu.RightsCategoryFunctionKey;
+import com.brightedu.model.edu.RightsFunction;
 import com.brightedu.model.edu.StudentClassified;
 import com.brightedu.model.edu.StudentClassifiedExample;
 import com.brightedu.model.edu.StudentStatus;
@@ -1143,6 +1150,168 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		} finally {
 			session.close();
 		}
+	}
+
+
+	/************************ 权限基础数据设置 *********************************/
+	
+	@Override
+	public List<RightsCategory> getRightsCategory() {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			RightsCategoryMapper mp = session
+					.getMapper(RightsCategoryMapper.class);
+
+			List<RightsCategory> result = mp.selectByExample(null);
+			return result;
+
+
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public List<RightsFunction> getRightsFunction() {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			RightsFunctionMapper mp = session
+					.getMapper(RightsFunctionMapper.class);
+
+			List<RightsFunction> result = mp.selectByExample(null);
+			return result;
+
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public List<RightsCategoryFunctionKey> getRightsCategoryFunction(
+			String categoryID) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			RightsCategoryFunctionMapper mp = session
+					.getMapper(RightsCategoryFunctionMapper.class);
+			RightsCategoryFunctionExample ex = new RightsCategoryFunctionExample();
+			ex.createCriteria().andCategory_idEqualTo(categoryID);
+			List<RightsCategoryFunctionKey> result = mp.selectByExample(ex);
+			return result;
+
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean addRightsCategory(RightsCategory category) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			RightsCategoryMapper scm = session
+					.getMapper(RightsCategoryMapper.class);
+
+			int count = scm.insertSelective(category);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean addRightsFunction(RightsFunction function) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			RightsFunctionMapper scm = session
+					.getMapper(RightsFunctionMapper.class);
+
+			int count = scm.insertSelective(function);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean addRightsCatetoryFunctions(
+			List<RightsCategoryFunctionKey> rightsCategoryFunctionList) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			RightsCategoryFunctionMapper mp = session
+					.getMapper(RightsCategoryFunctionMapper.class);
+
+			// 先删除比较保险,连续调用两个RPC可能导致还没删除就已经开始插入了
+
+			RightsCategoryFunctionExample ex = new RightsCategoryFunctionExample();
+			ex.createCriteria().andCategory_idEqualTo(rightsCategoryFunctionList.get(0).getCategory_id());
+
+			mp.deleteByExample(ex);
+
+			for (int i = 0; i < rightsCategoryFunctionList.size(); i++) {
+				mp.insertSelective(rightsCategoryFunctionList.get(i));
+			}
+
+			session.commit();
+			return true;
+
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean deleteRightsCategory(RightsCategory category) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			RightsCategoryMapper mp = session
+					.getMapper(RightsCategoryMapper.class);
+
+			int result = mp.deleteByPrimaryKey(category.getCategory_id());
+			return true;
+
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean deleteRightsFunction(RightsFunction function) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			RightsFunctionMapper mp = session
+					.getMapper(RightsFunctionMapper.class);
+
+			int result = mp.deleteByPrimaryKey(function.getFunction_id());
+			return true;
+
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean deleteRightsCatetoryFunctions(
+			String rightsCategoryFunctionList) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			RightsCategoryFunctionMapper mp = session
+					.getMapper(RightsCategoryFunctionMapper.class);
+
+			// 先删除比较保险,连续调用两个RPC可能导致还没删除就已经开始插入了
+
+			RightsCategoryFunctionExample ex = new RightsCategoryFunctionExample();
+			ex.createCriteria().andCategory_idEqualTo(rightsCategoryFunctionList);
+
+			mp.deleteByExample(ex);
+
+			session.commit();
+			return true;
+
+		} finally {
+			session.close();
+		}
+
 	}
 
 }

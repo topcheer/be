@@ -13,6 +13,9 @@ import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.CollegeSubject;
 import com.brightedu.model.edu.CollegeSubjectView;
 import com.brightedu.model.edu.RecruitPlan;
+import com.brightedu.model.edu.RightsCategory;
+import com.brightedu.model.edu.RightsCategoryFunctionKey;
+import com.brightedu.model.edu.RightsFunction;
 import com.brightedu.model.edu.StudentClassified;
 import com.brightedu.model.edu.Subjects;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -31,17 +34,21 @@ import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.events.DoubleClickEvent;
+import com.smartgwt.client.widgets.events.DoubleClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.BooleanItem;
 import com.smartgwt.client.widgets.form.fields.ButtonItem;
 import com.smartgwt.client.widgets.form.fields.HiddenItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
+import com.smartgwt.client.widgets.form.fields.SpacerItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.validator.Validator;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
+import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.CellDoubleClickEvent;
 import com.smartgwt.client.widgets.grid.events.CellDoubleClickHandler;
 import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
@@ -61,15 +68,14 @@ public class RightsManagePanel extends VLayout {
 	HLayout mainPanel = new HLayout();
 	
 	SectionStack leftStack = new SectionStack();   
-	SectionStackSection conditionSection = new SectionStackSection ("权限类别管理");
-	SectionStackSection selectionSection = new SectionStackSection ("功能列表");
+	SectionStackSection conditionSection = new SectionStackSection ("条件");
+	SectionStackSection selectionSection = new SectionStackSection ("功能列表 -- 要将某个功能加到选中的类别，拖动到左边的列表中");
 	SectionStackSection actionSection = new SectionStackSection ("操作");
 	
 	DynamicForm df = new DynamicForm();
 
 	SelectItem categoryItem =  new SelectItem("categoryId","类别");
-	ButtonItem removeItem  = new ButtonItem("removeCategory","删除类别");
-	ButtonItem addItem  = new ButtonItem("addCategory","新增类别");
+
 	
 	ListGrid functionGrid =  new ListGrid();
 	ListGrid selectedGrid =  new ListGrid();
@@ -85,8 +91,11 @@ public class RightsManagePanel extends VLayout {
 	
 	//TransferImgButton arrowImg = new TransferImgButton(TransferImgButton.RIGHT);   
 	IButton saveButton = new IButton("保存");
-
-	
+	IButton newCategoryButton = new IButton("新建类别...");
+	IButton newFunctionButton = new IButton("新建功能...");
+	IButton deleteCategoryButton = new IButton("删除类别...");
+	IButton deleteFunctionButton = new IButton("删除功能...");
+	LinkedHashMap<String,String> funlist = new LinkedHashMap<String,String>();
 	public RightsManagePanel()
 	{
 		
@@ -98,68 +107,37 @@ public class RightsManagePanel extends VLayout {
 	{
 		setPadding(5);
 		
-		leftStack.setWidth(600);
+		leftStack.setWidth100();
 		leftStack.setHeight100();
 		leftStack.setVisibilityMode(VisibilityMode.MULTIPLE);
 
 		conditionSection.setExpanded(true);
 		selectionSection.setExpanded(true);
 
-//        BrightEdu.createDataBaseRPC().getBatchList(-1, -1, false, new AsyncCallback<List<BatchIndex>>(){
-//
-//			@Override
-//			public void onFailure(Throwable caught) {
-//				// TODO Auto-generated method stub
-//				SC.say("获取批次时发生错误");
-//			}
-//
-//			@Override
-//			public void onSuccess(List<BatchIndex> result) {
-//				// TODO Auto-generated method stub
-//				LinkedHashMap<String,String> list  = new LinkedHashMap<String,String>();
-//				Iterator<BatchIndex> biit = result.iterator();
-//				while(biit.hasNext())
-//				{
-//					BatchIndex bi = biit.next();
-//					list.put(bi.getBatch_id() + "", bi.getBatch_name());
-//				}
-//				
-//				categoryItem.setValueMap(list);
-//			}
-//        	
-//        });
-		
 		categoryItem.setDefaultToFirstOption(true);
 		
-//		categoryItem.addChangedHandler(new ChangedHandler(){
-//
-//			@Override
-//			public void onChanged(ChangedEvent event) {
-////				reload();
-////				refreshCurrentList(new Integer(batchItem.getValueAsString()));
-//				
-//			}}
-//		);
+		categoryItem.addChangedHandler(new ChangedHandler(){
+
+			@Override
+			public void onChanged(ChangedEvent event) {
+				refreshCategoryFunction(categoryItem.getValueAsString());
+				
+			}}
+		);
 
 
 
 
 		
-		df.setItemLayout(FormLayoutType.ABSOLUTE);
+		//df.setItemLayout(FormLayoutType.ABSOLUTE);
 		df.setMargin(5);
-		 
-		categoryItem.setWidth(120);
-		removeItem.setWidth(60);
-		removeItem.setLeft(130);
-		addItem.setWidth(60);
-		addItem.setLeft(200);
-		df.setItems(categoryItem,removeItem,addItem);
-		
 		df.setHeight(20);
 		df.setWidth100();
-		df.setTitleOrientation(TitleOrientation.LEFT);
+		df.setTitleOrientation(TitleOrientation.LEFT);		
+
+		df.setItems(categoryItem);
 		
-		df.setPadding(10);
+
 		
 		conditionSection.addItem(df);
 		leftStack.addSection(conditionSection);
@@ -169,7 +147,7 @@ public class RightsManagePanel extends VLayout {
 		listGridLayout.setPadding(4);
 		listGridLayout.setHeight(350);
      
-		functionGrid.setWidth(250);   
+		functionGrid.setWidth(450);   
 		functionGrid.setHeight(350);   
 		functionGrid.setShowAllRecords(true);   
 		functionGrid.setCanReorderRecords(true);   
@@ -178,16 +156,24 @@ public class RightsManagePanel extends VLayout {
 		functionGrid.setDragDataAction(DragDataAction.COPY);   
 		functionGrid.setShowHeaderContextMenu(false);
  
-		funcidField.setWidth(100);
+		funcidField.setWidth(200);
         
         functionGrid.setFields(funcidField, funcNameField);   
+        functionGrid.addDoubleClickHandler(new DoubleClickHandler(){
+
+			@Override
+			public void onDoubleClick(DoubleClickEvent event) {
+				selectedGrid.transferSelectedData(functionGrid);
+				
+			}});
+        
         listGridLayout.addMember(functionGrid);
         
         LayoutSpacer spacer = new LayoutSpacer();
-        spacer.setWidth(20);
+        spacer.setWidth(40);
         listGridLayout.addMember(spacer);
       
-        selectedGrid.setWidth(250);   
+        selectedGrid.setWidth(450);   
         selectedGrid.setHeight(350);   
         selectedGrid.setEmptyMessage("拖动左边的项目到这里");   
         selectedGrid.setCanReorderFields(true);   
@@ -196,7 +182,7 @@ public class RightsManagePanel extends VLayout {
         selectedGrid.setCanRemoveRecords(true);
         selectedGrid.setShowHeaderContextMenu(false);
         
-        funcidField2.setWidth(100);
+        funcidField2.setWidth(200);
         
         selectedGrid.setFields(funcidField2, funcNameField2);   
         
@@ -213,51 +199,134 @@ public class RightsManagePanel extends VLayout {
         actionSection.setShowHeader(true);
         actionSection.setExpanded(true);
         
+
+        HStack buttonStack = new HStack();
+        buttonStack.setPadding(10);
+        buttonStack.setHeight(30);
 		
 		saveButton.setLeft(30);
 		saveButton.addClickHandler(new ClickHandler(){
 
 			@Override
 			public void onClick(ClickEvent event) {
-//				saveMe();
+				saveMe();
 				
 			}});
-		
-
 		LayoutSpacer ls = new LayoutSpacer();
 		ls.setWidth(20);
+		LayoutSpacer ls2 = new LayoutSpacer();
+		ls2.setWidth(20);
+		buttonStack.addMember(saveButton);
+		buttonStack.addMember(ls);
+		buttonStack.addMember(newCategoryButton);
+		buttonStack.addMember(deleteCategoryButton);
+		buttonStack.addMember(ls2);
+		buttonStack.addMember(newFunctionButton);
+		buttonStack.addMember(deleteFunctionButton);
 		
-		actionSection.addItem(ls);
-		
-		actionSection.addItem(saveButton);
+		actionSection.addItem(buttonStack);
 		
 		leftStack.addSection(actionSection);
 
 		addMember(leftStack);
         
         show();
-        
 
-         
-//        new Timer(){
-//
-//			@Override
-//			public void run() {
-//				
-//				SC.say("Helllo Forever");
-//				
-//			}}.scheduleRepeating(3000);
-        
-//        GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler(){
-//
-//			@Override
-//			public void onUncaughtException(Throwable e) {
-//				// TODO Auto-generated method stub
-//				e.printStackTrace();
-//			}});
-        
+        populateData();
 	}
 	
+	protected void populateData()
+	{
+		refreshCategory();
+		refreshFunction();
+	}
+	
+	protected void refreshCategory()
+	{
+		dbService.getRightsCategory(new AsyncCallback<List<RightsCategory>>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+					SC.say("获取权限类别失败");
+				
+			}
+
+			@Override
+			public void onSuccess(List<RightsCategory> result) {
+				LinkedHashMap<String,String> list = new LinkedHashMap<String,String>();
+								
+				for(RightsCategory c : result)
+				{
+					list.put(c.getCategory_id(), c.getCategory_name());
+				}
+			
+				categoryItem.setValueMap(list);
+				
+			}});
+		
+		
+	}
+	protected void refreshFunction()
+	{
+		dbService.getRightsFunction(new AsyncCallback<List<RightsFunction>>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+					SC.say("获取功能列表失败");
+				
+			}
+
+			@Override
+			public void onSuccess(List<RightsFunction> result) {
+				
+				RecordList list = new RecordList();
+				funlist.clear();
+				for(RightsFunction c : result)
+				{
+					Record rec = new Record();
+					rec.setAttribute("funcId", c.getFunction_id());
+					rec.setAttribute("funcName", c.getFunction_name());
+					list.add(rec);
+					funlist.put(c.getFunction_id(), c.getFunction_name());
+				}
+				functionGrid.setData(list);
+				
+				
+			}});
+		
+	}
+	
+	protected void refreshCategoryFunction(String category_id)
+	
+	{
+		
+		dbService.getRightsCategoryFunction(category_id, new AsyncCallback<List<RightsCategoryFunctionKey>>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+				SC.say("获取功能列表失败");
+				
+			}
+
+			@Override
+			public void onSuccess(List<RightsCategoryFunctionKey> result) {
+				
+				RecordList list = new RecordList();
+				
+				for(RightsCategoryFunctionKey c : result)
+				{
+					Record rec = new Record();
+					rec.setAttribute("funcId", c.getFunction_id());
+					rec.setAttribute("funcName", funlist.get(c.getFunction_id()));
+					list.add(rec);
+				}
+				selectedGrid.setData(list);
+				
+				
+			}});
+		
+		
+	}
 //	protected void reload()
 //	{
 //		//检查所选的组合是否有记录已经存在与college_subject表中，如果有，初始化selectedList列表
@@ -310,88 +379,75 @@ public class RightsManagePanel extends VLayout {
 //	
 //	}
 //
-//	protected void saveMe()
-//	{
-//		if (collegeItem.getValue() == null 
-//				|| batchItem.getValue() == null 
-//				|| levelItem.getValue() == null)
-//		{
-//			BrightEdu.showTip("开玩笑？");
-//			return;
-//		}
-//			
-//		
-//		Integer collegeId = new Integer(collegeItem.getValue().toString());
-//		final Integer batchId = new Integer(batchItem.getValue().toString());
-//		Integer levelId = new Integer(levelItem.getValue().toString());
-//		
-//		if(selectedList2.getRecords().length == 0) 
-//			
-//			{
-//				
-//				CollegeSubject cs = new CollegeSubject();
-//				cs.setBatch_id(batchId);
-//				cs.setClassified_id(levelId);
-//				cs.setCollege_id(collegeId);
-//		
-//				dbService.deletCollegeSubject(cs, new AsyncCallback<Boolean>(){
-//		
-//					@Override
-//					public void onFailure(Throwable caught) {
-//						
-//						
-//					}
-//		
-//					@Override
-//					public void onSuccess(Boolean result) {
-//						
-//						BrightEdu.showTip("没有啥东西好存的,开玩笑? 我顺便把所有的组合全删了，你没意见吧？");
-//					}});
-//			
-//				return;
-//			}
-//		
-//		
-//		
-//		//保存界面上的组合
-//		
-//		ArrayList<CollegeSubject> lst = new ArrayList<CollegeSubject>();
-//		
-//		RecordList data = selectedList2.getRecordList();
-//		
-//		for(int i = 0 ; i< data.getLength() ; i++)
-//		{
-//			
-//			CollegeSubject cs2 = new CollegeSubject();
-//			cs2.setBatch_id(batchId);
-//			cs2.setClassified_id(levelId);
-//			cs2.setCollege_id(collegeId);
-//
-//			cs2.setSubeject_id(data.get(i).getAttributeAsInt("subjectID"));
-//			cs2.setLength_of_schooling(new Short(data.get(i).getAttribute("lol")));
-//			lst.add(cs2);
-//			
-//		}
-//		
-//		dbService.addCollegeSubject(lst, new AsyncCallback<Boolean>(){
-//
-//			@Override
-//			public void onFailure(Throwable caught) {
-//
-//				
-//			}
-//
-//			@Override
-//			public void onSuccess(Boolean result) {
-//					BrightEdu.showTip("保存成功");
-//					
-//					refreshCurrentList(batchId);
-//				
-//			}});
-//		
-//		
-//		
-//	}
+	protected void saveMe()
+	{
+		if (categoryItem.getValue() == null)
+		{
+			BrightEdu.showTip("开玩笑？");
+			return;
+		}
+			
+		
+		String categoryId = categoryItem.getValue().toString();
+		
+
+		if(selectedGrid.getRecords().length == 0) 
+			
+			{
+				dbService.deleteRightsCatetoryFunctions(categoryId, new AsyncCallback<Boolean>(){
+		
+					@Override
+					public void onFailure(Throwable caught) {
+						
+						
+					}
+		
+					@Override
+					public void onSuccess(Boolean result) {
+						
+						BrightEdu.showTip("没有啥东西好存的,开玩笑? 我顺便把所有的组合全删了，你没意见吧？");
+					}});
+			
+				return;
+			}
+		
+		
+		
+		//保存界面上的组合
+		
+		ArrayList<RightsCategoryFunctionKey> lst = new ArrayList<RightsCategoryFunctionKey>();
+		
+		RecordList data = selectedGrid.getRecordList();
+		
+		for(int i = 0 ; i< data.getLength() ; i++)
+		{
+			
+			RightsCategoryFunctionKey cs2 = new RightsCategoryFunctionKey();
+			cs2.setCategory_id(categoryId);
+			cs2.setFunction_id(data.get(i).getAttributeAsString("funcId"));
+			lst.add(cs2);
+			
+		}
+		
+		dbService.addRightsCatetoryFunctions(lst, new AsyncCallback<Boolean>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+
+				
+			}
+
+			@Override
+			public void onSuccess(Boolean result) {
+					BrightEdu.showTip("保存成功");
+					
+					
+				
+			}});
+		
+		
+		
+	}
 //	
 //	private void setDefaultLOL(ListGrid subjectList,String lol)
 //	

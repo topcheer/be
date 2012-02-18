@@ -14,6 +14,9 @@ import com.brightedu.model.edu.FeeType;
 import com.brightedu.model.edu.PictureType;
 import com.brightedu.model.edu.RecruitAgent;
 import com.brightedu.model.edu.RecruitPlan;
+import com.brightedu.model.edu.RightsCategory;
+import com.brightedu.model.edu.RightsCategoryFunctionKey;
+import com.brightedu.model.edu.RightsFunction;
 import com.brightedu.model.edu.StudentClassified;
 import com.brightedu.model.edu.StudentStatus;
 import com.brightedu.model.edu.StudentType;
@@ -174,6 +177,34 @@ public interface DataBaseRPCAsync {
 	void getCurrentBatch(AsyncCallback<Integer> callback);
 
 	void getRecruitPlanList(int batch, AsyncCallback<List<RecruitPlan>> callback);
+
+
+	void addRightsCategory(RightsCategory category,
+			AsyncCallback<Boolean> callback);
+
+	void addRightsCatetoryFunctions(
+			List<RightsCategoryFunctionKey> rightsCategoryFunctionList,
+			AsyncCallback<Boolean> callback);
+
+	void addRightsFunction(RightsFunction function,
+			AsyncCallback<Boolean> callback);
+
+	void getRightsCategory(AsyncCallback<List<RightsCategory>> callback);
+
+	void getRightsCategoryFunction(String categoryID,
+			AsyncCallback<List<RightsCategoryFunctionKey>> callback);
+
+	void getRightsFunction(AsyncCallback<List<RightsFunction>> callback);
+
+	void deleteRightsCategory(RightsCategory category,
+			AsyncCallback<Boolean> callback);
+
+	void deleteRightsCatetoryFunctions(String rightsCategoryFunctionList,
+			AsyncCallback<Boolean> callback);
+
+	void deleteRightsFunction(RightsFunction function,
+			AsyncCallback<Boolean> callback);
+
 
 	void getObjectById(String mapperClassName, int id,
 			AsyncCallback<Serializable> callback);
