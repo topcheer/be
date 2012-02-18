@@ -377,4 +377,8 @@ public class BrightEdu implements EntryPoint {
 	public static DataBaseRPCAsync createDataBaseRPC() {
 		return dbService;
 	}
+	
+	public static GreetingServiceAsync createGreetingRPC(){
+		return greetingService;
+	}
 }

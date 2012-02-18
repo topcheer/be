@@ -12,5 +12,4 @@ public interface GreetingService extends RemoteService {
 	String greetServer(String name) throws IllegalArgumentException;
 	
 	String login(User user);
-
 }

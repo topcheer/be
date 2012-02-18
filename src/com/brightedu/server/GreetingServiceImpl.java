@@ -1,11 +1,19 @@
 package com.brightedu.server;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.brightedu.client.GreetingService;
+import com.brightedu.model.edu.CollegeAgreement;
 import com.brightedu.model.edu.User;
 import com.brightedu.server.util.AuthManager;
 import com.brightedu.server.util.Log;
+import com.brightedu.server.util.ServerProperties;
 import com.brightedu.shared.FieldVerifier;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 

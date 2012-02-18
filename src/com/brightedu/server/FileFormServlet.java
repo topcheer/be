@@ -56,8 +56,8 @@ public class FileFormServlet extends BrightServlet {
 			HttpServletResponse response) {
 		
 		try {
-			request.setCharacterEncoding("UTF-8");
-			response.setCharacterEncoding("UTF-8");
+//			request.setCharacterEncoding("UTF-8");
+//			response.setCharacterEncoding("UTF-8");
 			if (ServletFileUpload.isMultipartContent(request)) {
 				processFiles(request, response);
 			} else {
@@ -97,11 +97,9 @@ public class FileFormServlet extends BrightServlet {
 	private void getCollegeAgreement(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		String agreement_filename = request.getParameter("agreement_name"); // 带日期标签
-		agreement_filename = URLDecoder.decode(agreement_filename,"UTF-8");
-		// String reqEncoding = request.getCharacterEncoding();
-		// Log.d("RequestEncoding: "+reqEncoding);
-		 agreement_filename = new String(
-		 agreement_filename.getBytes("ISO8859-1"),"UTF-8");
+		agreement_filename = URLDecoder.decode(agreement_filename,"UTF-8");//这个是GWT URL encode的编码
+//		agreement_filename = new String(
+//				agreement_filename.getBytes("ISO8859-1"), "UTF-8");//这个是页面编码
 		String responseFileName = agreement_filename.substring(0,
 				agreement_filename.lastIndexOf("."));
 		String respContentType = agreement_filename
@@ -112,15 +110,15 @@ public class FileFormServlet extends BrightServlet {
 		respContentType = decodeContentTypeForURL(respContentType);
 		// response.setHeader("Content-Type", respContentType + ";charset="
 		// + ServerProperties.getLocalEncoding());
-		response.setCharacterEncoding(ServerProperties.getServletEncoding());
+//		response.setCharacterEncoding(ServerProperties.getServletEncoding());
 		response.setHeader("Content-Type", respContentType);
 		Log.d("respContentType: " + respContentType);
 		response.setHeader("Content-Length",
 				String.valueOf(serverAgreementFile.length()));
-		String respName = new String(responseFileName.getBytes("UTF-8"), "ISO8859-1");
-		Log.d("respFileName: " + respName);
+		responseFileName= new String(responseFileName.getBytes("UTF-8"), "ISO8859-1");
+		Log.d("respFileName: " + responseFileName);
 		response.setHeader("Content-disposition", "attachment;filename=\""
-				+ respName + "\"");
+				+ responseFileName + "\"");
 		BufferedInputStream bis = new BufferedInputStream(new FileInputStream(
 				serverAgreementFile));
 		BufferedOutputStream bos = new BufferedOutputStream(

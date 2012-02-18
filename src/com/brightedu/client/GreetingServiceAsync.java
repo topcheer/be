@@ -1,7 +1,6 @@
 package com.brightedu.client;
 
 import com.brightedu.model.edu.User;
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
