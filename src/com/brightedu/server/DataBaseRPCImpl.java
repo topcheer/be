@@ -405,7 +405,7 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	}
 
 	@Override
-	public boolean deleteRightsFunction(RightsFunction function) {
+	public boolean deleteRightsFunction(List<String> function) {
 		return agent.deleteRightsFunction(function);
 	}
 

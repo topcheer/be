@@ -58,9 +58,11 @@ import com.brightedu.model.edu.RecruitAgentExample;
 import com.brightedu.model.edu.RecruitPlan;
 import com.brightedu.model.edu.RecruitPlanExample;
 import com.brightedu.model.edu.RightsCategory;
+import com.brightedu.model.edu.RightsCategoryExample;
 import com.brightedu.model.edu.RightsCategoryFunctionExample;
 import com.brightedu.model.edu.RightsCategoryFunctionKey;
 import com.brightedu.model.edu.RightsFunction;
+import com.brightedu.model.edu.RightsFunctionExample;
 import com.brightedu.model.edu.StudentClassified;
 import com.brightedu.model.edu.StudentClassifiedExample;
 import com.brightedu.model.edu.StudentStatus;
@@ -1266,8 +1268,11 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		try {
 			RightsCategoryMapper mp = session
 					.getMapper(RightsCategoryMapper.class);
-
-			int result = mp.deleteByPrimaryKey(category.getCategory_id());
+			RightsCategoryExample ex = new RightsCategoryExample();
+			ex.createCriteria().andCategory_idEqualTo(category.getCategory_id());
+			
+			int result = mp.deleteByExample(ex);
+			session.commit();
 			return true;
 
 		} finally {
@@ -1276,13 +1281,26 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	}
 
 	@Override
-	public boolean deleteRightsFunction(RightsFunction function) {
+	public boolean deleteRightsFunction(List<String> function) {
 		SqlSession session = sessionFactory.openSession();
 		try {
 			RightsFunctionMapper mp = session
 					.getMapper(RightsFunctionMapper.class);
 
-			int result = mp.deleteByPrimaryKey(function.getFunction_id());
+			RightsFunctionExample ex = new RightsFunctionExample();
+			ex.createCriteria().andFunction_idIn(function);
+			mp.deleteByExample(ex);
+			
+			//also delete record from CategoryFunction 
+			RightsCategoryFunctionMapper mp2 = session
+					.getMapper(RightsCategoryFunctionMapper.class);
+
+			RightsCategoryFunctionExample ex2 = new RightsCategoryFunctionExample();
+			ex2.createCriteria().andFunction_idIn(function);
+
+			mp2.deleteByExample(ex2);
+
+			session.commit();
 			return true;
 
 		} finally {
@@ -1298,7 +1316,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			RightsCategoryFunctionMapper mp = session
 					.getMapper(RightsCategoryFunctionMapper.class);
 
-			// 先删除比较保险,连续调用两个RPC可能导致还没删除就已经开始插入了
+
 
 			RightsCategoryFunctionExample ex = new RightsCategoryFunctionExample();
 			ex.createCriteria().andCategory_idEqualTo(rightsCategoryFunctionList);

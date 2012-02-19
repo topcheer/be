@@ -202,7 +202,7 @@ public interface DataBaseRPCAsync {
 	void deleteRightsCatetoryFunctions(String rightsCategoryFunctionList,
 			AsyncCallback<Boolean> callback);
 
-	void deleteRightsFunction(RightsFunction function,
+	void deleteRightsFunction(List<String> function,
 			AsyncCallback<Boolean> callback);
 
 

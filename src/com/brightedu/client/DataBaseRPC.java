@@ -199,7 +199,7 @@ public interface DataBaseRPC extends RemoteService {
 	public boolean addRightsFunction(RightsFunction function);
 	public boolean addRightsCatetoryFunctions(List<RightsCategoryFunctionKey> rightsCategoryFunctionList);
 	public boolean deleteRightsCategory(RightsCategory category);
-	public boolean deleteRightsFunction(RightsFunction function);
+	public boolean deleteRightsFunction(List<String> function);
 	public boolean deleteRightsCatetoryFunctions(String rightsCategoryFunctionList);
 	
 
