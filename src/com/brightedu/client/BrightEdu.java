@@ -12,14 +12,10 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.types.VerticalAlignment;
+import com.smartgwt.client.core.KeyIdentifier;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Img;
-import com.smartgwt.client.widgets.ImgButton;
-import com.smartgwt.client.widgets.Label;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.CloseClickEvent;
@@ -29,6 +25,10 @@ import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.Layout;
 import com.smartgwt.client.widgets.layout.VLayout;
+import com.smartgwt.client.widgets.menu.Menu;
+import com.smartgwt.client.widgets.menu.MenuItem;
+import com.smartgwt.client.widgets.menu.MenuItemIfFunction;
+import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.tab.events.TabSelectedEvent;
@@ -167,16 +167,16 @@ public class BrightEdu implements EntryPoint {
 		c.setPrompt("今明教育在线");
 		c.setWidth(375);
 		c.setHeight(56);
-//		c.addc
-//		ImgButton homeBtn = new ImgButton();
-//		homeBtn.setSrc("jm_toolstrip.png");
-//		// sgwtHomeButton.setWidth(24);
-//		// sgwtHomeButton.setHeight(24);
-//		homeBtn.setPrompt("今明教育在线");
-//		// sgwtHomeButton.setHoverStyle("interactImageHover");
-//		homeBtn.setShowRollOver(false);
-//		homeBtn.setShowDownIcon(false);
-//		homeBtn.setShowDown(false);
+		// c.addc
+		// ImgButton homeBtn = new ImgButton();
+		// homeBtn.setSrc("jm_toolstrip.png");
+		// // sgwtHomeButton.setWidth(24);
+		// // sgwtHomeButton.setHeight(24);
+		// homeBtn.setPrompt("今明教育在线");
+		// // sgwtHomeButton.setHoverStyle("interactImageHover");
+		// homeBtn.setShowRollOver(false);
+		// homeBtn.setShowDownIcon(false);
+		// homeBtn.setShowDown(false);
 		c.addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
 			public void onClick(ClickEvent event) {
 				com.google.gwt.user.client.Window.open(
@@ -239,7 +239,7 @@ public class BrightEdu implements EntryPoint {
 		sideNavLayout.setWidth(200);
 		sideNavLayout.setShowResizeBar(true);
 		FunctionTree sideNav = new FunctionTree();
-		
+
 		sideNav.addLeafClickHandler(new LeafClickHandler() {
 			public void onLeafClick(LeafClickEvent event) {
 				TreeNode node = event.getLeaf();
@@ -248,10 +248,10 @@ public class BrightEdu implements EntryPoint {
 		});
 		sideNavLayout.addMember(sideNav);
 		hLayout.addMember(sideNavLayout);
-//		sideNav.setStyleName("test");
-//		sideNav.setWidth(200);
-//		sideNav.setShowResizeBar(true);
-//		hLayout.addMember(sideNav);
+		// sideNav.setStyleName("test");
+		// sideNav.setWidth(200);
+		// sideNav.setShowResizeBar(true);
+		// hLayout.addMember(sideNav);
 
 		mainTabSet = new TabSet();
 		Layout paneContainerProperties = new Layout();
@@ -272,10 +272,10 @@ public class BrightEdu implements EntryPoint {
 				}
 			}
 		});
-		Tab tab = new Tab();
-		tab.setTitle("Home&nbsp;&nbsp;");
-		tab.setIcon("pieces/16/cube_green.png", 16);
-		tab.setWidth(80);
+		Tab homeTab = new Tab();
+		homeTab.setTitle("Home&nbsp;&nbsp;");
+		homeTab.setIcon("pieces/16/cube_green.png", 16);
+		homeTab.setWidth(80);
 
 		HLayout mainPanel = new HLayout();
 		mainPanel.setHeight100();
@@ -284,9 +284,9 @@ public class BrightEdu implements EntryPoint {
 		// TileView tileView = new TileView(mainPanel);
 		// mainPanel.addMember(tileView);
 
-		tab.setPane(mainPanel);
-
-		mainTabSet.addTab(tab);
+		homeTab.setPane(mainPanel);
+		
+		mainTabSet.addTab(homeTab);
 
 		BrightCanvas canvas = new BrightCanvas();
 		// canvas.setBackgroundImage("[SKIN]/shared/background.gif");
@@ -297,22 +297,22 @@ public class BrightEdu implements EntryPoint {
 		hLayout.addMember(canvas);
 		main.addMember(hLayout);
 
-//		if (SC.hasFirebug()) {
-//			Label label = new Label();
-//			label.setWidth100();
-//			label.setHeight(50);
-//			label.setValign(VerticalAlignment.CENTER);
-//			label.setAlign(Alignment.CENTER);
-//			label.setContents("请对当前站点关闭Firebug");
-//
-//			Window fbWindow = new Window();
-//			fbWindow.setTitle("Firebug Detected");
-//			fbWindow.setWidth100();
-//			fbWindow.setHeight(80);
-//			fbWindow.addItem(label);
-//			fbWindow.setRedrawOnResize(true);
-//			main.addMember(fbWindow);
-//		}
+		// if (SC.hasFirebug()) {
+		// Label label = new Label();
+		// label.setWidth100();
+		// label.setHeight(50);
+		// label.setValign(VerticalAlignment.CENTER);
+		// label.setAlign(Alignment.CENTER);
+		// label.setContents("请对当前站点关闭Firebug");
+		//
+		// Window fbWindow = new Window();
+		// fbWindow.setTitle("Firebug Detected");
+		// fbWindow.setWidth100();
+		// fbWindow.setHeight(80);
+		// fbWindow.addItem(label);
+		// fbWindow.setRedrawOnResize(true);
+		// main.addMember(fbWindow);
+		// }
 		main.draw();
 	}
 
@@ -342,7 +342,8 @@ public class BrightEdu implements EntryPoint {
 					// history token and update the URL
 					tab.setAttribute("historyToken",
 							explorerTreeNode.getNodeID());
-					// tab.setContextMenu(contextMenu);
+					Menu contextMenu = createContextMenu();
+					tab.setContextMenu(contextMenu);
 
 					String sampleName = explorerTreeNode.getName();
 
@@ -366,6 +367,73 @@ public class BrightEdu implements EntryPoint {
 		}
 	}
 
+	private Menu createContextMenu() {
+		Menu menu = new Menu();
+		menu.setWidth(140);
+
+		MenuItemIfFunction enableCondition = new MenuItemIfFunction() {
+			public boolean execute(Canvas target, Menu menu, MenuItem item) {
+				int selectedTab = mainTabSet.getSelectedTabNumber();
+				return selectedTab != 0;
+			}
+		};
+
+		MenuItem closeItem = new MenuItem("关闭(<u>C</u>)");
+		closeItem.setEnableIfCondition(enableCondition);
+		closeItem.setKeyTitle("Alt+C");
+		KeyIdentifier closeKey = new KeyIdentifier();
+		closeKey.setAltKey(true);
+		closeKey.setKeyName("C");
+		closeItem.setKeys(closeKey);
+		closeItem
+				.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
+
+					@Override
+					public void onClick(MenuItemClickEvent event) {
+						int selectedTab = mainTabSet.getSelectedTabNumber();
+						mainTabSet.removeTab(selectedTab);
+						mainTabSet.selectTab(selectedTab - 1);
+					}
+				});
+
+		MenuItem closeAllButCurrent = new MenuItem("关闭其他");
+		closeAllButCurrent.setEnableIfCondition(enableCondition);
+		closeAllButCurrent
+				.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
+					public void onClick(MenuItemClickEvent event) {
+						int selected = mainTabSet.getSelectedTabNumber();
+						Tab[] tabs = mainTabSet.getTabs();
+						int[] tabsToRemove = new int[tabs.length - 2];
+						int cnt = 0;
+						for (int i = 1; i < tabs.length; i++) {
+							if (i != selected) {
+								tabsToRemove[cnt] = i;
+								cnt++;
+							}
+						}
+						mainTabSet.removeTabs(tabsToRemove);
+					}
+				});
+
+		MenuItem closeAll = new MenuItem("关闭所有");
+		closeAll.setEnableIfCondition(enableCondition);
+		closeAll.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
+			public void onClick(MenuItemClickEvent event) {
+				Tab[] tabs = mainTabSet.getTabs();
+				int[] tabsToRemove = new int[tabs.length - 1];
+
+				for (int i = 1; i < tabs.length; i++) {
+					tabsToRemove[i - 1] = i;
+				}
+				mainTabSet.removeTabs(tabsToRemove);
+				mainTabSet.selectTab(0);
+			}
+		});
+
+		menu.setItems(closeItem, closeAllButCurrent, closeAll);
+		return menu;
+	}
+
 	private void login_logout() {
 		SC.say("login or logout!");
 	}
@@ -377,8 +445,8 @@ public class BrightEdu implements EntryPoint {
 	public static DataBaseRPCAsync createDataBaseRPC() {
 		return dbService;
 	}
-	
-	public static GreetingServiceAsync createGreetingRPC(){
+
+	public static GreetingServiceAsync createGreetingRPC() {
 		return greetingService;
 	}
 }

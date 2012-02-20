@@ -209,7 +209,7 @@ public abstract class BasicAdminPanel extends VLayout {
 						} else if (indexGoto == 0) {
 							SC.warn("跳转的页数必须大于0");
 						} else {
-							gotoPage(indexGoto);
+							showPage(indexGoto);
 						}
 					}
 				}
@@ -252,9 +252,9 @@ public abstract class BasicAdminPanel extends VLayout {
 		initPages();
 		postInit();
 	}
-	
-	public void refresh(){
-		gotoPage(currentPageIndex);
+
+	public void refresh() {
+		showPage(currentPageIndex);
 	}
 
 	private void initListGrid() {
@@ -282,8 +282,9 @@ public abstract class BasicAdminPanel extends VLayout {
 		resultList.setFields(newFields);
 		resultList.setCanEdit(true);
 		resultList.setEditEvent(ListGridEditEvent.DOUBLECLICK);
+//		resultList.add
 		// disable context menu
-		resultList.setShowHeaderContextMenu(false);
+//		resultList.setShowHeaderContextMenu(false);
 	}
 
 	protected void del() {
@@ -310,20 +311,20 @@ public abstract class BasicAdminPanel extends VLayout {
 
 	public void showLastPageRecords(boolean force) {
 		if (force) {
-			gotoPage(totalPageCounts);
+			showPage(totalPageCounts);
 		} else {
 			if (currentPageIndex != totalPageCounts) {
-				gotoPage(totalPageCounts);
+				showPage(totalPageCounts);
 			}
 		}
 	}
 
 	public void showFirstPageRecords(boolean force) {
 		if (force) {
-			gotoPage(1);
+			showPage(1);
 		} else {
 			if (currentPageIndex != 1) {
-				gotoPage(1);
+				showPage(1);
 			}
 		}
 	}
@@ -338,13 +339,13 @@ public abstract class BasicAdminPanel extends VLayout {
 
 	public void showNextPageRecords() {
 		if (currentPageIndex + 1 <= totalPageCounts) {
-			gotoPage(currentPageIndex + 1);
+			showPage(currentPageIndex + 1);
 		}
 	}
 
 	public void showPreviousPageRecords() {
 		if (currentPageIndex - 1 > 0) {
-			gotoPage(currentPageIndex - 1);
+			showPage(currentPageIndex - 1);
 		}
 	}
 
@@ -367,7 +368,7 @@ public abstract class BasicAdminPanel extends VLayout {
 	}
 
 	protected void initPages() {
-		gotoPage(1, true);
+		showPage(1, true);
 	}
 
 	protected ListGridField[] parseGridFields(String[] names, String[] titles,
@@ -397,7 +398,18 @@ public abstract class BasicAdminPanel extends VLayout {
 		return fields;
 	}
 
-	public abstract void gotoPage(int indexGoto, boolean init);
+	public void showPage(int indexGoto, boolean init) {
+		// UI aciton before goto
+//		resultList.showDataLoading();
+		gotoPage(indexGoto, init);
+		// UI action after goto
+	}
+	
+	public void showPage(int indexGoto) {
+		showPage(indexGoto, false);
+	}
+
+	protected abstract void gotoPage(int indexGoto, boolean init);
 
 	public abstract ListGridField[] createGridFileds();
 
@@ -415,7 +427,7 @@ public abstract class BasicAdminPanel extends VLayout {
 
 	public void afterAdd() {
 		// showLastPageRecords(true);
-		gotoPage(1, true);
+		showPage(1, true);
 	}
 
 	public AdminDialog getAdminDialog() {
@@ -430,7 +442,7 @@ public abstract class BasicAdminPanel extends VLayout {
 		@Override
 		public void onSuccess(T result) {
 			BrightEdu.showTip("已删除！");
-			gotoPage(currentPageIndex);
+			showPage(currentPageIndex);
 		}
 
 	}

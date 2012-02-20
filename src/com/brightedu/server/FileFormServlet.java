@@ -179,7 +179,7 @@ public class FileFormServlet extends BrightServlet {
 					} else if (name.equals("status")) {
 						String status = (Streams.asString(item.openStream()));
 						System.out.println("status: " + status);
-						agreement.setAgreement_status(status.equals("true"));
+						agreement.setAgreement_status(status.equals("1"));
 					} else {
 						Log.w("Unknown param form field: " + name);
 					}

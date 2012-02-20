@@ -53,8 +53,8 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 		colleges = new LinkedHashMap<String, String>();
 		agents = new LinkedHashMap<String, String>();
 		statusMap = new LinkedHashMap<String, String>();
-		statusMap.put("true", "有效");
-		statusMap.put("false", "无效");
+		statusMap.put("1", "有效");
+		statusMap.put("-1", "无效");
 		super.init();
 		AsyncCallback<List<College>> collegeCall = new CommonAsyncCall<List<College>>() {
 			public void onSuccess(List<College> result) {
@@ -167,7 +167,7 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 					rec.setAttribute("object", bi);
 					rec.setAttribute("college", bi.getCollege_id());
 					rec.setAttribute("agent", bi.getAgent_id());
-					rec.setAttribute("status", bi.getAgreement_status());
+					rec.setAttribute("status", bi.getAgreement_status()?"1":"-1");
 					rec.setAttribute("modify_date", bi.getUpdate_date());
 
 					listData[i] = rec;
@@ -237,8 +237,8 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 		final boolean status = agreement.getAgreement_status();
 		agreement.setCollege_id(Integer.parseInt(rec.getAttribute("college")));
 		agreement.setAgent_id(Integer.parseInt(rec.getAttribute("agent")));
-		agreement.setAgreement_status(rec.getAttribute("status").equals(
-				"true"));
+		agreement
+				.setAgreement_status(rec.getAttribute("status").equals("1"));
 		dbService.saveCollegeAgreement(agreement,
 				new CommonAsyncCall<Boolean>() {
 					@Override
@@ -251,7 +251,7 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 						agreement.setCollege_id(oldCollege);
 						rec.setAttribute("college", oldCollege);
 						rec.setAttribute("agent", oldAgent);
-						rec.setAttribute("status", status ? "true" : "false");
+						rec.setAttribute("status", status ? "1" : "-1");
 					}
 				});
 	}
