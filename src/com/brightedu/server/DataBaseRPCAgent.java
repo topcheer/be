@@ -33,6 +33,7 @@ import com.brightedu.dao.edu.StudentClassifiedMapper;
 import com.brightedu.dao.edu.StudentStatusMapper;
 import com.brightedu.dao.edu.StudentTypeMapper;
 import com.brightedu.dao.edu.SubjectsMapper;
+import com.brightedu.dao.edu.UserMapper;
 import com.brightedu.dao.edu.UserTypeMapper;
 import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.AgentTypeExample;
@@ -75,6 +76,7 @@ import com.brightedu.model.edu.StudentTypeExample;
 import com.brightedu.model.edu.Subjects;
 import com.brightedu.model.edu.SubjectsExample;
 import com.brightedu.model.edu.User;
+import com.brightedu.model.edu.UserExample;
 import com.brightedu.model.edu.UserType;
 import com.brightedu.model.edu.UserTypeExample;
 import com.brightedu.server.util.ConnectionManager;
@@ -1398,6 +1400,85 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		} finally {
 			session.close();
 		}
+
+	}
+
+	
+	/************************ 用户管理 *********************************/
+	
+	@Override
+	public List<User> getUserList(int offset, int limit, boolean needTotalCounts) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			UserMapper mp = session
+					.getMapper(UserMapper.class);
+
+			UserExample ex = new UserExample();
+			if (offset != -1 || limit != -1) {
+				ex.setPage(new Page(offset, limit));
+			}
+			ex.setOrderByClause("user_id desc");
+			List result = mp.selectByExample(ex);
+			if (needTotalCounts) {
+				Integer counts = mp.countByExample(null);
+				result.add(counts);
+			}
+			return result;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean addUser(User user) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			UserMapper bim = session.getMapper(UserMapper.class);
+			int count = bim.insertSelective(user);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+
+	}
+
+	@Override
+	public boolean deletUser(List<Integer> user_ids) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			UserMapper scm = session
+					.getMapper(UserMapper.class);
+			UserExample ex = new UserExample();
+			UserExample.Criteria cr = ex.createCriteria();
+			cr.andUser_idIn(user_ids);
+			scm.deleteByExample(ex);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean saveUser(User user) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			UserMapper scm = session
+					.getMapper(UserMapper.class);
+			scm.updateByPrimaryKey(user);
+			session.commit();
+			return true;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean setOverridePriv(List<RightsCategoryFunctionKey> list,
+			boolean addOrRemove) {
+		
+		return false;
 
 	}
 

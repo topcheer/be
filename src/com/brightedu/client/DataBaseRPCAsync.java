@@ -22,6 +22,7 @@ import com.brightedu.model.edu.StudentClassified;
 import com.brightedu.model.edu.StudentStatus;
 import com.brightedu.model.edu.StudentType;
 import com.brightedu.model.edu.Subjects;
+import com.brightedu.model.edu.User;
 import com.brightedu.model.edu.UserType;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -218,5 +219,17 @@ public interface DataBaseRPCAsync {
 
 	void deleteRightsDefault(Integer userType_id,
 			AsyncCallback<Boolean> callback);
+
+	void getUserList(int offset, int limit, boolean needTotalCounts,
+			AsyncCallback<List<User>> callback);
+
+	void addUser(User user, AsyncCallback<Boolean> callback);
+
+	void deletUser(List<Integer> user_ids, AsyncCallback<Boolean> callback);
+
+	void saveUser(User user, AsyncCallback<Boolean> callback);
+
+	void setOverridePriv(List<RightsCategoryFunctionKey> list,
+			boolean addOrRemove, AsyncCallback<Boolean> callback);
 
 }

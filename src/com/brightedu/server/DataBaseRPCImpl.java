@@ -38,6 +38,7 @@ import com.brightedu.model.edu.StudentClassified;
 import com.brightedu.model.edu.StudentStatus;
 import com.brightedu.model.edu.StudentType;
 import com.brightedu.model.edu.Subjects;
+import com.brightedu.model.edu.User;
 import com.brightedu.model.edu.UserType;
 
 public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
@@ -434,6 +435,34 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	@Override
 	public Serializable getObjectById(String mapperClassName, int id) {
 		return agent.getObjectById(mapperClassName, id);
+	}
+
+	/************************ 用户管理 *********************************/
+	
+	@Override
+	public List<User> getUserList(int offset, int limit, boolean needTotalCounts) {
+		return agent.getUserList(offset, limit, needTotalCounts);
+	}
+
+	@Override
+	public boolean addUser(User user) {
+		return agent.addUser(user);
+	}
+
+	@Override
+	public boolean deletUser(List<Integer> user_ids) {
+		return agent.deletUser(user_ids);
+	}
+
+	@Override
+	public boolean saveUser(User user) {
+		return agent.saveUser(user);
+	}
+
+	@Override
+	public boolean setOverridePriv(List<RightsCategoryFunctionKey> list,
+			boolean addOrRemove) {
+		return agent.setOverridePriv(list, addOrRemove);
 	}
 
 
