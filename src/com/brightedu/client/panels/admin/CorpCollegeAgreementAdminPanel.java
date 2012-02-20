@@ -229,8 +229,31 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 	}
 
 	@Override
-	public void update(Record record) {
+	public void update(final Record rec) {
+		final CollegeAgreement agreement = (CollegeAgreement) rec
+				.getAttributeAsObject("object");
+		final int oldCollege = agreement.getCollege_id();
+		final int oldAgent = agreement.getAgent_id();
+		final boolean status = agreement.getAgreement_status();
+		agreement.setCollege_id(Integer.parseInt(rec.getAttribute("college")));
+		agreement.setAgent_id(Integer.parseInt(rec.getAttribute("agent")));
+		agreement.setAgreement_status(rec.getAttribute("status").equals(
+				"true"));
+		dbService.saveCollegeAgreement(agreement,
+				new CommonAsyncCall<Boolean>() {
+					@Override
+					public void onSuccess(Boolean result) {
+						BrightEdu.showTip("已保存!");
+					}
 
+					protected void failed() { // rollback in UI
+						agreement.setAgent_id(oldAgent);
+						agreement.setCollege_id(oldCollege);
+						rec.setAttribute("college", oldCollege);
+						rec.setAttribute("agent", oldAgent);
+						rec.setAttribute("status", status ? "true" : "false");
+					}
+				});
 	}
 
 	@Override
