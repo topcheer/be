@@ -27,6 +27,7 @@ import com.brightedu.dao.edu.RecruitAgentMapper;
 import com.brightedu.dao.edu.RecruitPlanMapper;
 import com.brightedu.dao.edu.RightsCategoryFunctionMapper;
 import com.brightedu.dao.edu.RightsCategoryMapper;
+import com.brightedu.dao.edu.RightsDefaultMapper;
 import com.brightedu.dao.edu.RightsFunctionMapper;
 import com.brightedu.dao.edu.StudentClassifiedMapper;
 import com.brightedu.dao.edu.StudentStatusMapper;
@@ -61,6 +62,8 @@ import com.brightedu.model.edu.RightsCategory;
 import com.brightedu.model.edu.RightsCategoryExample;
 import com.brightedu.model.edu.RightsCategoryFunctionExample;
 import com.brightedu.model.edu.RightsCategoryFunctionKey;
+import com.brightedu.model.edu.RightsDefaultExample;
+import com.brightedu.model.edu.RightsDefaultKey;
 import com.brightedu.model.edu.RightsFunction;
 import com.brightedu.model.edu.RightsFunctionExample;
 import com.brightedu.model.edu.StudentClassified;
@@ -682,6 +685,9 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			UserTypeExample.Criteria cr = ex.createCriteria();
 			cr.andUser_type_idIn(UserType_ids);
 			scm.deleteByExample(ex);
+			
+			//TODO: also need to delete records from RightsDefault
+			
 			session.commit();
 			return true;
 		} finally {
@@ -1323,6 +1329,69 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 
 			mp.deleteByExample(ex);
 
+			session.commit();
+			return true;
+
+		} finally {
+			session.close();
+		}
+
+	}
+
+	@Override
+	public List<RightsDefaultKey> getRightsDefault(String user_typ_Id) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			RightsDefaultMapper mp = session
+					.getMapper(RightsDefaultMapper.class);
+			RightsDefaultExample ex = new RightsDefaultExample();
+			ex.createCriteria().andUser_type_idEqualTo(new Integer(user_typ_Id));
+			List<RightsDefaultKey> result = mp.selectByExample(ex);
+			return result;
+
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean addRightsDefault(List<RightsDefaultKey> rightDefaultList) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			RightsDefaultMapper mp = session
+					.getMapper(RightsDefaultMapper.class);
+
+			// 先删除比较保险,连续调用两个RPC可能导致还没删除就已经开始插入了
+
+			RightsDefaultExample ex = new RightsDefaultExample();
+			ex.createCriteria().andUser_type_idEqualTo(rightDefaultList.get(0).getUser_type_id());
+
+			mp.deleteByExample(ex);
+
+			for (int i = 0; i < rightDefaultList.size(); i++) {
+				mp.insertSelective(rightDefaultList.get(i));
+			}
+
+			session.commit();
+			return true;
+
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean deleteRightsDefault(Integer userType_id) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			RightsDefaultMapper mp = session
+					.getMapper(RightsDefaultMapper.class);
+
+
+
+			RightsDefaultExample ex = new RightsDefaultExample();
+			ex.createCriteria().andUser_type_idEqualTo(userType_id);
+			mp.deleteByExample(ex);
 			session.commit();
 			return true;
 

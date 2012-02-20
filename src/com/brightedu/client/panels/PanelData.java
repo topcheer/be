@@ -59,7 +59,9 @@ public class PanelData {
 		if (id.equals("rights_manage")) { //权限基础数据设置
 			return new RightsManage.Factory();
 		}
-		
+		if (id.equals("default_rights_manage")) { //缺省权限设置
+			return new DefaultRightsManage.Factory();
+		}		
 		
 		
 		return null;

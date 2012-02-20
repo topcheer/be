@@ -16,6 +16,7 @@ import com.brightedu.model.edu.RecruitAgent;
 import com.brightedu.model.edu.RecruitPlan;
 import com.brightedu.model.edu.RightsCategory;
 import com.brightedu.model.edu.RightsCategoryFunctionKey;
+import com.brightedu.model.edu.RightsDefaultKey;
 import com.brightedu.model.edu.RightsFunction;
 import com.brightedu.model.edu.StudentClassified;
 import com.brightedu.model.edu.StudentStatus;
@@ -208,5 +209,14 @@ public interface DataBaseRPCAsync {
 
 	void getObjectById(String mapperClassName, int id,
 			AsyncCallback<Serializable> callback);
+
+	void getRightsDefault(String user_typ_Id,
+			AsyncCallback<List<RightsDefaultKey>> callback);
+
+	void addRightsDefault(List<RightsDefaultKey> rightDefaultList,
+			AsyncCallback<Boolean> callback);
+
+	void deleteRightsDefault(Integer userType_id,
+			AsyncCallback<Boolean> callback);
 
 }

@@ -31,6 +31,7 @@ import com.brightedu.model.edu.RecruitAgent;
 import com.brightedu.model.edu.RecruitPlan;
 import com.brightedu.model.edu.RightsCategory;
 import com.brightedu.model.edu.RightsCategoryFunctionKey;
+import com.brightedu.model.edu.RightsDefaultKey;
 import com.brightedu.model.edu.RightsFunction;
 import com.brightedu.model.edu.StudentClassified;
 import com.brightedu.model.edu.StudentStatus;
@@ -201,8 +202,9 @@ public interface DataBaseRPC extends RemoteService {
 	public boolean deleteRightsCategory(RightsCategory category);
 	public boolean deleteRightsFunction(List<String> function);
 	public boolean deleteRightsCatetoryFunctions(String rightsCategoryFunctionList);
-	
-
+	public List<RightsDefaultKey> getRightsDefault(String user_typ_Id);
+	public boolean addRightsDefault(List<RightsDefaultKey> rightDefaultList);
+	public boolean deleteRightsDefault(Integer userType_id);
 	
 	/*******************通用方法***************************/
 	public Serializable getObjectById(String mapperClassName, int id);

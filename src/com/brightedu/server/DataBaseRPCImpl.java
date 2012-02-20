@@ -32,6 +32,7 @@ import com.brightedu.model.edu.RecruitAgent;
 import com.brightedu.model.edu.RecruitPlan;
 import com.brightedu.model.edu.RightsCategory;
 import com.brightedu.model.edu.RightsCategoryFunctionKey;
+import com.brightedu.model.edu.RightsDefaultKey;
 import com.brightedu.model.edu.RightsFunction;
 import com.brightedu.model.edu.StudentClassified;
 import com.brightedu.model.edu.StudentStatus;
@@ -414,11 +415,28 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 			String rightsCategoryFunctionList) {
 		return agent.deleteRightsCatetoryFunctions(rightsCategoryFunctionList);
 	}
+	@Override
+	public List<RightsDefaultKey> getRightsDefault(String user_typ_Id) {
+		return agent.getRightsDefault(user_typ_Id);
+	}
 
+	@Override
+	public boolean addRightsDefault(List<RightsDefaultKey> rightDefaultList) {
+		return agent.addRightsDefault(rightDefaultList);
+	}
+	
+
+	@Override
+	public boolean deleteRightsDefault(Integer userType_id) {
+		return agent.deleteRightsDefault(userType_id);
+	}
 	/********************通用方法*****************************/
 	@Override
 	public Serializable getObjectById(String mapperClassName, int id) {
 		return agent.getObjectById(mapperClassName, id);
 	}
+
+
+
 
 }
