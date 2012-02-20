@@ -27,9 +27,9 @@ public class UserAdminMasterPanel extends BasicAdminPanel {
 
 	public UserAdminMasterPanel(UserAdmin agentadmin) {
 		this.admin = agentadmin;
-
+		
 		resultList.addSelectionChangedHandler(new SelectionChangedHandler() {
-
+			
 			@Override
 			public void onSelectionChanged(SelectionEvent event) {
 				if (event.getState()) {
@@ -37,10 +37,13 @@ public class UserAdminMasterPanel extends BasicAdminPanel {
 							(User) event.getRecord()
 									.getAttributeAsObject("object"));
 					admin.detailed.getDetailedForm().getSaveBtn().enable();
+					admin.rightsSection.setExpanded(true);
+				
 				} else {
 					admin.detailed.getDetailedForm().setValue(
 							new User());// empty all fields
 					admin.detailed.getDetailedForm().getSaveBtn().disable();
+					admin.rightsSection.setExpanded(false);
 				}
 			}
 		});

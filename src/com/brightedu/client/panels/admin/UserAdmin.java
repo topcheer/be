@@ -13,7 +13,13 @@ public final class UserAdmin extends FunctionPanel {
 	public static String DESCRIPTION = "用户管理";
 	UserAdminMasterPanel master;
 	UserAdminDetaiPanel detailed;
-
+	UserRightsOverridePanel rights;
+	
+	SectionStack rightSideLayout ;
+	SectionStackSection masterSection ;
+	SectionStackSection detailedSection;
+	SectionStackSection rightsSection ;
+	
 	public static class Factory implements PanelFactory {
 		String id;
 
@@ -34,23 +40,36 @@ public final class UserAdmin extends FunctionPanel {
 		master = new UserAdminMasterPanel(this);
 		master.setHeight(300);
 		detailed = new UserAdminDetaiPanel(this);
-		SectionStack rightSideLayout = new SectionStack();
+		rights = new UserRightsOverridePanel(this);
+		
+		rightSideLayout = new SectionStack();
+		masterSection = new SectionStackSection("用户列表");
+		detailedSection = new SectionStackSection("详细信息");
+		rightsSection = new SectionStackSection("权限");
+		
 		rightSideLayout.setScrollSectionIntoView(true);
 		rightSideLayout.setVisibilityMode(VisibilityMode.MULTIPLE);
 		rightSideLayout.setAnimateSections(true);
 
-		SectionStackSection masterSection = new SectionStackSection("用户列表");
+		
 		masterSection.setItems(master);
 		masterSection.setExpanded(true);
 
-		SectionStackSection detailedSection = new SectionStackSection("详细信息");
+		
 		VLayout detailedV = new VLayout();
 
 		detailedV.addMember(detailed);
 		detailedSection.setItems(detailedV);
 		detailedSection.setExpanded(true);
 
-		rightSideLayout.setSections(masterSection, detailedSection);
+		
+		VLayout rightsV = new VLayout();
+		rightsV.addMember(rights);
+		rightsSection.addItem(rightsV);
+		rightsSection.setExpanded(false);
+		
+		
+		rightSideLayout.setSections(masterSection, detailedSection,rightsSection);
 		return rightSideLayout;
 	}
 

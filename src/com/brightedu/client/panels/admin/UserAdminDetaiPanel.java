@@ -10,10 +10,11 @@ public class UserAdminDetaiPanel extends VLayout {
 	UserAdminEditorForm detailedForm = new UserAdminEditorForm();
 
 	UserAdmin admin;
-
+	
 	public UserAdminDetaiPanel(UserAdmin agentAdmin) {
 		this.admin = agentAdmin;
 		addMember(detailedForm);
+		
 		detailedForm.getSaveBtn().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
