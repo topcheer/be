@@ -85,9 +85,6 @@
     <table  schema="edu" tableName="co_college" domainObjectName="College" >
       <property name="useActualColumnNames" value="true"/>
     </table>  
-    <table  schema="edu" tableName="college_agreement" domainObjectName="CollegeAgreement" >
-      <property name="useActualColumnNames" value="true"/>
-    </table>  
     <table  schema="edu" tableName="college_return" domainObjectName="CollegeReturn" >
       <property name="useActualColumnNames" value="true"/>
     </table> 
@@ -130,13 +127,9 @@
     <table  schema="edu" tableName="user_admin" domainObjectName="User" >
       <property name="useActualColumnNames" value="true"/>
     </table>  
-   --> 
-  
-  <!-- 改动后在这里生成新的模型 
     <table schema="edu" tableName="sd_school" domainObjectName="School" >
       <property name="useActualColumnNames" value="true"/>
     </table> 
-
     <table schema="edu" tableName="sd_ethnic_group" domainObjectName="EthnicGroup" >
       <property name="useActualColumnNames" value="true"/>
     </table> 
@@ -146,9 +139,6 @@
     <table schema="edu" tableName="pic_type" domainObjectName="PictureType" >
       <property name="useActualColumnNames" value="true"/>
     </table>    
-    
-    
-    
      <table schema="edu" tableName="student_type" domainObjectName="StudentType" >
       <property name="useActualColumnNames" value="true"/>
     </table>   
@@ -158,52 +148,15 @@
      <table schema="edu" tableName="student_pic" domainObjectName="StudentPicture" >
       <property name="useActualColumnNames" value="true"/>
     </table>    
-     <table schema="edu" tableName="student_info" domainObjectName="StudentInfo" >
-      <property name="useActualColumnNames" value="true"/>
-    </table> 
-    
- 
-    
-       <table  schema="edu" tableName="student_status" domainObjectName="StudentStatus" >
-      <property name="useActualColumnNames" value="true"/>
-    </table>
-      
     <table  schema="edu" tableName="current_batch" domainObjectName="CurrentBatch" >
       <property name="useActualColumnNames" value="true"/>
     </table>      
-        <table  schema="edu" tableName="college_subject" domainObjectName="CollegeSubject" >
-      <property name="useActualColumnNames" value="true"/>
-    </table>     
-    
-    
-     
-      <table  schema="edu" tableName="college_subject_view" domainObjectName="CollegeSubjectView" >
+    <table  schema="edu" tableName="college_subject_view" domainObjectName="CollegeSubjectView" >
       <property name="useActualColumnNames" value="true"/>
     </table>      
-         
-      <table  schema="edu" tableName="entrance_cost" domainObjectName="EntranceCost" >
-      <property name="useActualColumnNames" value="true"/>
-    </table>   
-    
-     <table  schema="edu" tableName="charge_admin" domainObjectName="ChargeAdmin" >
-      <property name="useActualColumnNames" value="true"/>
-    </table>
-     <table  schema="edu" tableName="fee_type" domainObjectName="FeeType" >
-      <property name="useActualColumnNames" value="true"/>
-    </table>  
-
-    <table  schema="edu" tableName="student_classified" domainObjectName="StudentClassified" >
-      <property name="useActualColumnNames" value="true"/>
-    </table>    
-    
-     
      <table  schema="edu" tableName="recruit_plan_view" domainObjectName="RecruitPlan" >
       <property name="useActualColumnNames" value="true"/>
     </table>  
-    
-    <table  schema="edu" tableName="user_admin" domainObjectName="User" >
-      <property name="useActualColumnNames" value="true"/>
-    </table> 
     
    <table  schema="edu" tableName="rights_category" domainObjectName="RightsCategory" >
       <property name="useActualColumnNames" value="true"/>
@@ -227,8 +180,13 @@
         <table  schema="edu" tableName="userrights_effective" domainObjectName="UserRightsEffective" >
       <property name="useActualColumnNames" value="true"/>
     </table>      
-       -->   
-          
+     
+    <table  schema="edu" tableName="college_aggregation" domainObjectName="CollegeAggregation" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>   
+   -->      
+    
+              
   </context>
   
 </generatorConfiguration>
