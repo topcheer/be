@@ -34,6 +34,8 @@ import com.brightedu.dao.edu.StudentStatusMapper;
 import com.brightedu.dao.edu.StudentTypeMapper;
 import com.brightedu.dao.edu.SubjectsMapper;
 import com.brightedu.dao.edu.UserMapper;
+import com.brightedu.dao.edu.UserRightsEffectiveMapper;
+import com.brightedu.dao.edu.UserRightsMapper;
 import com.brightedu.dao.edu.UserTypeMapper;
 import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.AgentTypeExample;
@@ -77,6 +79,10 @@ import com.brightedu.model.edu.Subjects;
 import com.brightedu.model.edu.SubjectsExample;
 import com.brightedu.model.edu.User;
 import com.brightedu.model.edu.UserExample;
+import com.brightedu.model.edu.UserRights;
+import com.brightedu.model.edu.UserRightsEffective;
+import com.brightedu.model.edu.UserRightsEffectiveExample;
+import com.brightedu.model.edu.UserRightsExample;
 import com.brightedu.model.edu.UserType;
 import com.brightedu.model.edu.UserTypeExample;
 import com.brightedu.server.util.ConnectionManager;
@@ -1480,6 +1486,40 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		
 		return false;
 
+	}
+
+	@Override
+	public List<UserRights> getUserRights(User user) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			UserRightsMapper mp = session
+					.getMapper(UserRightsMapper.class);
+
+			UserRightsExample ex = new UserRightsExample();
+			ex.setOrderByClause("category_id,function_id");
+			ex.createCriteria().andUser_idEqualTo(user.getUser_id());
+			List<UserRights> result = mp.selectByExample(ex);
+			return result;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public List<UserRightsEffective> getUserRightsEffective(User user) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			UserRightsEffectiveMapper mp = session
+					.getMapper(UserRightsEffectiveMapper.class);
+
+			UserRightsEffectiveExample ex = new UserRightsEffectiveExample();
+			ex.setOrderByClause("category_id,function_id");
+			ex.createCriteria().andUser_idEqualTo(user.getUser_id());
+			List<UserRightsEffective> result = mp.selectByExample(ex);
+			return result;
+		} finally {
+			session.close();
+		}
 	}
 
 }

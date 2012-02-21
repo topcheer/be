@@ -39,6 +39,8 @@ import com.brightedu.model.edu.StudentStatus;
 import com.brightedu.model.edu.StudentType;
 import com.brightedu.model.edu.Subjects;
 import com.brightedu.model.edu.User;
+import com.brightedu.model.edu.UserRights;
+import com.brightedu.model.edu.UserRightsEffective;
 import com.brightedu.model.edu.UserType;
 
 public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
@@ -463,6 +465,16 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	public boolean setOverridePriv(List<RightsCategoryFunctionKey> list,
 			boolean addOrRemove) {
 		return agent.setOverridePriv(list, addOrRemove);
+	}
+
+	@Override
+	public List<UserRights> getUserRights(User user) {
+		return agent.getUserRights(user);
+	}
+
+	@Override
+	public List<UserRightsEffective> getUserRightsEffective(User user) {
+		return agent.getUserRightsEffective(user);
 	}
 
 

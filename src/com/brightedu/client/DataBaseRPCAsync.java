@@ -23,6 +23,8 @@ import com.brightedu.model.edu.StudentStatus;
 import com.brightedu.model.edu.StudentType;
 import com.brightedu.model.edu.Subjects;
 import com.brightedu.model.edu.User;
+import com.brightedu.model.edu.UserRights;
+import com.brightedu.model.edu.UserRightsEffective;
 import com.brightedu.model.edu.UserType;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -231,5 +233,10 @@ public interface DataBaseRPCAsync {
 
 	void setOverridePriv(List<RightsCategoryFunctionKey> list,
 			boolean addOrRemove, AsyncCallback<Boolean> callback);
+
+	void getUserRights(User user, AsyncCallback<List<UserRights>> callback);
+
+	void getUserRightsEffective(User user,
+			AsyncCallback<List<UserRightsEffective>> callback);
 
 }

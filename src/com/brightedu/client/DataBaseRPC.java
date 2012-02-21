@@ -38,6 +38,8 @@ import com.brightedu.model.edu.StudentStatus;
 import com.brightedu.model.edu.StudentType;
 import com.brightedu.model.edu.Subjects;
 import com.brightedu.model.edu.User;
+import com.brightedu.model.edu.UserRights;
+import com.brightedu.model.edu.UserRightsEffective;
 import com.brightedu.model.edu.UserType;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -213,6 +215,8 @@ public interface DataBaseRPC extends RemoteService {
 	public boolean deletUser(List<Integer> user_ids);
 	public boolean saveUser(User user);
 	public boolean setOverridePriv(List<RightsCategoryFunctionKey> list, boolean addOrRemove);
+	public List<UserRights> getUserRights(User user);
+	public List<UserRightsEffective> getUserRightsEffective(User user);
 	
 	/*******************通用方法***************************/
 	public Serializable getObjectById(String mapperClassName, int id);
