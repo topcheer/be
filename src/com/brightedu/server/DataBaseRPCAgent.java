@@ -4,6 +4,10 @@ import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,6 +33,7 @@ import com.brightedu.dao.edu.RightsCategoryFunctionMapper;
 import com.brightedu.dao.edu.RightsCategoryMapper;
 import com.brightedu.dao.edu.RightsDefaultMapper;
 import com.brightedu.dao.edu.RightsFunctionMapper;
+import com.brightedu.dao.edu.RightsOverrideMapper;
 import com.brightedu.dao.edu.StudentClassifiedMapper;
 import com.brightedu.dao.edu.StudentStatusMapper;
 import com.brightedu.dao.edu.StudentTypeMapper;
@@ -69,6 +74,7 @@ import com.brightedu.model.edu.RightsDefaultExample;
 import com.brightedu.model.edu.RightsDefaultKey;
 import com.brightedu.model.edu.RightsFunction;
 import com.brightedu.model.edu.RightsFunctionExample;
+import com.brightedu.model.edu.RightsOverride;
 import com.brightedu.model.edu.StudentClassified;
 import com.brightedu.model.edu.StudentClassifiedExample;
 import com.brightedu.model.edu.StudentStatus;
@@ -1525,6 +1531,147 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		} finally {
 			session.close();
 		}
+	}
+
+	@Override
+	public boolean setOverride(RightsCategoryFunctionKey override, User user,
+			boolean addOrRemove) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+//			Connection conn = ConnectionManager.getConnection("edu");
+//			StringBuffer sqlBuffer = new StringBuffer();
+//			
+//			sqlBuffer.append("select count(*) from (select ");
+//			sqlBuffer.append("exsits (select 1 from rights_default b where user_type_id = ? and a.category_id = b.category_id) ");
+//			sqlBuffer.append(" and a.category_id = ? and a.function_id = ?");
+//			PreparedStatement ps = conn.prepareStatement(sqlBuffer.toString());
+//			ps.setInt(1, user.getUser_id());
+//			ps.setString(2, override.getCategory_id());
+//			ps.setString(3, override.getFunction_id());
+//			
+//			ResultSet count = ps.executeQuery();
+//			
+//			count.next();
+//			System.out.println(sqlBuffer);
+//			System.out.println(count.getInt(1));
+//			
+//			if(addOrRemove)
+//			{
+//				
+//			}
+//			else
+//			{
+//				
+//			}
+//			
+			
+			RightsDefaultMapper um = session.getMapper(RightsDefaultMapper.class);
+			RightsDefaultExample exr = new RightsDefaultExample();
+			exr.createCriteria().andUser_type_idEqualTo(user.getUser_type_id());
+			
+			List<RightsDefaultKey> rdl = um.selectByExample(exr);
+			ArrayList<String> catIds = new ArrayList<String>();
+			for(RightsDefaultKey rd : rdl)
+			{
+				catIds.add(rd.getCategory_id());
+			}
+
+			//check if override is in the list of the default granted function, if it is
+			// if it is then
+			// if addOrRemove is set to be true , then we should remove any record from RightsOverride related to this combination
+			// if addOrRemove is set to be false, then we should add a record into RightsOverride with the combination for this user
+			
+			// if it's not in default granted function, then 
+			// if addOrRemove is set to be true , then we should add a record into RightsOverride with the combination for this user
+			// if addOrRemove is set to be false, then we should remove any record from RightsOverride related to this combination
+			
+			
+			RightsCategoryFunctionMapper mp = session
+					.getMapper(RightsCategoryFunctionMapper.class);
+
+			RightsCategoryFunctionExample ex = new RightsCategoryFunctionExample();
+			ex.createCriteria().andCategory_idIn(catIds)
+			.andCategory_idEqualTo(override.getCategory_id())
+			.andFunction_idEqualTo(override.getFunction_id());
+			
+			int count = mp.countByExample(ex);
+			
+			if(count>0)
+			{
+				Log.d("in default granted list");
+				if(addOrRemove)
+				{
+					Log.d("remove from override list");
+					RightsOverride ro = new RightsOverride();
+					ro.setUser_id(user.getUser_id());
+					ro.setRights_category_id(override.getCategory_id());
+					ro.setRights_function_id(override.getFunction_id());
+					RightsOverrideMapper rom = session
+							.getMapper(RightsOverrideMapper.class);
+					
+					rom.deleteByPrimaryKey(ro);
+					session.commit();
+					
+				}
+				else
+				{
+					Log.d("add into override list");
+					RightsOverride ro = new RightsOverride();
+					ro.setUser_id(user.getUser_id());
+					ro.setRights_category_id(override.getCategory_id());
+					ro.setRights_function_id(override.getFunction_id());
+					ro.setOverride(false);
+					RightsOverrideMapper rom = session
+							.getMapper(RightsOverrideMapper.class);
+					
+					rom.insertSelective(ro);
+					session.commit();
+					
+				}
+				
+			}
+			else
+			{
+				Log.d("NOT in default granted list");
+				if(addOrRemove)
+				{
+					Log.d("add into override list");
+					RightsOverride ro = new RightsOverride();
+					ro.setUser_id(user.getUser_id());
+					ro.setRights_category_id(override.getCategory_id());
+					ro.setRights_function_id(override.getFunction_id());
+					ro.setOverride(true);
+					RightsOverrideMapper rom = session
+							.getMapper(RightsOverrideMapper.class);
+					
+					rom.insertSelective(ro);
+					session.commit();
+					
+				}
+				else
+				{
+					Log.d("remove from override list");
+					RightsOverride ro = new RightsOverride();
+					ro.setUser_id(user.getUser_id());
+					ro.setRights_category_id(override.getCategory_id());
+					ro.setRights_function_id(override.getFunction_id());
+					RightsOverrideMapper rom = session
+							.getMapper(RightsOverrideMapper.class);
+					
+					rom.deleteByPrimaryKey(ro);
+					session.commit();
+				}
+				
+			}
+			
+
+//			session.commit();
+			return true;
+
+		} finally {
+			session.close();
+		}
+		
 	}
 
 }

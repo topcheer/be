@@ -9,6 +9,7 @@ import com.brightedu.client.CommonAsyncCall;
 import com.brightedu.client.panels.BasicAdminPanel;
 import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.RecruitAgent;
+import com.brightedu.model.edu.RightsCategoryFunctionKey;
 import com.brightedu.model.edu.User;
 import com.brightedu.model.edu.UserRights;
 import com.brightedu.model.edu.UserType;
@@ -20,6 +21,8 @@ import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.grid.ListGridField;
+import com.smartgwt.client.widgets.grid.events.EditCompleteEvent;
+import com.smartgwt.client.widgets.grid.events.EditCompleteHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 
@@ -178,6 +181,28 @@ public class UserAdminMasterPanel extends BasicAdminPanel {
 		});
 	}
 
+	public void updateRights(Record record) {
+		final Record rec = resultList.getSelectedRecord();
+		final User user = (User) rec
+				.getAttributeAsObject("object");
+		
+		//newuser.setAgent_id(agentList.get);
+		
+		RightsCategoryFunctionKey override  = new RightsCategoryFunctionKey();
+		override.setCategory_id(record.getAttributeAsString("categoryID"));
+		override.setFunction_id(record.getAttributeAsString("functionID"));
+		
+		dbService.setOverride(override, user, record.getAttributeAsBoolean("select"), new CommonAsyncCall<Boolean>(){
+
+			@Override
+			public void onSuccess(Boolean result) {
+				
+				
+			}}
+		);
+
+
+	}
 	@Override
 	public void add(Object model) {
 		User user = (User) model;

@@ -239,4 +239,7 @@ public interface DataBaseRPCAsync {
 	void getUserRightsEffective(User user,
 			AsyncCallback<List<UserRightsEffective>> callback);
 
+	void setOverride(RightsCategoryFunctionKey override, User user,
+			boolean addOrRemove, AsyncCallback<Boolean> callback);
+
 }

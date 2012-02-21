@@ -477,6 +477,12 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 		return agent.getUserRightsEffective(user);
 	}
 
+	@Override
+	public boolean setOverride(RightsCategoryFunctionKey override, User user,
+			boolean addOrRemove) {
+		return agent.setOverride(override, user, addOrRemove);
+	}
+
 
 
 

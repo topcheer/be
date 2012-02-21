@@ -216,6 +216,8 @@ public interface DataBaseRPC extends RemoteService {
 	public boolean saveUser(User user);
 	public boolean setOverridePriv(List<RightsCategoryFunctionKey> list, boolean addOrRemove);
 	public List<UserRights> getUserRights(User user);
+	public boolean setOverride(RightsCategoryFunctionKey override, User user, boolean addOrRemove);
+	
 	public List<UserRightsEffective> getUserRightsEffective(User user);
 	
 	/*******************通用方法***************************/

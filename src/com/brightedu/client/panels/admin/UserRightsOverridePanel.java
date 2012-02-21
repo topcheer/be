@@ -3,15 +3,17 @@ package com.brightedu.client.panels.admin;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
+import com.smartgwt.client.widgets.grid.events.EditCompleteEvent;
+import com.smartgwt.client.widgets.grid.events.EditCompleteHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 public class UserRightsOverridePanel extends VLayout {
 
 	ListGrid userRightsGrid = new ListGrid();
 	UserAdmin useradmin;
-	public UserRightsOverridePanel(UserAdmin useradmin) {
+	public UserRightsOverridePanel(UserAdmin userAdmin) {
 
-		this.useradmin = useradmin;
+		this.useradmin = userAdmin;
 		
 		ListGridField selectField = new ListGridField("select","选择");
 		selectField.setType(ListGridFieldType.BOOLEAN);
@@ -29,6 +31,14 @@ public class UserRightsOverridePanel extends VLayout {
 		userRightsGrid.setShowHeaderContextMenu(false);
 		addMember(userRightsGrid);
 		userRightsGrid.setTitle("选中的记录为用户类型缺省赋予的权限，选中或取消进行定制");
+		userRightsGrid.addEditCompleteHandler(new EditCompleteHandler(){
+
+			@Override
+			public void onEditComplete(EditCompleteEvent event) {
+				
+				useradmin.master.updateRights(userRightsGrid.getSelectedRecord());
+				
+			}});
 	}
 
 }
