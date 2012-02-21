@@ -227,7 +227,8 @@
         <table  schema="edu" tableName="userrights_effective" domainObjectName="UserRightsEffective" >
       <property name="useActualColumnNames" value="true"/>
     </table>      
-       -->                
+       -->   
+          
   </context>
   
 </generatorConfiguration>
