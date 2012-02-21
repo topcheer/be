@@ -220,7 +220,14 @@
        <table  schema="edu" tableName="rights_override" domainObjectName="RightsOverride" >
       <property name="useActualColumnNames" value="true"/>
     </table>  
-     -->                  
+     
+    <table  schema="edu" tableName="userrights_view" domainObjectName="UserRights" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+        <table  schema="edu" tableName="userrights_effective" domainObjectName="UserRightsEffective" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>      
+       -->                
   </context>
   
 </generatorConfiguration>
