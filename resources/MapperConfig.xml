@@ -67,7 +67,7 @@
 	    <mapper resource="com/brightedu/xml/edu/EthnicGroupMapper.xml" />
 	    <mapper resource="com/brightedu/xml/edu/PoliticalStatusMapper.xml" />
 	    <mapper resource="com/brightedu/xml/edu/PictureTypeMapper.xml" />
-	    
+	    <mapper resource="com/brightedu/xml/edu/SchoolMapper.xml" />
 	    <mapper resource="com/brightedu/xml/edu/StudentTypeMapper.xml" />
 	    <mapper resource="com/brightedu/xml/edu/MajorCategoryMapper.xml" />
 	    <mapper resource="com/brightedu/xml/edu/StudentPictureMapper.xml" />
