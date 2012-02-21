@@ -11,7 +11,7 @@ Target Server Type    : PGSQL
 Target Server Version : 80409
 File Encoding         : 65001
 
-Date: 2012-02-14 22:34:55
+Date: 2012-02-14 23:23:54
 */
 
 
@@ -237,13 +237,17 @@ CREATE TABLE "edu"."charge_admin" (
 "amount_flag" bool NOT NULL,
 "amount" numeric(10,2) NOT NULL,
 "charge_time" timestamp(6) DEFAULT now() NOT NULL,
-"remark" varchar(255)
+"remark" varchar(255),
+"due_date" timestamp(6)
 )
 WITH (OIDS=FALSE)
 
 ;
 COMMENT ON TABLE "edu"."charge_admin" IS '收费管理';
+COMMENT ON COLUMN "edu"."charge_admin"."fee_id" IS '费用类型';
+COMMENT ON COLUMN "edu"."charge_admin"."charge_type_id" IS '缴费方式';
 COMMENT ON COLUMN "edu"."charge_admin"."charge_time" IS '登记时间';
+COMMENT ON COLUMN "edu"."charge_admin"."due_date" IS '应收费用的截止时间';
 
 -- ----------------------------
 -- Records of charge_admin
@@ -567,7 +571,9 @@ COMMENT ON COLUMN "edu"."entrance_cost"."classified_id" IS '层次';
 DROP TABLE "edu"."fee_type";
 CREATE TABLE "edu"."fee_type" (
 "fee_id" numeric(5) DEFAULT fun_table_seq('fee_type'::character varying, 'fee_id'::character varying, 'next'::character varying) NOT NULL,
-"fee_name" varchar(255) NOT NULL
+"fee_name" varchar(255) NOT NULL,
+"split_by_year" bool,
+"charge_by_end" bool
 )
 WITH (OIDS=FALSE)
 
@@ -575,21 +581,23 @@ WITH (OIDS=FALSE)
 COMMENT ON TABLE "edu"."fee_type" IS '费用类型';
 COMMENT ON COLUMN "edu"."fee_type"."fee_id" IS '费用代码';
 COMMENT ON COLUMN "edu"."fee_type"."fee_name" IS '费用名称';
+COMMENT ON COLUMN "edu"."fee_type"."split_by_year" IS '是否每年收取(如果是，则生成费用时，按年生成）';
+COMMENT ON COLUMN "edu"."fee_type"."charge_by_end" IS '是否在期末收取（例如，专科两年，毕业费在两年之后收取）';
 
 -- ----------------------------
 -- Records of fee_type
 -- ----------------------------
-INSERT INTO "edu"."fee_type" VALUES ('4', '报名考试费');
-INSERT INTO "edu"."fee_type" VALUES ('5', '2011-2012年度学费');
-INSERT INTO "edu"."fee_type" VALUES ('6', '2012-2013年度学费');
-INSERT INTO "edu"."fee_type" VALUES ('7', '2013-2014年度学费');
-INSERT INTO "edu"."fee_type" VALUES ('8', '2014-2015年度学费');
-INSERT INTO "edu"."fee_type" VALUES ('9', '2011-2012年度托管费');
-INSERT INTO "edu"."fee_type" VALUES ('10', '2012-2013年度托管费');
-INSERT INTO "edu"."fee_type" VALUES ('11', '2013-2014年度托管费');
-INSERT INTO "edu"."fee_type" VALUES ('12', '2014-2015年度托管费');
-INSERT INTO "edu"."fee_type" VALUES ('13', '杂费');
-INSERT INTO "edu"."fee_type" VALUES ('14', '毕业费');
+INSERT INTO "edu"."fee_type" VALUES ('4', '报名考试费', null, null);
+INSERT INTO "edu"."fee_type" VALUES ('5', '2011-2012年度学费', null, null);
+INSERT INTO "edu"."fee_type" VALUES ('6', '2012-2013年度学费', null, null);
+INSERT INTO "edu"."fee_type" VALUES ('7', '2013-2014年度学费', null, null);
+INSERT INTO "edu"."fee_type" VALUES ('8', '2014-2015年度学费', null, null);
+INSERT INTO "edu"."fee_type" VALUES ('9', '2011-2012年度托管费', null, null);
+INSERT INTO "edu"."fee_type" VALUES ('10', '2012-2013年度托管费', null, null);
+INSERT INTO "edu"."fee_type" VALUES ('11', '2013-2014年度托管费', null, null);
+INSERT INTO "edu"."fee_type" VALUES ('12', '2014-2015年度托管费', null, null);
+INSERT INTO "edu"."fee_type" VALUES ('13', '杂费', null, null);
+INSERT INTO "edu"."fee_type" VALUES ('14', '毕业费', null, null);
 
 -- ----------------------------
 -- Table structure for "edu"."INMEMDB_POOL_DO_NOT_DELETE"
