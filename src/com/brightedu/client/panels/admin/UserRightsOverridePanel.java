@@ -28,6 +28,7 @@ public class UserRightsOverridePanel extends VLayout {
 		userRightsGrid.setFields(selectField,categoryField,categoryNameField,functionField,functionNameField);
 		userRightsGrid.setShowHeaderContextMenu(false);
 		addMember(userRightsGrid);
+		userRightsGrid.setTitle("选中的记录为用户类型缺省赋予的权限，选中或取消进行定制");
 	}
 
 }
