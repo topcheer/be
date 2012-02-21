@@ -81,7 +81,8 @@
 	    <mapper resource="com/brightedu/xml/edu/RightsCategoryFunctionMapper.xml" />
 	    <mapper resource="com/brightedu/xml/edu/RightsDefaultMapper.xml" />
 	    <mapper resource="com/brightedu/xml/edu/RightsOverrideMapper.xml" />
-    
+        <mapper resource="com/brightedu/xml/edu/UserRightsMapper.xml" />
+    	<mapper resource="com/brightedu/xml/edu/UserRightsEffectiveMapper.xml" />
 		
 	</mappers>
 
