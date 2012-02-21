@@ -50,19 +50,26 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 	FileUpdateDialog fileUpdate;
 
 	public void init() {
-		colleges = new LinkedHashMap<String, String>();
-		agents = new LinkedHashMap<String, String>();
+
 		statusMap = new LinkedHashMap<String, String>();
 		statusMap.put("1", "有效");
 		statusMap.put("-1", "无效");
 		super.init();
+		initSelectionValueMaps();
+	}
+
+	private void initSelectionValueMaps() {
+		colleges = new LinkedHashMap<String, String>();
+		agents = new LinkedHashMap<String, String>();
 		AsyncCallback<List<College>> collegeCall = new CommonAsyncCall<List<College>>() {
 			public void onSuccess(List<College> result) {
 				for (College c : result) {
 					colleges.put(c.getCollege_id() + "", c.getCollege_name());
 				}
 				fields[0].setValueMap(colleges); // 合作高校
-				resultList.redraw();
+				if (agents.size() != 0) {
+					resultList.redraw();
+				}
 			}
 		};
 		AsyncCallback<List<RecruitAgent>> agentCall = new CommonAsyncCall<List<RecruitAgent>>() {
@@ -71,12 +78,20 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 					agents.put(r.getAgent_id() + "", r.getAgent_name());
 				}
 				fields[1].setValueMap(agents);// 我方高校
-				resultList.redraw();
+				if (colleges.size() != 0) {
+					resultList.redraw();
+				}
 			}
 		};
 		fields[2].setValueMap(statusMap); // 状态
 		dbService.getCollegeList(-1, -1, false, collegeCall);
 		dbService.getRecruitAgentList(-1, -1, false, agentCall);
+
+	}
+
+	public void refresh() {
+		initSelectionValueMaps();
+		super.refresh();
 	}
 
 	public ListGrid createResultList() {
@@ -167,7 +182,8 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 					rec.setAttribute("object", bi);
 					rec.setAttribute("college", bi.getCollege_id());
 					rec.setAttribute("agent", bi.getAgent_id());
-					rec.setAttribute("status", bi.getAgreement_status()?"1":"-1");
+					rec.setAttribute("status", bi.getAgreement_status() ? "1"
+							: "-1");
 					rec.setAttribute("modify_date", bi.getUpdate_date());
 
 					listData[i] = rec;
@@ -237,8 +253,7 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 		final boolean status = agreement.getAgreement_status();
 		agreement.setCollege_id(Integer.parseInt(rec.getAttribute("college")));
 		agreement.setAgent_id(Integer.parseInt(rec.getAttribute("agent")));
-		agreement
-				.setAgreement_status(rec.getAttribute("status").equals("1"));
+		agreement.setAgreement_status(rec.getAttribute("status").equals("1"));
 		dbService.saveCollegeAgreement(agreement,
 				new CommonAsyncCall<Boolean>() {
 					@Override

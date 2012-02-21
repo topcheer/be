@@ -70,6 +70,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		Log.d("User login: " + user.getUser_name());
 		HttpSession session = this.getThreadLocalRequest().getSession();
 		session.setAttribute("user", user);
-		return AuthManager.getFunctions(new String[] { "system_manage" });
+		return AuthManager.getFunctions(new String[] { "system_manage",
+				"student_manage", "financial_manage", "student_personal" });
 	}
 }

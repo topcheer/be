@@ -1,18 +1,15 @@
 package com.brightedu.client.panels.admin;
 
-import com.brightedu.client.panels.FunctionPanel;
+import com.brightedu.client.panels.BasicAdminDetailPanel;
+import com.brightedu.client.panels.BasicAdminPanel;
+import com.brightedu.client.panels.DetailedEditorForm;
+import com.brightedu.client.panels.MasterDetailAdmin;
 import com.brightedu.client.panels.PanelFactory;
-import com.smartgwt.client.types.VisibilityMode;
 import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.layout.SectionStack;
-import com.smartgwt.client.widgets.layout.SectionStackSection;
-import com.smartgwt.client.widgets.layout.VLayout;
 
-public final class AgentAdmin extends FunctionPanel {
+public final class AgentAdmin extends MasterDetailAdmin {
 
 	public static String DESCRIPTION = "机构维护";
-	AgentAdminMasterPanel master;
-	AgentAdminDetaiPanel detailed;
 
 	public static class Factory implements PanelFactory {
 		String id;
@@ -30,33 +27,41 @@ public final class AgentAdmin extends FunctionPanel {
 	}
 
 	@Override
-	public Canvas getViewPanel() {
-		master = new AgentAdminMasterPanel(this);
-		master.setHeight(300);
-		detailed = new AgentAdminDetaiPanel(this);
-		SectionStack rightSideLayout = new SectionStack();
-		rightSideLayout.setScrollSectionIntoView(true);
-		rightSideLayout.setVisibilityMode(VisibilityMode.MULTIPLE);
-		rightSideLayout.setAnimateSections(true);
-
-		SectionStackSection masterSection = new SectionStackSection("招生点列表");
-		masterSection.setItems(master);
-		masterSection.setExpanded(true);
-
-		SectionStackSection detailedSection = new SectionStackSection("详细信息");
-		VLayout detailedV = new VLayout();
-
-		detailedV.addMember(detailed);
-		detailedSection.setItems(detailedV);
-		detailedSection.setExpanded(true);
-
-		rightSideLayout.setSections(masterSection, detailedSection);
-		return rightSideLayout;
+	public String getDescription() {
+		return DESCRIPTION;
 	}
 
 	@Override
-	public String getDescription() {
-		return DESCRIPTION;
+	public BasicAdminPanel createMasterPanel() {
+		return new AgentAdminMasterPanel(this);
+	}
+
+	@Override
+	public BasicAdminDetailPanel createDetailPanel() {
+		return new AgentAdminDetaiPanel(this);
+	}
+
+	@Override
+	protected String getMasterTitle() {
+		return "招生点列表";
+	}
+
+	@Override
+	protected String getDetialTitle() {
+		return "详细信息";
+	}
+	
+	public class AgentAdminDetaiPanel extends BasicAdminDetailPanel {
+
+		public AgentAdminDetaiPanel(MasterDetailAdmin masterDetail) {
+			super(masterDetail);
+		}
+
+		@Override
+		protected DetailedEditorForm createDetailEditorForm() {
+			return new AgentAdminEditorForm();
+		}
+
 	}
 
 }

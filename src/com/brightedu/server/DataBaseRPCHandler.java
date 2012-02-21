@@ -21,15 +21,14 @@ public class DataBaseRPCHandler implements InvocationHandler {
 	public Object invoke(Object proxy, Method method, Object[] args)
 			throws Throwable {
 		// 方法调用之前,校验权限
-		
+		long start = System.nanoTime();
 		User user = (User) rpcAgent.getRemoteServlet().getUser();
 		if(user == null){
 			Log.d("session expired or user not login");
 			rpcAgent.getRemoteServlet().unAuthorized();
 			return null;
 		}
-		System.out.println("-----user: " + user.getUser_name() + "     "
-				+ method.getName());
+		
 		// 调用原始对象的方法
 		Object result = method.invoke(this.rpcAgent, args);
 
@@ -49,7 +48,9 @@ public class DataBaseRPCHandler implements InvocationHandler {
 			}
 			audit(sb.toString());
 		}
-
+		long end = System.nanoTime();
+		System.out.println("-----user: " + user.getUser_name() + "     "
+				+ method.getName()+", eclapsed "+(end-start)/1000000+"ms");
 		return result;
 	}
 

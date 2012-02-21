@@ -6,6 +6,7 @@ import java.util.List;
 import com.brightedu.client.BrightEdu;
 import com.brightedu.client.CommonAsyncCall;
 import com.brightedu.client.panels.BasicAdminPanel;
+import com.brightedu.client.panels.MasterDetailAdmin;
 import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.RecruitAgent;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -18,10 +19,10 @@ import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 
 public class AgentAdminMasterPanel extends BasicAdminPanel {
-	AgentAdmin admin;
+	MasterDetailAdmin admin;
 	LinkedHashMap<String, String> agentTypes;
 
-	public AgentAdminMasterPanel(AgentAdmin agentadmin) {
+	public AgentAdminMasterPanel(MasterDetailAdmin agentadmin) {
 		this.admin = agentadmin;
 
 		resultList.addSelectionChangedHandler(new SelectionChangedHandler() {
@@ -29,14 +30,16 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 			@Override
 			public void onSelectionChanged(SelectionEvent event) {
 				if (event.getState()) {
-					admin.detailed.getDetailedForm().setValue(
-							(RecruitAgent) event.getRecord()
-									.getAttributeAsObject("object"));
-					admin.detailed.getDetailedForm().getSaveBtn().enable();
+					admin.getDetailed()
+							.getDetailedForm()
+							.setValue(
+									(RecruitAgent) event.getRecord()
+											.getAttributeAsObject("object"));
+					admin.getDetailed().getDetailedForm().enableSaveItem();
 				} else {
-					admin.detailed.getDetailedForm().setValue(
-							new RecruitAgent());// empty all fields
-					admin.detailed.getDetailedForm().getSaveBtn().disable();
+					admin.getDetailed().getDetailedForm()
+							.setValue(new RecruitAgent());// empty all fields
+					admin.getDetailed().getDetailedForm().disableSaveItem();
 				}
 			}
 		});
@@ -74,9 +77,8 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 				setCurrentPage(indexGoto);
 			}
 		};
-		BrightEdu.createDataBaseRPC().getRecruitAgentList(
-				(indexGoto - 1) * currentRowsInOnePage, currentRowsInOnePage,
-				init, callback);
+		dbService.getRecruitAgentList((indexGoto - 1) * currentRowsInOnePage,
+				currentRowsInOnePage, init, callback);
 	}
 
 	@Override
@@ -99,10 +101,12 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 									at.getAgent_type_name());
 						}
 						fields[1].setValueMap(agentTypes);
-						admin.detailed.getDetailedForm().agent_typeItem
+						((AgentAdminEditorForm) admin.getDetailed()
+								.getDetailedForm()).agent_typeItem
 								.setValueMap(agentTypes);
 					}
 				});
+		
 		return fields;
 	}
 
@@ -119,7 +123,8 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 
 	@Override
 	public void update(Record record) {
-		final RecruitAgent newagt = admin.detailed.getDetailedForm().getModel();
+		final RecruitAgent newagt = (RecruitAgent) admin.getDetailed()
+				.getDetailedForm().getModel();
 		final Record rec = resultList.getSelectedRecord();
 		final RecruitAgent oldagt = (RecruitAgent) rec
 				.getAttributeAsObject("object");
@@ -139,7 +144,7 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 			}
 
 			protected void failed() { // rollback in UI
-				// List UI would not be changed
+				// List UI would not be changed here
 			}
 		});
 	}
@@ -163,7 +168,7 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 				// 这里form不能自适应大小，shit！
 				form.setWidth(500);
 				form.setHeight(280);
-				form.getSaveBtn().setVisible(false);
+				form.hideSaveItem();
 				form.setPadding(5);
 				form.setWrapItemTitles(true);
 			}

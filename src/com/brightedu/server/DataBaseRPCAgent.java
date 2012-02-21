@@ -1345,6 +1345,11 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		}
 
 	}
+	
+	
+	/***********************学生注册************************************/
+	
+	
 
 	@Override
 	public List<RightsDefaultKey> getRightsDefault(String user_typ_Id) {

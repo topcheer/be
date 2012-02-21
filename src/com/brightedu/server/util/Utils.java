@@ -181,7 +181,7 @@ public class Utils {
 	
 	public static void main(String[] xx){
 		String agreement_filename = "as_234-df.doc.1_2344/FGSSDF";
-		System.out.println(agreement_filename
-				.replace("/", "#"));
+		System.out.println(md5(agreement_filename));
+		System.out.println(md52(agreement_filename));
 	}
 }

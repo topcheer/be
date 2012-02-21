@@ -29,6 +29,21 @@ public class ConnectionManager {
 	private static String defaultSource;
 
 	public static void load() {
+		loadMybatis();
+//		loadCustomPool();
+	}
+	
+	protected static void loadMybatis(){
+		try {
+			Reader reader = null;
+			reader = Resources.getResourceAsReader("/MapperConfig.xml");
+			sessionFactory = new SqlSessionFactoryBuilder().build(reader);
+		} catch (IOException e) {
+			Log.e(e.getMessage(), e);
+		}
+	}
+	
+	protected static void loadCustomPool(){
 		Iterator<DataSource> it = dataSources.values().iterator();
 		while (it.hasNext()) {
 			DataSource source = it.next();
@@ -62,14 +77,6 @@ public class ConnectionManager {
 			}
 			Connection conn = getConnection(name);
 			releaseConnection(conn);
-		}
-		
-		try {
-			Reader reader = null;
-			reader = Resources.getResourceAsReader("/MapperConfig.xml");
-			sessionFactory = new SqlSessionFactoryBuilder().build(reader);
-		} catch (IOException e) {
-			Log.e(e.getMessage(), e);
 		}
 	}
 	

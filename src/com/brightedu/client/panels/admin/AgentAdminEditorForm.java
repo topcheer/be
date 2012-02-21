@@ -1,20 +1,14 @@
 package com.brightedu.client.panels.admin;
 
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.io.Serializable;
 
-import com.brightedu.client.BrightEdu;
-import com.brightedu.client.CommonAsyncCall;
-import com.brightedu.model.edu.AgentType;
+import com.brightedu.client.panels.DetailedEditorForm;
 import com.brightedu.model.edu.RecruitAgent;
-import com.smartgwt.client.types.Overflow;
-import com.smartgwt.client.widgets.form.DynamicForm;
-import com.smartgwt.client.widgets.form.fields.ButtonItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextAreaItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 
-public class AgentAdminEditorForm extends DynamicForm {
+public class AgentAdminEditorForm extends DetailedEditorForm {
 	TextItem agent_nameItem = new TextItem("agent_name", "招生点名称");
 	SelectItem agent_typeItem = new SelectItem("agent_type", "机构类型");
 	TextItem responsible_personItem = new TextItem("responsible_person", "负责人");
@@ -32,10 +26,6 @@ public class AgentAdminEditorForm extends DynamicForm {
 			"学习中心在合作高校的的密码");
 	TextAreaItem remarkItem = new TextAreaItem("remark", "备注");
 
-	ButtonItem saveBtn = new ButtonItem("save", "修改");
-
-
-
 	public AgentAdminEditorForm() {
 		init();
 	}
@@ -44,32 +34,12 @@ public class AgentAdminEditorForm extends DynamicForm {
 		remarkItem.setLength(2000);
 		remarkItem.setRowSpan(3);
 		remarkItem.setColSpan(4);
-		setNumCols(4);
-		setOverflow(Overflow.SCROLL);
-		saveBtn.setStartRow(false);
-		saveBtn.setEndRow(false);
-		// saveBtn.set
-		// saveBtn.setColSpan(3);
-		saveBtn.setWidth(60);
 		setFields(agent_nameItem, agent_typeItem, responsible_personItem,
 				contact_personItem, contact_phoneItem, contact_mobileItem,
 				account_nameItem, bank_nameItem, bank_accountItem,
 				college_urlItem, userid_for_collegeItem,
 				password_for_collegeItem, remarkItem, saveBtn);
-
-		// saveBtn.addClickHandler(new ClickHandler() {
-		//
-		// @Override
-		// public void onClick(ClickEvent event) {
-		// save();
-		// }
-		// });
-
 	}
-
-	// private void save(){
-	//
-	// }
 
 	public RecruitAgent getModel() {
 		RecruitAgent agent = new RecruitAgent();
@@ -96,7 +66,9 @@ public class AgentAdminEditorForm extends DynamicForm {
 		return agent;
 	}
 
-	public void setValue(RecruitAgent agent) {
+	@Override
+	public void setValue(Serializable model) {
+		RecruitAgent agent = (RecruitAgent) model;
 		account_nameItem.setValue(agent.getAccount_name());
 		agent_nameItem.setValue(agent.getAgent_name());
 		agent_typeItem.setValue(agent.getAgent_type_id());
@@ -112,13 +84,6 @@ public class AgentAdminEditorForm extends DynamicForm {
 		remarkItem.setValue(agent.getRemark());
 		responsible_personItem.setValue(agent.getResponsible_person());
 		userid_for_collegeItem.setValue(agent.getUserid_for_college());
-
 	}
-
-	public ButtonItem getSaveBtn() {
-		return saveBtn;
-	}
-
-
 
 }
