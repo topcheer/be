@@ -10,11 +10,14 @@ import com.brightedu.client.panels.BasicAdminPanel;
 import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.RecruitAgent;
 import com.brightedu.model.edu.User;
+import com.brightedu.model.edu.UserRights;
 import com.brightedu.model.edu.UserType;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.data.Record;
+import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
@@ -38,12 +41,15 @@ public class UserAdminMasterPanel extends BasicAdminPanel {
 									.getAttributeAsObject("object"));
 					admin.detailed.getDetailedForm().getSaveBtn().enable();
 					admin.rightsSection.setExpanded(true);
+					populateRights((User) event.getRecord().getAttributeAsObject("object"));
 				
+					
 				} else {
 					admin.detailed.getDetailedForm().setValue(
 							new User());// empty all fields
 					admin.detailed.getDetailedForm().getSaveBtn().disable();
 					admin.rightsSection.setExpanded(false);
+					admin.rights.userRightsGrid.setData(new RecordList());
 				}
 			}
 		});
@@ -221,4 +227,40 @@ public class UserAdminMasterPanel extends BasicAdminPanel {
 		return admin;
 	}
 
+	protected void populateRights(User user)
+	{
+		dbService.getUserRights(user, new AsyncCallback<List<UserRights>>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+				SC.say(caught.getLocalizedMessage());
+			}
+
+			@Override
+			public void onSuccess(List<UserRights> result) {
+				RecordList list = new RecordList();
+				
+				for(UserRights rights : result)
+				{
+					Record userrights = new Record();
+					if(rights.getIsset().equalsIgnoreCase("T"))
+					{
+						userrights.setAttribute("select", true);
+					}
+					else
+					{
+						userrights.setAttribute("select", false);
+					}
+					userrights.setAttribute("categoryID", rights.getCategory_id());
+					userrights.setAttribute("categoryName", rights.getCategory_name());
+					userrights.setAttribute("functionID", rights.getFunction_id());
+					userrights.setAttribute("functionName", rights.getFunction_name());
+					list.add(userrights);
+				}
+				
+				admin.rights.userRightsGrid.setData(list);
+			}
+			
+		});
+	}
 }

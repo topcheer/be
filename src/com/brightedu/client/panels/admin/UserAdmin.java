@@ -59,7 +59,9 @@ public final class UserAdmin extends FunctionPanel {
 		VLayout detailedV = new VLayout();
 
 		detailedV.addMember(detailed);
+		detailedV.setHeight(200);
 		detailedSection.setItems(detailedV);
+
 		detailedSection.setExpanded(true);
 
 		
