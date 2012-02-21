@@ -84,6 +84,8 @@
         <mapper resource="com/brightedu/xml/edu/UserRightsMapper.xml" />
     	<mapper resource="com/brightedu/xml/edu/UserRightsEffectiveMapper.xml" />
 		
+		<mapper resource="com/brightedu/xml/edu/CollegeAggregationMapper.xml" />
+		
 	</mappers>
 
 
