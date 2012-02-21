@@ -8,6 +8,7 @@ import java.util.Date;
 
 import com.brightedu.model.edu.User;
 import com.brightedu.server.util.Log;
+import com.brightedu.server.util.Utils;
 
 public class DataBaseRPCHandler implements InvocationHandler {
 	// 要代理的原始对象
@@ -73,7 +74,7 @@ public class DataBaseRPCHandler implements InvocationHandler {
 					Method m = null;
 					try {
 						m = o.getClass().getMethod(
-								getStandardMethodName(f.getName()));
+								Utils.getStandardMethodName(f.getName()));
 						Object filedValue = m.invoke(o, null);
 						sb.append(f.getName()).append("=")
 								.append(filedValue.toString()).append(" - ");
@@ -86,10 +87,7 @@ public class DataBaseRPCHandler implements InvocationHandler {
 		return sb.toString();
 	}
 
-	private String getStandardMethodName(String fieldName) {
-		char c = fieldName.charAt(0);
-		return "get" + String.valueOf(c).toUpperCase() + fieldName.substring(1);
-	}
+
 
 	private void audit(String content) {
 		// FIXME record audit content, better be another manager thread

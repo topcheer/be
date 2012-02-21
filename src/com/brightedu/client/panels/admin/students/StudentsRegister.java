@@ -55,7 +55,7 @@ public final class StudentsRegister extends MasterDetailAdmin {
 
 	@Override
 	public BasicAdminPanel createMasterPanel() {
-		return new StudentsRegisterMasterPanel();
+		return new StudentsRegisterMasterPanel(this);
 	}
 
 	@Override

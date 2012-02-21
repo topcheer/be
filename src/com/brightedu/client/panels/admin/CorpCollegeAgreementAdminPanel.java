@@ -61,32 +61,39 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 	private void initSelectionValueMaps() {
 		colleges = new LinkedHashMap<String, String>();
 		agents = new LinkedHashMap<String, String>();
-		AsyncCallback<List<College>> collegeCall = new CommonAsyncCall<List<College>>() {
-			public void onSuccess(List<College> result) {
-				for (College c : result) {
-					colleges.put(c.getCollege_id() + "", c.getCollege_name());
-				}
-				fields[0].setValueMap(colleges); // 合作高校
-				if (agents.size() != 0) {
-					resultList.redraw();
-				}
-			}
-		};
-		AsyncCallback<List<RecruitAgent>> agentCall = new CommonAsyncCall<List<RecruitAgent>>() {
-			public void onSuccess(List<RecruitAgent> result) {
-				for (RecruitAgent r : result) {
-					agents.put(r.getAgent_id() + "", r.getAgent_name());
-				}
-				fields[1].setValueMap(agents);// 我方高校
-				if (colleges.size() != 0) {
-					resultList.redraw();
-				}
-			}
-		};
-		fields[2].setValueMap(statusMap); // 状态
-		dbService.getCollegeList(-1, -1, false, collegeCall);
-		dbService.getRecruitAgentList(-1, -1, false, agentCall);
 
+		fields[2].setValueMap(statusMap); // 状态
+		dbService.getNameValuePareList(
+				new String[] { "College", "RecruitAgent" },
+				new CommonAsyncCall<List>() {
+					public void onSuccess(List result) {
+						for (int i = 0; i < result.size(); i++) {
+							List nameValuePares = (List) result.get(i);
+							switch (i) {
+							case 0:
+								for (int x = 0; x < nameValuePares.size(); x++) {
+									College c = (College) nameValuePares.get(x);
+									colleges.put(c.getCollege_id() + "",
+											c.getCollege_name());
+								}
+								break;
+							case 1:
+								for (int x = 0; x < nameValuePares.size(); x++) {
+									RecruitAgent r = (RecruitAgent) nameValuePares
+											.get(x);
+									agents.put(r.getAgent_id() + "",
+											r.getAgent_name());
+								}
+								break;
+							default:
+								break;
+							}
+						}
+						fields[0].setValueMap(colleges);//合作院校
+						fields[1].setValueMap(agents);// 我方高校
+						resultList.redraw();
+					}
+				});
 	}
 
 	public void refresh() {
@@ -352,7 +359,7 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 		}
 
 		@Override
-		protected DynamicForm getContentForm() {
+		protected DynamicForm createContentForm() {
 			int len = 250;
 			collegeItem.setWidth(len);
 			agentItem.setWidth(len);

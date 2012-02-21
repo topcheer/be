@@ -22,7 +22,7 @@ public abstract class DetailedEditorForm extends DynamicForm {
 	public DetailedEditorForm() {
 		setNumCols(4);
 		setOverflow(Overflow.SCROLL);
-		saveBtn.setStartRow(false);
+		saveBtn.setStartRow(true);
 		saveBtn.setEndRow(false);
 		saveBtn.setWidth(60);
 		saveBtn.addClickHandler(new ClickHandler() {

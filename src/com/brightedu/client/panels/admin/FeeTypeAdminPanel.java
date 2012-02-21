@@ -139,7 +139,7 @@ public class FeeTypeAdminPanel extends BasicAdminPanel {
 		}
 
 		@Override
-		protected DynamicForm getContentForm() {
+		protected DynamicForm createContentForm() {
 			form = new DynamicForm();
 			feeTypeNameItem.setWidth(len);
 			isEndItem.setWidth(len);

@@ -222,6 +222,7 @@ public interface DataBaseRPC extends RemoteService {
 	
 	/*******************通用方法***************************/
 	public Serializable getObjectById(String mapperClassName, int id);
+	public List getNameValuePareList(String[] beanNames); 
 	
 
 

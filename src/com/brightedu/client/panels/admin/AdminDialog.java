@@ -41,7 +41,7 @@ public abstract class AdminDialog extends Window {
 		setAutoSize(true);
 		setCanDragResize(true);
 
-		form = getContentForm();
+		form = createContentForm();
 		okBtn.addClickHandler(new ClickHandler() {
 
 			@Override
@@ -118,7 +118,11 @@ public abstract class AdminDialog extends Window {
 
 	protected abstract Object getAddedModel();
 
-	protected abstract DynamicForm getContentForm();
+	protected abstract DynamicForm createContentForm();
+	
+	public DynamicForm getContentForm(){
+		return form;
+	}
 
 	protected BasicAdminPanel adminPanel;
 

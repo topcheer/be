@@ -179,6 +179,11 @@ public class Utils {
 		return null;
 	}
 	
+	public static String getStandardMethodName(String fieldName) {
+		char c = fieldName.charAt(0);
+		return "get" + String.valueOf(c).toUpperCase() + fieldName.substring(1);
+	}
+	
 	public static void main(String[] xx){
 		String agreement_filename = "as_234-df.doc.1_2344/FGSSDF";
 		System.out.println(md5(agreement_filename));

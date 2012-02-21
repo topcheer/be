@@ -229,7 +229,7 @@ public class UserAdminMasterPanel extends BasicAdminPanel {
 			}
 
 			@Override
-			protected DynamicForm getContentForm() {
+			protected DynamicForm createContentForm() {
 
 				form.user_typeItem.setValueMap(userTypes);
 				form.agentItem.setValueMap(agentList);

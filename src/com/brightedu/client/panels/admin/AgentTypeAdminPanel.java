@@ -135,7 +135,7 @@ public class AgentTypeAdminPanel extends BasicAdminPanel {
 		}
 
 		@Override
-		protected DynamicForm getContentForm() {
+		protected DynamicForm createContentForm() {
 			form = new DynamicForm();
 			agentTypeNameItem.setWidth(len);
 			isReturnItem.setWidth(len);

@@ -136,7 +136,7 @@ public class StudentClassesAdminPanel extends BasicAdminPanel {
 		}
 
 		@Override
-		protected DynamicForm getContentForm() {
+		protected DynamicForm createContentForm() {
 			form = new DynamicForm();
 			classifiedName.setWidth(len);
 			lol.setWidth(len);

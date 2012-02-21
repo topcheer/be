@@ -2,6 +2,8 @@ package com.brightedu.server;
 
 import java.io.File;
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.sql.Connection;
@@ -94,6 +96,7 @@ import com.brightedu.model.edu.UserTypeExample;
 import com.brightedu.server.util.ConnectionManager;
 import com.brightedu.server.util.Log;
 import com.brightedu.server.util.ServerProperties;
+import com.brightedu.server.util.Utils;
 
 public class DataBaseRPCAgent implements DataBaseRPC {
 	SqlSessionFactory sessionFactory;
@@ -699,9 +702,9 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			UserTypeExample.Criteria cr = ex.createCriteria();
 			cr.andUser_type_idIn(UserType_ids);
 			scm.deleteByExample(ex);
-			
-			//TODO: also need to delete records from RightsDefault
-			
+
+			// TODO: also need to delete records from RightsDefault
+
 			session.commit();
 			return true;
 		} finally {
@@ -1174,9 +1177,8 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		}
 	}
 
-
 	/************************ 权限基础数据设置 *********************************/
-	
+
 	@Override
 	public List<RightsCategory> getRightsCategory() {
 		SqlSession session = sessionFactory.openSession();
@@ -1186,7 +1188,6 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 
 			List<RightsCategory> result = mp.selectByExample(null);
 			return result;
-
 
 		} finally {
 			session.close();
@@ -1266,7 +1267,8 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			// 先删除比较保险,连续调用两个RPC可能导致还没删除就已经开始插入了
 
 			RightsCategoryFunctionExample ex = new RightsCategoryFunctionExample();
-			ex.createCriteria().andCategory_idEqualTo(rightsCategoryFunctionList.get(0).getCategory_id());
+			ex.createCriteria().andCategory_idEqualTo(
+					rightsCategoryFunctionList.get(0).getCategory_id());
 
 			mp.deleteByExample(ex);
 
@@ -1289,8 +1291,9 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			RightsCategoryMapper mp = session
 					.getMapper(RightsCategoryMapper.class);
 			RightsCategoryExample ex = new RightsCategoryExample();
-			ex.createCriteria().andCategory_idEqualTo(category.getCategory_id());
-			
+			ex.createCriteria()
+					.andCategory_idEqualTo(category.getCategory_id());
+
 			int result = mp.deleteByExample(ex);
 			session.commit();
 			return true;
@@ -1310,8 +1313,8 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			RightsFunctionExample ex = new RightsFunctionExample();
 			ex.createCriteria().andFunction_idIn(function);
 			mp.deleteByExample(ex);
-			
-			//also delete record from CategoryFunction 
+
+			// also delete record from CategoryFunction
 			RightsCategoryFunctionMapper mp2 = session
 					.getMapper(RightsCategoryFunctionMapper.class);
 
@@ -1336,10 +1339,9 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			RightsCategoryFunctionMapper mp = session
 					.getMapper(RightsCategoryFunctionMapper.class);
 
-
-
 			RightsCategoryFunctionExample ex = new RightsCategoryFunctionExample();
-			ex.createCriteria().andCategory_idEqualTo(rightsCategoryFunctionList);
+			ex.createCriteria().andCategory_idEqualTo(
+					rightsCategoryFunctionList);
 
 			mp.deleteByExample(ex);
 
@@ -1351,11 +1353,8 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		}
 
 	}
-	
-	
-	/***********************学生注册************************************/
-	
-	
+
+	/*********************** 学生注册 ************************************/
 
 	@Override
 	public List<RightsDefaultKey> getRightsDefault(String user_typ_Id) {
@@ -1364,7 +1363,8 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			RightsDefaultMapper mp = session
 					.getMapper(RightsDefaultMapper.class);
 			RightsDefaultExample ex = new RightsDefaultExample();
-			ex.createCriteria().andUser_type_idEqualTo(new Integer(user_typ_Id));
+			ex.createCriteria()
+					.andUser_type_idEqualTo(new Integer(user_typ_Id));
 			List<RightsDefaultKey> result = mp.selectByExample(ex);
 			return result;
 
@@ -1383,7 +1383,8 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			// 先删除比较保险,连续调用两个RPC可能导致还没删除就已经开始插入了
 
 			RightsDefaultExample ex = new RightsDefaultExample();
-			ex.createCriteria().andUser_type_idEqualTo(rightDefaultList.get(0).getUser_type_id());
+			ex.createCriteria().andUser_type_idEqualTo(
+					rightDefaultList.get(0).getUser_type_id());
 
 			mp.deleteByExample(ex);
 
@@ -1406,8 +1407,6 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			RightsDefaultMapper mp = session
 					.getMapper(RightsDefaultMapper.class);
 
-
-
 			RightsDefaultExample ex = new RightsDefaultExample();
 			ex.createCriteria().andUser_type_idEqualTo(userType_id);
 			mp.deleteByExample(ex);
@@ -1420,15 +1419,13 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 
 	}
 
-	
 	/************************ 用户管理 *********************************/
-	
+
 	@Override
 	public List<User> getUserList(int offset, int limit, boolean needTotalCounts) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			UserMapper mp = session
-					.getMapper(UserMapper.class);
+			UserMapper mp = session.getMapper(UserMapper.class);
 
 			UserExample ex = new UserExample();
 			if (offset != -1 || limit != -1) {
@@ -1464,8 +1461,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	public boolean deletUser(List<Integer> user_ids) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			UserMapper scm = session
-					.getMapper(UserMapper.class);
+			UserMapper scm = session.getMapper(UserMapper.class);
 			UserExample ex = new UserExample();
 			UserExample.Criteria cr = ex.createCriteria();
 			cr.andUser_idIn(user_ids);
@@ -1481,8 +1477,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	public boolean saveUser(User user) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			UserMapper scm = session
-					.getMapper(UserMapper.class);
+			UserMapper scm = session.getMapper(UserMapper.class);
 			scm.updateByPrimaryKey(user);
 			session.commit();
 			return true;
@@ -1494,7 +1489,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	@Override
 	public boolean setOverridePriv(List<RightsCategoryFunctionKey> list,
 			boolean addOrRemove) {
-		
+
 		return false;
 
 	}
@@ -1503,8 +1498,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	public List<UserRights> getUserRights(User user) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			UserRightsMapper mp = session
-					.getMapper(UserRightsMapper.class);
+			UserRightsMapper mp = session.getMapper(UserRightsMapper.class);
 
 			UserRightsExample ex = new UserRightsExample();
 			ex.setOrderByClause("category_id,function_id");
@@ -1531,6 +1525,59 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		} finally {
 			session.close();
 		}
+	}
+
+	@Override
+	public List getNameValuePareList(String[] beanNames) {
+		List nameValuePares = new ArrayList();
+		SqlSession session = sessionFactory.openSession();
+		String daoPackageName = "com.brightedu.dao.edu.";
+		String modelPackageName = "com.brightedu.model.edu.";
+		try {
+			for (String beanName : beanNames) {
+
+				Class mapperClass = Class.forName(daoPackageName + beanName
+						+ "Mapper");
+				Class beanClass = Class.forName(modelPackageName + beanName);
+				Object mapper = session.getMapper(mapperClass);
+				Class exampleClass = Class.forName(modelPackageName + beanName
+						+ "Example");
+				Method method = mapperClass.getMethod("selectByExample",
+						exampleClass);
+
+				Object example = exampleClass.newInstance();
+
+				Field[] fields = beanClass.getDeclaredFields();
+				int nameFieldIndex = -1;
+				for (int i = 0; i < fields.length; i++) {
+					if (fields[i].getName().toLowerCase().contains("name")) { // 一般这种表中只有一个带name的字段
+						nameFieldIndex = i;
+						System.out.println(beanName + " nameField: "
+								+ fields[i].getName());
+						break;
+					}
+				}
+				List result;
+				if (nameFieldIndex != -1) {
+					Method setOrderByClauseMethod = exampleClass
+							.getDeclaredMethod("setOrderByClause", String.class);
+					setOrderByClauseMethod.invoke(example,
+							fields[nameFieldIndex].getName());
+
+					result = (List) method.invoke(mapper, example);
+				} else {
+					result = (List) method
+							.invoke(mapper, new Object[] { null });
+					Log.d("No name field for class " + beanClass.getName());
+				}
+				nameValuePares.add(result);
+			}
+		} catch (Exception e) {
+			Log.e("", e);
+		} finally {
+			session.close();
+		}
+		return nameValuePares;
 	}
 
 	@Override

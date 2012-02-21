@@ -174,7 +174,7 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 			}
 
 			@Override
-			protected DynamicForm getContentForm() {
+			protected DynamicForm createContentForm() {
 
 				form.agent_typeItem.setValueMap(agentTypes);
 				return form;

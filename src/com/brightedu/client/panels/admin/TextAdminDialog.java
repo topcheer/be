@@ -30,7 +30,7 @@ public class TextAdminDialog extends AdminDialog {
 	}
 
 	@Override
-	protected DynamicForm getContentForm() {
+	protected DynamicForm createContentForm() {
 		DynamicForm form = new DynamicForm();
 		form.setPadding(5);
 		form.setWidth100();
