@@ -203,9 +203,4 @@
       <![CDATA[  OFFSET #{page.offset} LIMIT #{page.length} ]]>
     </if>
   </sql>
-  <sql id="PostgreSqlSuffix">
-    <if test="page != null">
-      <![CDATA[  OFFSET #{page.offset} LIMIT #{page.length} ]]>
-    </if>
-  </sql>
 </mapper>
