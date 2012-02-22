@@ -166,7 +166,7 @@ public class EntranceCostManagePanel extends VLayout {
 		selectionSection.addItem(buttonLayout);
 		
 		selectionSection.setExpanded(true);
-		
+		selectionSection.setShowHeader(false);
 		batchList.setFields(batchIdField,batchNameField);
 		agentList.setFields(agentIdField,agentNameField);
 		recruitPlanList.setFields(collegeField,levelField,subjField);
@@ -176,6 +176,7 @@ public class EntranceCostManagePanel extends VLayout {
 		
 		listSection.addItem(entranceCostList);
 		listSection.setExpanded(true);
+		listSection.setResizeable(true);
 		
 		mainStack.addSection(listSection);
 		mainStack.setVisibilityMode(VisibilityMode.MULTIPLE);
