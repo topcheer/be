@@ -54,7 +54,7 @@ public class PanelData {
 			return new RecruitPlanManage.Factory();
 		}
 		if (id.equals("entrance_cost_manage")) { // 入学费用标准设置
-			return new RecruitPlanManage.Factory();
+			return new EntranceCostManage.Factory();
 		}
 
 		if (id.equals("rights_manage")) { // 权限基础数据设置
