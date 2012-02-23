@@ -10,6 +10,7 @@ import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.CollegeAgreement;
 import com.brightedu.model.edu.CollegeSubject;
 import com.brightedu.model.edu.CollegeSubjectView;
+import com.brightedu.model.edu.EntranceCost;
 import com.brightedu.model.edu.FeeType;
 import com.brightedu.model.edu.PictureType;
 import com.brightedu.model.edu.RecruitAgent;
@@ -245,5 +246,11 @@ public interface DataBaseRPCAsync {
 
 	void setOverride(RightsCategoryFunctionKey override, User user,
 			boolean addOrRemove, AsyncCallback<Boolean> callback);
+
+	void getEntranceCost(String batchID,String agentID,
+			AsyncCallback<List<EntranceCost>> callback);
+
+	void saveEntranceCost(List<EntranceCost> entranceCosts,
+			AsyncCallback<Boolean> callback);
 
 }

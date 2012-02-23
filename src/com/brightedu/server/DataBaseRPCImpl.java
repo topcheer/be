@@ -26,6 +26,7 @@ import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.CollegeAgreement;
 import com.brightedu.model.edu.CollegeSubject;
 import com.brightedu.model.edu.CollegeSubjectView;
+import com.brightedu.model.edu.EntranceCost;
 import com.brightedu.model.edu.FeeType;
 import com.brightedu.model.edu.PictureType;
 import com.brightedu.model.edu.RecruitAgent;
@@ -487,6 +488,16 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	public boolean setOverride(RightsCategoryFunctionKey override, User user,
 			boolean addOrRemove) {
 		return agent.setOverride(override, user, addOrRemove);
+	}
+	/************************ 入学费用设置 *********************************/
+	@Override
+	public List<EntranceCost> getEntranceCost(String batchID,String agentID) {
+		return agent.getEntranceCost(batchID,agentID);
+	}
+
+	@Override
+	public boolean saveEntranceCost(List<EntranceCost> entranceCosts) {
+		return agent.saveEntranceCost(entranceCosts);
 	}
 
 

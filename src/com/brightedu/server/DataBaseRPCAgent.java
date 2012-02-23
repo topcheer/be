@@ -27,6 +27,7 @@ import com.brightedu.dao.edu.CollegeMapper;
 import com.brightedu.dao.edu.CollegeSubjectMapper;
 import com.brightedu.dao.edu.CollegeSubjectViewMapper;
 import com.brightedu.dao.edu.CurrentBatchMapper;
+import com.brightedu.dao.edu.EntranceCostMapper;
 import com.brightedu.dao.edu.FeeTypeMapper;
 import com.brightedu.dao.edu.PictureTypeMapper;
 import com.brightedu.dao.edu.RecruitAgentMapper;
@@ -60,6 +61,8 @@ import com.brightedu.model.edu.CollegeSubjectExample;
 import com.brightedu.model.edu.CollegeSubjectView;
 import com.brightedu.model.edu.CollegeSubjectViewExample;
 import com.brightedu.model.edu.CurrentBatch;
+import com.brightedu.model.edu.EntranceCost;
+import com.brightedu.model.edu.EntranceCostExample;
 import com.brightedu.model.edu.FeeType;
 import com.brightedu.model.edu.FeeTypeExample;
 import com.brightedu.model.edu.PictureType;
@@ -1585,32 +1588,6 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			boolean addOrRemove) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-//			Connection conn = ConnectionManager.getConnection("edu");
-//			StringBuffer sqlBuffer = new StringBuffer();
-//			
-//			sqlBuffer.append("select count(*) from (select ");
-//			sqlBuffer.append("exsits (select 1 from rights_default b where user_type_id = ? and a.category_id = b.category_id) ");
-//			sqlBuffer.append(" and a.category_id = ? and a.function_id = ?");
-//			PreparedStatement ps = conn.prepareStatement(sqlBuffer.toString());
-//			ps.setInt(1, user.getUser_id());
-//			ps.setString(2, override.getCategory_id());
-//			ps.setString(3, override.getFunction_id());
-//			
-//			ResultSet count = ps.executeQuery();
-//			
-//			count.next();
-//			System.out.println(sqlBuffer);
-//			System.out.println(count.getInt(1));
-//			
-//			if(addOrRemove)
-//			{
-//				
-//			}
-//			else
-//			{
-//				
-//			}
-//			
 			
 			RightsDefaultMapper um = session.getMapper(RightsDefaultMapper.class);
 			RightsDefaultExample exr = new RightsDefaultExample();
@@ -1622,7 +1599,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			{
 				catIds.add(rd.getCategory_id());
 			}
-
+			/* THE LOGIC */
 			//check if override is in the list of the default granted function, if it is
 			// if it is then
 			// if addOrRemove is set to be true , then we should remove any record from RightsOverride related to this combination
@@ -1719,6 +1696,42 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			session.close();
 		}
 		
+	}
+	/************************ 入学费用设置 *********************************/
+	@Override
+	public List<EntranceCost> getEntranceCost(String batchID,String agentID) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			EntranceCostMapper bim = session.getMapper(EntranceCostMapper.class);
+			EntranceCostExample ex = new EntranceCostExample();
+			
+			ex.createCriteria().andBatch_idEqualTo(new Integer(batchID));
+			if(agentID != null)
+			{
+				ex.createCriteria().andAgent_idEqualTo(new Integer(agentID));
+			}
+			return bim.selectByExample(ex);
+			
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean saveEntranceCost(List<EntranceCost> entranceCosts) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			EntranceCostMapper bim = session.getMapper(EntranceCostMapper.class);
+			for(EntranceCost cost : entranceCosts)
+			{
+				bim.insertSelective(cost);
+			}
+			session.commit();
+			return true;
+			
+		} finally {
+			session.close();
+		}
 	}
 
 }

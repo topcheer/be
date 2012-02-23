@@ -25,6 +25,7 @@ import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.CollegeAgreement;
 import com.brightedu.model.edu.CollegeSubject;
 import com.brightedu.model.edu.CollegeSubjectView;
+import com.brightedu.model.edu.EntranceCost;
 import com.brightedu.model.edu.FeeType;
 import com.brightedu.model.edu.PictureType;
 import com.brightedu.model.edu.RecruitAgent;
@@ -224,6 +225,8 @@ public interface DataBaseRPC extends RemoteService {
 	public Serializable getObjectById(String mapperClassName, int id);
 	public List getNameValuePareList(String[] beanNames); 
 	
-
+	/************************ 入学费用设置 *********************************/
+	public List<EntranceCost> getEntranceCost(String batchID,String agentID);
+	public boolean saveEntranceCost(List<EntranceCost> entranceCosts);
 
 }
