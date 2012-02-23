@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
 import com.brightedu.client.BrightEdu;
 import com.brightedu.client.CommonAsyncCall;
@@ -48,6 +49,8 @@ import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.CellClickEvent;
 import com.smartgwt.client.widgets.grid.events.CellClickHandler;
+import com.smartgwt.client.widgets.grid.events.RecordCollapseEvent;
+import com.smartgwt.client.widgets.grid.events.RecordCollapseHandler;
 import com.smartgwt.client.widgets.grid.events.RecordDropEvent;
 import com.smartgwt.client.widgets.grid.events.RecordDropHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
@@ -82,7 +85,7 @@ public class AgentRateManagePanel extends VLayout {
 	
 	ListGrid groupList ;
 	
-	
+	LinkedHashMap<String,String> feeTypeMap = new LinkedHashMap<String,String>();
 
 
 	
@@ -110,9 +113,8 @@ public class AgentRateManagePanel extends VLayout {
 		
 		collegeList.setCanDragRecordsOut(true);
 		collegeList.setDragAppearance(DragAppearance.TRACKER);
-		collegeList.setDragDataAction(DragDataAction.COPY);
-		
-
+		collegeList.setDragDataAction(DragDataAction.MOVE);
+		collegeList.setSelectionType(SelectionStyle.SIMPLE);
 		
 		selectionStack.setHeight(250);
 		selectionStack.setPadding(5);
@@ -170,14 +172,20 @@ public class AgentRateManagePanel extends VLayout {
 		groupStack.setIsGroup(true);
 		groupStack.setGroupTitle("合并计算高校组别设置");
 		
+		ListGridField  fee_typeIdField2 = new ListGridField("fee_type_id","费用类型ID");
+		ListGridField  fee_typeNameField2 = new ListGridField("fee_type","费用类型");
+		fee_typeIdField2.setHidden(true);	
+		
 		ListGridField group = new ListGridField("groupName","组别");
 		ListGridField dropedRecord = new ListGridField("records","组别");
 		dropedRecord.setHidden(true);
 		groupList = new ListGrid(){
-			
+					
 			 @Override  
 	            protected Canvas getExpansionComponent(final ListGridRecord record) {
 					
+				
+				 
 	                final ListGrid grid = this;   
 	                
 	                VLayout layout = new VLayout(5);   
@@ -187,24 +195,33 @@ public class AgentRateManagePanel extends VLayout {
 //	        		ListGridField  batchIdField2 = new ListGridField("batchId","批次ID");
 	        		ListGridField  collegeIDField2 = new ListGridField("collegeID","大学ID");
 	        		ListGridField  collegeNameField2 = new ListGridField("collegeName","大学");
-	        		ListGridField  fee_typeIdField2 = new ListGridField("fee_type_id","费用类型ID");
-	        		ListGridField  fee_typeNameField2 = new ListGridField("fee_type","费用类型");
 	        		ListGridField  pepleCountField2 = new ListGridField("people_count","人数上限");
 	        		ListGridField  returnRateField = new ListGridField("return_rate","返利系数");
 	        		
 	        		collegeIDField2.setHidden(true);
-	        		fee_typeIdField2.setHidden(true);	
-	        		
-	        		rateList.setCanDragRecordsOut(false);
-	        		rateList.setCanAcceptDroppedRecords(true);
+	        		rateList.setShowHeaderContextMenu(false);
+	        		rateList.setCanReorderRecords(true);
 	        		rateList.setCanRemoveRecords(true);
-	        		
-	        		rateList.setFields(collegeIDField2,collegeNameField2,fee_typeIdField2,fee_typeNameField2,pepleCountField2,returnRateField);
+
+	        		rateList.setFields(collegeIDField2,collegeNameField2,pepleCountField2,returnRateField);
 
 	                rateList.setWidth100();
-	                rateList.setHeight(100);
+	                rateList.setHeight(150);
 	                layout.addMember(rateList);   
 	  
+	                Record[] dropedRecords = record.getAttributeAsRecordArray("records");
+	                
+	                for(Record rec : dropedRecords)
+	                {
+	                	Record rec2 = new Record();
+	                	rec2.setAttribute("collegeID", rec.getAttribute("collegeID"));
+	                	rec2.setAttribute("collegeName", rec.getAttribute("collegeName"));
+	                	rec2.setAttribute("people_count", 0);
+	                	rec2.setAttribute("return_rate", 0.1);
+	                	rateList.addData(rec2);
+	                	
+	                }
+	                
 	                HLayout hLayout = new HLayout(10);   
 	                hLayout.setAlign(Alignment.CENTER);   
 	  
@@ -229,13 +246,22 @@ public class AgentRateManagePanel extends VLayout {
 	                hLayout.addMember(closeButton);   
 	                                                  
 	                layout.addMember(hLayout);   
-	  
+	               
 	                return layout;   
 
 	  
 			 }
 			
 		};
+		groupList.addRecordCollapseHandler(new RecordCollapseHandler(){
+
+			@Override
+			public void onRecordCollapse(RecordCollapseEvent event) {
+				
+				
+			}}
+		);
+		groupList.setCanRemoveRecords(true);
 		groupList.setCanAcceptDrop(true);
 		groupList.setCanAcceptDroppedRecords(true);
 		groupList.setCanExpandRecords(true);
@@ -244,16 +270,44 @@ public class AgentRateManagePanel extends VLayout {
 			@Override
 			public void onRecordDrop(RecordDropEvent event) {
 				
-				Record r = new Record();
-				r.setAttribute("groupName", "Group1");
-				r.setAttribute("records", event.getDropRecords());
-				groupList.addData(r);
+				if(batchList.getSelectedRecords().length == 0 || agentList.getSelectedRecords().length == 0)
+				{
+					BrightEdu.showTip("批次或者招生点没有选!");
+					event.cancel();
+					return;
+				}
+				String college = "";
+				for(Record rec : event.getDropRecords())
+				{
+					college += "-" + rec.getAttribute("collegeName");
+				}
+				
+				Iterator<String> keys = feeTypeMap.keySet().iterator();
+				while(keys.hasNext())
+				{	String feeTypeID = keys.next();
+					String feeType = feeTypeMap.get(feeTypeID);
+					Record r = new Record();
+					r.setAttribute("groupName", batchList.getSelectedRecord().getAttribute("batchName") 
+												+ "-" 
+												+ agentList.getSelectedRecord().getAttribute("agentName")
+												+ "-"
+												+ feeType
+												+ college
+												);
+					r.setAttribute("fee_type_id", feeTypeID);
+					r.setAttribute("fee_type", feeType);
+					r.setAttribute("records", event.getDropRecords());
+					groupList.addData(r);
+				}
+
 				event.cancel();
+				collegeList.removeSelectedData();
 				
 			}});
 		
-		
-		groupList.setFields(group,dropedRecord);
+		fee_typeNameField2.setWidth(60);
+		groupList.setShowHeaderContextMenu(false);
+		groupList.setFields(group,fee_typeIdField2,fee_typeNameField2,dropedRecord);
 		
 		
 		groupStack.addMember(groupList);
@@ -274,6 +328,7 @@ public class AgentRateManagePanel extends VLayout {
 		loadBatch();
 		loadAgent();
 		loadCollege();
+		loadFeeType();
 //		batchList.addSelectionChangedHandler(new SelectionChangedHandler(){
 //
 //			@Override
@@ -291,6 +346,27 @@ public class AgentRateManagePanel extends VLayout {
 //		);
 //		
 
+	}
+
+	private void loadFeeType() {
+		
+		dbService.getFeeTypeList(-1, -1, false
+				, new CommonAsyncCall<List<FeeType>>(){
+
+					@Override
+					public void onSuccess(List<FeeType> result) {
+						for(FeeType fee : result)
+						{
+							if(fee.getCan_return())
+							{
+								feeTypeMap.put(fee.getFee_id()+"", fee.getFee_name());
+							}
+							
+						}
+						
+					}})
+				;
+		
 	}
 
 	protected void saveGroup() {
