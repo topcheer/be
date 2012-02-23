@@ -20,9 +20,12 @@ import com.brightedu.model.edu.StudentClassified;
 import com.brightedu.model.edu.Subjects;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.DragAppearance;
+import com.smartgwt.client.types.DragDataAction;
 import com.smartgwt.client.types.ListGridEditEvent;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.types.SelectionType;
@@ -30,6 +33,7 @@ import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.types.VisibilityMode;
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
+import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -41,8 +45,11 @@ import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.grid.CellEditValueFormatter;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
+import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.CellClickEvent;
 import com.smartgwt.client.widgets.grid.events.CellClickHandler;
+import com.smartgwt.client.widgets.grid.events.RecordDropEvent;
+import com.smartgwt.client.widgets.grid.events.RecordDropHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 import com.smartgwt.client.widgets.layout.HLayout;
@@ -57,7 +64,9 @@ public class AgentRateManagePanel extends VLayout {
 	
  
 	//SectionStackSection conditionSection = new SectionStackSection ("条件");
+	
 	HLayout selectionStack = new HLayout();
+	HLayout groupStack = new HLayout();
 	ListGrid batchList = new ListGrid();
 	ListGridField batchIdField = new ListGridField("batchId","批次ID");
 	ListGridField batchNameField = new ListGridField("batchName","批次名称");
@@ -66,25 +75,16 @@ public class AgentRateManagePanel extends VLayout {
 	ListGridField agentIdField = new ListGridField("agentID","招生点/学习中心ID");
 	ListGridField agentNameField = new ListGridField("agentName","招生点/学习中心名称");
 	
-	ListGrid recruitPlanList = new ListGrid();
 	
-	ListGridField collegeField = new ListGridField("college","大学");
-	ListGridField levelField = new ListGridField("level","层次");
-	ListGridField  subjField = new ListGridField("subject","专业");
+	ListGrid collegeList = new ListGrid();
+	ListGridField collegeIDField = new ListGridField("collegeID","大学ID");
+	ListGridField collegeNameField = new ListGridField("collegeName","大学");
 	
-	ListGrid feeList = new ListGrid();
-	ListGridField  fee_typeIdField = new ListGridField("fee_type_id","费用类型ID");
-	ListGridField  fee_typeField = new ListGridField("fee_type","费用类型");
-	ListGridField  feeField = new ListGridField("fee","费用");
+	ListGrid groupList ;
 	
-	ListGrid entranceCostList = new ListGrid();
-	ListGridField objField = new ListGridField("obj","完成对象");
-	ListGridField agentField2 = new ListGridField("agentName2","招生点/学习中心名称");
-	ListGridField collegeField2 = new ListGridField("college2","大学");
-	ListGridField levelField2 = new ListGridField("level2","层次");
-	ListGridField  subjField2 = new ListGridField("subject2","专业");
-	ListGridField  fee_typeField2 = new ListGridField("fee_type2","费用类型");
-	ListGridField  feeField2 = new ListGridField("fee2","费用");
+	
+
+
 	
 	IButton saveButton = new IButton("保存");
 	IButton cloneButton = new IButton("克隆...");
@@ -97,24 +97,31 @@ public class AgentRateManagePanel extends VLayout {
 	{
 		batchIdField.setHidden(true);
 		agentIdField.setHidden(true);
-		fee_typeIdField.setHidden(true);
-		objField.setHidden(true);
-		feeField.setCanEdit(true);
-		feeList.setEditEvent(ListGridEditEvent.CLICK);
+		collegeIDField.setHidden(true);
+
 		
 		batchList.setSelectionType(SelectionStyle.SINGLE);
-		agentList.setSelectionType(SelectionStyle.SIMPLE);
-		recruitPlanList.setSelectionType(SelectionStyle.SIMPLE);
+		agentList.setSelectionType(SelectionStyle.SINGLE);
+		
+
 		batchList.setShowHeaderContextMenu(false);
 		agentList.setShowHeaderContextMenu(false);
-		recruitPlanList.setShowHeaderContextMenu(false);
-		agentList.setTitle("可以多选");
-		recruitPlanList.setTitle("可以多选");
-		entranceCostList.setTitle("双击删除");
+		collegeList.setShowHeaderContextMenu(false);
 		
-		selectionStack.setHeight(350);
-		selectionStack.setPadding(10);
-		selectionStack.setMargin(10);
+		collegeList.setCanDragRecordsOut(true);
+		collegeList.setDragAppearance(DragAppearance.TRACKER);
+		collegeList.setDragDataAction(DragDataAction.COPY);
+		
+
+		
+		selectionStack.setHeight(250);
+		selectionStack.setPadding(5);
+		selectionStack.setMargin(5);
+		
+		groupStack.setHeight100();
+		groupStack.setWidth(635);
+		groupStack.setPadding(5);
+		groupStack.setMargin(5);
 		
 		LayoutSpacer ls1 = new LayoutSpacer();
 		LayoutSpacer ls2 = new LayoutSpacer();
@@ -150,260 +157,322 @@ public class AgentRateManagePanel extends VLayout {
 		selectionStack.addMember(ls2);
 		
 		VLayout vPlan = new VLayout();
-		vPlan.setWidth(300);
+		vPlan.setWidth(200);
 		vPlan.setAlign(VerticalAlignment.TOP);
-		Label lPlan = new Label("选择招生计划");
+		Label lPlan = new Label("拖动大学到下边列表以创建组别");
 		lPlan.setHeight(20);
 		vPlan.addMember(lPlan);
-		vPlan.addMember(recruitPlanList);
+		vPlan.addMember(collegeList);
 		selectionStack.addMember(vPlan);
 		
 		selectionStack.addMember(ls3);
 		
-		VLayout vFee = new VLayout();
-		vFee.setWidth(250);
-		vFee.setAlign(VerticalAlignment.TOP);
-		Label lFee = new Label("设置费用");
-		lFee.setHeight(20);
-		vFee.addMember(lFee);
-		vFee.addMember(feeList);
-		selectionStack.addMember(vFee);
+		groupStack.setIsGroup(true);
+		groupStack.setGroupTitle("合并计算高校组别设置");
+		
+		ListGridField group = new ListGridField("groupName","组别");
+		ListGridField dropedRecord = new ListGridField("records","组别");
+		dropedRecord.setHidden(true);
+		groupList = new ListGrid(){
+			
+			 @Override  
+	            protected Canvas getExpansionComponent(final ListGridRecord record) {
+					
+	                final ListGrid grid = this;   
+	                
+	                VLayout layout = new VLayout(5);   
+	                layout.setPadding(5);  
+	        		
+	        		ListGrid rateList = new ListGrid();
+//	        		ListGridField  batchIdField2 = new ListGridField("batchId","批次ID");
+	        		ListGridField  collegeIDField2 = new ListGridField("collegeID","大学ID");
+	        		ListGridField  collegeNameField2 = new ListGridField("collegeName","大学");
+	        		ListGridField  fee_typeIdField2 = new ListGridField("fee_type_id","费用类型ID");
+	        		ListGridField  fee_typeNameField2 = new ListGridField("fee_type","费用类型");
+	        		ListGridField  pepleCountField2 = new ListGridField("people_count","人数上限");
+	        		ListGridField  returnRateField = new ListGridField("return_rate","返利系数");
+	        		
+	        		collegeIDField2.setHidden(true);
+	        		fee_typeIdField2.setHidden(true);	
+	        		
+	        		rateList.setCanDragRecordsOut(false);
+	        		rateList.setCanAcceptDroppedRecords(true);
+	        		rateList.setCanRemoveRecords(true);
+	        		
+	        		rateList.setFields(collegeIDField2,collegeNameField2,fee_typeIdField2,fee_typeNameField2,pepleCountField2,returnRateField);
+
+	                rateList.setWidth100();
+	                rateList.setHeight(100);
+	                layout.addMember(rateList);   
+	  
+	                HLayout hLayout = new HLayout(10);   
+	                hLayout.setAlign(Alignment.CENTER);   
+	  
+	                IButton saveButton = new IButton("保存");   
+	                saveButton.setTop(250);   
+	                saveButton.addClickHandler(new ClickHandler() {   
+	                    public void onClick(ClickEvent event) {   
+	                        saveGroup();   
+	                    }
+
+	                });   
+	                hLayout.addMember(saveButton);   
+	  
+
+	  
+	                IButton closeButton = new IButton("关闭");   
+	                closeButton.addClickHandler(new ClickHandler() {   
+	                    public void onClick(ClickEvent event) {   
+	                        grid.collapseRecord(record);   
+	                    }   
+	                });   
+	                hLayout.addMember(closeButton);   
+	                                                  
+	                layout.addMember(hLayout);   
+	  
+	                return layout;   
+
+	  
+			 }
+			
+		};
+		groupList.setCanAcceptDrop(true);
+		groupList.setCanAcceptDroppedRecords(true);
+		groupList.setCanExpandRecords(true);
+		groupList.addRecordDropHandler(new RecordDropHandler(){
+
+			@Override
+			public void onRecordDrop(RecordDropEvent event) {
+				
+				Record r = new Record();
+				r.setAttribute("groupName", "Group1");
+				r.setAttribute("records", event.getDropRecords());
+				groupList.addData(r);
+				event.cancel();
+				
+			}});
+		
+		
+		groupList.setFields(group,dropedRecord);
+		
+		
+		groupStack.addMember(groupList);
 		
 		selectionStack.addMember(ls4);
-		
-		HLayout buttonLayout = new HLayout();
-		buttonLayout.setHeight(30);
-		buttonLayout.setWidth(1000);
-		buttonLayout.setAlign(Alignment.RIGHT);
-		
-		LayoutSpacer ls5 = new LayoutSpacer();
-		ls5.setWidth(40);
-		
-		buttonLayout.addMember(saveButton);
-		buttonLayout.addMember(ls5);
-		buttonLayout.addMember(cloneButton);
-		//selectionStack.addMember(buttonLayout);
-		
 
 		batchList.setFields(batchIdField,batchNameField);
 		agentList.setFields(agentIdField,agentNameField);
-		recruitPlanList.setFields(collegeField,levelField,subjField);
-		feeList.setFields(fee_typeIdField,fee_typeField,feeField);
+		collegeList.setFields(collegeIDField,collegeNameField);
 
+
+
+		addMember(selectionStack);
+		addMember(groupStack);
 		
-		entranceCostList.setFields(objField,agentField2,collegeField2,levelField2,subjField2,fee_typeField2,feeField2);
-		entranceCostList.setAnimateRemoveRecord(true);
-
-
-//		addMember(mainStack);
-		
-		initValueMaps();
+//		initValueMaps();
 		
 		loadBatch();
 		loadAgent();
-		loadFeetype();
-		batchList.addSelectionChangedHandler(new SelectionChangedHandler(){
+		loadCollege();
+//		batchList.addSelectionChangedHandler(new SelectionChangedHandler(){
+//
+//			@Override
+//			public void onSelectionChanged(SelectionEvent event) {
+//				loadRecruitPlan(new Integer(event.getRecord().getAttribute("batchId")));
+//				refreshCurrentEntranceCostList(event.getRecord().getAttribute("batchId"));
+//			}});
+//		saveButton.addClickHandler(new ClickHandler(){
+//
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				saveMe();
+//				
+//			}}
+//		);
+//		
 
-			@Override
-			public void onSelectionChanged(SelectionEvent event) {
-				loadRecruitPlan(new Integer(event.getRecord().getAttribute("batchId")));
-				refreshCurrentEntranceCostList(event.getRecord().getAttribute("batchId"));
-			}});
-		saveButton.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				saveMe();
-				
-			}}
-		);
-		
-		entranceCostList.addDoubleClickHandler(new DoubleClickHandler(){
-
-			@Override
-			public void onDoubleClick(DoubleClickEvent event) {
-				
-				
-				SC.ask("你确定要删除本条记录吗?", new BooleanCallback(){
-
-					@Override
-					public void execute(Boolean value) {
-						
-						if(value)
-						{
-							dbService.deleteEntranceCost((EntranceCost)entranceCostList.getSelectedRecord().getAttributeAsObject("obj"),
-									new CommonAsyncCall<Boolean>(){
-
-								@Override
-								public void onSuccess(Boolean result) {
-									entranceCostList.removeSelectedData();
-									BrightEdu.showTip("成功删除");
-									
-								}});
-						}
-						
-					}});
-				
-			}
-			
-		});
 	}
 
-	protected void refreshCurrentEntranceCostList(String batchID) {
+	protected void saveGroup() {
+		// TODO Auto-generated method stub
 		
-		dbService.getEntranceCost(batchID, null, new CommonAsyncCall<List<EntranceCost>>(){
+	}   
+private void loadCollege() {
+	dbService.getCollegeList(-1,-1,  false, new CommonAsyncCall<List<College>>(){
 
-			@Override
-			public void onSuccess(List<EntranceCost> result) {
-				RecordList list = new RecordList();
-				for (EntranceCost cost : result)
-				{
-					Record r = new Record();
-					r.setAttribute("obj", cost);
-					r.setAttribute("agentName2", cost.getAgent_id()+"");
-					r.setAttribute("college2", cost.getCollege_id()+"");
-					r.setAttribute("level2", cost.getClassified_id()+"");
-					r.setAttribute("subject2", cost.getSubject_id()+"");
-					r.setAttribute("fee_type2", cost.getFee_id()+"");
-					r.setAttribute("fee2", cost.getFee()+"");
-					list.add(r);
-				}
-				entranceCostList.setData(list);
-				
-			}}
-		);
-		
-	}
-
-	private void initValueMaps() {
-
-		dbService.getCollegeList(-1,-1,  false, new CommonAsyncCall<List<College>>(){
-
-			@Override
-			public void onSuccess(List<College> result) {
-				LinkedHashMap<String,String> list  = new LinkedHashMap<String,String>();
-				for(College c : result)
-				{
-					list.put(c.getCollege_id()+"", c.getCollege_name());
-					collegeReverse.put(c.getCollege_name(), c.getCollege_id());
-				}
-				collegeField2.setValueMap(list);
-				
-			}}
-		);
-		
-		dbService.getStudentClassesList(-1,-1,  false, new CommonAsyncCall<List<StudentClassified>>(){
-
-			@Override
-			public void onSuccess(List<StudentClassified> result) {
-				LinkedHashMap<String,String> list  = new LinkedHashMap<String,String>();
-				for(StudentClassified c : result)
-				{
-					list.put(c.getClassified_id()+"", c.getClassified_name());
-					levelReverse.put(c.getClassified_name(), c.getClassified_id());
-				}
-				levelField2.setValueMap(list);
-			}}
-		);
-		
-		dbService.getSubjectsList(-1,-1,  false, new CommonAsyncCall<List<Subjects>>(){
-
-			@Override
-			public void onSuccess(List<Subjects> result) {
-				LinkedHashMap<String,String> list  = new LinkedHashMap<String,String>();
-				for(Subjects c : result)
-				{
-					list.put(c.getSubject_id()+"", c.getSubject_name());
-					subjectReverse.put(c.getSubject_name(), c.getSubject_id());
-				}
-				subjField2.setValueMap(list);
-			}}
-		);
-
-		dbService.getFeeTypeList(-1,-1,  false, new CommonAsyncCall<List<FeeType>>(){
-
-			@Override
-			public void onSuccess(List<FeeType> result) {
-				LinkedHashMap<String,String> list  = new LinkedHashMap<String,String>();
-				for(FeeType c : result)
-				{
-					list.put(c.getFee_id()+"", c.getFee_name());
-				}
-				fee_typeField2.setValueMap(list);
-			}}
-		);
-				
-	}
-
-	protected void saveMe() {
-		
-		
-		if(batchList.getSelectedRecords().length == 0 || agentList.getSelectedRecords().length == 0 || recruitPlanList.getSelectedRecords().length == 0) 
-		{
-			BrightEdu.showTip("批次,招生点,招生计划一个都不能少!");
-			return;
-		}
-		
-		String batchID = batchList.getSelectedRecord().getAttribute("batchId");
-		Record[] agents = agentList.getSelectedRecords();
-		Record[] plans = recruitPlanList.getSelectedRecords();
-		Record[] fees = feeList.getRecords();
-		ArrayList<EntranceCost> entranceCosts = new ArrayList<EntranceCost>();
-		for(Record fee : fees)
-		{
-			
-			if(new Integer(fee.getAttribute("fee")).intValue() ==0 )continue;
-			
-			for(Record agent : agents)
+		@Override
+		public void onSuccess(List<College> result) {
+			RecordList list  = new RecordList();
+			for(College c : result)
 			{
-				for(Record  plan : plans)
-				{
-					EntranceCost cost = new EntranceCost();
-					cost.setFee(new BigDecimal(fee.getAttribute("fee")));
-					cost.setBatch_id(new Integer(batchID));
-					cost.setAgent_id(new Integer(agent.getAttribute("agentId")));
-					cost.setClassified_id(levelReverse.get(plan.getAttribute("level")));
-					cost.setCollege_id(collegeReverse.get(plan.getAttribute("college")));
-					cost.setSubject_id(subjectReverse.get(plan.getAttribute("subject")));
-					cost.setFee_id(new Integer(fee.getAttribute("fee_type_id")));
-					entranceCosts.add(cost);
-				}
+				Record rc = new Record();
+				rc.setAttribute("collegeID", c.getCollege_id()+"");
+				rc.setAttribute("collegeName", c.getCollege_name());
+				list.add(rc);
+				
 			}
-
+			collegeList.setData(list);
 			
-		}
-		dbService.saveEntranceCost(entranceCosts, new CommonAsyncCall<Boolean>(){
-
-			@Override
-			public void onSuccess(Boolean result) {
-				BrightEdu.showTip("保存成功!");
-				refreshCurrentEntranceCostList(batchList.getSelectedRecord().getAttribute("batchId"));
-			}});
-		
+		}}
+	);
 		
 	}
 
-	private void loadFeetype() {
-		dbService.getFeeTypeList(-1, -1, false, new CommonAsyncCall<List<FeeType>>(){
+//	protected void refreshCurrentEntranceCostList(String batchID) {
+//		
+//		dbService.getEntranceCost(batchID, null, new CommonAsyncCall<List<EntranceCost>>(){
+//
+//			@Override
+//			public void onSuccess(List<EntranceCost> result) {
+//				RecordList list = new RecordList();
+//				for (EntranceCost cost : result)
+//				{
+//					Record r = new Record();
+//					r.setAttribute("obj", cost);
+//					r.setAttribute("agentName2", cost.getAgent_id()+"");
+//					r.setAttribute("college2", cost.getCollege_id()+"");
+//					r.setAttribute("level2", cost.getClassified_id()+"");
+//					r.setAttribute("subject2", cost.getSubject_id()+"");
+//					r.setAttribute("fee_type2", cost.getFee_id()+"");
+//					r.setAttribute("fee2", cost.getFee()+"");
+//					list.add(r);
+//				}
+//				entranceCostList.setData(list);
+//				
+//			}}
+//		);
+//		
+//	}
 
-			@Override
-			public void onSuccess(List<FeeType> result) {
-				
-				RecordList list = new RecordList();
-				
-				for(FeeType f : result)
-				{
-					Record r = new Record();
-					r.setAttribute("fee_type_id", f.getFee_id());
-					r.setAttribute("fee_type", f.getFee_name());
-					r.setAttribute("fee", 0.00);
-					list.add(r);
-				}
-						feeList.setData(list);
-				
-			}});
-		
-	}
+//	private void initValueMaps() {
+//
+//		dbService.getCollegeList(-1,-1,  false, new CommonAsyncCall<List<College>>(){
+//
+//			@Override
+//			public void onSuccess(List<College> result) {
+//				LinkedHashMap<String,String> list  = new LinkedHashMap<String,String>();
+//				for(College c : result)
+//				{
+//					list.put(c.getCollege_id()+"", c.getCollege_name());
+//					collegeReverse.put(c.getCollege_name(), c.getCollege_id());
+//				}
+//				collegeField2.setValueMap(list);
+//				
+//			}}
+//		);
+//		
+//		dbService.getStudentClassesList(-1,-1,  false, new CommonAsyncCall<List<StudentClassified>>(){
+//
+//			@Override
+//			public void onSuccess(List<StudentClassified> result) {
+//				LinkedHashMap<String,String> list  = new LinkedHashMap<String,String>();
+//				for(StudentClassified c : result)
+//				{
+//					list.put(c.getClassified_id()+"", c.getClassified_name());
+//					levelReverse.put(c.getClassified_name(), c.getClassified_id());
+//				}
+//				levelField2.setValueMap(list);
+//			}}
+//		);
+//		
+//		dbService.getSubjectsList(-1,-1,  false, new CommonAsyncCall<List<Subjects>>(){
+//
+//			@Override
+//			public void onSuccess(List<Subjects> result) {
+//				LinkedHashMap<String,String> list  = new LinkedHashMap<String,String>();
+//				for(Subjects c : result)
+//				{
+//					list.put(c.getSubject_id()+"", c.getSubject_name());
+//					subjectReverse.put(c.getSubject_name(), c.getSubject_id());
+//				}
+//				subjField2.setValueMap(list);
+//			}}
+//		);
+//
+//		dbService.getFeeTypeList(-1,-1,  false, new CommonAsyncCall<List<FeeType>>(){
+//
+//			@Override
+//			public void onSuccess(List<FeeType> result) {
+//				LinkedHashMap<String,String> list  = new LinkedHashMap<String,String>();
+//				for(FeeType c : result)
+//				{
+//					list.put(c.getFee_id()+"", c.getFee_name());
+//				}
+//				fee_typeField2.setValueMap(list);
+//			}}
+//		);
+//				
+//	}
+
+//	protected void saveMe() {
+//		
+//		
+//		if(batchList.getSelectedRecords().length == 0 || agentList.getSelectedRecords().length == 0 || recruitPlanList.getSelectedRecords().length == 0) 
+//		{
+//			BrightEdu.showTip("批次,招生点,招生计划一个都不能少!");
+//			return;
+//		}
+//		
+//		String batchID = batchList.getSelectedRecord().getAttribute("batchId");
+//		Record[] agents = agentList.getSelectedRecords();
+//		Record[] plans = recruitPlanList.getSelectedRecords();
+//		Record[] fees = feeList.getRecords();
+//		ArrayList<EntranceCost> entranceCosts = new ArrayList<EntranceCost>();
+//		for(Record fee : fees)
+//		{
+//			
+//			if(new Integer(fee.getAttribute("fee")).intValue() ==0 )continue;
+//			
+//			for(Record agent : agents)
+//			{
+//				for(Record  plan : plans)
+//				{
+//					EntranceCost cost = new EntranceCost();
+//					cost.setFee(new BigDecimal(fee.getAttribute("fee")));
+//					cost.setBatch_id(new Integer(batchID));
+//					cost.setAgent_id(new Integer(agent.getAttribute("agentId")));
+//					cost.setClassified_id(levelReverse.get(plan.getAttribute("level")));
+//					cost.setCollege_id(collegeReverse.get(plan.getAttribute("college")));
+//					cost.setSubject_id(subjectReverse.get(plan.getAttribute("subject")));
+//					cost.setFee_id(new Integer(fee.getAttribute("fee_type_id")));
+//					entranceCosts.add(cost);
+//				}
+//			}
+//
+//			
+//		}
+//		dbService.saveEntranceCost(entranceCosts, new CommonAsyncCall<Boolean>(){
+//
+//			@Override
+//			public void onSuccess(Boolean result) {
+//				BrightEdu.showTip("保存成功!");
+//				refreshCurrentEntranceCostList(batchList.getSelectedRecord().getAttribute("batchId"));
+//			}});
+//		
+//		
+//	}
+
+//	private void loadFeetype() {
+//		dbService.getFeeTypeList(-1, -1, false, new CommonAsyncCall<List<FeeType>>(){
+//
+//			@Override
+//			public void onSuccess(List<FeeType> result) {
+//				
+//				RecordList list = new RecordList();
+//				
+//				for(FeeType f : result)
+//				{
+//					Record r = new Record();
+//					r.setAttribute("fee_type_id", f.getFee_id());
+//					r.setAttribute("fee_type", f.getFee_name());
+//					r.setAttribute("fee", 0.00);
+//					list.add(r);
+//				}
+//						feeList.setData(list);
+//				
+//			}});
+//		
+//	}
 
 	private void loadAgent() {
 		
@@ -423,7 +492,7 @@ public class AgentRateManagePanel extends VLayout {
 					agentMap.put(x.getAgent_id() + "",x.getAgent_name());
 				}
 				agentList.setData(list);
-				agentField2.setValueMap(agentMap);
+//				agentField2.setValueMap(agentMap);
 				
 			}});	
 	}
@@ -447,77 +516,77 @@ public class AgentRateManagePanel extends VLayout {
 			}});
 		
 		//get current batch after 1 second
-		
-		new Timer(){
-
-			@Override
-			public void run() {
-				dbService.getCurrentBatch(new CommonAsyncCall<Integer>(){
-
-					@Override
-					public void onSuccess(Integer result) {
-						
-						if(result == -1) return;
-						
-						Record[] list = batchList.getDataAsRecordList().duplicate();
-						
-						for(Record rec: list)
-						{
-							if(rec.getAttribute("batchId").equals(result+""))
-							{
-								batchList.selectRecord(rec);
-								break;
-							}
-						}
-						
-						//load current batch recruit plan
-						loadRecruitPlan(new Integer(batchList.getSelectedRecord().getAttribute("batchId")));
-						
-					}
-				});
-				
-				
-			}}.schedule(2000);
+//		
+//		new Timer(){
+//
+//			@Override
+//			public void run() {
+//				dbService.getCurrentBatch(new CommonAsyncCall<Integer>(){
+//
+//					@Override
+//					public void onSuccess(Integer result) {
+//						
+//						if(result == -1) return;
+//						
+//						Record[] list = batchList.getDataAsRecordList().duplicate();
+//						
+//						for(Record rec: list)
+//						{
+//							if(rec.getAttribute("batchId").equals(result+""))
+//							{
+//								batchList.selectRecord(rec);
+//								break;
+//							}
+//						}
+//						
+//						//load current batch recruit plan
+//						loadRecruitPlan(new Integer(batchList.getSelectedRecord().getAttribute("batchId")));
+//						
+//					}
+//				});
+//				
+//				
+//			}}.schedule(2000);
 		
 	}
 	
 
 
-	private void loadRecruitPlan(Integer batchId) {
-		
-		dbService.getRecruitPlanList(batchId, new AsyncCallback<List<RecruitPlan>>(){
-
-			@Override
-			public void onFailure(Throwable caught) {
-				
-				
-			}
-
-			@Override
-			public void onSuccess(List<RecruitPlan> result) {
-				
-				if (result.size() == 0)
-				{
-					recruitPlanList.setData(new RecordList());
-					return;
-				}
-				Iterator<RecruitPlan> rpit = result.iterator();
-				RecordList data = new RecordList();
-				
-				while(rpit.hasNext())
-				{
-					RecruitPlan rp = rpit.next();
-					Record rc = new Record();
-					rc.setAttribute("college",rp.getCollege_name());
-					rc.setAttribute("level", rp.getClassified_name());
-					rc.setAttribute("subject", rp.getSubject_name());
-					data.add(rc);
-				}
-				
-				recruitPlanList.setData(data);
-				
-			}}
-		);
-	}
+//	private void loadRecruitPlan(Integer batchId) {
+//		
+//		dbService.getRecruitPlanList(batchId, new AsyncCallback<List<RecruitPlan>>(){
+//
+//			@Override
+//			public void onFailure(Throwable caught) {
+//				
+//				
+//			}
+//
+//			@Override
+//			public void onSuccess(List<RecruitPlan> result) {
+//				
+//				if (result.size() == 0)
+//				{
+//					recruitPlanList.setData(new RecordList());
+//					return;
+//				}
+//				Iterator<RecruitPlan> rpit = result.iterator();
+//				RecordList data = new RecordList();
+//				
+//				while(rpit.hasNext())
+//				{
+//					RecruitPlan rp = rpit.next();
+//					Record rc = new Record();
+//					rc.setAttribute("college",rp.getCollege_name());
+//					rc.setAttribute("level", rp.getClassified_name());
+//					rc.setAttribute("subject", rp.getSubject_name());
+//					data.add(rc);
+//				}
+//				
+//				recruitPlanList.setData(data);
+//				
+//			}}
+//		);
+//	}
 	
 }
