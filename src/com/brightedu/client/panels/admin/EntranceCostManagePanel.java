@@ -28,15 +28,21 @@ import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.types.SelectionType;
 import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.types.VisibilityMode;
+import com.smartgwt.client.util.BooleanCallback;
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.events.DoubleClickEvent;
+import com.smartgwt.client.widgets.events.DoubleClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.grid.CellEditValueFormatter;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
+import com.smartgwt.client.widgets.grid.events.CellClickEvent;
+import com.smartgwt.client.widgets.grid.events.CellClickHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 import com.smartgwt.client.widgets.layout.HLayout;
@@ -74,7 +80,7 @@ public class EntranceCostManagePanel extends VLayout {
 	ListGridField  feeField = new ListGridField("fee","费用");
 	
 	ListGrid entranceCostList = new ListGrid();
-	
+	ListGridField objField = new ListGridField("obj","完成对象");
 	ListGridField agentField2 = new ListGridField("agentName2","招生点/学习中心名称");
 	ListGridField collegeField2 = new ListGridField("college2","大学");
 	ListGridField levelField2 = new ListGridField("level2","层次");
@@ -94,6 +100,7 @@ public class EntranceCostManagePanel extends VLayout {
 		batchIdField.setHidden(true);
 		agentIdField.setHidden(true);
 		fee_typeIdField.setHidden(true);
+		objField.setHidden(true);
 		feeField.setCanEdit(true);
 		feeList.setEditEvent(ListGridEditEvent.CLICK);
 		
@@ -103,6 +110,9 @@ public class EntranceCostManagePanel extends VLayout {
 		batchList.setShowHeaderContextMenu(false);
 		agentList.setShowHeaderContextMenu(false);
 		recruitPlanList.setShowHeaderContextMenu(false);
+		agentList.setTitle("可以多选");
+		recruitPlanList.setTitle("可以多选");
+		entranceCostList.setTitle("双击删除");
 		
 		selectionStack.setHeight(350);
 		selectionStack.setPadding(10);
@@ -188,7 +198,9 @@ public class EntranceCostManagePanel extends VLayout {
 		
 		mainStack.addSection(selectionSection);
 		
-		entranceCostList.setFields(agentField2,collegeField2,levelField2,subjField2,fee_typeField2,feeField2);
+		entranceCostList.setFields(objField,agentField2,collegeField2,levelField2,subjField2,fee_typeField2,feeField2);
+		entranceCostList.setAnimateRemoveRecord(true);
+
 		
 		listSection.addItem(entranceCostList);
 		listSection.setExpanded(true);
@@ -219,6 +231,35 @@ public class EntranceCostManagePanel extends VLayout {
 			}}
 		);
 		
+		entranceCostList.addDoubleClickHandler(new DoubleClickHandler(){
+
+			@Override
+			public void onDoubleClick(DoubleClickEvent event) {
+				
+				
+				SC.ask("你确定要删除本条记录吗?", new BooleanCallback(){
+
+					@Override
+					public void execute(Boolean value) {
+						
+						if(value)
+						{
+							dbService.deleteEntranceCost((EntranceCost)entranceCostList.getSelectedRecord().getAttributeAsObject("obj"),
+									new CommonAsyncCall<Boolean>(){
+
+								@Override
+								public void onSuccess(Boolean result) {
+									entranceCostList.removeSelectedData();
+									BrightEdu.showTip("成功删除");
+									
+								}});
+						}
+						
+					}});
+				
+			}
+			
+		});
 	}
 
 	protected void refreshCurrentEntranceCostList(String batchID) {
@@ -231,6 +272,7 @@ public class EntranceCostManagePanel extends VLayout {
 				for (EntranceCost cost : result)
 				{
 					Record r = new Record();
+					r.setAttribute("obj", cost);
 					r.setAttribute("agentName2", cost.getAgent_id()+"");
 					r.setAttribute("college2", cost.getCollege_id()+"");
 					r.setAttribute("level2", cost.getClassified_id()+"");
