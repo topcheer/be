@@ -1,16 +1,23 @@
 package com.brightedu.client.panels.admin;
 
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import com.brightedu.client.BrightEdu;
 import com.brightedu.client.CommonAsyncCall;
 import com.brightedu.client.DataBaseRPCAsync;
 import com.brightedu.model.edu.BatchIndex;
+import com.brightedu.model.edu.College;
+import com.brightedu.model.edu.EntranceCost;
 import com.brightedu.model.edu.FeeType;
 import com.brightedu.model.edu.RecruitAgent;
 import com.brightedu.model.edu.RecruitPlan;
+import com.brightedu.model.edu.StudentClassified;
+import com.brightedu.model.edu.Subjects;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.data.Record;
@@ -23,6 +30,8 @@ import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.types.VisibilityMode;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Label;
+import com.smartgwt.client.widgets.events.ClickEvent;
+import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.grid.CellEditValueFormatter;
@@ -66,14 +75,19 @@ public class EntranceCostManagePanel extends VLayout {
 	
 	ListGrid entranceCostList = new ListGrid();
 	
-	ListGridField collegeField2 = new ListGridField("college","大学");
-	ListGridField levelField2 = new ListGridField("level","层次");
-	ListGridField  subjField2 = new ListGridField("subject","专业");
-	ListGridField  fee_typeField2 = new ListGridField("fee_type","费用类型");
-	ListGridField  feeField2 = new ListGridField("fee","费用");
+	ListGridField agentField2 = new ListGridField("agentName2","招生点/学习中心名称");
+	ListGridField collegeField2 = new ListGridField("college2","大学");
+	ListGridField levelField2 = new ListGridField("level2","层次");
+	ListGridField  subjField2 = new ListGridField("subject2","专业");
+	ListGridField  fee_typeField2 = new ListGridField("fee_type2","费用类型");
+	ListGridField  feeField2 = new ListGridField("fee2","费用");
 	
 	IButton saveButton = new IButton("保存");
 	IButton cloneButton = new IButton("克隆...");
+	
+	LinkedHashMap<String,Integer> levelReverse = new LinkedHashMap<String,Integer>();
+	LinkedHashMap<String,Integer> collegeReverse = new LinkedHashMap<String,Integer>();
+	LinkedHashMap<String,Integer> subjectReverse = new LinkedHashMap<String,Integer>();
 	
 	public EntranceCostManagePanel()
 	{
@@ -174,6 +188,8 @@ public class EntranceCostManagePanel extends VLayout {
 		
 		mainStack.addSection(selectionSection);
 		
+		entranceCostList.setFields(agentField2,collegeField2,levelField2,subjField2,fee_typeField2,feeField2);
+		
 		listSection.addItem(entranceCostList);
 		listSection.setExpanded(true);
 		listSection.setResizeable(true);
@@ -181,6 +197,8 @@ public class EntranceCostManagePanel extends VLayout {
 		mainStack.addSection(listSection);
 		mainStack.setVisibilityMode(VisibilityMode.MULTIPLE);
 		addMember(mainStack);
+		
+		initValueMaps();
 		
 		loadBatch();
 		loadAgent();
@@ -190,8 +208,149 @@ public class EntranceCostManagePanel extends VLayout {
 			@Override
 			public void onSelectionChanged(SelectionEvent event) {
 				loadRecruitPlan(new Integer(event.getRecord().getAttribute("batchId")));
+				refreshCurrentEntranceCostList(event.getRecord().getAttribute("batchId"));
+			}});
+		saveButton.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				saveMe();
+				
+			}}
+		);
+		
+	}
+
+	protected void refreshCurrentEntranceCostList(String batchID) {
+		
+		dbService.getEntranceCost(batchID, null, new CommonAsyncCall<List<EntranceCost>>(){
+
+			@Override
+			public void onSuccess(List<EntranceCost> result) {
+				RecordList list = new RecordList();
+				for (EntranceCost cost : result)
+				{
+					Record r = new Record();
+					r.setAttribute("agentName2", cost.getAgent_id()+"");
+					r.setAttribute("college2", cost.getCollege_id()+"");
+					r.setAttribute("level2", cost.getClassified_id()+"");
+					r.setAttribute("subject2", cost.getSubject_id()+"");
+					r.setAttribute("fee_type2", cost.getFee_id()+"");
+					r.setAttribute("fee2", cost.getFee()+"");
+					list.add(r);
+				}
+				entranceCostList.setData(list);
+				
+			}}
+		);
+		
+	}
+
+	private void initValueMaps() {
+
+		dbService.getCollegeList(-1,-1,  false, new CommonAsyncCall<List<College>>(){
+
+			@Override
+			public void onSuccess(List<College> result) {
+				LinkedHashMap<String,String> list  = new LinkedHashMap<String,String>();
+				for(College c : result)
+				{
+					list.put(c.getCollege_id()+"", c.getCollege_name());
+					collegeReverse.put(c.getCollege_name(), c.getCollege_id());
+				}
+				collegeField2.setValueMap(list);
+				
+			}}
+		);
+		
+		dbService.getStudentClassesList(-1,-1,  false, new CommonAsyncCall<List<StudentClassified>>(){
+
+			@Override
+			public void onSuccess(List<StudentClassified> result) {
+				LinkedHashMap<String,String> list  = new LinkedHashMap<String,String>();
+				for(StudentClassified c : result)
+				{
+					list.put(c.getClassified_id()+"", c.getClassified_name());
+					levelReverse.put(c.getClassified_name(), c.getClassified_id());
+				}
+				levelField2.setValueMap(list);
+			}}
+		);
+		
+		dbService.getSubjectsList(-1,-1,  false, new CommonAsyncCall<List<Subjects>>(){
+
+			@Override
+			public void onSuccess(List<Subjects> result) {
+				LinkedHashMap<String,String> list  = new LinkedHashMap<String,String>();
+				for(Subjects c : result)
+				{
+					list.put(c.getSubject_id()+"", c.getSubject_name());
+					subjectReverse.put(c.getSubject_name(), c.getSubject_id());
+				}
+				subjField2.setValueMap(list);
+			}}
+		);
+
+		dbService.getFeeTypeList(-1,-1,  false, new CommonAsyncCall<List<FeeType>>(){
+
+			@Override
+			public void onSuccess(List<FeeType> result) {
+				LinkedHashMap<String,String> list  = new LinkedHashMap<String,String>();
+				for(FeeType c : result)
+				{
+					list.put(c.getFee_id()+"", c.getFee_name());
+				}
+				fee_typeField2.setValueMap(list);
+			}}
+		);
+				
+	}
+
+	protected void saveMe() {
+		
+		
+		if(batchList.getSelectedRecords().length == 0 || agentList.getSelectedRecords().length == 0 || recruitPlanList.getSelectedRecords().length == 0) 
+		{
+			BrightEdu.showTip("批次,招生点,招生计划一个都不能少!");
+			return;
+		}
+		
+		String batchID = batchList.getSelectedRecord().getAttribute("batchId");
+		Record[] agents = agentList.getSelectedRecords();
+		Record[] plans = recruitPlanList.getSelectedRecords();
+		Record[] fees = feeList.getRecords();
+		ArrayList<EntranceCost> entranceCosts = new ArrayList<EntranceCost>();
+		for(Record fee : fees)
+		{
+			
+			if(new Integer(fee.getAttribute("fee")).intValue() ==0 )continue;
+			
+			for(Record agent : agents)
+			{
+				for(Record  plan : plans)
+				{
+					EntranceCost cost = new EntranceCost();
+					cost.setFee(new BigDecimal(fee.getAttribute("fee")));
+					cost.setBatch_id(new Integer(batchID));
+					cost.setAgent_id(new Integer(agent.getAttribute("agentId")));
+					cost.setClassified_id(levelReverse.get(plan.getAttribute("level")));
+					cost.setCollege_id(collegeReverse.get(plan.getAttribute("college")));
+					cost.setSubject_id(subjectReverse.get(plan.getAttribute("subject")));
+					cost.setFee_id(new Integer(fee.getAttribute("fee_type_id")));
+					entranceCosts.add(cost);
+				}
+			}
+
+			
+		}
+		dbService.saveEntranceCost(entranceCosts, new CommonAsyncCall<Boolean>(){
+
+			@Override
+			public void onSuccess(Boolean result) {
+				BrightEdu.showTip("保存成功!");
 				
 			}});
+		
 		
 	}
 
@@ -225,14 +384,17 @@ public class EntranceCostManagePanel extends VLayout {
 			public void onSuccess(List<RecruitAgent> result) {
 				
 				RecordList list = new RecordList();
+				LinkedHashMap<String,String> agentMap = new LinkedHashMap<String,String>();
 				for(RecruitAgent x : result)
 				{
 					Record record = new Record();
 					record.setAttribute("agentId", x.getAgent_id()+"");
 					record.setAttribute("agentName", x.getAgent_name());
 					list.add(record);
+					agentMap.put(x.getAgent_id() + "",x.getAgent_name());
 				}
 				agentList.setData(list);
+				agentField2.setValueMap(agentMap);
 				
 			}});	
 	}
@@ -286,7 +448,7 @@ public class EntranceCostManagePanel extends VLayout {
 				});
 				
 				
-			}}.schedule(1000);
+			}}.schedule(2000);
 		
 	}
 	
