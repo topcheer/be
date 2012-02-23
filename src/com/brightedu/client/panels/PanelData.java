@@ -60,7 +60,10 @@ public class PanelData {
 		if (id.equals("rights_manage")) { // 权限基础数据设置
 			return new RightsManage.Factory();
 		}
-
+		
+		if (id.equals("agent_agreement_fee_manage")) { // 招生点返利规则设置
+			return new AgentRateManage.Factory();
+		}
 
 		// student management
 		if (id.equals("student_register")) {
