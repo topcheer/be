@@ -228,5 +228,6 @@ public interface DataBaseRPC extends RemoteService {
 	/************************ 入学费用设置 *********************************/
 	public List<EntranceCost> getEntranceCost(String batchID,String agentID);
 	public boolean saveEntranceCost(List<EntranceCost> entranceCosts);
+	public boolean deleteEntranceCost(EntranceCost cost);
 
 }

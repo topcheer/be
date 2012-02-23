@@ -500,6 +500,11 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 		return agent.saveEntranceCost(entranceCosts);
 	}
 
+	@Override
+	public boolean deleteEntranceCost(EntranceCost cost) {
+		return agent.deleteEntranceCost(cost);
+	}
+
 
 
 

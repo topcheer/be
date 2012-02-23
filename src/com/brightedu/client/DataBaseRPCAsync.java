@@ -253,4 +253,6 @@ public interface DataBaseRPCAsync {
 	void saveEntranceCost(List<EntranceCost> entranceCosts,
 			AsyncCallback<Boolean> callback);
 
+	void deleteEntranceCost(EntranceCost cost, AsyncCallback<Boolean> callback);
+
 }

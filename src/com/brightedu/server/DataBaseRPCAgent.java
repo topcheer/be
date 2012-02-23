@@ -1724,8 +1724,36 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			EntranceCostMapper bim = session.getMapper(EntranceCostMapper.class);
 			for(EntranceCost cost : entranceCosts)
 			{
+				//remove existing
+				EntranceCostExample ex = new EntranceCostExample();
+				ex.createCriteria().andAgent_idEqualTo(cost.getAgent_id())
+									.andBatch_idEqualTo(cost.getBatch_id())
+									.andCollege_idEqualTo(cost.getCollege_id())
+									.andClassified_idEqualTo(cost.getCollege_id())
+									.andSubject_idEqualTo(cost.getSubject_id())
+									.andFee_idEqualTo(cost.getFee_id());
+				
+				bim.deleteByExample(ex);
+				
 				bim.insertSelective(cost);
+				
 			}
+			session.commit();
+			return true;
+			
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean deleteEntranceCost(EntranceCost cost) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			EntranceCostMapper bim = session.getMapper(EntranceCostMapper.class);
+
+			bim.deleteByPrimaryKey(cost);
+
 			session.commit();
 			return true;
 			
