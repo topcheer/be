@@ -29,10 +29,10 @@ public class FeeTypeAdminPanel extends BasicAdminPanel {
 	}
 
 	public ListGridField[] createGridFileds() {
-		return parseGridFields(new String[] { "obj_name","is_split","is_by_end" },
-				new String[] { "费用名称","是否按年支付","是否期末支付" },
-				new ListGridFieldType[] { ListGridFieldType.TEXT,ListGridFieldType.BOOLEAN,ListGridFieldType.BOOLEAN },
-				new boolean[] { true,true,true }, new int[] { -1,120,120 });
+		return parseGridFields(new String[] { "obj_name","is_split","is_by_end","can_return" },
+				new String[] { "费用名称","是否按年支付","是否期末支付","是否涉及返利计算" },
+				new ListGridFieldType[] { ListGridFieldType.TEXT,ListGridFieldType.BOOLEAN,ListGridFieldType.BOOLEAN ,ListGridFieldType.BOOLEAN },
+				new boolean[] { true,true,true,true }, new int[] { -1,120,120,120 });
 	}
 
 	public void update(final Record rec) {
@@ -41,9 +41,11 @@ public class FeeTypeAdminPanel extends BasicAdminPanel {
 		final String oldName = editedBatch.getFee_name();
 		final boolean is_split = editedBatch.getSplit_by_year();
 		final boolean is_by_end = editedBatch.getCharge_by_end();
+		final boolean can_return = editedBatch.getCan_return();
 		editedBatch.setFee_name(rec.getAttributeAsString("obj_name"));
 		editedBatch.setCharge_by_end(rec.getAttributeAsBoolean("is_by_end"));
 		editedBatch.setSplit_by_year(rec.getAttributeAsBoolean("is_split"));
+		editedBatch.setCan_return(rec.getAttributeAsBoolean("can_return"));
 		dbService.saveFeeType(editedBatch, new CommonAsyncCall<Boolean>() {
 			@Override
 			public void onSuccess(Boolean result) {
@@ -54,9 +56,11 @@ public class FeeTypeAdminPanel extends BasicAdminPanel {
 				editedBatch.setFee_name(oldName);
 				editedBatch.setCharge_by_end(is_by_end);
 				editedBatch.setSplit_by_year(is_split);
+				editedBatch.setCan_return(can_return);
 				rec.setAttribute("obj_name", oldName);
 				rec.setAttribute("is_split", is_split);
 				rec.setAttribute("is_by_end", is_by_end);
+				rec.setAttribute("can_return", can_return);
 			}
 		});
 	}
@@ -84,6 +88,7 @@ public class FeeTypeAdminPanel extends BasicAdminPanel {
 					rec.setAttribute("obj_name", bi.getFee_name());
 					rec.setAttribute("is_split", bi.getSplit_by_year());
 					rec.setAttribute("is_by_end", bi.getCharge_by_end());
+					rec.setAttribute("can_return", bi.getCan_return());
 					listData[i] = rec;
 				}
 				resultList.setData(listData);
@@ -121,6 +126,7 @@ public class FeeTypeAdminPanel extends BasicAdminPanel {
 				"费用名称");
 		private BooleanItem isEndItem = new BooleanItem("is_by_end", "是否期末支付");
 		private BooleanItem isSplitItem = new BooleanItem("is_split", "是否按年支付");
+		private BooleanItem canReturnItem = new BooleanItem("can_return", "是否涉及返利计算");
 		int len = 250;
 
 		public void init() {
@@ -135,6 +141,7 @@ public class FeeTypeAdminPanel extends BasicAdminPanel {
 			at.setFee_name(feeTypeNameItem.getValueAsString());
 			at.setCharge_by_end(isEndItem.getValueAsBoolean());
 			at.setSplit_by_year(isSplitItem.getValueAsBoolean());
+			at.setCan_return(canReturnItem.getValueAsBoolean());
 			return at;
 		}
 
@@ -146,8 +153,10 @@ public class FeeTypeAdminPanel extends BasicAdminPanel {
 			isEndItem.setValue(false);
 			isSplitItem.setWidth(len);
 			isSplitItem.setValue(false);
+			canReturnItem.setWidth(len);
+			canReturnItem.setValue(false);
 			form.setPadding(5);
-			form.setFields(feeTypeNameItem, isEndItem,isSplitItem);
+			form.setFields(feeTypeNameItem, isEndItem,isSplitItem,canReturnItem);
 			return form;
 		}
 
