@@ -115,6 +115,7 @@ public class AgentRateManagePanel extends VLayout {
 		collegeList.setDragAppearance(DragAppearance.TRACKER);
 		collegeList.setDragDataAction(DragDataAction.MOVE);
 		collegeList.setSelectionType(SelectionStyle.SIMPLE);
+		collegeList.setTitle("选中合并计算的记录并拖动到下面的列表中以创建合并计算高校组合");
 		
 		selectionStack.setHeight(250);
 		selectionStack.setPadding(5);
@@ -202,9 +203,10 @@ public class AgentRateManagePanel extends VLayout {
 	        		rateList.setShowHeaderContextMenu(false);
 	        		rateList.setCanReorderRecords(true);
 	        		rateList.setCanRemoveRecords(true);
-
+	        		rateList.setDragDataAction(DragDataAction.COPY);
+	        		
 	        		rateList.setFields(collegeIDField2,collegeNameField2,pepleCountField2,returnRateField);
-
+	        		rateList.setTitle("拖动并放开选中的记录将在本列表框中拷贝相同的记录，便于设置多个级别");
 	                rateList.setWidth100();
 	                rateList.setHeight(150);
 	                layout.addMember(rateList);   
