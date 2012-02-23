@@ -348,7 +348,7 @@ public class EntranceCostManagePanel extends VLayout {
 			@Override
 			public void onSuccess(Boolean result) {
 				BrightEdu.showTip("保存成功!");
-				
+				refreshCurrentEntranceCostList(batchList.getSelectedRecord().getAttribute("batchId"));
 			}});
 		
 		
