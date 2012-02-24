@@ -11,6 +11,7 @@ import com.smartgwt.client.widgets.form.fields.TextItem;
 public class AgentAdminEditorForm extends DetailedEditorForm {
 	TextItem agent_nameItem = new TextItem("agent_name", "招生点名称");
 	SelectItem agent_typeItem = new SelectItem("agent_type", "机构类型");
+	SelectItem parentAgentItem = new SelectItem("parent_agent", "隶属于");
 	TextItem responsible_personItem = new TextItem("responsible_person", "负责人");
 	TextItem contact_personItem = new TextItem("contact_person", "联系人");
 	TextItem contact_addressItem = new TextItem("contact_address", "联系地址");
@@ -34,10 +35,11 @@ public class AgentAdminEditorForm extends DetailedEditorForm {
 		remarkItem.setLength(2000);
 		remarkItem.setRowSpan(3);
 		remarkItem.setColSpan(4);
+//		agent_typeItem.
 		setFields(agent_nameItem, agent_typeItem, responsible_personItem,
-				contact_personItem, contact_phoneItem, contact_mobileItem,
-				account_nameItem, bank_nameItem, bank_accountItem,
-				college_urlItem, userid_for_collegeItem,
+				parentAgentItem, contact_personItem, contact_phoneItem,
+				contact_mobileItem, account_nameItem, bank_nameItem,
+				bank_accountItem, college_urlItem, userid_for_collegeItem,
 				password_for_collegeItem, remarkItem, saveBtn);
 	}
 
@@ -63,6 +65,7 @@ public class AgentAdminEditorForm extends DetailedEditorForm {
 		agent.setRemark(remarkItem.getValueAsString());
 		agent.setResponsible_person(responsible_personItem.getValueAsString());
 		agent.setUserid_for_college(userid_for_collegeItem.getValueAsString());
+		System.out.println(agent.getAgent_type_id());
 		return agent;
 	}
 

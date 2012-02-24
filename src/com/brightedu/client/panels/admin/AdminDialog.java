@@ -3,6 +3,7 @@ package com.brightedu.client.panels.admin;
 import com.brightedu.client.BrightEdu;
 import com.brightedu.client.CommonAsyncCall;
 import com.brightedu.client.panels.BasicAdminPanel;
+import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Label;
@@ -40,7 +41,8 @@ public abstract class AdminDialog extends Window {
 		setOverflow(Overflow.VISIBLE);
 		setAutoSize(true);
 		setCanDragResize(true);
-
+		setAnimateShowEffect(AnimationEffect.WIPE);
+		setAnimateShowTime(800);
 		form = createContentForm();
 		okBtn.addClickHandler(new ClickHandler() {
 

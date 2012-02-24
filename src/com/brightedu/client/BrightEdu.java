@@ -136,26 +136,17 @@ public class BrightEdu implements EntryPoint {
 	}
 
 	private void createUI() {
+		createAdminUI();
 		// remove headers, divs
 		RootPanel p = RootPanel.get("loading");
 		if (p != null)
 			RootPanel.getBodyElement().removeChild(p.getElement());
-		createAdminUI();
-
 	}
 
 	private TabSet mainTabSet;
 
 	private void createAdminUI() {
-		VLayout main = new VLayout() {
-			@Override
-			protected void onInit() {
-				super.onInit();
-				// if (initToken.length() != 0) {
-				// onHistoryChanged(initToken);
-				// }
-			}
-		};
+		VLayout main = new VLayout();
 
 		ToolStrip topBar = new ToolStrip();
 		topBar.setHeight(62);
@@ -167,16 +158,6 @@ public class BrightEdu implements EntryPoint {
 		c.setPrompt("今明教育在线");
 		c.setWidth(375);
 		c.setHeight(56);
-		// c.addc
-		// ImgButton homeBtn = new ImgButton();
-		// homeBtn.setSrc("jm_toolstrip.png");
-		// // sgwtHomeButton.setWidth(24);
-		// // sgwtHomeButton.setHeight(24);
-		// homeBtn.setPrompt("今明教育在线");
-		// // sgwtHomeButton.setHoverStyle("interactImageHover");
-		// homeBtn.setShowRollOver(false);
-		// homeBtn.setShowDownIcon(false);
-		// homeBtn.setShowDown(false);
 		c.addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
 			public void onClick(ClickEvent event) {
 				com.google.gwt.user.client.Window.open(
@@ -285,7 +266,7 @@ public class BrightEdu implements EntryPoint {
 		// mainPanel.addMember(tileView);
 
 		homeTab.setPane(mainPanel);
-		
+
 		mainTabSet.addTab(homeTab);
 
 		BrightCanvas canvas = new BrightCanvas();

@@ -3,13 +3,8 @@ package com.brightedu.server;
 import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -106,7 +101,6 @@ import com.brightedu.model.edu.UserTypeExample;
 import com.brightedu.server.util.ConnectionManager;
 import com.brightedu.server.util.Log;
 import com.brightedu.server.util.ServerProperties;
-import com.brightedu.server.util.Utils;
 
 public class DataBaseRPCAgent implements DataBaseRPC {
 	SqlSessionFactory sessionFactory;

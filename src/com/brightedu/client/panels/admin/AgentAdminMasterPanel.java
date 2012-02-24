@@ -7,6 +7,7 @@ import com.brightedu.client.BrightEdu;
 import com.brightedu.client.CommonAsyncCall;
 import com.brightedu.client.panels.BasicAdminPanel;
 import com.brightedu.client.panels.MasterDetailAdmin;
+import com.brightedu.model.edu.AgentRelation;
 import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.RecruitAgent;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -21,6 +22,8 @@ import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 public class AgentAdminMasterPanel extends BasicAdminPanel {
 	MasterDetailAdmin admin;
 	LinkedHashMap<String, String> agentTypes;
+	LinkedHashMap<String, String> agentRelations;
+	ListGridField[] fields;
 
 	public AgentAdminMasterPanel(MasterDetailAdmin agentadmin) {
 		this.admin = agentadmin;
@@ -40,6 +43,47 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 					admin.getDetailed().getDetailedForm()
 							.setValue(new RecruitAgent());// empty all fields
 					admin.getDetailed().getDetailedForm().disableSaveItem();
+				}
+			}
+		});
+	}
+
+	public void refresh() {
+		super.refresh();
+		initTypes();
+	}
+
+	private void initTypes() {
+		dbService.getNameValuePareList(new String[] { "AgentType",
+				"RecruitAgent" }, new CommonAsyncCall<List>() {
+
+			@Override
+			public void onSuccess(List result) {
+				agentTypes = new LinkedHashMap<String, String>();
+				agentRelations = new LinkedHashMap<String, String>();
+				agentRelations.put("-1", "无");
+				for (int i = 0; i < result.size(); i++) {
+					if (i == 0) {// "AgentType"
+						List<AgentType> types = (List<AgentType>) result.get(i);
+						for (AgentType at : types) {
+							agentTypes.put(at.getAgent_type_id() + "",
+									at.getAgent_type_name());
+						}
+						fields[1].setValueMap(agentTypes);
+						((AgentAdminEditorForm) admin.getDetailed()
+								.getDetailedForm()).agent_typeItem
+								.setValueMap(agentTypes);
+					} else if (i == 1) {// "AgentRelation"
+						List<RecruitAgent> types = (List<RecruitAgent>) result
+								.get(i);
+						for (RecruitAgent at : types) {
+							agentRelations.put(at.getAgent_id() + "",
+									at.getAgent_name());
+						}
+						((AgentAdminEditorForm) admin.getDetailed()
+								.getDetailedForm()).parentAgentItem
+								.setValueMap(agentRelations);
+					}
 				}
 			}
 		});
@@ -83,30 +127,14 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 
 	@Override
 	public ListGridField[] createGridFileds() {
-		final ListGridField[] fields = parseGridFields(new String[] {
-				"obj_name", "agent_type", "responsible_person" }, new String[] {
-				"机构名称", "机构类型", "负责人" }, new ListGridFieldType[] {
-				ListGridFieldType.TEXT, ListGridFieldType.TEXT,
-				ListGridFieldType.TEXT, ListGridFieldType.TEXT },
-				new boolean[] { false, false, false, false }, new int[] { -1,
-						-1, -1, -1 });
-		dbService.getAgentTypeList(-1, -1, false,
-				new CommonAsyncCall<List<AgentType>>() {
+		fields = parseGridFields(new String[] { "obj_name", "agent_type",
+				"responsible_person" }, new String[] { "机构名称", "机构类型", "负责人" },
+				new ListGridFieldType[] { ListGridFieldType.TEXT,
+						ListGridFieldType.TEXT, ListGridFieldType.TEXT,
+						ListGridFieldType.TEXT }, new boolean[] { false, false,
+						false, false }, new int[] { -1, -1, -1, -1 });
+		initTypes();
 
-					@Override
-					public void onSuccess(List<AgentType> result) {
-						agentTypes = new LinkedHashMap<String, String>();
-						for (AgentType at : result) {
-							agentTypes.put(at.getAgent_type_id() + "",
-									at.getAgent_type_name());
-						}
-						fields[1].setValueMap(agentTypes);
-						((AgentAdminEditorForm) admin.getDetailed()
-								.getDetailedForm()).agent_typeItem
-								.setValueMap(agentTypes);
-					}
-				});
-		
 		return fields;
 	}
 
@@ -177,6 +205,7 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 			protected DynamicForm createContentForm() {
 
 				form.agent_typeItem.setValueMap(agentTypes);
+				form.parentAgentItem.setValueMap(agentRelations);
 				return form;
 			}
 
