@@ -67,6 +67,11 @@ public class AgentRateManagePanel extends VLayout {
 	
  
 	//SectionStackSection conditionSection = new SectionStackSection ("条件");
+	HLayout mainPane = new HLayout();
+	VLayout leftPane = new VLayout();
+	VLayout	rightPane = new VLayout();
+	
+	
 	
 	HLayout selectionStack = new HLayout();
 	HLayout groupStack = new HLayout();
@@ -84,6 +89,8 @@ public class AgentRateManagePanel extends VLayout {
 	ListGridField collegeNameField = new ListGridField("collegeName","大学");
 	
 	ListGrid groupList ;
+	
+	ListGrid currentList = new ListGrid();
 	
 	LinkedHashMap<String,String> feeTypeMap = new LinkedHashMap<String,String>();
 
@@ -321,9 +328,22 @@ public class AgentRateManagePanel extends VLayout {
 		collegeList.setFields(collegeIDField,collegeNameField);
 
 
-
-		addMember(selectionStack);
-		addMember(groupStack);
+		leftPane.setWidth(600);
+		leftPane.addMember(selectionStack);
+		leftPane.addMember(groupStack);
+		
+		mainPane.addMember(leftPane);
+		
+		Label currentLabel = new Label("当前招生点");
+		currentLabel.setHeight(20);
+		currentLabel.setMargin(5);
+		rightPane.addMember(currentLabel);
+		rightPane.addMember(currentList);
+		
+		mainPane.addMember(rightPane);
+		
+		addMember(mainPane);
+	
 		
 //		initValueMaps();
 		
