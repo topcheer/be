@@ -317,8 +317,8 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	/************************** RecruitAgent维护 ************************************/
 
 	public List<RecruitAgent> getRecruitAgentList(int offset, int limit,
-			boolean needTotalCounts) {
-		return agent.getRecruitAgentList(offset, limit, needTotalCounts);
+			boolean needTotalCounts,boolean only_can_return) {
+		return agent.getRecruitAgentList(offset, limit, needTotalCounts,only_can_return);
 	}
 
 	@Override

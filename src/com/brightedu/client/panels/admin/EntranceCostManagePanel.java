@@ -420,7 +420,7 @@ public class EntranceCostManagePanel extends VLayout {
 
 	private void loadAgent() {
 		
-		dbService.getRecruitAgentList(-1, -1, false, new CommonAsyncCall<List<RecruitAgent>>(){
+		dbService.getRecruitAgentList(-1, -1, false,false, new CommonAsyncCall<List<RecruitAgent>>(){
 
 			@Override
 			public void onSuccess(List<RecruitAgent> result) {

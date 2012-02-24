@@ -78,7 +78,7 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 			}
 		};
 		dbService.getRecruitAgentList((indexGoto - 1) * currentRowsInOnePage,
-				currentRowsInOnePage, init, callback);
+				currentRowsInOnePage, init,false, callback);
 	}
 
 	@Override

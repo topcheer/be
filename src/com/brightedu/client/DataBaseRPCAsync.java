@@ -76,7 +76,7 @@ public interface DataBaseRPCAsync {
 	void saveSubject(Subjects subject, AsyncCallback<Boolean> callback);
 
 	void getRecruitAgentList(int offset, int limit, boolean needTotalCounts,
-			AsyncCallback<List<RecruitAgent>> callback);
+			boolean only_can_return, AsyncCallback<List<RecruitAgent>> callback);
 
 	void getStudentTypeList(int offset, int limit, boolean needTotalCounts,
 			AsyncCallback<List<StudentType>> callback);

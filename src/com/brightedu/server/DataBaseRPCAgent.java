@@ -884,7 +884,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	/************************** agent管理 ************************************/
 
 	public List<RecruitAgent> getRecruitAgentList(int offset, int limit,
-			boolean needTotalCounts) {
+			boolean needTotalCounts , boolean only_can_return) {
 		SqlSession session = sessionFactory.openSession();
 		try {
 			RecruitAgentExample ex = new RecruitAgentExample();
@@ -894,6 +894,22 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			if (offset != -1 || limit != -1) {
 				ex.setPage(new Page(offset, limit));
 			}
+			
+			if(only_can_return)
+			{
+				AgentTypeMapper am = session.getMapper(AgentTypeMapper.class);
+				AgentTypeExample ate = new AgentTypeExample();
+				ate.createCriteria().andIs_returnEqualTo(true);
+				List<AgentType> typeList = am.selectByExample(ate);
+				ArrayList<Integer> typeIdList = new ArrayList<Integer>();
+				for(AgentType type : typeList)
+				{
+					typeIdList.add(type.getAgent_type_id());
+					
+				}
+				ex.createCriteria().andAgent_type_idIn(typeIdList);
+			}
+			
 			List result = cm.selectByExample(ex);
 			if (needTotalCounts) {
 				Integer counts = cm.countByExample(null);

@@ -174,7 +174,7 @@ public interface DataBaseRPC extends RemoteService {
 
 	/*********************** RecruitAgent维护 ************************************/
 	public List<RecruitAgent> getRecruitAgentList(int offset, int limit,
-			boolean needTotalCounts);
+			boolean needTotalCounts,boolean only_can_return);
 
 	public boolean addRecruitAgent(RecruitAgent agent);
 

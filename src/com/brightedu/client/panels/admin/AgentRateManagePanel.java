@@ -46,7 +46,10 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.DoubleClickEvent;
 import com.smartgwt.client.widgets.events.DoubleClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.FormItemValueParser;
+import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
+import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.grid.CellEditValueFormatter;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
@@ -204,12 +207,34 @@ public class AgentRateManagePanel extends VLayout {
 	                layout.setPadding(5);  
 	        		
 	        		final ListGrid rateList = new ListGrid();
-
+	        		rateList.setEditEvent(ListGridEditEvent.CLICK);
 	        		ListGridField  collegeIDField2 = new ListGridField("collegeID","大学ID");
 	        		ListGridField  collegeNameField2 = new ListGridField("collegeName","大学");
 	        		ListGridField  pepleCountField2 = new ListGridField("people_count","人数上限");
 	        		ListGridField  returnRateField = new ListGridField("return_rate","返利系数");
 	        		
+//	        		TextItem people = new TextItem("people");
+//	        		TextItem rate = new TextItem("rate");
+//	        		
+//	        		people.setMask("###");
+//	        		
+//	        		rate.setMask("##");
+//	        		rate.setEditorValueParser(new FormItemValueParser(){
+//
+//						@Override
+//						public Object parseValue(String value,
+//								DynamicForm form, FormItem item) {
+//							if(value != null)
+//							{
+//								return value + "%";
+//							}
+//							return null;
+//						}});
+	        		pepleCountField2.setCanEdit(true);
+	        		
+//	        		pepleCountField2.setEditorType(people);
+	        		returnRateField.setCanEdit(true);
+//	        		returnRateField.setEditorType(rate);
 	        		
 	        		collegeIDField2.setHidden(true);
 	        		rateList.setShowHeaderContextMenu(false);
@@ -467,7 +492,7 @@ private void loadCollege() {
 
 	private void loadAgent() {
 		
-		dbService.getRecruitAgentList(-1, -1, false, new CommonAsyncCall<List<RecruitAgent>>(){
+		dbService.getRecruitAgentList(-1, -1, false,true, new CommonAsyncCall<List<RecruitAgent>>(){
 
 			@Override
 			public void onSuccess(List<RecruitAgent> result) {

@@ -121,7 +121,7 @@ public class UserAdminMasterPanel extends BasicAdminPanel {
 								.setValueMap(userTypes);
 					}
 				});
-		dbService.getRecruitAgentList(-1, -1, false,
+		dbService.getRecruitAgentList(-1, -1, false,false,
 				new CommonAsyncCall<List<RecruitAgent>>() {
 
 					@Override
