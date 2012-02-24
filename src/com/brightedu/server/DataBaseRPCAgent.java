@@ -19,9 +19,12 @@ import org.apache.ibatis.session.SqlSessionFactory;
 
 import com.brightedu.client.DataBaseRPC;
 import com.brightedu.client.ds.Page;
+import com.brightedu.dao.edu.AgentReturnMapper;
+import com.brightedu.dao.edu.AgentReturnTypeMapper;
 import com.brightedu.dao.edu.AgentTypeMapper;
 import com.brightedu.dao.edu.BatchIndexMapper;
 import com.brightedu.dao.edu.ChargeTypeMapper;
+import com.brightedu.dao.edu.CollegeAggregationMapper;
 import com.brightedu.dao.edu.CollegeAgreementMapper;
 import com.brightedu.dao.edu.CollegeMapper;
 import com.brightedu.dao.edu.CollegeSubjectMapper;
@@ -52,6 +55,7 @@ import com.brightedu.model.edu.AgentTypeExample;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.BatchIndexExample;
 import com.brightedu.model.edu.BatchIndexExample.Criteria;
+import com.brightedu.model.edu.AgentReturnTypeExample;
 import com.brightedu.model.edu.ChargeType;
 import com.brightedu.model.edu.ChargeTypeExample;
 import com.brightedu.model.edu.College;
@@ -1767,44 +1771,134 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	/************************ 招生点返利设置 *********************************/
 	@Override
 	public AgentReturnType addAgentReturnType(AgentReturnType type) {
-		// TODO Auto-generated method stub
-		return null;
+		SqlSession session = sessionFactory.openSession();
+		try {
+			AgentReturnTypeMapper bim = session.getMapper(AgentReturnTypeMapper.class);
+
+			bim.insertSelective(type);
+
+			session.commit();
+			
+			AgentReturnTypeExample ex = new AgentReturnTypeExample();
+			ex.createCriteria().andAggregation_descEqualTo(type.getAggregation_desc());
+			return bim.selectByExample(ex).get(0);
+			//return true;
+			
+		} finally {
+			session.close();
+		}
+		
 	}
 
 	@Override
 	public boolean deleteAgentReturnType(AgentReturnType type) {
-		// TODO Auto-generated method stub
-		return false;
+		SqlSession session = sessionFactory.openSession();
+		try {
+			AgentReturnTypeMapper bim = session.getMapper(AgentReturnTypeMapper.class);
+
+			bim.deleteByPrimaryKey(type.getAg_return_type_id());
+
+			session.commit();
+			
+			return true;
+
+			
+		} finally {
+			session.close();
+		}
 	}
 
 	@Override
 	public boolean addAgentReturn(AgentReturnKey rtn) {
-		// TODO Auto-generated method stub
-		return false;
+		SqlSession session = sessionFactory.openSession();
+		try {
+			AgentReturnMapper bim = session.getMapper(AgentReturnMapper.class);
+
+			bim.insertSelective(rtn);
+
+			session.commit();
+			
+			return true;
+
+			
+		} finally {
+			session.close();
+		}
 	}
 
 	@Override
 	public boolean deleteAgentReturn(AgentReturnKey rtn) {
-		// TODO Auto-generated method stub
-		return false;
+		SqlSession session = sessionFactory.openSession();
+		try {
+			AgentReturnMapper bim = session.getMapper(AgentReturnMapper.class);
+
+			bim.deleteByPrimaryKey(rtn);
+
+			session.commit();
+			
+			return true;
+
+			
+		} finally {
+			session.close();
+		}
 	}
 
 	@Override
 	public boolean addCollegeAggregation(List<CollegeAggregation> list) {
-		// TODO Auto-generated method stub
-		return false;
+		SqlSession session = sessionFactory.openSession();
+		try {
+			CollegeAggregationMapper bim = session.getMapper(CollegeAggregationMapper.class);
+
+			for(CollegeAggregation item : list)
+			{
+				bim.insertSelective(item);
+			}
+
+			session.commit();
+			
+			return true;
+
+			
+		} finally {
+			session.close();
+		}
 	}
 
 	@Override
 	public boolean deleteCollegeAggregation(CollegeAggregation item) {
-		// TODO Auto-generated method stub
-		return false;
+		SqlSession session = sessionFactory.openSession();
+		try {
+			CollegeAggregationMapper bim = session.getMapper(CollegeAggregationMapper.class);
+
+			bim.deleteByPrimaryKey(item);
+
+			session.commit();
+			
+			return true;
+
+			
+		} finally {
+			session.close();
+		}
 	}
 
 	@Override
 	public boolean saveCollegeAggregation(CollegeAggregation item) {
-		// TODO Auto-generated method stub
-		return false;
+		SqlSession session = sessionFactory.openSession();
+		try {
+			CollegeAggregationMapper bim = session.getMapper(CollegeAggregationMapper.class);
+
+			bim.updateByPrimaryKeySelective(item);
+
+			session.commit();
+			
+			return true;
+
+			
+		} finally {
+			session.close();
+		}
 	}
 
 }
