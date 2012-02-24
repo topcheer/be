@@ -45,6 +45,8 @@ import com.brightedu.dao.edu.UserMapper;
 import com.brightedu.dao.edu.UserRightsEffectiveMapper;
 import com.brightedu.dao.edu.UserRightsMapper;
 import com.brightedu.dao.edu.UserTypeMapper;
+import com.brightedu.model.edu.AgentReturnKey;
+import com.brightedu.model.edu.AgentReturnType;
 import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.AgentTypeExample;
 import com.brightedu.model.edu.BatchIndex;
@@ -53,6 +55,7 @@ import com.brightedu.model.edu.BatchIndexExample.Criteria;
 import com.brightedu.model.edu.ChargeType;
 import com.brightedu.model.edu.ChargeTypeExample;
 import com.brightedu.model.edu.College;
+import com.brightedu.model.edu.CollegeAggregation;
 import com.brightedu.model.edu.CollegeAgreement;
 import com.brightedu.model.edu.CollegeAgreementExample;
 import com.brightedu.model.edu.CollegeExample;
@@ -1760,6 +1763,48 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		} finally {
 			session.close();
 		}
+	}
+	/************************ 招生点返利设置 *********************************/
+	@Override
+	public AgentReturnType addAgentReturnType(AgentReturnType type) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean deleteAgentReturnType(AgentReturnType type) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean addAgentReturn(AgentReturnKey rtn) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean deleteAgentReturn(AgentReturnKey rtn) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean addCollegeAggregation(List<CollegeAggregation> list) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean deleteCollegeAggregation(CollegeAggregation item) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean saveCollegeAggregation(CollegeAggregation item) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

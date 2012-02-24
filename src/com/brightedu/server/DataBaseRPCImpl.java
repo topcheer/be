@@ -19,10 +19,13 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.brightedu.client.DataBaseRPC;
+import com.brightedu.model.edu.AgentReturnKey;
+import com.brightedu.model.edu.AgentReturnType;
 import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.ChargeType;
 import com.brightedu.model.edu.College;
+import com.brightedu.model.edu.CollegeAggregation;
 import com.brightedu.model.edu.CollegeAgreement;
 import com.brightedu.model.edu.CollegeSubject;
 import com.brightedu.model.edu.CollegeSubjectView;
@@ -503,6 +506,44 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	@Override
 	public boolean deleteEntranceCost(EntranceCost cost) {
 		return agent.deleteEntranceCost(cost);
+	}
+
+	
+	/************************ 招生点返利设置 *********************************/
+	
+	@Override
+	public AgentReturnType addAgentReturnType(AgentReturnType type) {
+		return agent.addAgentReturnType(type);
+	}
+
+	@Override
+	public boolean deleteAgentReturnType(AgentReturnType type) {
+		return agent.deleteAgentReturnType(type);
+	}
+
+	@Override
+	public boolean addAgentReturn(AgentReturnKey rtn) {
+		return agent.addAgentReturn(rtn);
+	}
+
+	@Override
+	public boolean deleteAgentReturn(AgentReturnKey rtn) {
+		return agent.deleteAgentReturn(rtn);
+	}
+
+	@Override
+	public boolean addCollegeAggregation(List<CollegeAggregation> list) {
+		return agent.addCollegeAggregation(list);
+	}
+
+	@Override
+	public boolean deleteCollegeAggregation(CollegeAggregation item) {
+		return agent.deleteCollegeAggregation(item);
+	}
+
+	@Override
+	public boolean saveCollegeAggregation(CollegeAggregation item) {
+		return agent.saveCollegeAggregation(item);
 	}
 
 

@@ -18,10 +18,13 @@ package com.brightedu.client;
 import java.io.Serializable;
 import java.util.List;
 
+import com.brightedu.model.edu.AgentReturnKey;
+import com.brightedu.model.edu.AgentReturnType;
 import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.ChargeType;
 import com.brightedu.model.edu.College;
+import com.brightedu.model.edu.CollegeAggregation;
 import com.brightedu.model.edu.CollegeAgreement;
 import com.brightedu.model.edu.CollegeSubject;
 import com.brightedu.model.edu.CollegeSubjectView;
@@ -230,4 +233,12 @@ public interface DataBaseRPC extends RemoteService {
 	public boolean saveEntranceCost(List<EntranceCost> entranceCosts);
 	public boolean deleteEntranceCost(EntranceCost cost);
 
+	/************************ 招生点返利设置 *********************************/
+	public AgentReturnType addAgentReturnType(AgentReturnType type);
+	public boolean deleteAgentReturnType(AgentReturnType type);
+	public boolean addAgentReturn(AgentReturnKey rtn);
+	public boolean deleteAgentReturn(AgentReturnKey rtn);
+	public boolean addCollegeAggregation(List<CollegeAggregation> list);
+	public boolean deleteCollegeAggregation(CollegeAggregation item);
+	public boolean saveCollegeAggregation(CollegeAggregation item);
 }

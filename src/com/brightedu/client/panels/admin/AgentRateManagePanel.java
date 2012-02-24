@@ -238,7 +238,7 @@ public class AgentRateManagePanel extends VLayout {
 	                saveButton.setTop(250);   
 	                saveButton.addClickHandler(new ClickHandler() {   
 	                    public void onClick(ClickEvent event) {   
-	                        saveGroup();   
+	                        saveGroup(record);   
 	                    }
 
 	                });   
@@ -260,6 +260,11 @@ public class AgentRateManagePanel extends VLayout {
 
 	  
 			 }
+			 
+				protected void saveGroup(ListGridRecord record) {
+					// TODO Auto-generated method stub
+					batchList.getSelectedRecord().getAttribute("");
+				}   
 			
 		};
 		groupList.addRecordCollapseHandler(new RecordCollapseHandler(){
@@ -391,10 +396,7 @@ public class AgentRateManagePanel extends VLayout {
 		
 	}
 
-	protected void saveGroup() {
-		// TODO Auto-generated method stub
-		
-	}   
+
 private void loadCollege() {
 	dbService.getCollegeList(-1,-1,  false, new CommonAsyncCall<List<College>>(){
 

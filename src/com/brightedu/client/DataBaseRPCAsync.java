@@ -3,10 +3,13 @@ package com.brightedu.client;
 import java.io.Serializable;
 import java.util.List;
 
+import com.brightedu.model.edu.AgentReturnKey;
+import com.brightedu.model.edu.AgentReturnType;
 import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.ChargeType;
 import com.brightedu.model.edu.College;
+import com.brightedu.model.edu.CollegeAggregation;
 import com.brightedu.model.edu.CollegeAgreement;
 import com.brightedu.model.edu.CollegeSubject;
 import com.brightedu.model.edu.CollegeSubjectView;
@@ -254,5 +257,24 @@ public interface DataBaseRPCAsync {
 			AsyncCallback<Boolean> callback);
 
 	void deleteEntranceCost(EntranceCost cost, AsyncCallback<Boolean> callback);
+
+	void addAgentReturn(AgentReturnKey rtn, AsyncCallback<Boolean> callback);
+
+	void addAgentReturnType(AgentReturnType type,
+			AsyncCallback<AgentReturnType> callback);
+
+	void addCollegeAggregation(List<CollegeAggregation> list,
+			AsyncCallback<Boolean> callback);
+
+	void deleteAgentReturn(AgentReturnKey rtn, AsyncCallback<Boolean> callback);
+
+	void deleteAgentReturnType(AgentReturnType type,
+			AsyncCallback<Boolean> callback);
+
+	void deleteCollegeAggregation(CollegeAggregation item,
+			AsyncCallback<Boolean> callback);
+
+	void saveCollegeAggregation(CollegeAggregation item,
+			AsyncCallback<Boolean> callback);
 
 }
