@@ -277,4 +277,13 @@ public interface DataBaseRPCAsync {
 	void saveCollegeAggregation(CollegeAggregation item,
 			AsyncCallback<Boolean> callback);
 
+	void getAgentReturnType(String agent, String batch,
+			AsyncCallback<List<AgentReturnType>> callback);
+
+	void getCollegeAggregationList(AgentReturnType type,
+			AsyncCallback<List<CollegeAggregation>> callback);
+
+	void getUnassignedCollegeList(String agent, String batch,
+			AsyncCallback<List<College>> callback);
+
 }

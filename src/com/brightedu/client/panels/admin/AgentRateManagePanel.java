@@ -448,7 +448,7 @@ public class AgentRateManagePanel extends VLayout {
 			@Override
 			public void onSelectionChanged(SelectionEvent event) {
 				
-				loadAgent();
+				loadCollege();
 				
 			}});
 
@@ -477,6 +477,8 @@ public class AgentRateManagePanel extends VLayout {
 
 
 private void loadCollege() {
+	
+	
 	dbService.getCollegeList(-1,-1,  false, new CommonAsyncCall<List<College>>(){
 
 		@Override
@@ -488,7 +490,7 @@ private void loadCollege() {
 				rc.setAttribute("collegeID", c.getCollege_id()+"");
 				rc.setAttribute("collegeName", c.getCollege_name());
 				list.add(rc);
-				
+
 			}
 			collegeList.setData(list);
 			

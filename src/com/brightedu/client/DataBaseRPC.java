@@ -241,4 +241,10 @@ public interface DataBaseRPC extends RemoteService {
 	public boolean addCollegeAggregation(List<CollegeAggregation> list);
 	public boolean deleteCollegeAggregation(CollegeAggregation item);
 	public boolean saveCollegeAggregation(CollegeAggregation item);
+	public List<College> getUnassignedCollegeList(String agentID, String batch);
+	public List<CollegeAggregation> getCollegeAggregationList(AgentReturnType type);
+	public List<AgentReturnType> getAgentReturnType(String agentID, String batch);
+
+	
+	
 }

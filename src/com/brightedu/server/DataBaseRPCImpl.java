@@ -546,6 +546,22 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 		return agent.saveCollegeAggregation(item);
 	}
 
+	@Override
+	public List<College> getUnassignedCollegeList(String agentId, String batch) {
+		return agent.getUnassignedCollegeList(agentId,  batch);
+	}
+
+	@Override
+	public List<CollegeAggregation> getCollegeAggregationList(
+			AgentReturnType type) {
+		return agent.getCollegeAggregationList(type);
+	}
+
+	@Override
+	public List<AgentReturnType> getAgentReturnType(String agentID, String batch) {
+		return agent.getAgentReturnType(agentID, batch);
+	}
+
 
 
 

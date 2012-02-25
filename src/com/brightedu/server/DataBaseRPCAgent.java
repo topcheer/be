@@ -43,6 +43,7 @@ import com.brightedu.dao.edu.UserMapper;
 import com.brightedu.dao.edu.UserRightsEffectiveMapper;
 import com.brightedu.dao.edu.UserRightsMapper;
 import com.brightedu.dao.edu.UserTypeMapper;
+import com.brightedu.model.edu.AgentReturnExample;
 import com.brightedu.model.edu.AgentReturnKey;
 import com.brightedu.model.edu.AgentReturnType;
 import com.brightedu.model.edu.AgentType;
@@ -55,6 +56,7 @@ import com.brightedu.model.edu.ChargeType;
 import com.brightedu.model.edu.ChargeTypeExample;
 import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.CollegeAggregation;
+import com.brightedu.model.edu.CollegeAggregationExample;
 import com.brightedu.model.edu.CollegeAgreement;
 import com.brightedu.model.edu.CollegeAgreementExample;
 import com.brightedu.model.edu.CollegeExample;
@@ -1905,6 +1907,85 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			
 			return true;
 
+			
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public List<College> getUnassignedCollegeList(String agentID, String batch) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			
+			AgentReturnMapper arm = session.getMapper(AgentReturnMapper.class);
+			
+			AgentReturnExample are = new AgentReturnExample();
+			are.createCriteria().andAgent_idEqualTo(new Integer(agentID)).andBatch_idEqualTo(new Integer(batch));
+			ArrayList<Integer> agentRetrunTypeID = new ArrayList<Integer> ();
+			for (AgentReturnKey ark : arm.selectByExample(are))
+			{
+				agentRetrunTypeID.add(ark.getAg_return_type_id());
+			}
+			
+			CollegeAggregationMapper bim = session.getMapper(CollegeAggregationMapper.class);
+
+			CollegeAggregationExample ex = new CollegeAggregationExample();
+			ex.createCriteria().andAg_return_type_idIn(agentRetrunTypeID);
+			ArrayList<Integer> collegeID = new ArrayList<Integer> ();
+			for ( CollegeAggregation ca : bim.selectByExample(ex))
+			{
+				collegeID.add(ca.getCollege_id());
+			}
+			
+			CollegeMapper cm = session.getMapper(CollegeMapper.class);
+			CollegeExample ce = new CollegeExample();
+			ce.createCriteria().andCollege_idNotIn(collegeID);
+			
+			return cm.selectByExample(ce);
+			
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public List<CollegeAggregation> getCollegeAggregationList(
+			AgentReturnType type) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			CollegeAggregationMapper bim = session.getMapper(CollegeAggregationMapper.class);
+			CollegeAggregationExample ex = new CollegeAggregationExample();
+			ex.createCriteria().andAg_return_type_idEqualTo(type.getAg_return_type_id());
+			
+			return bim.selectByExample(ex);
+			
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public List<AgentReturnType> getAgentReturnType(String agentID, String batch) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			
+			AgentReturnMapper arm = session.getMapper(AgentReturnMapper.class);
+			
+			AgentReturnExample are = new AgentReturnExample();
+			are.createCriteria().andAgent_idEqualTo(new Integer(agentID)).andBatch_idEqualTo(new Integer(batch));
+			ArrayList<Integer> agentRetrunTypeID = new ArrayList<Integer> ();
+			for (AgentReturnKey ark : arm.selectByExample(are))
+			{
+				agentRetrunTypeID.add(ark.getAg_return_type_id());
+			}
+			
+			AgentReturnTypeMapper bim = session.getMapper(AgentReturnTypeMapper.class);
+
+			AgentReturnTypeExample ex = new AgentReturnTypeExample();
+			ex.createCriteria().andAg_return_type_idIn(agentRetrunTypeID);
+						
+			return bim.selectByExample(ex);
 			
 		} finally {
 			session.close();
