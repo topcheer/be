@@ -1922,6 +1922,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			
 			AgentReturnExample are = new AgentReturnExample();
 			are.createCriteria().andAgent_idEqualTo(new Integer(agentID)).andBatch_idEqualTo(new Integer(batch));
+			if(arm.selectByExample(are).size() == 0 ) return getCollegeList(-1,-1,false);
 			ArrayList<Integer> agentRetrunTypeID = new ArrayList<Integer> ();
 			for (AgentReturnKey ark : arm.selectByExample(are))
 			{
@@ -1974,6 +1975,9 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			
 			AgentReturnExample are = new AgentReturnExample();
 			are.createCriteria().andAgent_idEqualTo(new Integer(agentID)).andBatch_idEqualTo(new Integer(batch));
+			
+			if( arm.selectByExample(are).size() ==0 ) return new ArrayList<AgentReturnType>();
+			
 			ArrayList<Integer> agentRetrunTypeID = new ArrayList<Integer> ();
 			for (AgentReturnKey ark : arm.selectByExample(are))
 			{

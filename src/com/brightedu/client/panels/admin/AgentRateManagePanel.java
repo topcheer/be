@@ -62,6 +62,8 @@ import com.smartgwt.client.widgets.grid.events.RecordDropEvent;
 import com.smartgwt.client.widgets.grid.events.RecordDropHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionEvent;
+import com.smartgwt.client.widgets.grid.events.SelectionUpdatedEvent;
+import com.smartgwt.client.widgets.grid.events.SelectionUpdatedHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.HStack;
 import com.smartgwt.client.widgets.layout.LayoutSpacer;
@@ -97,10 +99,10 @@ public class AgentRateManagePanel extends VLayout {
 	
 	ListGrid groupList ;
 	
-	ListGrid currentList = new ListGrid();
+	ListGrid currentList ;
 	
 	LinkedHashMap<String,String> feeTypeMap = new LinkedHashMap<String,String>();
-
+	LinkedHashMap<String,String> collegeMap = new LinkedHashMap<String,String>();
 
 	
 	IButton saveButton = new IButton("保存");
@@ -109,6 +111,7 @@ public class AgentRateManagePanel extends VLayout {
 	LinkedHashMap<String,Integer> levelReverse = new LinkedHashMap<String,Integer>();
 	LinkedHashMap<String,Integer> collegeReverse = new LinkedHashMap<String,Integer>();
 	LinkedHashMap<String,Integer> subjectReverse = new LinkedHashMap<String,Integer>();
+	
 	
 	public AgentRateManagePanel()
 	{
@@ -426,6 +429,114 @@ public class AgentRateManagePanel extends VLayout {
 		
 		mainPane.addMember(leftPane);
 		
+		currentList = new ListGrid(){
+			
+			 @Override  
+	            protected Canvas getExpansionComponent(final ListGridRecord record) {
+					
+				
+				 
+	                final ListGrid grid = this;   
+	                
+	                VLayout layout = new VLayout(5);   
+	                layout.setPadding(5);  
+	        		
+	        		final ListGrid rateList = new ListGrid();
+	        		rateList.setEditEvent(ListGridEditEvent.CLICK);
+	        		ListGridField  groupIDField2 = new ListGridField("groupID","组别ID");
+	        		ListGridField  collegeIDField2 = new ListGridField("collegeID","大学ID");
+	        		ListGridField  collegeNameField2 = new ListGridField("collegeName","大学");
+	        		ListGridField  pepleCountField2 = new ListGridField("people_count","人数上限");
+	        		ListGridField  returnRateField = new ListGridField("return_rate","返利系数");
+	        		ListGridField  orgField = new ListGridField("orgobj","老数据");
+	        		groupIDField2.setHidden(true);
+	        		pepleCountField2.setCanEdit(true);
+	        		orgField.setHidden(true);
+
+	        		returnRateField.setCanEdit(true);
+
+	        		
+	        		collegeIDField2.setHidden(true);
+	        		rateList.setShowHeaderContextMenu(false);
+	        		rateList.setCanReorderRecords(true);
+	        		rateList.setCanRemoveRecords(true);
+	        		rateList.setDragDataAction(DragDataAction.COPY);
+	        		
+	        		rateList.setFields(collegeIDField2,collegeNameField2,pepleCountField2,returnRateField,orgField);
+	        		rateList.setTitle("拖动并放开选中的记录将在本列表框中拷贝相同的记录，便于设置多个级别");
+	                rateList.setWidth100();
+	                rateList.setHeight(150);
+	                layout.addMember(rateList);   
+	  
+	               
+	                
+	                dbService.getCollegeAggregationList((AgentReturnType)record.getAttributeAsObject("object"), new CommonAsyncCall<List<CollegeAggregation>>(){
+
+						@Override
+						public void onSuccess(List<CollegeAggregation> result) {
+							 RecordList listcol = new RecordList();
+			                for(CollegeAggregation rec : result)
+			                {
+			                	Record rec2 = new Record();
+			                	rec2.setAttribute("collegeID", rec.getCollege_id());
+			                	rec2.setAttribute("collegeName", collegeMap.get(rec.getCollege_id()+""));
+			                	rec2.setAttribute("people_count",rec.getHeadcount()+"");
+			                	rec2.setAttribute("return_rate", rec.getReturn_percent()+"");
+			                	rec2.setAttribute("orgobj", rec);
+			                	listcol.add(rec2);
+			                	
+			                }
+			                rateList.setData(listcol);
+						}});
+	               
+	                
+
+	                
+//	                HLayout hLayout = new HLayout(10);   
+//	                hLayout.setAlign(Alignment.CENTER);   
+//	  
+//	                IButton saveButton = new IButton("保存");   
+//	                saveButton.setTop(250);   
+//	                saveButton.addClickHandler(new ClickHandler() {   
+//	                    public void onClick(ClickEvent event) {   
+//	                       // saveGroup(record,rateList);   
+//	                    }
+//
+//	                });   
+//	                hLayout.addMember(saveButton);   
+//	  
+//
+//	  
+//	                IButton closeButton = new IButton("关闭");   
+//	                closeButton.addClickHandler(new ClickHandler() {   
+//	                    public void onClick(ClickEvent event) {   
+//	                        grid.collapseRecord(record);   
+//	                    }   
+//	                });   
+//	                hLayout.addMember(closeButton);   
+//	                                                  
+//	                layout.addMember(hLayout);   
+	               
+	                return layout;   
+
+	  
+			 }
+		
+		};
+		
+		currentList.setCanExpandRecords(true);
+		
+		ListGridField  fee_typeIdField = new ListGridField("fee_type_id","费用类型ID");
+		ListGridField  fee_typeNameField = new ListGridField("fee_type","费用类型");
+		fee_typeIdField.setHidden(true);	
+		ListGridField groupId = new ListGridField("groupId","组别ID");
+		groupId.setHidden(true);
+		ListGridField groupName = new ListGridField("groupName","组别");
+		ListGridField typeObj = new ListGridField("object","完整对象");
+		typeObj.setHidden(true);
+		currentList.setShowHeaderContextMenu(false);
+		currentList.setFields(groupId,groupName,fee_typeIdField,fee_typeNameField,typeObj);
+		
 		Label currentLabel = new Label("当前招生点");
 		currentLabel.setHeight(20);
 		currentLabel.setMargin(5);
@@ -437,21 +548,88 @@ public class AgentRateManagePanel extends VLayout {
 		addMember(mainPane);
 	
 		
-		
+		initValueMaps();
 		loadBatch();
 		loadAgent();
 		loadCollege();
 		loadFeeType();
 
-		agentList.addSelectionChangedHandler(new SelectionChangedHandler(){
+		agentList.addSelectionUpdatedHandler(new SelectionUpdatedHandler(){
 
 			@Override
-			public void onSelectionChanged(SelectionEvent event) {
-				
-				loadCollege();
-				
+			public void onSelectionUpdated(SelectionUpdatedEvent event) {
+				loadUnassignedCollege();
+				groupList.setData(new RecordList());
+				loadCurrentGrid();
 			}});
+		
+	}
 
+	private void initValueMaps() {
+		
+		dbService.getCollegeList(-1, -1, false
+				, new CommonAsyncCall<List<College>>(){
+
+					@Override
+					public void onSuccess(List<College> result) {
+						for(College college : result)
+						{
+
+								collegeMap.put(college.getCollege_id()+"",college.getCollege_name());
+
+							
+						}
+						
+					}})
+				;
+	}
+
+	protected void loadCurrentGrid() {
+		dbService.getAgentReturnType(agentList.getSelectedRecord().getAttribute("agentId"), batchList.getSelectedRecord().getAttribute("batchId"), new CommonAsyncCall<List<AgentReturnType>>(){
+
+			@Override
+			public void onSuccess(List<AgentReturnType> result) {
+				RecordList list  = new RecordList();
+				for(AgentReturnType c : result)
+				{
+					Record rc = new Record();
+					rc.setAttribute("groupId", c.getAg_return_type_id()+"");
+					rc.setAttribute("groupName", c.getAggregation_desc());
+					rc.setAttribute("fee_type_id", c.getFee_id()+"");
+					rc.setAttribute("fee_type",feeTypeMap.get(c.getFee_id()+""));
+					rc.setAttribute("object", c);
+
+					list.add(rc);
+
+				}
+				currentList.setData(list);
+				
+			}}
+		
+		);
+		
+	}
+
+	protected void loadUnassignedCollege() {
+		
+		dbService.getUnassignedCollegeList(agentList.getSelectedRecord().getAttribute("agentId"), batchList.getSelectedRecord().getAttribute("batchId"), new CommonAsyncCall<List<College>>(){
+
+			@Override
+			public void onSuccess(List<College> result) {
+				RecordList list  = new RecordList();
+				for(College c : result)
+				{
+					Record rc = new Record();
+					rc.setAttribute("collegeID", c.getCollege_id()+"");
+					rc.setAttribute("collegeName", c.getCollege_name());
+					list.add(rc);
+
+				}
+				collegeList.setData(list);
+				
+			}}
+		);
+		
 	}
 
 	private void loadFeeType() {
