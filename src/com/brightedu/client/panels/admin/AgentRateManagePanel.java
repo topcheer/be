@@ -443,6 +443,14 @@ public class AgentRateManagePanel extends VLayout {
 		loadCollege();
 		loadFeeType();
 
+		agentList.addSelectionChangedHandler(new SelectionChangedHandler(){
+
+			@Override
+			public void onSelectionChanged(SelectionEvent event) {
+				
+				loadAgent();
+				
+			}});
 
 	}
 

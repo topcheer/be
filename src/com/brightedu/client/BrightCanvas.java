@@ -2,6 +2,7 @@ package com.brightedu.client;
 
 import com.google.gwt.user.client.Timer;
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.widgets.AnimationCallback;
 import com.smartgwt.client.widgets.Canvas;
@@ -31,7 +32,7 @@ public class BrightCanvas extends Canvas {
 		tipLabel.setTop(-120);
 		tipLabel.setValign(VerticalAlignment.CENTER);
 		tipLabel.setAlign(Alignment.CENTER);
-		tipLabel.setAnimateTime(1200); // milliseconds
+		tipLabel.setAnimateTime(2000); // milliseconds
 		tipLabel.setParentElement(this);
 		tipLabel.setKeepInParentRect(true);
 	}
@@ -57,20 +58,22 @@ public class BrightCanvas extends Canvas {
 		tipLabel.setLeft(left);
 		tipLabel.setContents(tip);
 		tipLabel.setVisible(true);
-		tipLabel.animateMove(left, height / 2 - tipLabel.getHeight() / 2);
-		new Timer() {
-			public void run() {
-				tipLabel.animateMove(left, -120, new AnimationCallback() {
-					
-					@Override
-					public void execute(boolean earlyFinish) {
-						// TODO Auto-generated method stub
-						tipLabel.setVisible(false);
-					}
-				});
-//				tipLabel.animateMove(left, -120);
-			}
-		}.schedule(1800);
+		tipLabel.setTop(height / 2 - tipLabel.getHeight() / 2);
+		tipLabel.animateHide(AnimationEffect.FADE);
+//		tipLabel.animateMove(left, height / 2 - tipLabel.getHeight() / 2);
+//		new Timer() {
+//			public void run() {
+//				tipLabel.animateMove(left, -120, new AnimationCallback() {
+//					
+//					@Override
+//					public void execute(boolean earlyFinish) {
+//						// TODO Auto-generated method stub
+//						tipLabel.setVisible(false);
+//					}
+//				});
+////				tipLabel.animateMove(left, -120);
+//			}
+//		}.schedule(1800);
 	}
 	
 	public void showBusyLoading(){ // NOT implemented yet
