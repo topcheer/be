@@ -29,9 +29,11 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.types.DragAppearance;
 import com.smartgwt.client.types.DragDataAction;
 import com.smartgwt.client.types.ListGridEditEvent;
+import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.types.SelectionType;
 import com.smartgwt.client.types.VerticalAlignment;
@@ -41,6 +43,7 @@ import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Label;
+import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.DoubleClickEvent;
@@ -58,6 +61,8 @@ import com.smartgwt.client.widgets.grid.events.CellClickEvent;
 import com.smartgwt.client.widgets.grid.events.CellClickHandler;
 import com.smartgwt.client.widgets.grid.events.RecordCollapseEvent;
 import com.smartgwt.client.widgets.grid.events.RecordCollapseHandler;
+import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
+import com.smartgwt.client.widgets.grid.events.RecordDoubleClickHandler;
 import com.smartgwt.client.widgets.grid.events.RecordDropEvent;
 import com.smartgwt.client.widgets.grid.events.RecordDropHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
@@ -271,7 +276,8 @@ public class AgentRateManagePanel extends VLayout {
 	                saveButton.setTop(250);   
 	                saveButton.addClickHandler(new ClickHandler() {   
 	                    public void onClick(ClickEvent event) {   
-	                        saveGroup(record,rateList);   
+	                        saveGroup(record,rateList);  
+
 	                    }
 
 	                });   
@@ -337,7 +343,8 @@ public class AgentRateManagePanel extends VLayout {
 						@Override
 						public void onSuccess(Boolean result) {
 							BrightEdu.showTip("保存成功");
-							
+	                        loadCurrentGrid();
+	                        loadUnassignedCollege();
 						}});
 					
 				}
@@ -430,7 +437,29 @@ public class AgentRateManagePanel extends VLayout {
 		mainPane.addMember(leftPane);
 		
 		currentList = new ListGrid(){
-			
+				class AddWindow extends Window{
+					
+					DynamicForm form = new DynamicForm();
+					public AddWindow()
+					{
+						setEdgeMarginSize(4);
+						setEdgeOffset(5);
+						setAutoCenter(true);
+						setTitle("新增");
+						setShowMinimizeButton(false);
+						setIsModal(true);
+						setShowModalMask(false);
+						setOverflow(Overflow.VISIBLE);
+						setAutoSize(true);
+						setCanDragResize(true);
+						setAnimateShowEffect(AnimationEffect.WIPE);
+						setAnimateShowTime(800);
+						
+					}
+					
+
+				}
+				AddWindow aw = new AddWindow(); 
 			 @Override  
 	            protected Canvas getExpansionComponent(final ListGridRecord record) {
 					
@@ -459,13 +488,21 @@ public class AgentRateManagePanel extends VLayout {
 	        		collegeIDField2.setHidden(true);
 	        		rateList.setShowHeaderContextMenu(false);
 	        		rateList.setCanReorderRecords(true);
-	        		rateList.setCanRemoveRecords(true);
+//	        		rateList.setCanRemoveRecords(true);
 	        		rateList.setDragDataAction(DragDataAction.COPY);
-	        		
+	        		rateList.setSelectionType(SelectionStyle.SINGLE);
+	        		rateList.addRecordDropHandler(new RecordDropHandler(){
+
+						@Override
+						public void onRecordDrop(RecordDropEvent event) {
+													
+							aw.show();
+						}}
+	        		);
 	        		rateList.setFields(collegeIDField2,collegeNameField2,pepleCountField2,returnRateField,orgField);
 	        		rateList.setTitle("拖动并放开选中的记录将在本列表框中拷贝相同的记录，便于设置多个级别");
 	                rateList.setWidth100();
-	                rateList.setHeight(150);
+	                rateList.setHeight(250);
 	                layout.addMember(rateList);   
 	  
 	               
@@ -489,7 +526,46 @@ public class AgentRateManagePanel extends VLayout {
 			                rateList.setData(listcol);
 						}});
 	               
-	                
+	                rateList.addRecordDoubleClickHandler(new RecordDoubleClickHandler(){
+
+						@Override
+						public void onRecordDoubleClick(
+								final RecordDoubleClickEvent event) {
+
+							SC.ask("你确定要删除本记录吗?", new BooleanCallback(){
+
+								@Override
+								public void execute(Boolean value) {
+									if(value)
+									{
+										dbService.checkIfLastCollegeAggregation((CollegeAggregation) event.getRecord().getAttributeAsObject("orgobj"), new CommonAsyncCall<Boolean>(){
+
+											@Override
+											public void onSuccess(Boolean result) {
+												
+												if(result)
+												{
+													SC.warn("这是" + event.getRecord().getAttribute("collegeName") + "的最后一条记录,不能删除!<br>" +
+															"如果你要重新设置高校组别,请删除组别(双击组别记录)");
+													return;
+												}
+												dbService.deleteCollegeAggregation((CollegeAggregation) event.getRecord().getAttributeAsObject("orgobj"), new CommonAsyncCall<Boolean>(){
+
+													@Override
+													public void onSuccess(Boolean result) {
+														BrightEdu.showTip("成功删除");
+														
+													}});
+												
+											}}
+										);
+									}
+									
+								}});
+							
+
+							
+						}});
 
 	                
 //	                HLayout hLayout = new HLayout(10);   
@@ -528,7 +604,8 @@ public class AgentRateManagePanel extends VLayout {
 		
 		ListGridField  fee_typeIdField = new ListGridField("fee_type_id","费用类型ID");
 		ListGridField  fee_typeNameField = new ListGridField("fee_type","费用类型");
-		fee_typeIdField.setHidden(true);	
+		fee_typeIdField.setHidden(true);
+		fee_typeNameField.setWidth(80);
 		ListGridField groupId = new ListGridField("groupId","组别ID");
 		groupId.setHidden(true);
 		ListGridField groupName = new ListGridField("groupName","组别");
@@ -536,6 +613,36 @@ public class AgentRateManagePanel extends VLayout {
 		typeObj.setHidden(true);
 		currentList.setShowHeaderContextMenu(false);
 		currentList.setFields(groupId,groupName,fee_typeIdField,fee_typeNameField,typeObj);
+		currentList.setTitle("双击任何一条记录删除本招生点的合并计算组别并重新设置");
+				
+		currentList.addRecordDoubleClickHandler(new RecordDoubleClickHandler(){
+
+			@Override
+			public void onRecordDoubleClick(final RecordDoubleClickEvent event) {
+				
+				SC.ask("你确认要删除本招生点的所有组别吗?", new BooleanCallback(){
+
+					@Override
+					public void execute(Boolean value) {
+						if(value)
+						{
+							for(final Record r : currentList.getRecords())
+							dbService.deleteAgentReturnType((AgentReturnType)r.getAttributeAsObject("object"), new CommonAsyncCall<Boolean>(){
+
+								@Override
+								public void onSuccess(Boolean result) {
+									BrightEdu.showTip("成功删除");
+									currentList.removeData(r);
+								}}
+							);
+						}
+							
+					}}
+				
+					);
+				
+			}});
+		
 		
 		Label currentLabel = new Label("当前招生点");
 		currentLabel.setHeight(20);
@@ -554,6 +661,15 @@ public class AgentRateManagePanel extends VLayout {
 		loadCollege();
 		loadFeeType();
 
+		batchList.addSelectionUpdatedHandler(new SelectionUpdatedHandler(){
+
+			@Override
+			public void onSelectionUpdated(SelectionUpdatedEvent event) {
+				loadUnassignedCollege();
+				groupList.setData(new RecordList());
+				loadCurrentGrid();
+			}});
+		
 		agentList.addSelectionUpdatedHandler(new SelectionUpdatedHandler(){
 
 			@Override

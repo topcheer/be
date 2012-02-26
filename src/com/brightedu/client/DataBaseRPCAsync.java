@@ -286,4 +286,7 @@ public interface DataBaseRPCAsync {
 	void getUnassignedCollegeList(String agent, String batch,
 			AsyncCallback<List<College>> callback);
 
+	void checkIfLastCollegeAggregation(CollegeAggregation item,
+			AsyncCallback<Boolean> callback);
+
 }

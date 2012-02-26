@@ -244,7 +244,7 @@ public interface DataBaseRPC extends RemoteService {
 	public List<College> getUnassignedCollegeList(String agentID, String batch);
 	public List<CollegeAggregation> getCollegeAggregationList(AgentReturnType type);
 	public List<AgentReturnType> getAgentReturnType(String agentID, String batch);
-
+	public boolean checkIfLastCollegeAggregation(CollegeAggregation item);
 	
 	
 }

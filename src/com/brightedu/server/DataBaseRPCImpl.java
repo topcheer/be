@@ -562,6 +562,11 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 		return agent.getAgentReturnType(agentID, batch);
 	}
 
+	@Override
+	public boolean checkIfLastCollegeAggregation(CollegeAggregation item) {
+		return agent.checkIfLastCollegeAggregation(item);
+	}
+
 
 
 

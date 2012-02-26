@@ -1996,4 +1996,25 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		}
 	}
 
+	@Override
+	public boolean checkIfLastCollegeAggregation(CollegeAggregation item) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			CollegeAggregationMapper bim = session.getMapper(CollegeAggregationMapper.class);
+			CollegeAggregationExample cae = new CollegeAggregationExample();
+			cae.createCriteria().andAg_return_type_idEqualTo(item.getAg_return_type_id()).andCollege_idEqualTo(item.getCollege_id());
+			
+			int count = bim.countByExample(cae);
+
+			if(count>1) return false;
+				
+			
+			return true;
+
+			
+		} finally {
+			session.close();
+		}
+	}
+
 }
