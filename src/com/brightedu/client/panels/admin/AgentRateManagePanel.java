@@ -46,11 +46,14 @@ import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.events.CloseClickEvent;
+import com.smartgwt.client.widgets.events.CloseClickHandler;
 import com.smartgwt.client.widgets.events.DoubleClickEvent;
 import com.smartgwt.client.widgets.events.DoubleClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.FormItemValueParser;
 import com.smartgwt.client.widgets.form.fields.FormItem;
+import com.smartgwt.client.widgets.form.fields.HiddenItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.grid.CellEditValueFormatter;
@@ -440,26 +443,52 @@ public class AgentRateManagePanel extends VLayout {
 				class AddWindow extends Window{
 					
 					DynamicForm form = new DynamicForm();
+					TextItem people = new TextItem("headcount","人数上限");
+					TextItem rate = new TextItem("rate","返利系数");
+					Label groupName =  new Label("dummy");
+					Label collegeName = new Label("dummy");
+					IButton okBtn = new IButton("Ok");
+					
 					public AddWindow()
 					{
+						setWidth(250);
+						setHeight(200);
 						setEdgeMarginSize(4);
 						setEdgeOffset(5);
 						setAutoCenter(true);
 						setTitle("新增");
 						setShowMinimizeButton(false);
 						setIsModal(true);
-						setShowModalMask(false);
-						setOverflow(Overflow.VISIBLE);
-						setAutoSize(true);
+						setShowModalMask(true);
+//						setOverflow(Overflow.VISIBLE);
+						
 						setCanDragResize(true);
-						setAnimateShowEffect(AnimationEffect.WIPE);
-						setAnimateShowTime(800);
+//						setAnimateShowEffect(AnimationEffect.WIPE);
+//						setAnimateShowTime(800);
+						people.setMask("###");
+						people.setMaskPromptChar(" ");
+						
+						rate.setValue(0.1);
+						
+						form.setFields(people,rate);
+						VLayout v = new VLayout();
+						v.setMargin(15);
+						v.setWidth100();
+						groupName.setHeight(15);
+						collegeName.setHeight(15);
+						v.addMember(groupName);
+						v.addMember(collegeName);
+						
+						v.addMember(form);
+						v.addMember(okBtn);
+						addItem(v);
+						
 						
 					}
 					
 
 				}
-				AddWindow aw = new AddWindow(); 
+				AddWindow aw ; 
 			 @Override  
 	            protected Canvas getExpansionComponent(final ListGridRecord record) {
 					
@@ -494,9 +523,81 @@ public class AgentRateManagePanel extends VLayout {
 	        		rateList.addRecordDropHandler(new RecordDropHandler(){
 
 						@Override
-						public void onRecordDrop(RecordDropEvent event) {
-													
+						public void onRecordDrop(final RecordDropEvent event) {
+							final ArrayList<CollegeAggregation> list = new ArrayList<CollegeAggregation>();
+							final CollegeAggregation toBeAdded = (CollegeAggregation)event.getDropRecords()[0].getAttributeAsObject("orgobj");
+							
+							aw = new AddWindow();	
+							aw.groupName.setContents("招生点 <B>" + agentList.getSelectedRecord().getAttribute("agentName") + "</b>");
+							aw.collegeName.setContents("大学 <b>" + event.getDropRecords()[0].getAttribute("collegeName") + "</b>");
 							aw.show();
+							aw.addCloseClickHandler(new CloseClickHandler(){
+
+								@Override
+								public void onCloseClick(CloseClickEvent event2) {
+									
+					                dbService.getCollegeAggregationList((AgentReturnType)record.getAttributeAsObject("object"), new CommonAsyncCall<List<CollegeAggregation>>(){
+
+										@Override
+										public void onSuccess(List<CollegeAggregation> result) {
+											 RecordList listcol = new RecordList();
+							                for(CollegeAggregation rec : result)
+							                {
+							                	Record rec2 = new Record();
+							                	rec2.setAttribute("collegeID", rec.getCollege_id());
+							                	rec2.setAttribute("collegeName", collegeMap.get(rec.getCollege_id()+""));
+							                	rec2.setAttribute("people_count",rec.getHeadcount()+"");
+							                	rec2.setAttribute("return_rate", rec.getReturn_percent()+"");
+							                	rec2.setAttribute("orgobj", rec);
+							                	listcol.add(rec2);
+							                	
+							                }
+							                rateList.setData(listcol);
+										}});
+									aw.hide();
+								}});
+							aw.okBtn.addClickHandler(new ClickHandler(){
+
+								@Override
+								public void onClick(ClickEvent event) {
+									
+									if(aw.form.validate())
+									{
+										toBeAdded.setHeadcount(new Integer(aw.people.getValue().toString()));
+										toBeAdded.setReturn_percent(new BigDecimal(aw.rate.getValue().toString()));
+										list.add(toBeAdded);
+										dbService.addCollegeAggregation(list, new CommonAsyncCall<Boolean>(){
+
+											@Override
+											public void onSuccess(Boolean result) {
+								                dbService.getCollegeAggregationList((AgentReturnType)record.getAttributeAsObject("object"), new CommonAsyncCall<List<CollegeAggregation>>(){
+
+													@Override
+													public void onSuccess(List<CollegeAggregation> result) {
+														 RecordList listcol = new RecordList();
+										                for(CollegeAggregation rec : result)
+										                {
+										                	Record rec2 = new Record();
+										                	rec2.setAttribute("collegeID", rec.getCollege_id());
+										                	rec2.setAttribute("collegeName", collegeMap.get(rec.getCollege_id()+""));
+										                	rec2.setAttribute("people_count",rec.getHeadcount()+"");
+										                	rec2.setAttribute("return_rate", rec.getReturn_percent()+"");
+										                	rec2.setAttribute("orgobj", rec);
+										                	listcol.add(rec2);
+										                	
+										                }
+										                rateList.setData(listcol);
+													}});
+												aw.hide();
+												
+											}}
+										);
+										
+									}
+										
+									
+								}});
+							
 						}}
 	        		);
 	        		rateList.setFields(collegeIDField2,collegeNameField2,pepleCountField2,returnRateField,orgField);
@@ -553,6 +654,7 @@ public class AgentRateManagePanel extends VLayout {
 
 													@Override
 													public void onSuccess(Boolean result) {
+														rateList.removeData(event.getRecord());
 														BrightEdu.showTip("成功删除");
 														
 													}});
@@ -701,6 +803,9 @@ public class AgentRateManagePanel extends VLayout {
 	}
 
 	protected void loadCurrentGrid() {
+		
+		if(agentList.getSelectedRecords().length == 0) return;
+		
 		dbService.getAgentReturnType(agentList.getSelectedRecord().getAttribute("agentId"), batchList.getSelectedRecord().getAttribute("batchId"), new CommonAsyncCall<List<AgentReturnType>>(){
 
 			@Override
@@ -727,6 +832,8 @@ public class AgentRateManagePanel extends VLayout {
 	}
 
 	protected void loadUnassignedCollege() {
+		
+		if(agentList.getSelectedRecords().length == 0) return;
 		
 		dbService.getUnassignedCollegeList(agentList.getSelectedRecord().getAttribute("agentId"), batchList.getSelectedRecord().getAttribute("batchId"), new CommonAsyncCall<List<College>>(){
 
