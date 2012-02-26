@@ -103,6 +103,7 @@ import com.brightedu.model.edu.UserTypeExample;
 import com.brightedu.server.util.ConnectionManager;
 import com.brightedu.server.util.Log;
 import com.brightedu.server.util.ServerProperties;
+import com.brightedu.server.util.Utils;
 
 public class DataBaseRPCAgent implements DataBaseRPC {
 	SqlSessionFactory sessionFactory;
@@ -1470,6 +1471,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		SqlSession session = sessionFactory.openSession();
 		try {
 			UserMapper bim = session.getMapper(UserMapper.class);
+			user.setUser_password(Utils.md5(user.getUser_password()));
 			int count = bim.insertSelective(user);
 			session.commit();
 			return true;
@@ -1500,6 +1502,12 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		SqlSession session = sessionFactory.openSession();
 		try {
 			UserMapper scm = session.getMapper(UserMapper.class);
+			User oldUser = scm.selectByPrimaryKey(user.getUser_id());
+			if(! oldUser.getUser_password().equals(user.getUser_password()))
+			{
+				//if password changed, then update password to new one
+				user.setUser_password(Utils.md5(user.getUser_password()));
+			}
 			scm.updateByPrimaryKey(user);
 			session.commit();
 			return true;

@@ -30,7 +30,7 @@ public class ConnectionManager {
 
 	public static void load() {
 		loadMybatis();
-//		loadCustomPool();
+		loadCustomPool();
 	}
 	
 	protected static void loadMybatis(){

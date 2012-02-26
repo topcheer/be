@@ -4,16 +4,30 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.SqlSession;
+
 import com.brightedu.client.GreetingService;
+import com.brightedu.dao.edu.UserMapper;
+import com.brightedu.dao.edu.UserRightsEffectiveMapper;
 import com.brightedu.model.edu.CollegeAgreement;
 import com.brightedu.model.edu.User;
+import com.brightedu.model.edu.UserExample;
+import com.brightedu.model.edu.UserRightsEffective;
+import com.brightedu.model.edu.UserRightsEffectiveExample;
 import com.brightedu.server.util.AuthManager;
+import com.brightedu.server.util.ConnectionManager;
 import com.brightedu.server.util.Log;
 import com.brightedu.server.util.ServerProperties;
+import com.brightedu.server.util.Utils;
 import com.brightedu.shared.FieldVerifier;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -66,11 +80,88 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		if (user.getUser_name() == null) {
 			user.setUser_name("test");
 			user.setUser_id(1234);
+			return AuthManager.getFunctions(new String[] { "system_manage",
+			"student_manage", "financial_manage", "student_personal" });
 		}
+		User loginedUser = logmein(user);
 		Log.d("User login: " + user.getUser_name());
 		HttpSession session = this.getThreadLocalRequest().getSession();
-		session.setAttribute("user", user);
-		return AuthManager.getFunctions(new String[] { "system_manage",
-				"student_manage", "financial_manage", "student_personal" });
+		session.setAttribute("user", loginedUser);
+		return getUserRights(loginedUser);
+
+	}
+	private User logmein(User user) {
+		
+		SqlSession session =ConnectionManager.getSessionFactory().openSession();
+		try {
+			UserMapper scm = session.getMapper(UserMapper.class);
+			UserExample ex = new UserExample();
+			ex.createCriteria().andUser_nameEqualTo(user.getUser_name());
+			List<User> users = scm.selectByExample(ex);
+			if(users.size()>0)
+			{
+				
+				return users.get(0);
+			}
+			
+
+			
+			
+			return null;
+					
+		} finally {
+			session.close();
+			
+		}
+		
+		
+	}
+
+	private String getUserRights(User user)
+	{
+		StringBuffer rights = new StringBuffer();
+		Connection conn = ConnectionManager.getConnection("edu");
+		
+		PreparedStatement ps;
+		try {
+			ps = conn.prepareStatement("select distinct category_id,category_name from userrights_effective where user_id = ?");
+			
+			ps.setInt(1, user.getUser_id());
+			
+			ResultSet rs = ps.executeQuery();
+			while(rs.next())
+			{
+				rights.append(rs.getString(1)).append(" ").append(rs.getString(2)).append(" root|");
+			}
+			
+			rs.close();
+			ps.close();
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+			
+		}
+		
+		
+		
+		SqlSession session =ConnectionManager.getSessionFactory().openSession();
+		try {
+			UserRightsEffectiveMapper scm = session.getMapper(UserRightsEffectiveMapper.class);
+			UserRightsEffectiveExample ex = new UserRightsEffectiveExample();
+			ex.createCriteria().andUser_idEqualTo(user.getUser_id());
+			
+			for(UserRightsEffective right : scm.selectByExample(ex))
+			{
+				rights.append(right.getFunction_id()).append(" ").append(right.getFunction_name()).append(" ").append(right.getCategory_id()).append("|");
+			}
+			
+			
+			return rights.toString();
+		} finally {
+			session.close();
+			
+		}
 	}
 }
