@@ -1,0 +1,619 @@
+<table cellspacing="0" rules="all" border="1" id="DataGrid1" style="height:120px;width:1000px;border-collapse:collapse;Z-INDEX: 101; LEFT: 8px; POSITION: absolute; TOP: 64px">
+	<tr class="GridTitle">
+		<td align="Center" style="width:50px;"><input type="checkbox" id="CheckBox1" onclick="chk(this,'DataGrid1')" language="javascript"></td><td>姓名</td><td>身份证</td><td>报考专业</td><td>报名中心</td><td>报名日期</td><td>状态</td><td>中心备注</td><td>上传验证</td><td>材料审核</td><td>确认表</td><td>&nbsp;</td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>应雪栩</td><td style="vnd.ms-excel.numberformat:@">330106199103201552</td><td>工程造价管理</td><td>杭州学习中心</td><td>2011-11-02</td><td>已提交</td><td>jm</td><td><a href=CTUpzj.aspx?zkzh=330106199103201552 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=330106199103201552 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330106199103201552 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>夏鹏</td><td style="vnd.ms-excel.numberformat:@">330105198407041016</td><td>工商管理</td><td>杭州学习中心</td><td>2011-11-07</td><td>已提交</td><td>jm</td><td><a href=CTUpzj.aspx?zkzh=330105198407041016 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=330105198407041016 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330105198407041016 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>周科君</td><td style="vnd.ms-excel.numberformat:@">332526199006090327</td><td>工程造价管理</td><td>杭州学习中心</td><td>2011-11-07</td><td>已提交</td><td>jm</td><td><a href=CTUpzj.aspx?zkzh=332526199006090327 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=332526199006090327 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=332526199006090327 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>徐斌</td><td style="vnd.ms-excel.numberformat:@">33010419770728131X</td><td>工商管理</td><td>杭州学习中心</td><td>2011-11-07</td><td>已提交</td><td>jm</td><td><a href=CTUpzj.aspx?zkzh=33010419770728131X target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=33010419770728131X target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=33010419770728131X target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>侯艳霞</td><td style="vnd.ms-excel.numberformat:@">410726198402146622</td><td>电子商务</td><td>杭州学习中心</td><td>2011-11-24</td><td>已提交</td><td>xsfx</td><td><a href=CTUpzj.aspx?zkzh=410726198402146622 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=410726198402146622 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=410726198402146622 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>王吉祥</td><td style="vnd.ms-excel.numberformat:@">320722198408094811</td><td>建筑工程技术</td><td>杭州学习中心</td><td>2011-11-26</td><td>已提交</td><td>jm</td><td><a href=CTUpzj.aspx?zkzh=320722198408094811 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=320722198408094811 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=320722198408094811 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>俞明辉</td><td style="vnd.ms-excel.numberformat:@">330104198306131614</td><td>工商管理</td><td>杭州学习中心</td><td>2011-11-27</td><td>已提交</td><td>zjzx</td><td><a href=CTUpzj.aspx?zkzh=330104198306131614 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=330104198306131614 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330104198306131614 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>潘华</td><td style="vnd.ms-excel.numberformat:@">331021198103042015</td><td>工商企业管理</td><td>杭州学习中心</td><td>2011-11-28</td><td>已提交</td><td>jm</td><td><a href=CTUpzj.aspx?zkzh=331021198103042015 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=331021198103042015 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=331021198103042015 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>胡琛玲</td><td style="vnd.ms-excel.numberformat:@">330624198603146460</td><td>财务管理</td><td>杭州学习中心</td><td>2011-12-02</td><td>已提交</td><td>jm</td><td><a href=CTUpzj.aspx?zkzh=330624198603146460 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=330624198603146460 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330624198603146460 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>郑佰香</td><td style="vnd.ms-excel.numberformat:@">33062319701003741X</td><td>建筑工程技术</td><td>杭州学习中心</td><td>2011-12-05</td><td>已提交</td><td>xsfx</td><td><a href=CTUpzj.aspx?zkzh=33062319701003741X target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=33062319701003741X target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=33062319701003741X target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>孙爽爽</td><td style="vnd.ms-excel.numberformat:@">330105198810083128</td><td>工商管理</td><td>杭州学习中心</td><td>2011-12-06</td><td>已提交</td><td>jm</td><td><a href=CTUpzj.aspx?zkzh=330105198810083128 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=330105198810083128 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330105198810083128 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>林海阳</td><td style="vnd.ms-excel.numberformat:@">350521198110165013</td><td>电气自动化技术</td><td>杭州学习中心</td><td>2011-12-19</td><td>已提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350521198110165013 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=350521198110165013 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350521198110165013 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>赖德兴</td><td style="vnd.ms-excel.numberformat:@">441623198202163112</td><td>土木工程</td><td>杭州学习中心</td><td>2011-12-19</td><td>已提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=441623198202163112 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=441623198202163112 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=441623198202163112 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>陈艳</td><td style="vnd.ms-excel.numberformat:@">350103198301182321</td><td>财务管理</td><td>杭州学习中心</td><td>2011-12-19</td><td>已提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350103198301182321 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=350103198301182321 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350103198301182321 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>赵梦如</td><td style="vnd.ms-excel.numberformat:@">35222519891028402X</td><td>工商企业管理</td><td>杭州学习中心</td><td>2011-12-19</td><td>已提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=35222519891028402X target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=35222519891028402X target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=35222519891028402X target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>韩惠贞</td><td style="vnd.ms-excel.numberformat:@">350600198805223543</td><td>工程造价管理</td><td>杭州学习中心</td><td>2011-12-19</td><td>已提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350600198805223543 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=350600198805223543 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350600198805223543 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>赖德旺</td><td style="vnd.ms-excel.numberformat:@">441623198507183114</td><td>土木工程</td><td>杭州学习中心</td><td>2011-12-19</td><td>已提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=441623198507183114 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=441623198507183114 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=441623198507183114 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>陈紫盈</td><td style="vnd.ms-excel.numberformat:@">350500198302117719</td><td>工商企业管理</td><td>杭州学习中心</td><td>2011-12-19</td><td>已提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350500198302117719 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=350500198302117719 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350500198302117719 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>林幼琼</td><td style="vnd.ms-excel.numberformat:@">350583197801051909</td><td>会计</td><td>杭州学习中心</td><td>2011-12-19</td><td>已提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350583197801051909 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=350583197801051909 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350583197801051909 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>谢杰煌</td><td style="vnd.ms-excel.numberformat:@">350521199005084515</td><td>建筑工程技术</td><td>杭州学习中心</td><td>2011-12-19</td><td>已提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350521199005084515 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=350521199005084515 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350521199005084515 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>陈兆海</td><td style="vnd.ms-excel.numberformat:@">350121196712154070</td><td>建筑工程技术</td><td>杭州学习中心</td><td>2011-12-19</td><td>已提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350121196712154070 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=350121196712154070 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350121196712154070 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>郭建芳</td><td style="vnd.ms-excel.numberformat:@">352230199111242128</td><td>会计</td><td>杭州学习中心</td><td>2011-12-19</td><td>已提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=352230199111242128 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=352230199111242128 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=352230199111242128 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>林勇坚</td><td style="vnd.ms-excel.numberformat:@">350206197111151030</td><td>建筑工程技术</td><td>杭州学习中心</td><td>2011-12-20</td><td>已提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350206197111151030 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=350206197111151030 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350206197111151030 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>俞少钦</td><td style="vnd.ms-excel.numberformat:@">330624198403191670</td><td>土木工程</td><td>杭州学习中心</td><td>2011-12-21</td><td>已提交</td><td>hzfx</td><td><a href=CTUpzj.aspx?zkzh=330624198403191670 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=330624198403191670 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330624198403191670 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>戴珊</td><td style="vnd.ms-excel.numberformat:@">330106198411080022</td><td>工商企业管理</td><td>杭州学习中心</td><td>2011-12-26</td><td>已提交</td><td>hzfx</td><td><a href=CTUpzj.aspx?zkzh=330106198411080022 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=330106198411080022 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330106198411080022 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>严华峰</td><td style="vnd.ms-excel.numberformat:@">330211198907173018</td><td>工商企业管理</td><td>杭州学习中心</td><td>2011-12-26</td><td>已提交</td><td>nbhl</td><td><a href=CTUpzj.aspx?zkzh=330211198907173018 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=330211198907173018 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330211198907173018 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>叶琦明</td><td style="vnd.ms-excel.numberformat:@">350103198601093515</td><td>计算机网络技术</td><td>杭州学习中心</td><td>2011-12-26</td><td>已提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350103198601093515 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=350103198601093515 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350103198601093515 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>陈庸涛</td><td style="vnd.ms-excel.numberformat:@">350105198906232734</td><td>工商企业管理</td><td>杭州学习中心</td><td>2011-12-27</td><td>已提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350105198906232734 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=350105198906232734 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350105198906232734 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>吕宝晟</td><td style="vnd.ms-excel.numberformat:@">530103198709232111</td><td>财务管理</td><td>杭州学习中心</td><td>2011-12-29</td><td>已提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=530103198709232111 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=530103198709232111 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=530103198709232111 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>刘峰</td><td style="vnd.ms-excel.numberformat:@">342221198104062513</td><td>工商企业管理</td><td>杭州学习中心</td><td>2011-12-31</td><td>已提交</td><td>jm</td><td><a href=CTUpzj.aspx?zkzh=342221198104062513 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=342221198104062513 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=342221198104062513 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>蒋忠明</td><td style="vnd.ms-excel.numberformat:@">330106198210245513</td><td>工商管理</td><td>杭州学习中心</td><td>2012-01-05</td><td>已提交</td><td>sd</td><td><a href=CTUpzj.aspx?zkzh=330106198210245513 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=330106198210245513 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330106198210245513 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>苏云芳</td><td style="vnd.ms-excel.numberformat:@">342529197504064625</td><td>工商企业管理</td><td>杭州学习中心</td><td>2012-01-06</td><td>已提交</td><td>jm</td><td><a href=CTUpzj.aspx?zkzh=342529197504064625 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=342529197504064625 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=342529197504064625 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>赵晓东</td><td style="vnd.ms-excel.numberformat:@">330781199203100970</td><td>工商企业管理</td><td>杭州学习中心</td><td>2012-01-08</td><td>已提交</td><td>jm</td><td><a href=CTUpzj.aspx?zkzh=330781199203100970 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=330781199203100970 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330781199203100970 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>周根树</td><td style="vnd.ms-excel.numberformat:@">36232519680309291X</td><td>工商企业管理</td><td>杭州学习中心</td><td>2012-01-09</td><td>已提交</td><td>nbhl</td><td><a href=CTUpzj.aspx?zkzh=36232519680309291X target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=36232519680309291X target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=36232519680309291X target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>胡春燕</td><td style="vnd.ms-excel.numberformat:@">362334198903290062</td><td>工商企业管理</td><td>杭州学习中心</td><td>2012-01-10</td><td>已提交</td><td>jm</td><td><a href=CTUpzj.aspx?zkzh=362334198903290062 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=362334198903290062 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=362334198903290062 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>袁跃</td><td style="vnd.ms-excel.numberformat:@">342422197902120557</td><td>工商企业管理</td><td>杭州学习中心</td><td>2012-01-11</td><td>已提交</td><td>lpcst</td><td><a href=CTUpzj.aspx?zkzh=342422197902120557 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=342422197902120557 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=342422197902120557 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>李志波</td><td style="vnd.ms-excel.numberformat:@">362501197306282434</td><td>工商管理</td><td>杭州学习中心</td><td>2012-01-11</td><td>已提交</td><td>lpcst</td><td><a href=CTUpzj.aspx?zkzh=362501197306282434 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=362501197306282434 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=362501197306282434 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>徐维华</td><td style="vnd.ms-excel.numberformat:@">330106198510223017</td><td>工商企业管理</td><td>杭州学习中心</td><td>2012-02-01</td><td>未提交</td><td>jm</td><td><a href=CTUpzj.aspx?zkzh=330106198510223017 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=330106198510223017 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330106198510223017 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>高露</td><td style="vnd.ms-excel.numberformat:@">330227198404075361</td><td>财务管理</td><td>杭州学习中心</td><td>2012-02-03</td><td>已提交</td><td>dm</td><td><a href=CTUpzj.aspx?zkzh=330227198404075361 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=330227198404075361 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330227198404075361 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>蔡江明</td><td style="vnd.ms-excel.numberformat:@">339005199002090415</td><td>工商企业管理</td><td>杭州学习中心</td><td>2012-02-05</td><td>已提交</td><td>jm</td><td><a href=CTUpzj.aspx?zkzh=339005199002090415 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=339005199002090415 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=339005199002090415 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>蒋德寅</td><td style="vnd.ms-excel.numberformat:@">152701198612250314</td><td>工商管理</td><td>杭州学习中心</td><td>2012-02-06</td><td>已提交</td><td>shx</td><td><a href=CTUpzj.aspx?zkzh=152701198612250314 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=152701198612250314 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=152701198612250314 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>詹智健</td><td style="vnd.ms-excel.numberformat:@">33082219890816211X</td><td>土木工程</td><td>杭州学习中心</td><td>2012-02-06</td><td>已提交</td><td>jm</td><td><a href=CTUpzj.aspx?zkzh=33082219890816211X target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=33082219890816211X target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=33082219890816211X target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>张欢</td><td style="vnd.ms-excel.numberformat:@">310110198408011078</td><td>计算机科学与技术</td><td>杭州学习中心</td><td>2012-02-06</td><td>已提交</td><td>shx</td><td><a href=CTUpzj.aspx?zkzh=310110198408011078 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=310110198408011078 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=310110198408011078 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>张海燕</td><td style="vnd.ms-excel.numberformat:@">310110198807114445</td><td>工商管理</td><td>杭州学习中心</td><td>2012-02-06</td><td>已提交</td><td>shx</td><td><a href=CTUpzj.aspx?zkzh=310110198807114445 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=310110198807114445 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=310110198807114445 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>张景皓</td><td style="vnd.ms-excel.numberformat:@">330104199002094417</td><td>工商管理</td><td>杭州学习中心</td><td>2012-02-07</td><td>已提交</td><td>jm</td><td><a href=CTUpzj.aspx?zkzh=330104199002094417 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=330104199002094417 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330104199002094417 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>陆春江</td><td style="vnd.ms-excel.numberformat:@">330621198710252999</td><td>财务管理</td><td>杭州学习中心</td><td>2012-02-10</td><td>已提交</td><td>zjzx</td><td><a href=CTUpzj.aspx?zkzh=330621198710252999 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=330621198710252999 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330621198710252999 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>姚芳</td><td style="vnd.ms-excel.numberformat:@">330521198903024022</td><td>财务管理</td><td>杭州学习中心</td><td>2012-02-11</td><td>已提交</td><td>zjzx</td><td><a href=CTUpzj.aspx?zkzh=330521198903024022 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=330521198903024022 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330521198903024022 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>徐艺悦</td><td style="vnd.ms-excel.numberformat:@">330105198202213419</td><td>工商企业管理</td><td>杭州学习中心</td><td>2012-02-13</td><td>已提交</td><td>jm</td><td><a href=CTUpzj.aspx?zkzh=330105198202213419 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=330105198202213419 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330105198202213419 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>hzzx</td><td style="vnd.ms-excel.numberformat:@">330881198510307112</td><td>工商管理</td><td>杭州学习中心</td><td>2012-02-14</td><td>已提交</td><td>sd</td><td><a href=CTUpzj.aspx?zkzh=330881198510307112 target=_blank>上传</a></td><td>这个人在系统中的姓名不对，请核对并修正。请写勘误给白老师2012.2.23</td><td><a href= CTXLprint.aspx?idcard=330881198510307112 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330881198510307112 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>寿晶菁</td><td style="vnd.ms-excel.numberformat:@">339005198903306629</td><td>工程造价管理</td><td>杭州学习中心</td><td>2012-02-14</td><td>已提交</td><td>xss</td><td><a href=CTUpzj.aspx?zkzh=339005198903306629 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=339005198903306629 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=339005198903306629 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>孙琦</td><td style="vnd.ms-excel.numberformat:@">339005198911154514</td><td>工程造价</td><td>杭州学习中心</td><td>2012-02-14</td><td>已提交</td><td>xss</td><td><a href=CTUpzj.aspx?zkzh=339005198911154514 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=339005198911154514 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=339005198911154514 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>徐毓</td><td style="vnd.ms-excel.numberformat:@">330482197812130025</td><td>工商企业管理</td><td>杭州学习中心</td><td>2012-02-14</td><td>已提交</td><td>jm</td><td><a href=CTUpzj.aspx?zkzh=330482197812130025 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=330482197812130025 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330482197812130025 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>高盛光</td><td style="vnd.ms-excel.numberformat:@">339005198710212730</td><td>工程造价</td><td>杭州学习中心</td><td>2012-02-14</td><td>未提交</td><td>xss</td><td><a href=CTUpzj.aspx?zkzh=339005198710212730 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=339005198710212730 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=339005198710212730 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>蔡炜</td><td style="vnd.ms-excel.numberformat:@">330106197312131512</td><td>工程造价</td><td>杭州学习中心</td><td>2012-02-14</td><td>已提交</td><td>jm</td><td><a href=CTUpzj.aspx?zkzh=330106197312131512 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=330106197312131512 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330106197312131512 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>蔡雅华</td><td style="vnd.ms-excel.numberformat:@">339005199006020334</td><td>工商企业管理</td><td>杭州学习中心</td><td>2012-02-15</td><td>未提交</td><td>jm</td><td><a href=CTUpzj.aspx?zkzh=339005199006020334 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=339005199006020334 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=339005199006020334 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>盛琦</td><td style="vnd.ms-excel.numberformat:@">330106198904041216</td><td>工商管理</td><td>杭州学习中心</td><td>2012-02-16</td><td>已提交</td><td>jm</td><td><a href=CTUpzj.aspx?zkzh=330106198904041216 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=330106198904041216 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330106198904041216 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>胡睿</td><td style="vnd.ms-excel.numberformat:@">330102199008050017</td><td>工商企业管理</td><td>杭州学习中心</td><td>2012-02-17</td><td>已提交</td><td>jm</td><td><a href=CTUpzj.aspx?zkzh=330102199008050017 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=330102199008050017 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330102199008050017 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>朱文斌</td><td style="vnd.ms-excel.numberformat:@">330104198808201619</td><td>电子商务</td><td>杭州学习中心</td><td>2012-02-19</td><td>已提交</td><td>jm</td><td><a href=CTUpzj.aspx?zkzh=330104198808201619 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=330104198808201619 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330104198808201619 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>胡闽发</td><td style="vnd.ms-excel.numberformat:@">330724196603315435</td><td>工商企业管理</td><td>杭州学习中心</td><td>2012-02-20</td><td>已提交</td><td>xsfx</td><td><a href=CTUpzj.aspx?zkzh=330724196603315435 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=330724196603315435 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330724196603315435 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>杨华根</td><td style="vnd.ms-excel.numberformat:@">330724197212227117</td><td>建筑工程技术</td><td>杭州学习中心</td><td>2012-02-20</td><td>已提交</td><td>xsfx</td><td><a href=CTUpzj.aspx?zkzh=330724197212227117 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=330724197212227117 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330724197212227117 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>林立</td><td style="vnd.ms-excel.numberformat:@">330124198805250015</td><td>工商企业管理</td><td>杭州学习中心</td><td>2012-02-20</td><td>已提交</td><td>jm</td><td><a href=CTUpzj.aspx?zkzh=330124198805250015 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=330124198805250015 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330124198805250015 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>黄莲花</td><td style="vnd.ms-excel.numberformat:@">362532198906100461</td><td>建筑工程技术</td><td>杭州学习中心</td><td>2012-02-20</td><td>已提交</td><td>jm</td><td><a href=CTUpzj.aspx?zkzh=362532198906100461 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=362532198906100461 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=362532198906100461 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>周宁澈</td><td style="vnd.ms-excel.numberformat:@">330283199005300045</td><td>金融学</td><td>杭州学习中心</td><td>2012-02-21</td><td>未提交</td><td>nbhl</td><td><a href=CTUpzj.aspx?zkzh=330283199005300045 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=330283199005300045 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330283199005300045 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>姚占峰</td><td style="vnd.ms-excel.numberformat:@">330106198705200034</td><td>计算机科学与技术</td><td>杭州学习中心</td><td>2012-02-21</td><td>已提交</td><td>nbhl</td><td><a href=CTUpzj.aspx?zkzh=330106198705200034 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=330106198705200034 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330106198705200034 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>叶锋</td><td style="vnd.ms-excel.numberformat:@">332522198801054771</td><td>公共事业管理</td><td>杭州学习中心</td><td>2012-02-22</td><td>已提交</td><td>zjzx</td><td><a href=CTUpzj.aspx?zkzh=332522198801054771 target=_blank>上传</a></td><td>审核通过</td><td><a href= CTXLprint.aspx?idcard=332522198801054771 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=332522198801054771 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>蔡力</td><td style="vnd.ms-excel.numberformat:@">350322198403030011</td><td>土木工程</td><td>杭州学习中心</td><td>2012-02-24</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350322198403030011 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350322198403030011 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350322198403030011 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>林淑芳</td><td style="vnd.ms-excel.numberformat:@">350321199209308129</td><td>建筑工程技术</td><td>杭州学习中心</td><td>2012-02-24</td><td>未提交</td><td>YJH</td><td><a href=CTUpzj.aspx?zkzh=350321199209308129 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350321199209308129 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350321199209308129 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>陈乘</td><td style="vnd.ms-excel.numberformat:@">350104198609193015</td><td>法学</td><td>杭州学习中心</td><td>2012-02-24</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350104198609193015 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350104198609193015 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350104198609193015 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>黄孝楼</td><td style="vnd.ms-excel.numberformat:@">35012419820122643X</td><td>电气自动化技术</td><td>杭州学习中心</td><td>2012-02-24</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=35012419820122643X target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=35012419820122643X target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=35012419820122643X target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>李晓东</td><td style="vnd.ms-excel.numberformat:@">350103198310311914</td><td>计算机网络技术</td><td>杭州学习中心</td><td>2012-02-24</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350103198310311914 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350103198310311914 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350103198310311914 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>谢卓萍</td><td style="vnd.ms-excel.numberformat:@">350824198308033222</td><td>工程造价</td><td>杭州学习中心</td><td>2012-02-24</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350824198308033222 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350824198308033222 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350824198308033222 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>廖为松</td><td style="vnd.ms-excel.numberformat:@">350429198208174511</td><td>土木工程</td><td>杭州学习中心</td><td>2012-02-24</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350429198208174511 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350429198208174511 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350429198208174511 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>陈士心</td><td style="vnd.ms-excel.numberformat:@">350403198910071025</td><td>会计</td><td>杭州学习中心</td><td>2012-02-24</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350403198910071025 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350403198910071025 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350403198910071025 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>陈星</td><td style="vnd.ms-excel.numberformat:@">350111198407221923</td><td>工商企业管理</td><td>杭州学习中心</td><td>2012-02-24</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350111198407221923 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350111198407221923 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350111198407221923 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>林伟平</td><td style="vnd.ms-excel.numberformat:@">350321198304058119</td><td>建筑工程技术</td><td>杭州学习中心</td><td>2012-02-24</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350321198304058119 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350321198304058119 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350321198304058119 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>陈凡</td><td style="vnd.ms-excel.numberformat:@">350122199003031713</td><td>计算机科学与技术</td><td>杭州学习中心</td><td>2012-02-24</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350122199003031713 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350122199003031713 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350122199003031713 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>杨强</td><td style="vnd.ms-excel.numberformat:@">350725199009221536</td><td>电子商务</td><td>杭州学习中心</td><td>2012-02-24</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350725199009221536 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350725199009221536 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350725199009221536 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>王学新</td><td style="vnd.ms-excel.numberformat:@">350102196703090512</td><td>工程造价</td><td>杭州学习中心</td><td>2012-02-24</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350102196703090512 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350102196703090512 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350102196703090512 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>吴陆佳</td><td style="vnd.ms-excel.numberformat:@">440507198303050313</td><td>计算机科学与技术</td><td>杭州学习中心</td><td>2012-02-24</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=440507198303050313 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=440507198303050313 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=440507198303050313 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>江彬</td><td style="vnd.ms-excel.numberformat:@">350104198907214451</td><td>工商企业管理</td><td>杭州学习中心</td><td>2012-02-24</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350104198907214451 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350104198907214451 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350104198907214451 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>欧振忠</td><td style="vnd.ms-excel.numberformat:@">350321198907308412</td><td>建筑工程技术</td><td>杭州学习中心</td><td>2012-02-24</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350321198907308412 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350321198907308412 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350321198907308412 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>张利力</td><td style="vnd.ms-excel.numberformat:@">352228198801084036</td><td>建筑工程技术</td><td>杭州学习中心</td><td>2012-02-24</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=352228198801084036 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=352228198801084036 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=352228198801084036 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>邱丽娟</td><td style="vnd.ms-excel.numberformat:@">350783198907088027</td><td>电子商务</td><td>杭州学习中心</td><td>2012-02-24</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350783198907088027 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350783198907088027 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350783198907088027 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>林东</td><td style="vnd.ms-excel.numberformat:@">350181199003041874</td><td>工商企业管理</td><td>杭州学习中心</td><td>2012-02-24</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350181199003041874 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350181199003041874 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350181199003041874 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>陈晋伟</td><td style="vnd.ms-excel.numberformat:@">350105199012072713</td><td>计算机网络技术</td><td>杭州学习中心</td><td>2012-02-24</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350105199012072713 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350105199012072713 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350105199012072713 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>蒋仁权</td><td style="vnd.ms-excel.numberformat:@">350124197105032550</td><td>电气自动化技术</td><td>杭州学习中心</td><td>2012-02-24</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350124197105032550 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350124197105032550 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350124197105032550 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>叶彬</td><td style="vnd.ms-excel.numberformat:@">350124197610204974</td><td>电气自动化技术</td><td>杭州学习中心</td><td>2012-02-24</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350124197610204974 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350124197610204974 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350124197610204974 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>林晓梅</td><td style="vnd.ms-excel.numberformat:@">350124198210303740</td><td>财务管理</td><td>杭州学习中心</td><td>2012-02-24</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350124198210303740 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350124198210303740 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350124198210303740 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>罗春花</td><td style="vnd.ms-excel.numberformat:@">350821198401023329</td><td>工商企业管理</td><td>杭州学习中心</td><td>2012-02-24</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350821198401023329 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350821198401023329 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350821198401023329 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>林晓辉</td><td style="vnd.ms-excel.numberformat:@">350204198911020022</td><td>建筑工程技术</td><td>杭州学习中心</td><td>2012-02-24</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350204198911020022 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350204198911020022 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350204198911020022 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>戴宝英</td><td style="vnd.ms-excel.numberformat:@">350627198008110546</td><td>电气自动化技术</td><td>杭州学习中心</td><td>2012-02-24</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350627198008110546 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350627198008110546 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350627198008110546 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>叶美爱</td><td style="vnd.ms-excel.numberformat:@">352102197604052461</td><td>电气自动化技术</td><td>杭州学习中心</td><td>2012-02-24</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=352102197604052461 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=352102197604052461 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=352102197604052461 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>张世庚</td><td style="vnd.ms-excel.numberformat:@">350121199210106216</td><td>法律事务</td><td>杭州学习中心</td><td>2012-02-24</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350121199210106216 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350121199210106216 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350121199210106216 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>周桢民</td><td style="vnd.ms-excel.numberformat:@">35012519880702111X</td><td>电子商务</td><td>杭州学习中心</td><td>2012-02-24</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=35012519880702111X target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=35012519880702111X target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=35012519880702111X target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>谢虹</td><td style="vnd.ms-excel.numberformat:@">330102197510050021</td><td>财务管理</td><td>杭州学习中心</td><td>2012-02-25</td><td>未提交</td><td>jm</td><td><a href=CTUpzj.aspx?zkzh=330102197510050021 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=330102197510050021 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330102197510050021 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>邵鸳凤</td><td style="vnd.ms-excel.numberformat:@">362322198911088467</td><td>物流管理</td><td>杭州学习中心</td><td>2012-02-26</td><td>未提交</td><td>jm</td><td><a href=CTUpzj.aspx?zkzh=362322198911088467 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=362322198911088467 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=362322198911088467 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>吴垚婧</td><td style="vnd.ms-excel.numberformat:@">352202199111020028</td><td>土木工程</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=352202199111020028 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=352202199111020028 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=352202199111020028 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>陶振民</td><td style="vnd.ms-excel.numberformat:@">33012419650527231X</td><td>电子商务</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>jm</td><td><a href=CTUpzj.aspx?zkzh=33012419650527231X target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=33012419650527231X target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=33012419650527231X target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>雷浩伟</td><td style="vnd.ms-excel.numberformat:@">350123199111064199</td><td>电气自动化技术</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350123199111064199 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350123199111064199 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350123199111064199 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>吕玉菱</td><td style="vnd.ms-excel.numberformat:@">412723198504010040</td><td>会计</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=412723198504010040 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=412723198504010040 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=412723198504010040 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>卓维辉</td><td style="vnd.ms-excel.numberformat:@">350128199007100112</td><td>建筑工程技术</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350128199007100112 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350128199007100112 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350128199007100112 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>陈燕红</td><td style="vnd.ms-excel.numberformat:@">350521198201138029</td><td>财务管理</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350521198201138029 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350521198201138029 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350521198201138029 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>张寿妹</td><td style="vnd.ms-excel.numberformat:@">352229198710183561</td><td>财务管理</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=352229198710183561 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=352229198710183561 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=352229198710183561 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>王大畅</td><td style="vnd.ms-excel.numberformat:@">330327197704303179</td><td>工程造价</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>xsfx</td><td><a href=CTUpzj.aspx?zkzh=330327197704303179 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=330327197704303179 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330327197704303179 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>邱小兰</td><td style="vnd.ms-excel.numberformat:@">350424198702201042</td><td>工程造价管理</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350424198702201042 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350424198702201042 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350424198702201042 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>林温</td><td style="vnd.ms-excel.numberformat:@">350104199109044915</td><td>工商企业管理</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350104199109044915 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350104199109044915 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350104199109044915 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>张振宇</td><td style="vnd.ms-excel.numberformat:@">330184198412190054</td><td>工程造价</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>xsfx</td><td><a href=CTUpzj.aspx?zkzh=330184198412190054 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=330184198412190054 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330184198412190054 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>马俊辉</td><td style="vnd.ms-excel.numberformat:@">35060019870806451X</td><td>计算机网络技术</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=35060019870806451X target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=35060019870806451X target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=35060019870806451X target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>王颖</td><td style="vnd.ms-excel.numberformat:@">350103198708271924</td><td>工商管理</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350103198708271924 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350103198708271924 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350103198708271924 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>顾运</td><td style="vnd.ms-excel.numberformat:@">330104199207313521</td><td>工商企业管理</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>zjzx</td><td><a href=CTUpzj.aspx?zkzh=330104199207313521 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=330104199207313521 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330104199207313521 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>陈文义</td><td style="vnd.ms-excel.numberformat:@">350521199007207056</td><td>建筑工程技术</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350521199007207056 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350521199007207056 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350521199007207056 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>林华丽</td><td style="vnd.ms-excel.numberformat:@">350181199104211545</td><td>会计</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350181199104211545 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350181199104211545 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350181199104211545 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>马意林</td><td style="vnd.ms-excel.numberformat:@">330724198911196617</td><td>建筑工程技术</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>jm</td><td><a href=CTUpzj.aspx?zkzh=330724198911196617 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=330724198911196617 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330724198911196617 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>夏丽云</td><td style="vnd.ms-excel.numberformat:@">350627197404220021</td><td>电气自动化技术</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350627197404220021 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350627197404220021 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350627197404220021 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>林宇</td><td style="vnd.ms-excel.numberformat:@">350103198804201512</td><td>财务管理</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350103198804201512 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350103198804201512 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350103198804201512 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>汪洋</td><td style="vnd.ms-excel.numberformat:@">33010319880130001X</td><td>工商管理</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>jm</td><td><a href=CTUpzj.aspx?zkzh=33010319880130001X target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=33010319880130001X target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=33010319880130001X target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>沈泽</td><td style="vnd.ms-excel.numberformat:@">330522199005046917</td><td>法律事务</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>jm</td><td><a href=CTUpzj.aspx?zkzh=330522199005046917 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=330522199005046917 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330522199005046917 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>许毅勇</td><td style="vnd.ms-excel.numberformat:@">350681198803270555</td><td>建筑工程技术</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350681198803270555 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350681198803270555 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350681198803270555 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>陈枫</td><td style="vnd.ms-excel.numberformat:@">350181198609052450</td><td>土木工程</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350181198609052450 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350181198609052450 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350181198609052450 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>杨玉池</td><td style="vnd.ms-excel.numberformat:@">352602197808072015</td><td>工商企业管理</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=352602197808072015 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=352602197808072015 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=352602197808072015 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>陈炳奖</td><td style="vnd.ms-excel.numberformat:@">350212199008155558</td><td>计算机科学与技术</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350212199008155558 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350212199008155558 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350212199008155558 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>陈静</td><td style="vnd.ms-excel.numberformat:@">350102198512116440</td><td>会计</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350102198512116440 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350102198512116440 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350102198512116440 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>杨建新</td><td style="vnd.ms-excel.numberformat:@">350429199007136011</td><td>土木工程</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350429199007136011 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350429199007136011 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350429199007136011 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>刘小丽</td><td style="vnd.ms-excel.numberformat:@">35010219881113194X</td><td>工商企业管理</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=35010219881113194X target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=35010219881113194X target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=35010219881113194X target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>李文艳</td><td style="vnd.ms-excel.numberformat:@">42112719740224200X</td><td>工程造价</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=42112719740224200X target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=42112719740224200X target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=42112719740224200X target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>陈巧清</td><td style="vnd.ms-excel.numberformat:@">350124199004130628</td><td>计算机科学与技术</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350124199004130628 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350124199004130628 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350124199004130628 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>卓开龙</td><td style="vnd.ms-excel.numberformat:@">35048119880712153X</td><td>会计</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>&nbsp;</td><td><a href=CTUpzj.aspx?zkzh=35048119880712153X target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=35048119880712153X target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=35048119880712153X target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>谢祖云</td><td style="vnd.ms-excel.numberformat:@">352225198508161523</td><td>法律事务</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=352225198508161523 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=352225198508161523 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=352225198508161523 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>徐晓芳</td><td style="vnd.ms-excel.numberformat:@">330424198104142624</td><td>工商企业管理</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>nbhl</td><td><a href=CTUpzj.aspx?zkzh=330424198104142624 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=330424198104142624 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=330424198104142624 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>沈幼雪</td><td style="vnd.ms-excel.numberformat:@">352201198804102121</td><td>会计</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=352201198804102121 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=352201198804102121 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=352201198804102121 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>谢明华</td><td style="vnd.ms-excel.numberformat:@">352625198011171111</td><td>建筑工程技术</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=352625198011171111 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=352625198011171111 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=352625198011171111 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>黄建榕</td><td style="vnd.ms-excel.numberformat:@">35010419781105222X</td><td>财务管理</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=35010419781105222X target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=35010419781105222X target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=35010419781105222X target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>季勇峰</td><td style="vnd.ms-excel.numberformat:@">320626197703296817</td><td>建筑工程技术</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>zl</td><td><a href=CTUpzj.aspx?zkzh=320626197703296817 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=320626197703296817 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=320626197703296817 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>吴佳瑜</td><td style="vnd.ms-excel.numberformat:@">350104198609143624</td><td>金融学</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350104198609143624 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350104198609143624 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350104198609143624 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>林小伟</td><td style="vnd.ms-excel.numberformat:@">350525198506104511</td><td>金融学</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350525198506104511 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350525198506104511 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350525198506104511 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>焦海青</td><td style="vnd.ms-excel.numberformat:@">310115198001284033</td><td>建筑工程技术</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>zl</td><td><a href=CTUpzj.aspx?zkzh=310115198001284033 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=310115198001284033 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=310115198001284033 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>林双隆</td><td style="vnd.ms-excel.numberformat:@">350104198912204434</td><td>建筑工程技术</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350104198912204434 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350104198912204434 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350104198912204434 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>李林声</td><td style="vnd.ms-excel.numberformat:@">310101199011270512</td><td>建筑工程技术</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>zl</td><td><a href=CTUpzj.aspx?zkzh=310101199011270512 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=310101199011270512 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=310101199011270512 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>伊麟祥</td><td style="vnd.ms-excel.numberformat:@">35042419850209131X</td><td>电气工程及其自动化</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=35042419850209131X target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=35042419850209131X target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=35042419850209131X target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>沈懿</td><td style="vnd.ms-excel.numberformat:@">31010919810409004X</td><td>建筑工程技术</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>zl</td><td><a href=CTUpzj.aspx?zkzh=31010919810409004X target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=31010919810409004X target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=31010919810409004X target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>金颐</td><td style="vnd.ms-excel.numberformat:@">350121197908164048</td><td>财务管理</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350121197908164048 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350121197908164048 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350121197908164048 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>盛潇斌</td><td style="vnd.ms-excel.numberformat:@">310106199109211635</td><td>建筑工程技术</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>zl</td><td><a href=CTUpzj.aspx?zkzh=310106199109211635 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=310106199109211635 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=310106199109211635 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>陈杭</td><td style="vnd.ms-excel.numberformat:@">350111197304150451</td><td>建筑工程技术</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350111197304150451 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350111197304150451 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350111197304150451 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>黄新峰</td><td style="vnd.ms-excel.numberformat:@">352202198911126037</td><td>建筑工程技术</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=352202198911126037 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=352202198911126037 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=352202198911126037 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>陈可洋</td><td style="vnd.ms-excel.numberformat:@">35012419890922611X</td><td>电气自动化技术</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=35012419890922611X target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=35012419890922611X target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=35012419890922611X target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>孙元军</td><td style="vnd.ms-excel.numberformat:@">32062119850310633X</td><td>电子商务</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>zl</td><td><a href=CTUpzj.aspx?zkzh=32062119850310633X target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=32062119850310633X target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=32062119850310633X target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>邱春平</td><td style="vnd.ms-excel.numberformat:@">359001197412263541</td><td>建筑工程技术</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=359001197412263541 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=359001197412263541 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=359001197412263541 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>黄少卿</td><td style="vnd.ms-excel.numberformat:@">350403198906211013</td><td>工商企业管理</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350403198906211013 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350403198906211013 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350403198906211013 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>王付苗</td><td style="vnd.ms-excel.numberformat:@">622625198612290410</td><td>建筑工程技术</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>zl</td><td><a href=CTUpzj.aspx?zkzh=622625198612290410 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=622625198612290410 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=622625198612290410 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>唐丽</td><td style="vnd.ms-excel.numberformat:@">350121198908040322</td><td>工商企业管理</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350121198908040322 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350121198908040322 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350121198908040322 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>邹晨辉</td><td style="vnd.ms-excel.numberformat:@">350429199012040014</td><td>土木工程</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>yjh</td><td><a href=CTUpzj.aspx?zkzh=350429199012040014 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=350429199012040014 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=350429199012040014 target=_blank>详细</a></td>
+	</tr><tr class="GridAItem">
+		<td>
+							
+								</td><td>王冕</td><td style="vnd.ms-excel.numberformat:@">310104198207110048</td><td>建筑工程技术</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>zl</td><td><a href=CTUpzj.aspx?zkzh=310104198207110048 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=310104198207110048 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=310104198207110048 target=_blank>详细</a></td>
+	</tr><tr class="GridItem">
+		<td>
+							
+								</td><td>杨瑞</td><td style="vnd.ms-excel.numberformat:@">152701199007160622</td><td>工商企业管理</td><td>杭州学习中心</td><td>2012-02-27</td><td>未提交</td><td>shx</td><td><a href=CTUpzj.aspx?zkzh=152701199007160622 target=_blank>上传</a></td><td>未审核</td><td><a href= CTXLprint.aspx?idcard=152701199007160622 target=_blank>打印</a></td><td><a href= CTXLSign.aspx?zkzh=152701199007160622 target=_blank>详细</a></td>
+	</tr><tr align="Center">
+		<td>合计:</td><td>153/人次</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+	</tr>
+</table>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
