@@ -1,9 +1,14 @@
 package com.brightedu.client.panels.admin.students;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.LinkedHashMap;
 
+import sun.security.action.GetIntegerAction;
+
 import com.brightedu.client.panels.DetailedEditorForm;
+import com.brightedu.client.panels.MasterDetailAdmin;
 import com.brightedu.model.edu.StudentInfo;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
@@ -48,7 +53,8 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 	TextItem register_dateItem = new TextItem("regster_date", "登记时间");
 	TextItem update_dateItem = new TextItem("update_date", "更新时间");
 
-	public StudentsRegisterEditorForm() {
+	public StudentsRegisterEditorForm(MasterDetailAdmin admin) {
+		super(admin);
 		sexItem.setValueMap("男", "女");
 		setFields(student_nameItem, identity_cardItem, sexItem, exam_numItem,
 				student_addressItem, student_phoneItem, postal_codeItem,
@@ -59,7 +65,7 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 				political_status_idItem, employerItem, graduate_college_idItem,
 				graduate_dateItem, graduate_certificate_numberItem,
 				student_type_idItem, major_category_idItem, register_dateItem,
-				update_dateItem,saveBtn);
+				update_dateItem, saveBtn);
 	}
 
 	@Override
@@ -101,35 +107,59 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 	@Override
 	public StudentInfo getModel() {
 		StudentInfo s = new StudentInfo();
-		s.setAgent_owner(Integer.parseInt(agent_ownerItem.getValueAsString()));
-		s.setBatch_owner((Integer) (batchItem.getValue()));
+		s.setAgent_owner(getValueAsInteger(agent_ownerItem));
+		s.setBatch_owner(getValueAsInteger(batchItem));
 		s.setBirthday(birthdayItem.getValueAsString());
-		s.setClassified_owner(Integer.parseInt(classfiedItem.getValueAsString()));
-		s.setCollege_owner(Integer.parseInt(collegwOwnerItem.getValueAsString()));
+		s.setClassified_owner(getValueAsInteger(classfiedItem));
+		s.setCollege_owner(getValueAsInteger(collegwOwnerItem));
 		s.setEmployer(employerItem.getValueAsString());
-		s.setEthnic_group_id((Integer) ethnic_group_idItem.getValue());
+		s.setEthnic_group_id(getValueAsInteger(ethnic_group_idItem));
+		s.setExam_num(exam_numItem.getValueAsString());
+		s.setFund_agent(getValueAsInteger(fund_agentItem));
+		s.setGraduate_certificate_number(graduate_certificate_numberItem
+				.getValueAsString());
+		s.setGraduate_college_id(getValueAsInteger(graduate_college_idItem));
+		s.setGraduate_date((Date) graduate_dateItem.getValue());
+		s.setIdentity_card(identity_cardItem.getValueAsString());
+		s.setLinkman_phone(linkman_phoneItem.getValueAsString());
+		s.setMajor_category_id(getValueAsInteger(major_category_idItem));
+		s.setManaged_agent(getValueAsInteger(managed_agentItem));
+		s.setPolitical_status_id(getValueAsInteger(political_status_idItem));
+		s.setPostal_code(postal_codeItem.getValueAsString());
+		// s.setRegister_date(register_date)
+		s.setStu_status_id(getValueAsInteger(stu_status_idItem));
+		s.setStudent_address(student_addressItem.getValueAsString());
+		s.setStudent_college_id(student_college_idItem.getValueAsString());
+		// s.setStudent_id(student_id)
+		s.setStudent_linkman(student_linkmanItem.getValueAsString());
+		s.setStudent_name(student_nameItem.getValueAsString());
+		s.setStudent_phone(student_phoneItem.getValueAsString());
+		s.setStudent_sex(sexItem.getValueAsString());
+		s.setStudent_type_id(getValueAsInteger(student_type_idItem));
+		s.setSubject_owner(getValueAsInteger(subject_ownerItem));
+		// s.setUpdate_date(update_date)
 
 		return s;
 	}
-	
-	public void setValueMaps(LinkedHashMap<String, String>... valueMaps){
-		if(valueMaps.length!=13){
+
+	public void setValueMaps(LinkedHashMap<String, String>... valueMaps) {
+		if (valueMaps.length != 13) {
 			SC.say("数据结构所需数量未达到需求");
 			return;
-		}else{
-//			batchValues = new LinkedHashMap<String, String>();
-//			collegeValues = new LinkedHashMap<String, String>();
-//			sdudentClassfiedValues = new LinkedHashMap<String, String>();
-//			subjectsValues = new LinkedHashMap<String, String>();
-//			agentOwnerValues = new LinkedHashMap<String, String>();
-//			fundAgentValues = new LinkedHashMap<String, String>();
-//			managedAgentValues = new LinkedHashMap<String, String>();
-//			stu_statustValues = new LinkedHashMap<String, String>();
-//			ethnic_groupValues = new LinkedHashMap<String, String>();
-//			political_statusValues = new LinkedHashMap<String, String>();
-//			graduate_collegeValues = new LinkedHashMap<String, String>();
-//			student_typeValues = new LinkedHashMap<String, String>();
-//			major_categoryValues = new LinkedHashMap<String, String>();
+		} else {
+			// batchValues = new LinkedHashMap<String, String>();
+			// collegeValues = new LinkedHashMap<String, String>();
+			// sdudentClassfiedValues = new LinkedHashMap<String, String>();
+			// subjectsValues = new LinkedHashMap<String, String>();
+			// agentOwnerValues = new LinkedHashMap<String, String>();
+			// fundAgentValues = new LinkedHashMap<String, String>();
+			// managedAgentValues = new LinkedHashMap<String, String>();
+			// stu_statustValues = new LinkedHashMap<String, String>();
+			// ethnic_groupValues = new LinkedHashMap<String, String>();
+			// political_statusValues = new LinkedHashMap<String, String>();
+			// graduate_collegeValues = new LinkedHashMap<String, String>();
+			// student_typeValues = new LinkedHashMap<String, String>();
+			// major_categoryValues = new LinkedHashMap<String, String>();
 			batchItem.setValueMap(valueMaps[0]);
 			collegwOwnerItem.setValueMap(valueMaps[1]);
 			classfiedItem.setValueMap(valueMaps[2]);

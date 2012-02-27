@@ -77,7 +77,7 @@ public class DataBaseRPCHandler implements InvocationHandler {
 								Utils.getStandardMethodName(f.getName()));
 						Object filedValue = m.invoke(o, null);
 						sb.append(f.getName()).append("=")
-								.append(filedValue.toString()).append(" - ");
+								.append(filedValue).append(" - ");
 					} catch (Exception e) {
 					}
 				}

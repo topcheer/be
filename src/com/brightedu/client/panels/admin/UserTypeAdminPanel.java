@@ -1,5 +1,6 @@
 package com.brightedu.client.panels.admin;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.brightedu.client.BrightEdu;
@@ -89,10 +90,12 @@ public class UserTypeAdminPanel extends BasicAdminPanel {
 	}
 
 	@Override
-	public void add(Object model) {
+	public void add(Serializable model) {
 		final String batch = ((String[]) model)[0];
 		if (batch != null && batch.trim().length() > 0) {
-			dbService.addUserType(batch, getAdminDialog().getAddAsync());
+			UserType ut = new UserType();
+			ut.setUser_type_name(batch);
+			dbService.addModel(ut, getAdminDialog().getAddAsync());
 		} else {
 			SC.say("内容不能为空！");
 		}

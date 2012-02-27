@@ -56,10 +56,10 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 		return agent.getBatchList(offset, limit, needTotalCounts);
 	}
 
-	@Override
-	public boolean addBatch(String batch_name) {
-		return agent.addBatch(batch_name);
-	}
+	// @Override
+	// public boolean addBatch(String batch_name) {
+	// return agent.addBatch(batch_name);
+	// }
 
 	@Override
 	public boolean deleteBatch(List<Integer> batch_ids) {
@@ -78,10 +78,6 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 		return agent.getStudentClassesList(offset, limit, needTotalCounts);
 	}
 
-	@Override
-	public boolean addStudentClass(StudentClassified studentClass) {
-		return agent.addStudentClass(studentClass);
-	}
 
 	@Override
 	public boolean deleteStudentClasses(List<Integer> studentClassesId) {
@@ -98,11 +94,6 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	public List<StudentType> getStudentTypeList(int offset, int limit,
 			boolean needTotalCounts) {
 		return agent.getStudentTypeList(offset, limit, needTotalCounts);
-	}
-
-	@Override
-	public boolean addStudentType(String studentClassName) {
-		return agent.addStudentType(studentClassName);
 	}
 
 	@Override
@@ -124,11 +115,6 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	}
 
 	@Override
-	public boolean addCollege(String collegeName) {
-		return agent.addCollege(collegeName);
-	}
-
-	@Override
 	public boolean deleteCollege(List<Integer> college_ids) {
 		return agent.deleteCollege(college_ids);
 	}
@@ -143,11 +129,6 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	public List<Subjects> getSubjectsList(int offset, int limit,
 			boolean needTotalCounts) {
 		return agent.getSubjectsList(offset, limit, needTotalCounts);
-	}
-
-	@Override
-	public boolean addSubject(String subjectName) {
-		return agent.addSubject(subjectName);
 	}
 
 	@Override
@@ -190,11 +171,6 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	}
 
 	@Override
-	public boolean addFeeType(FeeType feeType) {
-		return agent.addFeeType(feeType);
-	}
-
-	@Override
 	public boolean deletFeeType(List<Integer> feeType_ids) {
 		return agent.deletFeeType(feeType_ids);
 	}
@@ -233,10 +209,6 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 		return agent.getUserTypeList(offset, limit, needTotaoCounts);
 	}
 
-	@Override
-	public boolean addUserType(String typeName) {
-		return agent.addUserType(typeName);
-	}
 
 	@Override
 	public boolean deletUserType(List<Integer> UserType_ids) {
@@ -254,12 +226,7 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 			boolean needTotaoCounts) {
 		return agent.getPictureTypeList(offset, limit, needTotaoCounts);
 	}
-
-	@Override
-	public boolean addPictureType(String typeName) {
-		return agent.addPictureType(typeName);
-	}
-
+	
 	@Override
 	public boolean deletPictureType(List<Integer> PictureType_ids) {
 		return agent.deletPictureType(PictureType_ids);
@@ -277,10 +244,6 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 		return agent.getStudentStatusList(offset, limit, needTotaoCounts);
 	}
 
-	@Override
-	public boolean addStudentStatus(String typeName) {
-		return agent.addStudentStatus(typeName);
-	}
 
 	@Override
 	public boolean deletStudentStatus(List<Integer> StudentStatus_ids) {
@@ -317,8 +280,9 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	/************************** RecruitAgent维护 ************************************/
 
 	public List<RecruitAgent> getRecruitAgentList(int offset, int limit,
-			boolean needTotalCounts,boolean only_can_return) {
-		return agent.getRecruitAgentList(offset, limit, needTotalCounts,only_can_return);
+			boolean needTotalCounts, boolean only_can_return) {
+		return agent.getRecruitAgentList(offset, limit, needTotalCounts,
+				only_can_return);
 	}
 
 	@Override
@@ -369,16 +333,12 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 		return agent.saveCollegeAgreement(agreement);
 	}
 
-
 	/************************ 权限基础数据设置 *********************************/
-	
+
 	@Override
 	public List<RightsCategory> getRightsCategory() {
 		return agent.getRightsCategory();
 	}
-
-	
-
 
 	@Override
 	public List<RightsFunction> getRightsFunction() {
@@ -422,6 +382,7 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 			String rightsCategoryFunctionList) {
 		return agent.deleteRightsCatetoryFunctions(rightsCategoryFunctionList);
 	}
+
 	@Override
 	public List<RightsDefaultKey> getRightsDefault(String user_typ_Id) {
 		return agent.getRightsDefault(user_typ_Id);
@@ -431,29 +392,25 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	public boolean addRightsDefault(List<RightsDefaultKey> rightDefaultList) {
 		return agent.addRightsDefault(rightDefaultList);
 	}
-	
 
 	@Override
 	public boolean deleteRightsDefault(Integer userType_id) {
 		return agent.deleteRightsDefault(userType_id);
 	}
-	/********************通用方法*****************************/
+
+	/******************** 通用方法 *****************************/
 	@Override
 	public Serializable getObjectById(String mapperClassName, int id) {
 		return agent.getObjectById(mapperClassName, id);
 	}
 
 	/************************ 用户管理 *********************************/
-	
+
 	@Override
 	public List<User> getUserList(int offset, int limit, boolean needTotalCounts) {
 		return agent.getUserList(offset, limit, needTotalCounts);
 	}
 
-	@Override
-	public boolean addUser(User user) {
-		return agent.addUser(user);
-	}
 
 	@Override
 	public boolean deletUser(List<Integer> user_ids) {
@@ -481,7 +438,6 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 		return agent.getUserRightsEffective(user);
 	}
 
-
 	@Override
 	public List getNameValuePareList(String[] beanNames) {
 		return agent.getNameValuePareList(beanNames);
@@ -492,10 +448,11 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 			boolean addOrRemove) {
 		return agent.setOverride(override, user, addOrRemove);
 	}
+
 	/************************ 入学费用设置 *********************************/
 	@Override
-	public List<EntranceCost> getEntranceCost(String batchID,String agentID) {
-		return agent.getEntranceCost(batchID,agentID);
+	public List<EntranceCost> getEntranceCost(String batchID, String agentID) {
+		return agent.getEntranceCost(batchID, agentID);
 	}
 
 	@Override
@@ -508,9 +465,8 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 		return agent.deleteEntranceCost(cost);
 	}
 
-	
 	/************************ 招生点返利设置 *********************************/
-	
+
 	@Override
 	public AgentReturnType addAgentReturnType(AgentReturnType type) {
 		return agent.addAgentReturnType(type);
@@ -548,7 +504,7 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 
 	@Override
 	public List<College> getUnassignedCollegeList(String agentId, String batch) {
-		return agent.getUnassignedCollegeList(agentId,  batch);
+		return agent.getUnassignedCollegeList(agentId, batch);
 	}
 
 	@Override
@@ -567,7 +523,9 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 		return agent.checkIfLastCollegeAggregation(item);
 	}
 
-
-
+	@Override
+	public boolean addModel(Serializable model) {
+		return agent.addModel(model);
+	}
 
 }

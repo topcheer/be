@@ -1,5 +1,6 @@
 package com.brightedu.client.panels;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import com.brightedu.client.BrightEdu;
 import com.brightedu.client.CommonAsyncCall;
 import com.brightedu.client.DataBaseRPCAsync;
 import com.brightedu.client.panels.admin.AdminDialog;
+import com.brightedu.model.edu.RecruitAgent;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.Alignment;
@@ -282,9 +284,9 @@ public abstract class BasicAdminPanel extends VLayout {
 		resultList.setFields(newFields);
 		resultList.setCanEdit(true);
 		resultList.setEditEvent(ListGridEditEvent.DOUBLECLICK);
-//		resultList.add
+		// resultList.add
 		// disable context menu
-//		resultList.setShowHeaderContextMenu(false);
+		// resultList.setShowHeaderContextMenu(false);
 	}
 
 	protected void del() {
@@ -400,11 +402,11 @@ public abstract class BasicAdminPanel extends VLayout {
 
 	public void showPage(int indexGoto, boolean init) {
 		// UI aciton before goto
-//		resultList.showDataLoading();
+		// resultList.showDataLoading();
 		gotoPage(indexGoto, init);
 		// UI action after goto
 	}
-	
+
 	public void showPage(int indexGoto) {
 		showPage(indexGoto, false);
 	}
@@ -421,7 +423,9 @@ public abstract class BasicAdminPanel extends VLayout {
 
 	public abstract void update(Record record);
 
-	public abstract void add(Object model);
+	public void add(Serializable model) {
+		dbService.addModel(model, getAdminDialog().getAddAsync());
+	}
 
 	public abstract AdminDialog createAdminDialog();
 

@@ -50,7 +50,7 @@ public final class AgentAdmin extends MasterDetailAdmin {
 	protected String getDetialTitle() {
 		return "详细信息";
 	}
-	
+
 	public class AgentAdminDetaiPanel extends BasicAdminDetailPanel {
 
 		public AgentAdminDetaiPanel(MasterDetailAdmin masterDetail) {
@@ -59,7 +59,7 @@ public final class AgentAdmin extends MasterDetailAdmin {
 
 		@Override
 		protected DetailedEditorForm createDetailEditorForm() {
-			return new AgentAdminEditorForm();
+			return new AgentAdminEditorForm(getMasterDetail());
 		}
 
 	}

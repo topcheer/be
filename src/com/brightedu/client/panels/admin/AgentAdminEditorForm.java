@@ -1,9 +1,12 @@
 package com.brightedu.client.panels.admin;
 
 import java.io.Serializable;
+import java.util.LinkedHashMap;
 
 import com.brightedu.client.panels.DetailedEditorForm;
+import com.brightedu.client.panels.MasterDetailAdmin;
 import com.brightedu.model.edu.RecruitAgent;
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextAreaItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
@@ -27,7 +30,8 @@ public class AgentAdminEditorForm extends DetailedEditorForm {
 			"学习中心在合作高校的的密码");
 	TextAreaItem remarkItem = new TextAreaItem("remark", "备注");
 
-	public AgentAdminEditorForm() {
+	public AgentAdminEditorForm(MasterDetailAdmin admin) {
+		super(admin);
 		init();
 	}
 
@@ -35,7 +39,7 @@ public class AgentAdminEditorForm extends DetailedEditorForm {
 		remarkItem.setLength(2000);
 		remarkItem.setRowSpan(3);
 		remarkItem.setColSpan(4);
-//		agent_typeItem.
+		// agent_typeItem.
 		setFields(agent_nameItem, agent_typeItem, responsible_personItem,
 				parentAgentItem, contact_personItem, contact_phoneItem,
 				contact_mobileItem, account_nameItem, bank_nameItem,
@@ -43,16 +47,11 @@ public class AgentAdminEditorForm extends DetailedEditorForm {
 				password_for_collegeItem, remarkItem, saveBtn);
 	}
 
-	public RecruitAgent getModel() {
+	public Serializable getModel() {
 		RecruitAgent agent = new RecruitAgent();
 		agent.setAccount_name(account_nameItem.getValueAsString());
 		agent.setAgent_name(agent_nameItem.getValueAsString());
-		Object type = agent_typeItem.getValue();
-		if (type == null || type.toString().trim().equals("")) {
-			agent.setAgent_type_id(-1);
-		} else {
-			agent.setAgent_type_id(Integer.parseInt(type.toString()));
-		}
+		agent.setAgent_type_id(getValueAsInteger(agent_typeItem));
 		agent.setBank_account(bank_accountItem.getValueAsString());
 		agent.setBank_name(bank_nameItem.getValueAsString());
 		agent.setCollege_url(college_urlItem.getValueAsString());
@@ -62,10 +61,13 @@ public class AgentAdminEditorForm extends DetailedEditorForm {
 		agent.setContact_phone(contact_phoneItem.getValueAsString());
 		agent.setPassword_for_college(password_for_collegeItem
 				.getValueAsString());
+
 		agent.setRemark(remarkItem.getValueAsString());
 		agent.setResponsible_person(responsible_personItem.getValueAsString());
 		agent.setUserid_for_college(userid_for_collegeItem.getValueAsString());
-		System.out.println(agent.getAgent_type_id());
+
+		agent.setParent_agent_id(getValueAsInteger(parentAgentItem));
+		
 		return agent;
 	}
 
@@ -78,7 +80,7 @@ public class AgentAdminEditorForm extends DetailedEditorForm {
 		bank_accountItem.setValue(agent.getBank_account());
 		bank_nameItem.setValue(agent.getBank_name());
 		college_urlItem.setValue(agent.getCollege_url());
-		college_urlItem.setPrompt(agent.getCollege_url());
+		college_urlItem.setValue(agent.getCollege_url());
 		contact_addressItem.setValue(agent.getContact_address());
 		contact_mobileItem.setValue(agent.getContact_mobile());
 		contact_personItem.setValue(agent.getContact_person());
@@ -87,6 +89,20 @@ public class AgentAdminEditorForm extends DetailedEditorForm {
 		remarkItem.setValue(agent.getRemark());
 		responsible_personItem.setValue(agent.getResponsible_person());
 		userid_for_collegeItem.setValue(agent.getUserid_for_college());
+		if (agent.getParent_agent_id() == null) {
+			parentAgentItem.setValue("");
+		} else {
+			parentAgentItem.setValue(agent.getParent_agent_id());
+		}
+	}
+
+	public void setValueMaps(LinkedHashMap<String, String>... valueMaps) {
+		if (valueMaps.length != 2) {
+			SC.say("数据结构所需数量未达到需求");
+			return;
+		} else {
+
+		}
 	}
 
 }

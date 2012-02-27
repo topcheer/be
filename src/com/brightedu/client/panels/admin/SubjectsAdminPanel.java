@@ -1,5 +1,6 @@
 package com.brightedu.client.panels.admin;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.brightedu.client.BrightEdu;
@@ -87,10 +88,12 @@ public class SubjectsAdminPanel extends BasicAdminPanel {
 	}
 
 	@Override
-	public void add(Object model) {
+	public void add(Serializable model) {
 		final String subjectName = ((String[]) model)[0];
 		if (subjectName != null && subjectName.trim().length() > 0) {
-			dbService.addSubject(subjectName, getAdminDialog().getAddAsync());
+			Subjects sub = new Subjects();
+			sub.setSubject_name(subjectName);
+			dbService.addModel(sub, getAdminDialog().getAddAsync());
 		} else {
 			SC.say("内容不能为空！");
 		}

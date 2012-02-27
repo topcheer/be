@@ -1,5 +1,7 @@
 package com.brightedu.client.panels.admin;
 
+import java.io.Serializable;
+
 import com.brightedu.client.BrightEdu;
 import com.brightedu.client.CommonAsyncCall;
 import com.brightedu.client.panels.BasicAdminPanel;
@@ -118,7 +120,7 @@ public abstract class AdminDialog extends Window {
 		}
 	}
 
-	protected abstract Object getAddedModel();
+	protected abstract Serializable getAddedModel();
 
 	protected abstract DynamicForm createContentForm();
 	

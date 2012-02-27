@@ -1,5 +1,6 @@
 package com.brightedu.client.panels.admin;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.brightedu.client.BrightEdu;
@@ -88,10 +89,12 @@ public class ChargeTypeAdminPanel extends BasicAdminPanel {
 	}
 
 	@Override
-	public void add(Object model) {
-		final String batch = ((String[]) model)[0];
-		if (batch != null && batch.trim().length() > 0) {
-			dbService.addChargeType(batch, getAdminDialog().getAddAsync());
+	public void add(Serializable model) {
+		final String typeName = ((String[]) model)[0];
+		if (typeName != null && typeName.trim().length() > 0) {
+			ChargeType type = new ChargeType();
+			type.setCharge_type_name(typeName);
+			dbService.addModel(type, getAdminDialog().getAddAsync());
 		} else {
 			SC.say("内容不能为空！");
 		}

@@ -1,5 +1,6 @@
 package com.brightedu.client.panels.admin.students;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -7,10 +8,19 @@ import com.brightedu.client.CommonAsyncCall;
 import com.brightedu.client.panels.BasicAdminPanel;
 import com.brightedu.client.panels.MasterDetailAdmin;
 import com.brightedu.client.panels.admin.AdminDialog;
-import com.brightedu.model.edu.*;
+import com.brightedu.model.edu.BatchIndex;
+import com.brightedu.model.edu.College;
+import com.brightedu.model.edu.EthnicGroup;
+import com.brightedu.model.edu.MajorCategory;
+import com.brightedu.model.edu.PoliticalStatus;
+import com.brightedu.model.edu.RecruitAgent;
+import com.brightedu.model.edu.School;
+import com.brightedu.model.edu.StudentClassified;
+import com.brightedu.model.edu.StudentStatus;
+import com.brightedu.model.edu.StudentType;
+import com.brightedu.model.edu.Subjects;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.ListGridFieldType;
-import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.grid.ListGridField;
 
@@ -133,13 +143,15 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 			case 7:
 				for (int x = 0; x < nameValuePare.size(); x++) {
 					PoliticalStatus c = (PoliticalStatus) nameValuePare.get(x);
-					political_statusValues.put(c.getPol_id() + "", c.getPol_name());
+					political_statusValues.put(c.getPol_id() + "",
+							c.getPol_name());
 				}
 				break;
 			case 8:
 				for (int x = 0; x < nameValuePare.size(); x++) {
 					School c = (School) nameValuePare.get(x);
-					graduate_collegeValues.put(c.getSchool_code(), c.getSchool_name());
+					graduate_collegeValues.put(c.getSchool_code(),
+							c.getSchool_name());
 				}
 				break;
 			case 9:
@@ -152,8 +164,8 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 			case 10:
 				for (int x = 0; x < nameValuePare.size(); x++) {
 					MajorCategory c = (MajorCategory) nameValuePare.get(x);
-					major_categoryValues.put(c.getStudent_major_category_id() + "",
-							c.getStudent_major_category_name());
+					major_categoryValues.put(c.getStudent_major_category_id()
+							+ "", c.getStudent_major_category_name());
 				}
 				break;
 			default:
@@ -217,15 +229,17 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 	}
 
 	@Override
-	public void add(Object model) {
-		// TODO Auto-generated method stub
+	public void add(Serializable model) {
+
+		dbService.addModel(model, getAdminDialog().getAddAsync());
 
 	}
 
 	@Override
 	public AdminDialog createAdminDialog() {
-		AdminDialog admin = new AdminDialog() {
-			StudentsRegisterEditorForm form = new StudentsRegisterEditorForm();
+		AdminDialog adminDialog = new AdminDialog() {
+			StudentsRegisterEditorForm form = new StudentsRegisterEditorForm(
+					admin);
 
 			public void init() {
 				super.init();
@@ -252,7 +266,7 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 			}
 
 			@Override
-			protected Object getAddedModel() {
+			protected Serializable getAddedModel() {
 				return form.getModel();
 			}
 
@@ -260,11 +274,11 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 				super.show();
 			}
 		};
-		admin.setAutoHeight();
-		admin.setAutoWidth();
-		admin.setSize("520", "340");
-		admin.setAdminPanel(this);
-		return admin;
+		adminDialog.setAutoHeight();
+		adminDialog.setAutoWidth();
+		adminDialog.setSize("520", "340");
+		adminDialog.setAdminPanel(this);
+		return adminDialog;
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.brightedu.client.panels.admin;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.brightedu.client.BrightEdu;
@@ -95,13 +96,13 @@ public class StudentClassesAdminPanel extends BasicAdminPanel {
 	}
 
 	@Override
-	public void add(Object model) {
+	public void add(Serializable model) {
 		final StudentClassified at = (StudentClassified) model;
 
 		if (at.getClassified_name() != null
 				&& at.getClassified_name().trim().length() > 0) {
 
-			dbService.addStudentClass(at, getAdminDialog().getAddAsync());
+			dbService.addModel(at, getAdminDialog().getAddAsync());
 		} else {
 			SC.say("内容不能为空！");
 		}
@@ -127,8 +128,7 @@ public class StudentClassesAdminPanel extends BasicAdminPanel {
 		}
 
 		@Override
-		protected Object getAddedModel() {
-
+		protected Serializable getAddedModel() {
 			StudentClassified sc = new StudentClassified();
 			sc.setClassified_name(classifiedName.getValueAsString());
 			sc.setDefault_lol(new Short(lol.getValueAsString()));

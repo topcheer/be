@@ -1,5 +1,7 @@
 package com.brightedu.client.panels.admin;
 
+import java.io.Serializable;
+
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.TextItem;
@@ -39,7 +41,7 @@ public class TextAdminDialog extends AdminDialog {
 	}
 
 	@Override
-	protected Object getAddedModel() {
+	protected Serializable getAddedModel() {
 		String[] values = new String[titles.length];
 		for (int i = 0; i < titles.length; i++) {
 			values[i] = items[i].getValueAsString();

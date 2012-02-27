@@ -37,7 +37,7 @@ public interface DataBaseRPCAsync {
 	void getBatchList(int offset, int limit, boolean needTotalCounts,
 			AsyncCallback<List<BatchIndex>> callback);
 
-	void addBatch(String batch_name, AsyncCallback<Boolean> callback);
+	// void addBatch(String batch_name, AsyncCallback<Boolean> callback);
 
 	void deleteBatch(List<Integer> batch_ids, AsyncCallback<Boolean> callback);
 
@@ -45,9 +45,6 @@ public interface DataBaseRPCAsync {
 
 	void getStudentClassesList(int offset, int limit, boolean needTotalCounts,
 			AsyncCallback<List<StudentClassified>> callback);
-
-	void addStudentClass(StudentClassified studentClass,
-			AsyncCallback<Boolean> callback);
 
 	void deleteStudentClasses(List<Integer> studentClassesId,
 			AsyncCallback<Boolean> callback);
@@ -58,14 +55,10 @@ public interface DataBaseRPCAsync {
 	void getCollegeList(int offset, int limit, boolean needTotalCounts,
 			AsyncCallback<List<College>> callback);
 
-	void addCollege(String collegeName, AsyncCallback<Boolean> callback);
-
 	void deleteCollege(List<Integer> college_ids,
 			AsyncCallback<Boolean> callback);
 
 	void saveCollege(College college, AsyncCallback<Boolean> callback);
-
-	void addSubject(String subjectName, AsyncCallback<Boolean> callback);
 
 	void deleteSubject(List<Integer> subject_ids,
 			AsyncCallback<Boolean> callback);
@@ -80,8 +73,6 @@ public interface DataBaseRPCAsync {
 
 	void getStudentTypeList(int offset, int limit, boolean needTotalCounts,
 			AsyncCallback<List<StudentType>> callback);
-
-	void addStudentType(String studentClassName, AsyncCallback<Boolean> callback);
 
 	void deleteStudentType(List<Integer> studentClassesId,
 			AsyncCallback<Boolean> callback);
@@ -102,8 +93,6 @@ public interface DataBaseRPCAsync {
 	void getFeeTypeList(int offset, int limit, boolean needTotalCounts,
 			AsyncCallback<List<FeeType>> callback);
 
-	void addFeeType(FeeType typeName, AsyncCallback<Boolean> callback);
-
 	void deletFeeType(List<Integer> feeType_ids, AsyncCallback<Boolean> callback);
 
 	void saveFeeType(FeeType agenttype, AsyncCallback<Boolean> callback);
@@ -118,8 +107,6 @@ public interface DataBaseRPCAsync {
 
 	void saveChargeType(ChargeType chargetype, AsyncCallback<Boolean> callback);
 
-	void addUserType(String typeName, AsyncCallback<Boolean> callback);
-
 	void deletUserType(List<Integer> UserType_ids,
 			AsyncCallback<Boolean> callback);
 
@@ -127,8 +114,6 @@ public interface DataBaseRPCAsync {
 			AsyncCallback<List<UserType>> callback);
 
 	void saveUserType(UserType Usertype, AsyncCallback<Boolean> callback);
-
-	void addPictureType(String typeName, AsyncCallback<Boolean> callback);
 
 	void deletPictureType(List<Integer> PictureType_ids,
 			AsyncCallback<Boolean> callback);
@@ -138,8 +123,6 @@ public interface DataBaseRPCAsync {
 
 	void savePictureType(PictureType Picturetype,
 			AsyncCallback<Boolean> callback);
-
-	void addStudentStatus(String typeName, AsyncCallback<Boolean> callback);
 
 	void deletStudentStatus(List<Integer> StudentStatus_ids,
 			AsyncCallback<Boolean> callback);
@@ -186,7 +169,6 @@ public interface DataBaseRPCAsync {
 
 	void getRecruitPlanList(int batch, AsyncCallback<List<RecruitPlan>> callback);
 
-
 	void addRightsCategory(RightsCategory category,
 			AsyncCallback<Boolean> callback);
 
@@ -213,7 +195,6 @@ public interface DataBaseRPCAsync {
 	void deleteRightsFunction(List<String> function,
 			AsyncCallback<Boolean> callback);
 
-
 	void getObjectById(String mapperClassName, int id,
 			AsyncCallback<Serializable> callback);
 
@@ -229,8 +210,6 @@ public interface DataBaseRPCAsync {
 	void getUserList(int offset, int limit, boolean needTotalCounts,
 			AsyncCallback<List<User>> callback);
 
-	void addUser(User user, AsyncCallback<Boolean> callback);
-
 	void deletUser(List<Integer> user_ids, AsyncCallback<Boolean> callback);
 
 	void saveUser(User user, AsyncCallback<Boolean> callback);
@@ -243,14 +222,12 @@ public interface DataBaseRPCAsync {
 	void getUserRightsEffective(User user,
 			AsyncCallback<List<UserRightsEffective>> callback);
 
-
 	void getNameValuePareList(String[] beanNames, AsyncCallback<List> callback);
-
 
 	void setOverride(RightsCategoryFunctionKey override, User user,
 			boolean addOrRemove, AsyncCallback<Boolean> callback);
 
-	void getEntranceCost(String batchID,String agentID,
+	void getEntranceCost(String batchID, String agentID,
 			AsyncCallback<List<EntranceCost>> callback);
 
 	void saveEntranceCost(List<EntranceCost> entranceCosts,
@@ -288,5 +265,7 @@ public interface DataBaseRPCAsync {
 
 	void checkIfLastCollegeAggregation(CollegeAggregation item,
 			AsyncCallback<Boolean> callback);
+
+	void addModel(Serializable model, AsyncCallback<Boolean> callback);
 
 }

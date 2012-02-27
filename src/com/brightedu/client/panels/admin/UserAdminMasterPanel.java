@@ -1,5 +1,6 @@
 package com.brightedu.client.panels.admin;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -33,23 +34,24 @@ public class UserAdminMasterPanel extends BasicAdminPanel {
 
 	public UserAdminMasterPanel(UserAdmin agentadmin) {
 		this.admin = agentadmin;
-		
+
 		resultList.addSelectionChangedHandler(new SelectionChangedHandler() {
-			
+
 			@Override
 			public void onSelectionChanged(SelectionEvent event) {
 				if (event.getState()) {
 					admin.detailed.getDetailedForm().setValue(
-							(User) event.getRecord()
-									.getAttributeAsObject("object"));
+							(User) event.getRecord().getAttributeAsObject(
+									"object"));
 					admin.detailed.getDetailedForm().getSaveBtn().enable();
 					admin.rightsSection.setExpanded(true);
-					populateRights((User) event.getRecord().getAttributeAsObject("object"));
-				
-					
+					populateRights((User) event.getRecord()
+							.getAttributeAsObject("object"));
+
 				} else {
-					admin.detailed.getDetailedForm().setValue(
-							new User());// empty all fields
+					admin.detailed.getDetailedForm().setValue(new User());// empty
+																			// all
+																			// fields
 					admin.detailed.getDetailedForm().getSaveBtn().disable();
 					admin.rightsSection.setExpanded(false);
 					admin.rights.userRightsGrid.setData(new RecordList());
@@ -82,10 +84,9 @@ public class UserAdminMasterPanel extends BasicAdminPanel {
 					rec.setAttribute("object", bi);
 					rec.setAttribute("obj_name", bi.getUser_name());
 					rec.setAttribute("user_type", bi.getUser_type_id());
-					rec.setAttribute("display_name",
-							bi.getDisplay_name());
+					rec.setAttribute("display_name", bi.getDisplay_name());
 					rec.setAttribute("agent", bi.getAgent_id());
-					
+
 					listData[i] = rec;
 				}
 				resultList.setData(listData);
@@ -100,13 +101,13 @@ public class UserAdminMasterPanel extends BasicAdminPanel {
 	@Override
 	public ListGridField[] createGridFileds() {
 		final ListGridField[] fields = parseGridFields(new String[] {
-				"obj_name", "user_type", "display_name","agent" }, new String[] {
-				"用户名", "用户类型", "显示名称","所属机构" }, new ListGridFieldType[] {
-				ListGridFieldType.TEXT, ListGridFieldType.TEXT,
-				ListGridFieldType.TEXT, ListGridFieldType.TEXT },
-				new boolean[] { false, false, false, false }, new int[] { -1,
-						-1, -1, -1 });
-		dbService.getUserTypeList(-1, -1, false, 
+				"obj_name", "user_type", "display_name", "agent" },
+				new String[] { "用户名", "用户类型", "显示名称", "所属机构" },
+				new ListGridFieldType[] { ListGridFieldType.TEXT,
+						ListGridFieldType.TEXT, ListGridFieldType.TEXT,
+						ListGridFieldType.TEXT }, new boolean[] { false, false,
+						false, false }, new int[] { -1, -1, -1, -1 });
+		dbService.getUserTypeList(-1, -1, false,
 				new CommonAsyncCall<List<UserType>>() {
 
 					@Override
@@ -121,7 +122,7 @@ public class UserAdminMasterPanel extends BasicAdminPanel {
 								.setValueMap(userTypes);
 					}
 				});
-		dbService.getRecruitAgentList(-1, -1, false,false,
+		dbService.getRecruitAgentList(-1, -1, false, false,
 				new CommonAsyncCall<List<RecruitAgent>>() {
 
 					@Override
@@ -154,14 +155,13 @@ public class UserAdminMasterPanel extends BasicAdminPanel {
 	public void update(Record record) {
 		final User newuser = admin.detailed.getDetailedForm().getModel();
 		final Record rec = resultList.getSelectedRecord();
-		final User user = (User) rec
-				.getAttributeAsObject("object");
-		
-		//newuser.setAgent_id(agentList.get);
+		final User user = (User) rec.getAttributeAsObject("object");
+
+		// newuser.setAgent_id(agentList.get);
 		newuser.setRegister_date(user.getRegister_date());
 		newuser.setUser_id(user.getUser_id());
 		newuser.setUpdate_date(new Date());
-		
+
 		dbService.saveUser(newuser, new CommonAsyncCall<Boolean>() {
 			@Override
 			public void onSuccess(Boolean result) {
@@ -169,8 +169,7 @@ public class UserAdminMasterPanel extends BasicAdminPanel {
 				rec.setAttribute("object", newuser);
 				rec.setAttribute("obj_name", newuser.getUser_name());
 				rec.setAttribute("user_type", newuser.getUser_type_id());
-				rec.setAttribute("display_name",
-						newuser.getDisplay_name());
+				rec.setAttribute("display_name", newuser.getDisplay_name());
 				rec.setAttribute("agent", newuser.getAgent_id());
 				resultList.redraw();
 			}
@@ -183,32 +182,32 @@ public class UserAdminMasterPanel extends BasicAdminPanel {
 
 	public void updateRights(Record record) {
 		final Record rec = resultList.getSelectedRecord();
-		final User user = (User) rec
-				.getAttributeAsObject("object");
-		
-		//newuser.setAgent_id(agentList.get);
-		
-		RightsCategoryFunctionKey override  = new RightsCategoryFunctionKey();
+		final User user = (User) rec.getAttributeAsObject("object");
+
+		// newuser.setAgent_id(agentList.get);
+
+		RightsCategoryFunctionKey override = new RightsCategoryFunctionKey();
 		override.setCategory_id(record.getAttributeAsString("categoryID"));
 		override.setFunction_id(record.getAttributeAsString("functionID"));
-		
-		dbService.setOverride(override, user, record.getAttributeAsBoolean("select"), new CommonAsyncCall<Boolean>(){
 
-			@Override
-			public void onSuccess(Boolean result) {
-				
-				
-			}}
-		);
+		dbService.setOverride(override, user,
+				record.getAttributeAsBoolean("select"),
+				new CommonAsyncCall<Boolean>() {
 
+					@Override
+					public void onSuccess(Boolean result) {
+
+					}
+				});
 
 	}
+
 	@Override
-	public void add(Object model) {
+	public void add(Serializable model) {
 		User user = (User) model;
 		// FIXME need validator
-		user.setUpdate_date(new Date());
-		dbService.addUser(user, getAdminDialog().getAddAsync());
+		// user.setUpdate_date(new Date());
+		dbService.addModel(user, getAdminDialog().getAddAsync());
 
 	}
 
@@ -237,7 +236,7 @@ public class UserAdminMasterPanel extends BasicAdminPanel {
 			}
 
 			@Override
-			protected Object getAddedModel() {
+			protected Serializable getAddedModel() {
 				return form.getModel();
 			}
 
@@ -252,9 +251,8 @@ public class UserAdminMasterPanel extends BasicAdminPanel {
 		return admin;
 	}
 
-	protected void populateRights(User user)
-	{
-		dbService.getUserRights(user, new AsyncCallback<List<UserRights>>(){
+	protected void populateRights(User user) {
+		dbService.getUserRights(user, new AsyncCallback<List<UserRights>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -264,28 +262,28 @@ public class UserAdminMasterPanel extends BasicAdminPanel {
 			@Override
 			public void onSuccess(List<UserRights> result) {
 				RecordList list = new RecordList();
-				
-				for(UserRights rights : result)
-				{
+
+				for (UserRights rights : result) {
 					Record userrights = new Record();
-					if(rights.getIsset().equalsIgnoreCase("T"))
-					{
+					if (rights.getIsset().equalsIgnoreCase("T")) {
 						userrights.setAttribute("select", true);
-					}
-					else
-					{
+					} else {
 						userrights.setAttribute("select", false);
 					}
-					userrights.setAttribute("categoryID", rights.getCategory_id());
-					userrights.setAttribute("categoryName", rights.getCategory_name());
-					userrights.setAttribute("functionID", rights.getFunction_id());
-					userrights.setAttribute("functionName", rights.getFunction_name());
+					userrights.setAttribute("categoryID",
+							rights.getCategory_id());
+					userrights.setAttribute("categoryName",
+							rights.getCategory_name());
+					userrights.setAttribute("functionID",
+							rights.getFunction_id());
+					userrights.setAttribute("functionName",
+							rights.getFunction_name());
 					list.add(userrights);
 				}
-				
+
 				admin.rights.userRightsGrid.setData(list);
 			}
-			
+
 		});
 	}
 }

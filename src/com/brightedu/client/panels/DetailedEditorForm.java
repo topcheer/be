@@ -6,6 +6,7 @@ import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.ButtonItem;
+import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.events.ClickEvent;
 import com.smartgwt.client.widgets.form.fields.events.ClickHandler;
 
@@ -15,11 +16,8 @@ public abstract class DetailedEditorForm extends DynamicForm {
 
 	MasterDetailAdmin admin;
 
-	public DetailedEditorForm(MasterDetailAdmin admin) {
-		this.admin = admin;
-	}
-
-	public DetailedEditorForm() {
+	public DetailedEditorForm(MasterDetailAdmin masterDetailAdmin) {
+		this.admin = masterDetailAdmin;
 		setNumCols(4);
 		setOverflow(Overflow.SCROLL);
 		saveBtn.setStartRow(true);
@@ -55,4 +53,12 @@ public abstract class DetailedEditorForm extends DynamicForm {
 
 	public abstract Serializable getModel();
 
+	public Integer getValueAsInteger(SelectItem item){
+		String s = item.getValueAsString();
+		if(s!=null){
+			return new Integer(s);
+		}
+		return null;
+	}
+	
 }

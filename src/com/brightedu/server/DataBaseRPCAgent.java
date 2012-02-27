@@ -5,6 +5,9 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -46,12 +49,12 @@ import com.brightedu.dao.edu.UserTypeMapper;
 import com.brightedu.model.edu.AgentReturnExample;
 import com.brightedu.model.edu.AgentReturnKey;
 import com.brightedu.model.edu.AgentReturnType;
+import com.brightedu.model.edu.AgentReturnTypeExample;
 import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.AgentTypeExample;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.BatchIndexExample;
 import com.brightedu.model.edu.BatchIndexExample.Criteria;
-import com.brightedu.model.edu.AgentReturnTypeExample;
 import com.brightedu.model.edu.ChargeType;
 import com.brightedu.model.edu.ChargeTypeExample;
 import com.brightedu.model.edu.College;
@@ -108,6 +111,8 @@ import com.brightedu.server.util.Utils;
 public class DataBaseRPCAgent implements DataBaseRPC {
 	SqlSessionFactory sessionFactory;
 	BrightServlet remoteServlet;
+	String daoPackageName = "com.brightedu.dao.edu.";
+	String modelPackageName = "com.brightedu.model.edu.";
 
 	public DataBaseRPCAgent() {
 		sessionFactory = ConnectionManager.getSessionFactory();
@@ -139,21 +144,6 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 				result.add(counts);
 			}
 			return result;
-		} finally {
-			session.close();
-		}
-	}
-
-	@Override
-	public boolean addBatch(String batch_name) {
-		SqlSession session = sessionFactory.openSession();
-		try {
-			BatchIndexMapper bim = session.getMapper(BatchIndexMapper.class);
-			BatchIndex bi = new BatchIndex();
-			bi.setBatch_name(batch_name);
-			int count = bim.insertSelective(bi);
-			session.commit();
-			return true;
 		} finally {
 			session.close();
 		}
@@ -216,20 +206,6 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	}
 
 	@Override
-	public boolean addStudentClass(StudentClassified studentClass) {
-		SqlSession session = sessionFactory.openSession();
-		try {
-			StudentClassifiedMapper scm = session
-					.getMapper(StudentClassifiedMapper.class);
-			int count = scm.insertSelective(studentClass);
-			session.commit();
-			return true;
-		} finally {
-			session.close();
-		}
-	}
-
-	@Override
 	public boolean deleteStudentClasses(List<Integer> studentClassesId) {
 		SqlSession session = sessionFactory.openSession();
 		try {
@@ -286,20 +262,6 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		}
 	}
 
-	@Override
-	public boolean addStudentType(String studentTypeName) {
-		SqlSession session = sessionFactory.openSession();
-		try {
-			StudentTypeMapper scm = session.getMapper(StudentTypeMapper.class);
-			StudentType st = new StudentType();
-			st.setStudent_type_name(studentTypeName);
-			int count = scm.insertSelective(st);
-			session.commit();
-			return true;
-		} finally {
-			session.close();
-		}
-	}
 
 	@Override
 	public boolean deleteStudentType(List<Integer> studentTypeId) {
@@ -355,22 +317,6 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	}
 
 	@Override
-	public boolean addCollege(String collegeName) {
-		SqlSession session = sessionFactory.openSession();
-		try {
-			CollegeMapper cm = session.getMapper(CollegeMapper.class);
-			College co = new College();
-			co.setCollege_name(collegeName);
-
-			int count = cm.insertSelective(co);
-			session.commit();
-			return true;
-		} finally {
-			session.close();
-		}
-	}
-
-	@Override
 	public boolean deleteCollege(List<Integer> college_ids) {
 		SqlSession session = sessionFactory.openSession();
 		try {
@@ -417,21 +363,6 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 				result.add(counts);
 			}
 			return result;
-		} finally {
-			session.close();
-		}
-	}
-
-	@Override
-	public boolean addSubject(String subjectName) {
-		SqlSession session = sessionFactory.openSession();
-		try {
-			SubjectsMapper cm = session.getMapper(SubjectsMapper.class);
-			Subjects co = new Subjects();
-			co.setSubject_name(subjectName);
-			int count = cm.insertSelective(co);
-			session.commit();
-			return true;
 		} finally {
 			session.close();
 		}
@@ -556,19 +487,6 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	}
 
 	@Override
-	public boolean addFeeType(FeeType feetype) {
-		SqlSession session = sessionFactory.openSession();
-		try {
-			FeeTypeMapper scm = session.getMapper(FeeTypeMapper.class);
-			int count = scm.insertSelective(feetype);
-			session.commit();
-			return true;
-		} finally {
-			session.close();
-		}
-	}
-
-	@Override
 	public boolean deletFeeType(List<Integer> feeType_ids) {
 		SqlSession session = sessionFactory.openSession();
 		try {
@@ -685,20 +603,6 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		}
 	}
 
-	@Override
-	public boolean addUserType(String typeName) {
-		SqlSession session = sessionFactory.openSession();
-		try {
-			UserTypeMapper scm = session.getMapper(UserTypeMapper.class);
-			UserType sc = new UserType();
-			sc.setUser_type_name(typeName);
-			int count = scm.insertSelective(sc);
-			session.commit();
-			return true;
-		} finally {
-			session.close();
-		}
-	}
 
 	@Override
 	public boolean deletUserType(List<Integer> UserType_ids) {
@@ -750,21 +654,6 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 				result.add(mp.countByExample(null));
 			}
 			return result;
-		} finally {
-			session.close();
-		}
-	}
-
-	@Override
-	public boolean addPictureType(String typeName) {
-		SqlSession session = sessionFactory.openSession();
-		try {
-			PictureTypeMapper scm = session.getMapper(PictureTypeMapper.class);
-			PictureType sc = new PictureType();
-			sc.setPic_type_name(typeName);
-			int count = scm.insertSelective(sc);
-			session.commit();
-			return true;
 		} finally {
 			session.close();
 		}
@@ -823,21 +712,6 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		}
 	}
 
-	@Override
-	public boolean addStudentStatus(String typeName) {
-		SqlSession session = sessionFactory.openSession();
-		try {
-			StudentStatusMapper scm = session
-					.getMapper(StudentStatusMapper.class);
-			StudentStatus sc = new StudentStatus();
-			sc.setStu_status_name(typeName);
-			int count = scm.insertSelective(sc);
-			session.commit();
-			return true;
-		} finally {
-			session.close();
-		}
-	}
 
 	@Override
 	public boolean deletStudentStatus(List<Integer> StudentStatus_ids) {
@@ -881,7 +755,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	/************************** agent管理 ************************************/
 
 	public List<RecruitAgent> getRecruitAgentList(int offset, int limit,
-			boolean needTotalCounts , boolean only_can_return) {
+			boolean needTotalCounts, boolean only_can_return) {
 		SqlSession session = sessionFactory.openSession();
 		try {
 			RecruitAgentExample ex = new RecruitAgentExample();
@@ -891,22 +765,20 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			if (offset != -1 || limit != -1) {
 				ex.setPage(new Page(offset, limit));
 			}
-			
-			if(only_can_return)
-			{
+
+			if (only_can_return) {
 				AgentTypeMapper am = session.getMapper(AgentTypeMapper.class);
 				AgentTypeExample ate = new AgentTypeExample();
 				ate.createCriteria().andIs_returnEqualTo(true);
 				List<AgentType> typeList = am.selectByExample(ate);
 				ArrayList<Integer> typeIdList = new ArrayList<Integer>();
-				for(AgentType type : typeList)
-				{
+				for (AgentType type : typeList) {
 					typeIdList.add(type.getAgent_type_id());
-					
+
 				}
 				ex.createCriteria().andAgent_type_idIn(typeIdList);
 			}
-			
+
 			List result = cm.selectByExample(ex);
 			if (needTotalCounts) {
 				Integer counts = cm.countByExample(null);
@@ -920,12 +792,15 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 
 	@Override
 	public boolean addRecruitAgent(RecruitAgent agent) {
+
 		SqlSession session = sessionFactory.openSession();
+		// Integer id = getNextId(session, "recruit_agent", "agent_id");
 		User user = (User) remoteServlet.getUser();
+
 		agent.setUser_id(user.getUser_id());
 		try {
 			RecruitAgentMapper mp = session.getMapper(RecruitAgentMapper.class);
-			int i = mp.insertSelective(agent);
+			mp.insertSelective(agent);
 			session.commit();
 			return true;
 		} finally {
@@ -953,6 +828,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	@Override
 	public boolean saveRecruitAgent(RecruitAgent agent) {
 		SqlSession session = sessionFactory.openSession();
+
 		try {
 			RecruitAgentMapper bim = session
 					.getMapper(RecruitAgentMapper.class);
@@ -1466,20 +1342,6 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		}
 	}
 
-	@Override
-	public boolean addUser(User user) {
-		SqlSession session = sessionFactory.openSession();
-		try {
-			UserMapper bim = session.getMapper(UserMapper.class);
-			user.setUser_password(Utils.md5(user.getUser_password()));
-			int count = bim.insertSelective(user);
-			session.commit();
-			return true;
-		} finally {
-			session.close();
-		}
-
-	}
 
 	@Override
 	public boolean deletUser(List<Integer> user_ids) {
@@ -1503,9 +1365,8 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		try {
 			UserMapper scm = session.getMapper(UserMapper.class);
 			User oldUser = scm.selectByPrimaryKey(user.getUser_id());
-			if(! oldUser.getUser_password().equals(user.getUser_password()))
-			{
-				//if password changed, then update password to new one
+			if (!oldUser.getUser_password().equals(user.getUser_password())) {
+				// if password changed, then update password to new one
 				user.setUser_password(Utils.md5(user.getUser_password()));
 			}
 			scm.updateByPrimaryKey(user);
@@ -1558,11 +1419,30 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	}
 
 	@Override
+	public boolean addModel(Serializable model) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			String beanName = model.getClass().getSimpleName();
+			Class mapperClass = Class.forName(daoPackageName + beanName
+					+ "Mapper");
+			Class beanClass = Class.forName(modelPackageName + beanName);
+			Object mapper = session.getMapper(mapperClass);
+			Method method = mapperClass.getMethod("insertSelective", beanClass);
+			method.invoke(mapper, model);
+			session.commit();
+		} catch (Exception e) {
+			Log.e("", e);
+		} finally {
+			session.close();
+		}
+		return true;
+	}
+
+	@Override
 	public List getNameValuePareList(String[] beanNames) {
 		List nameValuePares = new ArrayList();
 		SqlSession session = sessionFactory.openSession();
-		String daoPackageName = "com.brightedu.dao.edu.";
-		String modelPackageName = "com.brightedu.model.edu.";
+
 		try {
 			for (String beanName : beanNames) {
 
@@ -1615,43 +1495,45 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			boolean addOrRemove) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			
-			RightsDefaultMapper um = session.getMapper(RightsDefaultMapper.class);
+
+			RightsDefaultMapper um = session
+					.getMapper(RightsDefaultMapper.class);
 			RightsDefaultExample exr = new RightsDefaultExample();
 			exr.createCriteria().andUser_type_idEqualTo(user.getUser_type_id());
-			
+
 			List<RightsDefaultKey> rdl = um.selectByExample(exr);
 			ArrayList<String> catIds = new ArrayList<String>();
-			for(RightsDefaultKey rd : rdl)
-			{
+			for (RightsDefaultKey rd : rdl) {
 				catIds.add(rd.getCategory_id());
 			}
 			/* THE LOGIC */
-			//check if override is in the list of the default granted function, if it is
+			// check if override is in the list of the default granted function,
+			// if it is
 			// if it is then
-			// if addOrRemove is set to be true , then we should remove any record from RightsOverride related to this combination
-			// if addOrRemove is set to be false, then we should add a record into RightsOverride with the combination for this user
-			
-			// if it's not in default granted function, then 
-			// if addOrRemove is set to be true , then we should add a record into RightsOverride with the combination for this user
-			// if addOrRemove is set to be false, then we should remove any record from RightsOverride related to this combination
-			
-			
+			// if addOrRemove is set to be true , then we should remove any
+			// record from RightsOverride related to this combination
+			// if addOrRemove is set to be false, then we should add a record
+			// into RightsOverride with the combination for this user
+
+			// if it's not in default granted function, then
+			// if addOrRemove is set to be true , then we should add a record
+			// into RightsOverride with the combination for this user
+			// if addOrRemove is set to be false, then we should remove any
+			// record from RightsOverride related to this combination
+
 			RightsCategoryFunctionMapper mp = session
 					.getMapper(RightsCategoryFunctionMapper.class);
 
 			RightsCategoryFunctionExample ex = new RightsCategoryFunctionExample();
 			ex.createCriteria().andCategory_idIn(catIds)
-			.andCategory_idEqualTo(override.getCategory_id())
-			.andFunction_idEqualTo(override.getFunction_id());
-			
+					.andCategory_idEqualTo(override.getCategory_id())
+					.andFunction_idEqualTo(override.getFunction_id());
+
 			int count = mp.countByExample(ex);
-			
-			if(count>0)
-			{
+
+			if (count > 0) {
 				Log.d("in default granted list");
-				if(addOrRemove)
-				{
+				if (addOrRemove) {
 					Log.d("remove from override list");
 					RightsOverride ro = new RightsOverride();
 					ro.setUser_id(user.getUser_id());
@@ -1659,13 +1541,11 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 					ro.setRights_function_id(override.getFunction_id());
 					RightsOverrideMapper rom = session
 							.getMapper(RightsOverrideMapper.class);
-					
+
 					rom.deleteByPrimaryKey(ro);
 					session.commit();
-					
-				}
-				else
-				{
+
+				} else {
 					Log.d("add into override list");
 					RightsOverride ro = new RightsOverride();
 					ro.setUser_id(user.getUser_id());
@@ -1674,18 +1554,15 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 					ro.setOverride(false);
 					RightsOverrideMapper rom = session
 							.getMapper(RightsOverrideMapper.class);
-					
+
 					rom.insertSelective(ro);
 					session.commit();
-					
+
 				}
-				
-			}
-			else
-			{
+
+			} else {
 				Log.d("NOT in default granted list");
-				if(addOrRemove)
-				{
+				if (addOrRemove) {
 					Log.d("add into override list");
 					RightsOverride ro = new RightsOverride();
 					ro.setUser_id(user.getUser_id());
@@ -1694,13 +1571,11 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 					ro.setOverride(true);
 					RightsOverrideMapper rom = session
 							.getMapper(RightsOverrideMapper.class);
-					
+
 					rom.insertSelective(ro);
 					session.commit();
-					
-				}
-				else
-				{
+
+				} else {
 					Log.d("remove from override list");
 					RightsOverride ro = new RightsOverride();
 					ro.setUser_id(user.getUser_id());
@@ -1708,37 +1583,37 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 					ro.setRights_function_id(override.getFunction_id());
 					RightsOverrideMapper rom = session
 							.getMapper(RightsOverrideMapper.class);
-					
+
 					rom.deleteByPrimaryKey(ro);
 					session.commit();
 				}
-				
-			}
-			
 
-//			session.commit();
+			}
+
+			// session.commit();
 			return true;
 
 		} finally {
 			session.close();
 		}
-		
+
 	}
+
 	/************************ 入学费用设置 *********************************/
 	@Override
-	public List<EntranceCost> getEntranceCost(String batchID,String agentID) {
+	public List<EntranceCost> getEntranceCost(String batchID, String agentID) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			EntranceCostMapper bim = session.getMapper(EntranceCostMapper.class);
+			EntranceCostMapper bim = session
+					.getMapper(EntranceCostMapper.class);
 			EntranceCostExample ex = new EntranceCostExample();
-			
+
 			ex.createCriteria().andBatch_idEqualTo(new Integer(batchID));
-			if(agentID != null)
-			{
+			if (agentID != null) {
 				ex.createCriteria().andAgent_idEqualTo(new Integer(agentID));
 			}
 			return bim.selectByExample(ex);
-			
+
 		} finally {
 			session.close();
 		}
@@ -1748,26 +1623,26 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	public boolean saveEntranceCost(List<EntranceCost> entranceCosts) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			EntranceCostMapper bim = session.getMapper(EntranceCostMapper.class);
-			for(EntranceCost cost : entranceCosts)
-			{
-				//remove existing
+			EntranceCostMapper bim = session
+					.getMapper(EntranceCostMapper.class);
+			for (EntranceCost cost : entranceCosts) {
+				// remove existing
 				EntranceCostExample ex = new EntranceCostExample();
 				ex.createCriteria().andAgent_idEqualTo(cost.getAgent_id())
-									.andBatch_idEqualTo(cost.getBatch_id())
-									.andCollege_idEqualTo(cost.getCollege_id())
-									.andClassified_idEqualTo(cost.getCollege_id())
-									.andSubject_idEqualTo(cost.getSubject_id())
-									.andFee_idEqualTo(cost.getFee_id());
-				
+						.andBatch_idEqualTo(cost.getBatch_id())
+						.andCollege_idEqualTo(cost.getCollege_id())
+						.andClassified_idEqualTo(cost.getCollege_id())
+						.andSubject_idEqualTo(cost.getSubject_id())
+						.andFee_idEqualTo(cost.getFee_id());
+
 				bim.deleteByExample(ex);
-				
+
 				bim.insertSelective(cost);
-				
+
 			}
 			session.commit();
 			return true;
-			
+
 		} finally {
 			session.close();
 		}
@@ -1777,52 +1652,56 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	public boolean deleteEntranceCost(EntranceCost cost) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			EntranceCostMapper bim = session.getMapper(EntranceCostMapper.class);
+			EntranceCostMapper bim = session
+					.getMapper(EntranceCostMapper.class);
 
 			bim.deleteByPrimaryKey(cost);
 
 			session.commit();
 			return true;
-			
+
 		} finally {
 			session.close();
 		}
 	}
+
 	/************************ 招生点返利设置 *********************************/
 	@Override
 	public AgentReturnType addAgentReturnType(AgentReturnType type) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			AgentReturnTypeMapper bim = session.getMapper(AgentReturnTypeMapper.class);
+			AgentReturnTypeMapper bim = session
+					.getMapper(AgentReturnTypeMapper.class);
 
 			bim.insertSelective(type);
 
 			session.commit();
-			
+
 			AgentReturnTypeExample ex = new AgentReturnTypeExample();
-			ex.createCriteria().andAggregation_descEqualTo(type.getAggregation_desc());
+			ex.createCriteria().andAggregation_descEqualTo(
+					type.getAggregation_desc());
 			return bim.selectByExample(ex).get(0);
-			//return true;
-			
+			// return true;
+
 		} finally {
 			session.close();
 		}
-		
+
 	}
 
 	@Override
 	public boolean deleteAgentReturnType(AgentReturnType type) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			AgentReturnTypeMapper bim = session.getMapper(AgentReturnTypeMapper.class);
+			AgentReturnTypeMapper bim = session
+					.getMapper(AgentReturnTypeMapper.class);
 
 			bim.deleteByPrimaryKey(type.getAg_return_type_id());
 
 			session.commit();
-			
+
 			return true;
 
-			
 		} finally {
 			session.close();
 		}
@@ -1837,10 +1716,9 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			bim.insertSelective(rtn);
 
 			session.commit();
-			
+
 			return true;
 
-			
 		} finally {
 			session.close();
 		}
@@ -1855,10 +1733,9 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			bim.deleteByPrimaryKey(rtn);
 
 			session.commit();
-			
+
 			return true;
 
-			
 		} finally {
 			session.close();
 		}
@@ -1868,18 +1745,17 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	public boolean addCollegeAggregation(List<CollegeAggregation> list) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			CollegeAggregationMapper bim = session.getMapper(CollegeAggregationMapper.class);
+			CollegeAggregationMapper bim = session
+					.getMapper(CollegeAggregationMapper.class);
 
-			for(CollegeAggregation item : list)
-			{
+			for (CollegeAggregation item : list) {
 				bim.insertSelective(item);
 			}
 
 			session.commit();
-			
+
 			return true;
 
-			
 		} finally {
 			session.close();
 		}
@@ -1889,15 +1765,15 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	public boolean deleteCollegeAggregation(CollegeAggregation item) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			CollegeAggregationMapper bim = session.getMapper(CollegeAggregationMapper.class);
+			CollegeAggregationMapper bim = session
+					.getMapper(CollegeAggregationMapper.class);
 
 			bim.deleteByPrimaryKey(item);
 
 			session.commit();
-			
+
 			return true;
 
-			
 		} finally {
 			session.close();
 		}
@@ -1907,52 +1783,81 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	public boolean saveCollegeAggregation(CollegeAggregation item) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			CollegeAggregationMapper bim = session.getMapper(CollegeAggregationMapper.class);
+			CollegeAggregationMapper bim = session
+					.getMapper(CollegeAggregationMapper.class);
 
 			bim.updateByPrimaryKeySelective(item);
 
 			session.commit();
-			
+
 			return true;
 
-			
 		} finally {
 			session.close();
 		}
+	}
+
+	/**
+	 * 获取指定表的指定字段的下一个id值
+	 * 
+	 * @param session
+	 * @param tableName
+	 * @param columnName
+	 * @return
+	 */
+	public Integer getNextId(SqlSession session, String tableName,
+			String columnName) {
+		Integer id = null;
+		try {
+			String sql = new StringBuilder("select fun_table_seq('")
+					.append(tableName).append("','").append(columnName)
+					.append("','next')").toString();
+			PreparedStatement prep = session.getConnection().prepareStatement(
+					sql);
+			ResultSet rs = prep.executeQuery();
+			while (rs.next()) {
+				id = rs.getInt(1);
+				break;
+			}
+		} catch (SQLException e) {
+			Log.e("", e);
+		}
+		return id;
 	}
 
 	@Override
 	public List<College> getUnassignedCollegeList(String agentID, String batch) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			
+
 			AgentReturnMapper arm = session.getMapper(AgentReturnMapper.class);
-			
+
 			AgentReturnExample are = new AgentReturnExample();
-			are.createCriteria().andAgent_idEqualTo(new Integer(agentID)).andBatch_idEqualTo(new Integer(batch));
-			if(arm.selectByExample(are).size() == 0 ) return getCollegeList(-1,-1,false);
-			ArrayList<Integer> agentRetrunTypeID = new ArrayList<Integer> ();
-			for (AgentReturnKey ark : arm.selectByExample(are))
-			{
+			are.createCriteria().andAgent_idEqualTo(new Integer(agentID))
+					.andBatch_idEqualTo(new Integer(batch));
+			if (arm.selectByExample(are).size() == 0)
+				return getCollegeList(-1, -1, false);
+			ArrayList<Integer> agentRetrunTypeID = new ArrayList<Integer>();
+			for (AgentReturnKey ark : arm.selectByExample(are)) {
 				agentRetrunTypeID.add(ark.getAg_return_type_id());
 			}
-			
-			CollegeAggregationMapper bim = session.getMapper(CollegeAggregationMapper.class);
+
+			CollegeAggregationMapper bim = session
+					.getMapper(CollegeAggregationMapper.class);
 
 			CollegeAggregationExample ex = new CollegeAggregationExample();
 			ex.createCriteria().andAg_return_type_idIn(agentRetrunTypeID);
-			ArrayList<Integer> collegeID = new ArrayList<Integer> ();
-			for ( CollegeAggregation ca : bim.selectByExample(ex))
-			{
+			ArrayList<Integer> collegeID = new ArrayList<Integer>();
+			for (CollegeAggregation ca : bim.selectByExample(ex)) {
 				collegeID.add(ca.getCollege_id());
 			}
-			
+
 			CollegeMapper cm = session.getMapper(CollegeMapper.class);
 			CollegeExample ce = new CollegeExample();
 			ce.createCriteria().andCollege_idNotIn(collegeID);
-			
+
 			return cm.selectByExample(ce);
-			
+
 		} finally {
 			session.close();
 		}
@@ -1963,12 +1868,14 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			AgentReturnType type) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			CollegeAggregationMapper bim = session.getMapper(CollegeAggregationMapper.class);
+			CollegeAggregationMapper bim = session
+					.getMapper(CollegeAggregationMapper.class);
 			CollegeAggregationExample ex = new CollegeAggregationExample();
-			ex.createCriteria().andAg_return_type_idEqualTo(type.getAg_return_type_id());
-			
+			ex.createCriteria().andAg_return_type_idEqualTo(
+					type.getAg_return_type_id());
+
 			return bim.selectByExample(ex);
-			
+
 		} finally {
 			session.close();
 		}
@@ -1978,27 +1885,29 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	public List<AgentReturnType> getAgentReturnType(String agentID, String batch) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			
+
 			AgentReturnMapper arm = session.getMapper(AgentReturnMapper.class);
-			
+
 			AgentReturnExample are = new AgentReturnExample();
-			are.createCriteria().andAgent_idEqualTo(new Integer(agentID)).andBatch_idEqualTo(new Integer(batch));
-			
-			if( arm.selectByExample(are).size() ==0 ) return new ArrayList<AgentReturnType>();
-			
-			ArrayList<Integer> agentRetrunTypeID = new ArrayList<Integer> ();
-			for (AgentReturnKey ark : arm.selectByExample(are))
-			{
+			are.createCriteria().andAgent_idEqualTo(new Integer(agentID))
+					.andBatch_idEqualTo(new Integer(batch));
+
+			if (arm.selectByExample(are).size() == 0)
+				return new ArrayList<AgentReturnType>();
+
+			ArrayList<Integer> agentRetrunTypeID = new ArrayList<Integer>();
+			for (AgentReturnKey ark : arm.selectByExample(are)) {
 				agentRetrunTypeID.add(ark.getAg_return_type_id());
 			}
-			
-			AgentReturnTypeMapper bim = session.getMapper(AgentReturnTypeMapper.class);
+
+			AgentReturnTypeMapper bim = session
+					.getMapper(AgentReturnTypeMapper.class);
 
 			AgentReturnTypeExample ex = new AgentReturnTypeExample();
 			ex.createCriteria().andAg_return_type_idIn(agentRetrunTypeID);
-						
+
 			return bim.selectByExample(ex);
-			
+
 		} finally {
 			session.close();
 		}
@@ -2008,18 +1917,20 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	public boolean checkIfLastCollegeAggregation(CollegeAggregation item) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			CollegeAggregationMapper bim = session.getMapper(CollegeAggregationMapper.class);
+			CollegeAggregationMapper bim = session
+					.getMapper(CollegeAggregationMapper.class);
 			CollegeAggregationExample cae = new CollegeAggregationExample();
-			cae.createCriteria().andAg_return_type_idEqualTo(item.getAg_return_type_id()).andCollege_idEqualTo(item.getCollege_id());
-			
+			cae.createCriteria()
+					.andAg_return_type_idEqualTo(item.getAg_return_type_id())
+					.andCollege_idEqualTo(item.getCollege_id());
+
 			int count = bim.countByExample(cae);
 
-			if(count>1) return false;
-				
-			
+			if (count > 1)
+				return false;
+
 			return true;
 
-			
 		} finally {
 			session.close();
 		}

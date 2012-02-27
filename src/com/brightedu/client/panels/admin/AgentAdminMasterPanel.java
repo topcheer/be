@@ -1,5 +1,6 @@
 package com.brightedu.client.panels.admin;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -7,7 +8,6 @@ import com.brightedu.client.BrightEdu;
 import com.brightedu.client.CommonAsyncCall;
 import com.brightedu.client.panels.BasicAdminPanel;
 import com.brightedu.client.panels.MasterDetailAdmin;
-import com.brightedu.model.edu.AgentRelation;
 import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.RecruitAgent;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -16,8 +16,6 @@ import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.grid.ListGridField;
-import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
-import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 
 public class AgentAdminMasterPanel extends BasicAdminPanel {
 	MasterDetailAdmin admin;
@@ -27,33 +25,14 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 
 	public AgentAdminMasterPanel(MasterDetailAdmin agentadmin) {
 		this.admin = agentadmin;
-
-		resultList.addSelectionChangedHandler(new SelectionChangedHandler() {
-
-			@Override
-			public void onSelectionChanged(SelectionEvent event) {
-				if (event.getState()) {
-					admin.getDetailed()
-							.getDetailedForm()
-							.setValue(
-									(RecruitAgent) event.getRecord()
-											.getAttributeAsObject("object"));
-					admin.getDetailed().getDetailedForm().enableSaveItem();
-				} else {
-					admin.getDetailed().getDetailedForm()
-							.setValue(new RecruitAgent());// empty all fields
-					admin.getDetailed().getDetailedForm().disableSaveItem();
-				}
-			}
-		});
 	}
 
 	public void refresh() {
 		super.refresh();
-		initTypes();
+		initValueMaps();
 	}
 
-	private void initTypes() {
+	private void initValueMaps() {
 		dbService.getNameValuePareList(new String[] { "AgentType",
 				"RecruitAgent" }, new CommonAsyncCall<List>() {
 
@@ -73,6 +52,11 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 						((AgentAdminEditorForm) admin.getDetailed()
 								.getDetailedForm()).agent_typeItem
 								.setValueMap(agentTypes);
+						if (getAdminDialog() != null) {
+							AgentAdminEditorForm adminForm = (AgentAdminEditorForm) getAdminDialog()
+									.getContentForm();
+							adminForm.agent_typeItem.setValueMap(agentTypes);
+						}
 					} else if (i == 1) {// "AgentRelation"
 						List<RecruitAgent> types = (List<RecruitAgent>) result
 								.get(i);
@@ -83,6 +67,11 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 						((AgentAdminEditorForm) admin.getDetailed()
 								.getDetailedForm()).parentAgentItem
 								.setValueMap(agentRelations);
+						if (getAdminDialog() != null) {
+							AgentAdminEditorForm adminForm = (AgentAdminEditorForm) getAdminDialog()
+									.getContentForm();
+							adminForm.parentAgentItem.setValueMap(agentTypes);
+						}
 					}
 				}
 			}
@@ -122,7 +111,7 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 			}
 		};
 		dbService.getRecruitAgentList((indexGoto - 1) * currentRowsInOnePage,
-				currentRowsInOnePage, init,false, callback);
+				currentRowsInOnePage, init, false, callback);
 	}
 
 	@Override
@@ -133,7 +122,7 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 						ListGridFieldType.TEXT, ListGridFieldType.TEXT,
 						ListGridFieldType.TEXT }, new boolean[] { false, false,
 						false, false }, new int[] { -1, -1, -1, -1 });
-		initTypes();
+		initValueMaps();
 
 		return fields;
 	}
@@ -178,17 +167,9 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 	}
 
 	@Override
-	public void add(Object model) {
-		RecruitAgent agent = (RecruitAgent) model;
-		// FIXME need validator
-		dbService.addRecruitAgent(agent, getAdminDialog().getAddAsync());
-
-	}
-
-	@Override
 	public AdminDialog createAdminDialog() {
-		AdminDialog admin = new AdminDialog() {
-			AgentAdminEditorForm form = new AgentAdminEditorForm();
+		AdminDialog adminDialog = new AdminDialog() {
+			AgentAdminEditorForm form = new AgentAdminEditorForm(admin);
 
 			public void init() {
 				super.init();
@@ -210,7 +191,7 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 			}
 
 			@Override
-			protected Object getAddedModel() {
+			protected Serializable getAddedModel() {
 				return form.getModel();
 			}
 
@@ -218,11 +199,11 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 				super.show();
 			}
 		};
-		admin.setAutoHeight();
-		admin.setAutoWidth();
-		admin.setSize("520", "340");
-		admin.setAdminPanel(this);
-		return admin;
+		adminDialog.setAutoHeight();
+		adminDialog.setAutoWidth();
+		adminDialog.setSize("520", "340");
+		adminDialog.setAdminPanel(this);
+		return adminDialog;
 	}
 
 }

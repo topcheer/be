@@ -1,5 +1,6 @@
 package com.brightedu.client.panels.admin;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -279,7 +280,7 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 	}
 
 	@Override
-	public void add(Object model) {
+	public void add(Serializable model) {
 		// FORM形式的提交，不需要用到这个方法
 	}
 
@@ -340,7 +341,7 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 		}
 
 		@Override
-		protected Object getAddedModel() {
+		protected Serializable getAddedModel() {
 			// DO NOTHING, FORM 形式的提交，不需要用到这个方法
 			return null;
 		}

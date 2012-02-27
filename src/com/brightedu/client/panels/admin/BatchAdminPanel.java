@@ -1,5 +1,6 @@
 package com.brightedu.client.panels.admin;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.brightedu.client.BrightEdu;
@@ -49,7 +50,7 @@ public class BatchAdminPanel extends BasicAdminPanel {
 	}
 
 	public void gotoPage(final int indexGoto, final boolean init) {
-		
+
 		AsyncCallback<List<BatchIndex>> callback = new CommonAsyncCall<List<BatchIndex>>() {
 			@Override
 			public void onSuccess(List result) {
@@ -87,16 +88,14 @@ public class BatchAdminPanel extends BasicAdminPanel {
 		text.adminPanel = this;
 		return text;
 	}
-	
-//	public void afterAdd(){
-//		gotoPage(1, true);
-//	}
 
 	@Override
-	public void add(Object model) {
+	public void add(Serializable model) {
 		final String batch = ((String[]) model)[0];
 		if (batch != null && batch.trim().length() > 0) {
-			dbService.addBatch(batch, getAdminDialog().getAddAsync());
+			BatchIndex batchIndex = new BatchIndex();
+			batchIndex.setBatch_name(batch);
+			dbService.addModel(batchIndex, getAdminDialog().getAddAsync());
 		} else {
 			SC.say("内容不能为空！");
 		}

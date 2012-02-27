@@ -78,10 +78,10 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 
 	public String login(User user) {
 		if (user.getUser_name() == null) {
-			user.setUser_name("test");
-			user.setUser_id(1234);
-			return AuthManager.getFunctions(new String[] { "system_manage",
-			"student_manage", "financial_manage", "student_personal" });
+			user.setUser_name("admin");
+			user.setUser_id(1);
+//			return AuthManager.getFunctions(new String[] { "system_manage",
+//					"student_manage", "financial_manage", "student_personal" });
 		}
 		User loginedUser = logmein(user);
 		Log.d("User login: " + user.getUser_name());
@@ -90,78 +90,73 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		return getUserRights(loginedUser);
 
 	}
+
 	private User logmein(User user) {
-		
-		SqlSession session =ConnectionManager.getSessionFactory().openSession();
+
+		SqlSession session = ConnectionManager.getSessionFactory()
+				.openSession();
 		try {
 			UserMapper scm = session.getMapper(UserMapper.class);
 			UserExample ex = new UserExample();
 			ex.createCriteria().andUser_nameEqualTo(user.getUser_name());
 			List<User> users = scm.selectByExample(ex);
-			if(users.size()>0)
-			{
-				
+			if (users.size() > 0) {
+
 				return users.get(0);
 			}
-			
 
-			
-			
 			return null;
-					
+
 		} finally {
 			session.close();
-			
+
 		}
-		
-		
+
 	}
 
-	private String getUserRights(User user)
-	{
+	private String getUserRights(User user) {
 		StringBuffer rights = new StringBuffer();
 		Connection conn = ConnectionManager.getConnection("edu");
-		
+
 		PreparedStatement ps;
 		try {
-			ps = conn.prepareStatement("select distinct category_id,category_name from userrights_effective where user_id = ?");
-			
+			ps = conn
+					.prepareStatement("select distinct category_id,category_name from userrights_effective where user_id = ?");
+
 			ps.setInt(1, user.getUser_id());
-			
+
 			ResultSet rs = ps.executeQuery();
-			while(rs.next())
-			{
-				rights.append(rs.getString(1)).append(" ").append(rs.getString(2)).append(" root|");
+			while (rs.next()) {
+				rights.append(rs.getString(1)).append(" ")
+						.append(rs.getString(2)).append(" root|");
 			}
-			
+
 			rs.close();
 			ps.close();
-			conn.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			
-			
+			Log.e("", e);
+		} finally {
+			ConnectionManager.releaseConnection(conn);
 		}
-		
-		
-		
-		SqlSession session =ConnectionManager.getSessionFactory().openSession();
+
+		SqlSession session = ConnectionManager.getSessionFactory()
+				.openSession();
 		try {
-			UserRightsEffectiveMapper scm = session.getMapper(UserRightsEffectiveMapper.class);
+			UserRightsEffectiveMapper scm = session
+					.getMapper(UserRightsEffectiveMapper.class);
 			UserRightsEffectiveExample ex = new UserRightsEffectiveExample();
 			ex.createCriteria().andUser_idEqualTo(user.getUser_id());
-			
-			for(UserRightsEffective right : scm.selectByExample(ex))
-			{
-				rights.append(right.getFunction_id()).append(" ").append(right.getFunction_name()).append(" ").append(right.getCategory_id()).append("|");
+
+			for (UserRightsEffective right : scm.selectByExample(ex)) {
+				rights.append(right.getFunction_id()).append(" ")
+						.append(right.getFunction_name()).append(" ")
+						.append(right.getCategory_id()).append("|");
 			}
-			
-			
+
 			return rights.toString();
 		} finally {
 			session.close();
-			
+
 		}
 	}
 }

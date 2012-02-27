@@ -55,8 +55,6 @@ public interface DataBaseRPC extends RemoteService {
 	public List<BatchIndex> getBatchList(int offset, int limit,
 			boolean needTotalCounts);
 
-	public boolean addBatch(String batch_name);
-
 	public boolean deleteBatch(List<Integer> batch_ids);
 
 	boolean saveBatch(BatchIndex editedBatch);
@@ -64,8 +62,6 @@ public interface DataBaseRPC extends RemoteService {
 	/*********************** 学生层次管理 ************************************/
 	public List<StudentClassified> getStudentClassesList(int offset, int limit,
 			boolean needTotalCounts);
-
-	boolean addStudentClass(StudentClassified studentClass);
 
 	public boolean deleteStudentClasses(List<Integer> studentClassesId);
 
@@ -75,8 +71,6 @@ public interface DataBaseRPC extends RemoteService {
 	public List<StudentType> getStudentTypeList(int offset, int limit,
 			boolean needTotalCounts);
 
-	public boolean addStudentType(String studentClassName);
-
 	public boolean deleteStudentType(List<Integer> studentClassesId);
 
 	boolean saveStudentType(StudentType studentType);
@@ -84,8 +78,6 @@ public interface DataBaseRPC extends RemoteService {
 	/*********************** 合作高校代码维护 ************************************/
 	public List<College> getCollegeList(int offset, int limit,
 			boolean needTotalCounts);
-
-	public boolean addCollege(String collegeName);
 
 	public boolean deleteCollege(List<Integer> college_ids);
 
@@ -105,7 +97,6 @@ public interface DataBaseRPC extends RemoteService {
 	public List<Subjects> getSubjectsList(int offset, int limit,
 			boolean needTotalCounts);
 
-	public boolean addSubject(String subjectName);
 
 	public boolean deleteSubject(List<Integer> subject_ids);
 
@@ -126,8 +117,6 @@ public interface DataBaseRPC extends RemoteService {
 	public List<FeeType> getFeeTypeList(int offset, int limit,
 			boolean needTotalCounts);
 
-	public boolean addFeeType(FeeType typeName);
-
 	public boolean deletFeeType(List<Integer> feeType_ids);
 
 	public boolean saveFeeType(FeeType agenttype);
@@ -146,8 +135,6 @@ public interface DataBaseRPC extends RemoteService {
 	public List<UserType> getUserTypeList(int offset, int limit,
 			boolean needTotalCounts);
 
-	public boolean addUserType(String typeName);
-
 	public boolean deletUserType(List<Integer> userType_ids);
 
 	public boolean saveUserType(UserType usertype);
@@ -155,8 +142,6 @@ public interface DataBaseRPC extends RemoteService {
 	/*********************** 照片类型维护 ************************************/
 	public List<PictureType> getPictureTypeList(int offset, int limit,
 			boolean needTotalCounts);
-
-	public boolean addPictureType(String typeName);
 
 	public boolean deletPictureType(List<Integer> pictureType_ids);
 
@@ -166,8 +151,6 @@ public interface DataBaseRPC extends RemoteService {
 	public List<StudentStatus> getStudentStatusList(int offset, int limit,
 			boolean needTotalCounts);
 
-	public boolean addStudentStatus(String typeName);
-
 	public boolean deletStudentStatus(List<Integer> studentStatus_ids);
 
 	public boolean saveStudentStatus(StudentStatus studentStatus);
@@ -176,7 +159,7 @@ public interface DataBaseRPC extends RemoteService {
 	public List<RecruitAgent> getRecruitAgentList(int offset, int limit,
 			boolean needTotalCounts,boolean only_can_return);
 
-	public boolean addRecruitAgent(RecruitAgent agent);
+	boolean addRecruitAgent(RecruitAgent agent);
 
 	public boolean deletRecruitAgent(List<Integer> agent_ids);
 
@@ -215,7 +198,6 @@ public interface DataBaseRPC extends RemoteService {
 	
 	/************************ 用户管理 *********************************/
 	public List<User> getUserList(int offset, int limit,boolean needTotalCounts);
-	public boolean addUser(User user);
 	public boolean deletUser(List<Integer> user_ids);
 	public boolean saveUser(User user);
 	public boolean setOverridePriv(List<RightsCategoryFunctionKey> list, boolean addOrRemove);
@@ -241,10 +223,12 @@ public interface DataBaseRPC extends RemoteService {
 	public boolean addCollegeAggregation(List<CollegeAggregation> list);
 	public boolean deleteCollegeAggregation(CollegeAggregation item);
 	public boolean saveCollegeAggregation(CollegeAggregation item);
+
 	public List<College> getUnassignedCollegeList(String agentID, String batch);
 	public List<CollegeAggregation> getCollegeAggregationList(AgentReturnType type);
 	public List<AgentReturnType> getAgentReturnType(String agentID, String batch);
 	public boolean checkIfLastCollegeAggregation(CollegeAggregation item);
-	
+
+	boolean addModel(Serializable model);
 	
 }

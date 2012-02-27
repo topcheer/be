@@ -48,7 +48,7 @@ public final class StudentsRegister extends MasterDetailAdmin {
 
 		@Override
 		protected DetailedEditorForm createDetailEditorForm() {
-			return new StudentsRegisterEditorForm();
+			return new StudentsRegisterEditorForm(getMasterDetail());
 		}
 
 	}

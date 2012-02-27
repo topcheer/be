@@ -1,5 +1,6 @@
 package com.brightedu.client.panels.admin;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.brightedu.client.BrightEdu;
@@ -94,19 +95,6 @@ public class AgentTypeAdminPanel extends BasicAdminPanel {
 	}
 
 	@Override
-	public void add(Object model) {
-		final AgentType at = (AgentType) model;
-
-		if (at.getAgent_type_name() != null
-				&& at.getAgent_type_name().trim().length() > 0) {
-
-			dbService.addAgentType(at, getAdminDialog().getAddAsync());
-		} else {
-			SC.say("内容不能为空！");
-		}
-	}
-
-	@Override
 	public AdminDialog createAdminDialog() {
 		AgentTypeAddDialog admin = new AgentTypeAddDialog();
 		admin.setAdminPanel(this);
@@ -126,7 +114,7 @@ public class AgentTypeAdminPanel extends BasicAdminPanel {
 		}
 
 		@Override
-		protected Object getAddedModel() {
+		protected Serializable getAddedModel() {
 
 			AgentType at = new AgentType();
 			at.setAgent_type_name(agentTypeNameItem.getValueAsString());

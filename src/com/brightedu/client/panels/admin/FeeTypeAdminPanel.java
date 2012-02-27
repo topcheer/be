@@ -1,5 +1,6 @@
 package com.brightedu.client.panels.admin;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.brightedu.client.BrightEdu;
@@ -101,13 +102,13 @@ public class FeeTypeAdminPanel extends BasicAdminPanel {
 
 
 	@Override
-	public void add(Object model) {
+	public void add(Serializable model) {
 		final FeeType at = (FeeType) model;
 
 		if (at.getFee_name() != null
 				&& at.getFee_name().trim().length() > 0) {
 
-			dbService.addFeeType(at, getAdminDialog().getAddAsync());
+			dbService.addModel(at, getAdminDialog().getAddAsync());
 		} else {
 			SC.say("内容不能为空！");
 		}
@@ -135,7 +136,7 @@ public class FeeTypeAdminPanel extends BasicAdminPanel {
 		}
 
 		@Override
-		protected Object getAddedModel() {
+		protected Serializable getAddedModel() {
 
 			FeeType at = new FeeType();
 			at.setFee_name(feeTypeNameItem.getValueAsString());
