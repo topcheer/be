@@ -127,6 +127,12 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 		return fields;
 	}
 
+	public void add(Serializable model) {
+		RecruitAgent agent = (RecruitAgent) model;
+		agent.setUser_id(BrightEdu.getUser().getUser_id());
+		dbService.addModel(model, getAdminDialog().getAddAsync());
+	}
+
 	@Override
 	public void search(String keyWords, Record range) {
 		// TODO Auto-generated method stub

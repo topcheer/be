@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -76,18 +77,24 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 				.replaceAll(">", "&gt;");
 	}
 
-	public String login(User user) {
+	public Serializable[] login(User user) {
+		String userRight = null;
 		if (user.getUser_name() == null) {
 			user.setUser_name("admin");
 			user.setUser_id(1);
-//			return AuthManager.getFunctions(new String[] { "system_manage",
-//					"student_manage", "financial_manage", "student_personal" });
+			userRight = AuthManager.getFunctions(new String[] {
+					"system_manage", "student_manage", "financial_manage",
+					"student_personal" });
 		}
 		User loginedUser = logmein(user);
 		Log.d("User login: " + user.getUser_name());
 		HttpSession session = this.getThreadLocalRequest().getSession();
 		session.setAttribute("user", loginedUser);
-		return getUserRights(loginedUser);
+		if (userRight == null) {
+			userRight = getUserRights(loginedUser);
+		}
+
+		return new Serializable[] { loginedUser, userRight };
 
 	}
 

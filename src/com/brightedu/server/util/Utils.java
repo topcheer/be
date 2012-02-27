@@ -9,6 +9,9 @@ import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -21,6 +24,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
+import org.apache.ibatis.session.SqlSession;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -178,15 +182,44 @@ public class Utils {
 		}
 		return null;
 	}
-	
-	public static String getStandardMethodName(String fieldName) {
+
+	public static String getStandardGetMethodName(String fieldName) {
 		char c = fieldName.charAt(0);
 		return "get" + String.valueOf(c).toUpperCase() + fieldName.substring(1);
 	}
-	
-	public static void main(String[] xx){
-		String agreement_filename = "as_234-df.doc.1_2344/FGSSDF";
-		System.out.println(md5(agreement_filename));
-		System.out.println(md52(agreement_filename));
+
+	/**
+	 * 获取指定表的指定字段的下一个id值
+	 * 
+	 * @param session
+	 * @param tableName
+	 * @param columnName
+	 * @return
+	 */
+	public static Integer getNextId(SqlSession session, String tableName,
+			String columnName) {
+		boolean emptySession = session == null;
+		if (emptySession)
+			session = ConnectionManager.sessionFactory.openSession();
+		Integer id = null;
+		try {
+			String sql = new StringBuilder("select fun_table_seq('")
+					.append(tableName).append("','").append(columnName)
+					.append("','next')").toString();
+			PreparedStatement prep = session.getConnection().prepareStatement(
+					sql);
+			ResultSet rs = prep.executeQuery();
+			while (rs.next()) {
+				id = rs.getInt(1);
+				break;
+			}
+		} catch (SQLException e) {
+			Log.e("", e);
+		} finally {
+			if (emptySession) {
+				session.close();
+			}
+		}
+		return id;
 	}
 }

@@ -1,5 +1,7 @@
 package com.brightedu.client;
 
+import java.io.Serializable;
+
 import com.brightedu.client.nav.CommandTreeNode;
 import com.brightedu.client.nav.ExplorerTreeNode;
 import com.brightedu.client.nav.FunctionTree;
@@ -54,6 +56,8 @@ public class BrightEdu implements EntryPoint {
 	private static ExplorerTreeNode[] treeNodeData = null;
 
 	public static final String idSuffix = "_bright";
+	
+	private static User user = null;
 
 	/**
 	 * This is the entry point method.
@@ -104,7 +108,7 @@ public class BrightEdu implements EntryPoint {
 		User user = new User();
 		user.setUser_name(username);
 
-		greetingService.login(user, new AsyncCallback<String>() {
+		greetingService.login(user, new AsyncCallback<Serializable[]>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -113,9 +117,9 @@ public class BrightEdu implements EntryPoint {
 			}
 
 			@Override
-			public void onSuccess(String result) {
-				System.out.println(result);
-				auth = result;
+			public void onSuccess(Serializable[] result) {
+				setUser((User)result[0]);
+				auth = (String)result[1];
 				String[] nodes = auth.split("\\|");
 				treeNodeData = new ExplorerTreeNode[nodes.length];
 				for (int i = 0; i < nodes.length; i++) {
@@ -133,6 +137,14 @@ public class BrightEdu implements EntryPoint {
 				showTip("已登录！");
 			}
 		});
+	}
+	
+	private static void setUser(User newUser){
+		user = newUser;
+	}
+	
+	public static User getUser(){
+		return user;
 	}
 
 	private void createUI() {

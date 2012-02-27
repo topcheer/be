@@ -87,8 +87,6 @@ public interface DataBaseRPC extends RemoteService {
 	public List<CollegeAgreement> getCollegeAgreementList(int offset, int limit,
 			boolean needTotalCounts);
 
-	public boolean addCollegeAgreement(CollegeAgreement agreement); 
-
 	public boolean deleteCollegeAgreement(List<CollegeAgreement> agreements);
 
 	boolean saveCollegeAgreement(CollegeAgreement agreement);
@@ -107,8 +105,6 @@ public interface DataBaseRPC extends RemoteService {
 	public List<AgentType> getAgentTypeList(int offset, int limit,
 			boolean needTotalCounts);
 
-	public boolean addAgentType(AgentType agentType);
-
 	public boolean deleteAgentType(List<Integer> agentType_ids);
 
 	public boolean saveAgentType(AgentType agenttype);
@@ -124,8 +120,6 @@ public interface DataBaseRPC extends RemoteService {
 	/*********************** 入账类型维护 ************************************/
 	public List<ChargeType> getChargeTypeList(int offset, int limit,
 			boolean needTotalCounts);
-
-	public boolean addChargeType(String typeName);
 
 	public boolean deletChargeType(List<Integer> chargeType_ids);
 
@@ -159,8 +153,6 @@ public interface DataBaseRPC extends RemoteService {
 	public List<RecruitAgent> getRecruitAgentList(int offset, int limit,
 			boolean needTotalCounts,boolean only_can_return);
 
-	boolean addRecruitAgent(RecruitAgent agent);
-
 	public boolean deletRecruitAgent(List<Integer> agent_ids);
 
 	public boolean saveRecruitAgent(RecruitAgent agent);
@@ -186,7 +178,6 @@ public interface DataBaseRPC extends RemoteService {
 	public List<RightsCategory> getRightsCategory();
 	public List<RightsFunction> getRightsFunction();
 	public List<RightsCategoryFunctionKey> getRightsCategoryFunction(String categoryID);
-	public boolean addRightsCategory(RightsCategory category);
 	public boolean addRightsFunction(RightsFunction function);
 	public boolean addRightsCatetoryFunctions(List<RightsCategoryFunctionKey> rightsCategoryFunctionList);
 	public boolean deleteRightsCategory(RightsCategory category);

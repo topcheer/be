@@ -1,5 +1,7 @@
 package com.brightedu.client;
 
+import java.io.Serializable;
+
 import com.brightedu.model.edu.User;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -11,5 +13,5 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface GreetingService extends RemoteService {
 	String greetServer(String name) throws IllegalArgumentException;
 	
-	String login(User user);
+	Serializable[] login(User user);
 }

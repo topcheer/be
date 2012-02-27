@@ -8,6 +8,7 @@ import java.util.Date;
 
 import com.brightedu.model.edu.User;
 import com.brightedu.server.util.Log;
+import com.brightedu.server.util.ReflectUtil;
 import com.brightedu.server.util.Utils;
 
 public class DataBaseRPCHandler implements InvocationHandler {
@@ -24,12 +25,12 @@ public class DataBaseRPCHandler implements InvocationHandler {
 		// 方法调用之前,校验权限
 		long start = System.nanoTime();
 		User user = (User) rpcAgent.getRemoteServlet().getUser();
-		if(user == null){
+		if (user == null) {
 			Log.d("session expired or user not login");
 			rpcAgent.getRemoteServlet().unAuthorized();
 			return null;
 		}
-		
+
 		// 调用原始对象的方法
 		Object result = method.invoke(this.rpcAgent, args);
 
@@ -40,7 +41,7 @@ public class DataBaseRPCHandler implements InvocationHandler {
 			sb.append("(UserID=").append(user.getUser_id());
 			sb.append(" UserName=").append(user.getUser_name()).append(")");
 			sb.append(methodName);
-			sb.append(":");
+			sb.append(": ");
 			if (args != null) {
 				for (Object o : args) {
 					String audit = getObjectAudit(o);
@@ -51,15 +52,17 @@ public class DataBaseRPCHandler implements InvocationHandler {
 		}
 		long end = System.nanoTime();
 		System.out.println("-----user: " + user.getUser_name() + "     "
-				+ method.getName()+", eclapsed "+(end-start)/1000000+"ms");
+				+ method.getName() + ", eclapsed " + (end - start) / 1000000
+				+ "ms");
 		return result;
 	}
 
 	private String getObjectAudit(Object o) {
-		StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder(o.getClass().getSimpleName());
+		sb.append("  ");
 		if (o instanceof String || o instanceof Integer || o instanceof Long
 				|| o instanceof Date || o instanceof Double
-				|| o instanceof Float) {
+				|| o instanceof Float || o instanceof Boolean) {
 			sb.append(o);
 		} else if (o instanceof Iterable) {
 			Iterable ol = (Iterable) o;
@@ -68,16 +71,17 @@ public class DataBaseRPCHandler implements InvocationHandler {
 			}
 		} else {
 			sb.append(" #");
-			Field[] fields = o.getClass().getDeclaredFields();
+			Field[] fields = ReflectUtil.getDeclaredFields(o.getClass());
 			for (Field f : fields) {
 				if (!Modifier.isStatic(f.getModifiers())) {
-					Method m = null;
+					Method getMethod = null;
 					try {
-						m = o.getClass().getMethod(
-								Utils.getStandardMethodName(f.getName()));
-						Object filedValue = m.invoke(o, null);
-						sb.append(f.getName()).append("=")
-								.append(filedValue).append(" - ");
+						getMethod = ReflectUtil.getDeclaredMethod(o,
+								Utils.getStandardGetMethodName(f.getName()));
+
+						Object filedValue = getMethod.invoke(o, null);
+						sb.append(f.getName()).append("=").append(filedValue)
+								.append(" - ");
 					} catch (Exception e) {
 					}
 				}
@@ -86,8 +90,6 @@ public class DataBaseRPCHandler implements InvocationHandler {
 		}
 		return sb.toString();
 	}
-
-
 
 	private void audit(String content) {
 		// FIXME record audit content, better be another manager thread

@@ -149,11 +149,6 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	}
 
 	@Override
-	public boolean addAgentType(AgentType typeName) {
-		return agent.addAgentType(typeName);
-	}
-
-	@Override
 	public boolean deleteAgentType(List<Integer> agentType_ids) {
 		return agent.deleteAgentType(agentType_ids);
 	}
@@ -185,11 +180,6 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	public List<ChargeType> getChargeTypeList(int offset, int limit,
 			boolean needTotalCounts) {
 		return agent.getChargeTypeList(offset, limit, needTotalCounts);
-	}
-
-	@Override
-	public boolean addChargeType(String typeName) {
-		return agent.addChargeType(typeName);
 	}
 
 	@Override
@@ -286,11 +276,6 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	}
 
 	@Override
-	public boolean addRecruitAgent(RecruitAgent ra) {
-		return agent.addRecruitAgent(ra);
-	}
-
-	@Override
 	public boolean deletRecruitAgent(List<Integer> agent_ids) {
 		return agent.deletRecruitAgent(agent_ids);
 	}
@@ -319,11 +304,6 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	}
 
 	@Override
-	public boolean addCollegeAgreement(CollegeAgreement agreement) {
-		return agent.addCollegeAgreement(agreement);
-	}
-
-	@Override
 	public boolean deleteCollegeAgreement(List<CollegeAgreement> agreements) {
 		return agent.deleteCollegeAgreement(agreements);
 	}
@@ -349,11 +329,6 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	public List<RightsCategoryFunctionKey> getRightsCategoryFunction(
 			String categoryID) {
 		return agent.getRightsCategoryFunction(categoryID);
-	}
-
-	@Override
-	public boolean addRightsCategory(RightsCategory category) {
-		return agent.addRightsCategory(category);
 	}
 
 	@Override

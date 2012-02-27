@@ -105,6 +105,7 @@ import com.brightedu.model.edu.UserType;
 import com.brightedu.model.edu.UserTypeExample;
 import com.brightedu.server.util.ConnectionManager;
 import com.brightedu.server.util.Log;
+import com.brightedu.server.util.ReflectUtil;
 import com.brightedu.server.util.ServerProperties;
 import com.brightedu.server.util.Utils;
 
@@ -261,7 +262,6 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			session.close();
 		}
 	}
-
 
 	@Override
 	public boolean deleteStudentType(List<Integer> studentTypeId) {
@@ -421,21 +421,6 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	}
 
 	@Override
-	public boolean addAgentType(AgentType agentType) {
-		SqlSession session = sessionFactory.openSession();
-		try {
-			AgentTypeExample ex = new AgentTypeExample();
-			Page p = new Page();
-			AgentTypeMapper cm = session.getMapper(AgentTypeMapper.class);
-			int count = cm.insertSelective(agentType);
-			session.commit();
-			return true;
-		} finally {
-			session.close();
-		}
-	}
-
-	@Override
 	public boolean deleteAgentType(List<Integer> agentType_ids) {
 		SqlSession session = sessionFactory.openSession();
 		try {
@@ -538,21 +523,6 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	}
 
 	@Override
-	public boolean addChargeType(String typeName) {
-		SqlSession session = sessionFactory.openSession();
-		try {
-			ChargeTypeMapper scm = session.getMapper(ChargeTypeMapper.class);
-			ChargeType sc = new ChargeType();
-			sc.setCharge_type_name(typeName);
-			int count = scm.insertSelective(sc);
-			session.commit();
-			return true;
-		} finally {
-			session.close();
-		}
-	}
-
-	@Override
 	public boolean deletChargeType(List<Integer> ChargeType_ids) {
 		SqlSession session = sessionFactory.openSession();
 		try {
@@ -602,7 +572,6 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			session.close();
 		}
 	}
-
 
 	@Override
 	public boolean deletUserType(List<Integer> UserType_ids) {
@@ -712,7 +681,6 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		}
 	}
 
-
 	@Override
 	public boolean deletStudentStatus(List<Integer> StudentStatus_ids) {
 		SqlSession session = sessionFactory.openSession();
@@ -785,24 +753,6 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 				result.add(counts);
 			}
 			return result;
-		} finally {
-			session.close();
-		}
-	}
-
-	@Override
-	public boolean addRecruitAgent(RecruitAgent agent) {
-
-		SqlSession session = sessionFactory.openSession();
-		// Integer id = getNextId(session, "recruit_agent", "agent_id");
-		User user = (User) remoteServlet.getUser();
-
-		agent.setUser_id(user.getUser_id());
-		try {
-			RecruitAgentMapper mp = session.getMapper(RecruitAgentMapper.class);
-			mp.insertSelective(agent);
-			session.commit();
-			return true;
 		} finally {
 			session.close();
 		}
@@ -1015,21 +965,6 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	}
 
 	@Override
-	public boolean addCollegeAgreement(CollegeAgreement agreement) {
-		SqlSession session = ConnectionManager.getSessionFactory()
-				.openSession();
-		try {
-			CollegeAgreementMapper bim = session
-					.getMapper(CollegeAgreementMapper.class);
-			bim.insertSelective(agreement);
-			session.commit();
-			return true;
-		} finally {
-			session.close();
-		}
-	}
-
-	@Override
 	public boolean deleteCollegeAgreement(List<CollegeAgreement> agreements) {
 		SqlSession session = sessionFactory.openSession();
 		try {
@@ -1120,21 +1055,6 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			List<RightsCategoryFunctionKey> result = mp.selectByExample(ex);
 			return result;
 
-		} finally {
-			session.close();
-		}
-	}
-
-	@Override
-	public boolean addRightsCategory(RightsCategory category) {
-		SqlSession session = sessionFactory.openSession();
-		try {
-			RightsCategoryMapper scm = session
-					.getMapper(RightsCategoryMapper.class);
-
-			int count = scm.insertSelective(category);
-			session.commit();
-			return true;
 		} finally {
 			session.close();
 		}
@@ -1342,7 +1262,6 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		}
 	}
 
-
 	@Override
 	public boolean deletUser(List<Integer> user_ids) {
 		SqlSession session = sessionFactory.openSession();
@@ -1457,7 +1376,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 
 				Object example = exampleClass.newInstance();
 
-				Field[] fields = beanClass.getDeclaredFields();
+				Field[] fields = ReflectUtil.getDeclaredFields(beanClass);
 				int nameFieldIndex = -1;
 				for (int i = 0; i < fields.length; i++) {
 					if (fields[i].getName().toLowerCase().contains("name")) { // 一般这种表中只有一个带name的字段
@@ -1795,34 +1714,6 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		} finally {
 			session.close();
 		}
-	}
-
-	/**
-	 * 获取指定表的指定字段的下一个id值
-	 * 
-	 * @param session
-	 * @param tableName
-	 * @param columnName
-	 * @return
-	 */
-	public Integer getNextId(SqlSession session, String tableName,
-			String columnName) {
-		Integer id = null;
-		try {
-			String sql = new StringBuilder("select fun_table_seq('")
-					.append(tableName).append("','").append(columnName)
-					.append("','next')").toString();
-			PreparedStatement prep = session.getConnection().prepareStatement(
-					sql);
-			ResultSet rs = prep.executeQuery();
-			while (rs.next()) {
-				id = rs.getInt(1);
-				break;
-			}
-		} catch (SQLException e) {
-			Log.e("", e);
-		}
-		return id;
 	}
 
 	@Override

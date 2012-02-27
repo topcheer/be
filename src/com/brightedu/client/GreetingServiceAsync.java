@@ -1,5 +1,7 @@
 package com.brightedu.client;
 
+import java.io.Serializable;
+
 import com.brightedu.model.edu.User;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -10,5 +12,5 @@ public interface GreetingServiceAsync {
 	void greetServer(String input, AsyncCallback<String> callback)
 			throws IllegalArgumentException;
 
-	void login(User user, AsyncCallback<String> callback);
+	void login(User user, AsyncCallback<Serializable[]> callback);
 }

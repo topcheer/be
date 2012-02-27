@@ -26,6 +26,7 @@ import com.brightedu.dao.edu.CollegeAgreementMapper;
 import com.brightedu.model.edu.CollegeAgreement;
 import com.brightedu.server.util.Log;
 import com.brightedu.server.util.ServerProperties;
+import com.brightedu.server.util.Utils;
 
 /**
  * @author chetwang, 主要处理文件上传的form
@@ -157,7 +158,6 @@ public class FileFormServlet extends BrightServlet {
 	private void addCollegeAgreement(HttpServletRequest request,
 			HttpServletResponse response) {
 		try {
-
 			ServletFileUpload upload = new ServletFileUpload();
 			FileItemIterator iter = upload.getItemIterator(request);
 			// pick up parameters first and note actual FileItem
@@ -166,6 +166,8 @@ public class FileFormServlet extends BrightServlet {
 			Date now = new Date();
 			agreement.setUpdate_date(now);
 			agreement.setRegister_date(now);
+			agreement.setAgreement_id(Utils.getNextId(null,
+					"college_agreement", "agreement_id"));
 			while (iter.hasNext()) {
 				FileItemStream item = iter.next();
 				String name = item.getFieldName();
@@ -178,7 +180,6 @@ public class FileFormServlet extends BrightServlet {
 								.asString(item.openStream())));
 					} else if (name.equals("status")) {
 						String status = (Streams.asString(item.openStream()));
-						System.out.println("status: " + status);
 						agreement.setAgreement_status(status.equals("1"));
 					} else {
 						Log.w("Unknown param form field: " + name);
@@ -194,7 +195,7 @@ public class FileFormServlet extends BrightServlet {
 				}
 			}
 
-			agent.addCollegeAgreement(agreement);
+			agent.addModel(agreement);
 
 			response(response, "", true);
 		} catch (Exception e) {

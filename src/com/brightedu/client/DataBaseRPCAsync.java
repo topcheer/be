@@ -83,8 +83,6 @@ public interface DataBaseRPCAsync {
 	void getAgentTypeList(int offset, int limit, boolean needTotalCounts,
 			AsyncCallback<List<AgentType>> callback);
 
-	void addAgentType(AgentType agentType, AsyncCallback<Boolean> callback);
-
 	void deleteAgentType(List<Integer> agentType_ids,
 			AsyncCallback<Boolean> callback);
 
@@ -99,8 +97,6 @@ public interface DataBaseRPCAsync {
 
 	void getChargeTypeList(int offset, int limit, boolean needTotalCounts,
 			AsyncCallback<List<ChargeType>> callback);
-
-	void addChargeType(String typeName, AsyncCallback<Boolean> callback);
 
 	void deletChargeType(List<Integer> chargeType_ids,
 			AsyncCallback<Boolean> callback);
@@ -133,8 +129,6 @@ public interface DataBaseRPCAsync {
 	void saveStudentStatus(StudentStatus StudentStatus,
 			AsyncCallback<Boolean> callback);
 
-	void addRecruitAgent(RecruitAgent agent, AsyncCallback<Boolean> callback);
-
 	void deletRecruitAgent(List<Integer> agent_ids,
 			AsyncCallback<Boolean> callback);
 
@@ -162,15 +156,9 @@ public interface DataBaseRPCAsync {
 			boolean needTotalCounts,
 			AsyncCallback<List<CollegeAgreement>> callback);
 
-	void addCollegeAgreement(CollegeAgreement agreement,
-			AsyncCallback<Boolean> callback);
-
 	void getCurrentBatch(AsyncCallback<Integer> callback);
 
 	void getRecruitPlanList(int batch, AsyncCallback<List<RecruitPlan>> callback);
-
-	void addRightsCategory(RightsCategory category,
-			AsyncCallback<Boolean> callback);
 
 	void addRightsCatetoryFunctions(
 			List<RightsCategoryFunctionKey> rightsCategoryFunctionList,
