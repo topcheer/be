@@ -19,7 +19,7 @@ public abstract class DetailedEditorForm extends DynamicForm {
 	public DetailedEditorForm(MasterDetailAdmin masterDetailAdmin) {
 		this.admin = masterDetailAdmin;
 		setNumCols(4);
-		setOverflow(Overflow.SCROLL);
+		setOverflow(Overflow.AUTO);
 		saveBtn.setStartRow(true);
 		saveBtn.setEndRow(false);
 		saveBtn.setWidth(60);

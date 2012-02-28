@@ -34,7 +34,7 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 	SelectItem batchItem = new SelectItem("batch_owner", "隶属批次");
 	SelectItem classfiedItem = new SelectItem("classified_owner", "隶属层次");
 	SelectItem subject_ownerItem = new SelectItem("subject_owner", "隶属专业");
-//	SelectItem agent_ownerItem = new SelectItem("agent_owner", "隶属招生点");
+	// SelectItem agent_ownerItem = new SelectItem("agent_owner", "隶属招生点");
 	SelectItem fund_agentItem = new SelectItem("fund_agent", "费用接收机构");
 	SelectItem managed_agentItem = new SelectItem("managed_agent", "学生管理机构");
 	SelectItem stu_status_idItem = new SelectItem("stu_status_id", "学生状态");
@@ -53,32 +53,36 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 	SelectItem student_type_idItem = new SelectItem("student_type_id", "学生类型");
 	SelectItem major_category_idItem = new SelectItem("major_category_id",
 			"成教学生大类");
-//	DateItem register_dateItem = new DateItem("regster_date", "登记时间");
-//	DateItem update_dateItem = new DateItem("update_date", "更新时间");
+
+	// DateItem register_dateItem = new DateItem("regster_date", "登记时间");
+	// DateItem update_dateItem = new DateItem("update_date", "更新时间");
 
 	public StudentsRegisterEditorForm(MasterDetailAdmin admin) {
 		super(admin);
 		sexItem.setValueMap("男", "女");
-		
+
 		setFields(student_nameItem, identity_cardItem, sexItem, exam_numItem,
 				student_addressItem, student_phoneItem, postal_codeItem,
 				student_linkmanItem, linkman_phoneItem, student_college_idItem,
 				collegwOwnerItem, batchItem, classfiedItem, subject_ownerItem,
-				 fund_agentItem, managed_agentItem,
-				stu_status_idItem, birthdayItem, ethnic_group_idItem,
-				political_status_idItem, employerItem, graduate_college_idItem,
-				graduate_dateItem, graduate_certificate_numberItem,
-				student_type_idItem, major_category_idItem
-				,saveBtn);
+				fund_agentItem, managed_agentItem, stu_status_idItem,
+				birthdayItem, ethnic_group_idItem, political_status_idItem,
+				employerItem, graduate_college_idItem, graduate_dateItem,
+				graduate_certificate_numberItem, student_type_idItem,
+				major_category_idItem, saveBtn);
 	}
 
 	@Override
 	public void setValue(Serializable model) {
 		StudentInfo student = (StudentInfo) model;
-		
+
 		batchItem.setValue(student.getBatch_owner());
-		long birthTime = Long.parseLong(student.getBirthday());
-		birthdayItem.setValue(new Date(birthTime));
+		if (student.getBirthday() != null) {
+			long birthTime = Long.parseLong(student.getBirthday());
+			birthdayItem.setValue(new Date(birthTime));
+		} else {
+			birthdayItem.setValue(new Date());
+		}
 		classfiedItem.setValue(student.getClassified_owner());
 		collegwOwnerItem.setValue(student.getCollege_owner());
 		employerItem.setValue(student.getEmployer());
@@ -95,7 +99,7 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 		managed_agentItem.setValue(student.getManaged_agent());
 		political_status_idItem.setValue(student.getPolitical_status_id());
 		postal_codeItem.setValue(student.getPostal_code());
-//		register_dateItem.setValue(student.getRegister_date());
+		// register_dateItem.setValue(student.getRegister_date());
 		stu_status_idItem.setValue(student.getStu_status_id());
 		student_addressItem.setValue(student.getStudent_address());
 		student_college_idItem.setValue(student.getStudent_college_id());
@@ -106,16 +110,16 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 		sexItem.setValue(student.getStudent_sex());
 		student_type_idItem.setValue(student.getStudent_type_id());
 		subject_ownerItem.setValue(student.getSubject_owner());
-//		update_dateItem.setValue(student.getUpdate_date());
+		// update_dateItem.setValue(student.getUpdate_date());
 	}
 
 	@Override
 	public StudentInfo getModel() {
 		StudentInfo s = new StudentInfo();
 		s.setAgent_owner(BrightEdu.getUser().getAgent_id());
-//		s.setAgent_owner(getValueAsInteger(agent_ownerItem));
+		// s.setAgent_owner(getValueAsInteger(agent_ownerItem));
 		s.setBatch_owner(getValueAsInteger(batchItem));
-		Date birthday = (Date)birthdayItem.getValue();
+		Date birthday = (Date) birthdayItem.getValue();
 		s.setBirthday(String.valueOf(birthday.getTime()));
 		s.setClassified_owner(getValueAsInteger(classfiedItem));
 		s.setCollege_owner(getValueAsInteger(collegwOwnerItem));
@@ -154,7 +158,7 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 			SC.say("数据结构所需数量未达到需求");
 			return;
 		} else {
-			int i=0;
+			int i = 0;
 			batchItem.setValueMap(valueMaps[i++]);
 			collegwOwnerItem.setValueMap(valueMaps[i++]);
 			classfiedItem.setValueMap(valueMaps[i++]);
@@ -169,9 +173,9 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 			major_category_idItem.setValueMap(valueMaps[i++]);
 		}
 	}
-	
+
 	@Override
 	public void reset() {
-		setValue(new StudentInfo());		
+		setValue(new StudentInfo());
 	}
 }

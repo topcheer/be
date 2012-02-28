@@ -221,8 +221,7 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 					rec.setAttribute("identity_card", bi.getIdentity_card());
 					rec.setAttribute("student_college_id",
 							bi.getStudent_college_id());
-					rec.setAttribute("agent_owner",
-							bi.getAgent_owner());
+					rec.setAttribute("agent_owner", bi.getAgent_owner());
 					listData[i] = rec;
 				}
 				resultList.setData(listData);
@@ -236,11 +235,12 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 	@Override
 	public ListGridField[] createGridFileds() {
 		fileds = parseGridFields(new String[] { "obj_name", "identity_card",
-				"student_college_id","agent_owner" }, new String[] { "学生", "身份证", "学号","学生管理机构" },
-				new ListGridFieldType[] { ListGridFieldType.TEXT,
-						ListGridFieldType.TEXT, ListGridFieldType.TEXT, ListGridFieldType.TEXT },
-				new boolean[] { false, false, false,false },
-				new int[] { 100, -1, -1,100 });
+				"student_college_id", "agent_owner" }, new String[] { "学生",
+				"身份证", "学号", "学生管理机构" }, new ListGridFieldType[] {
+				ListGridFieldType.TEXT, ListGridFieldType.TEXT,
+				ListGridFieldType.TEXT, ListGridFieldType.TEXT },
+				new boolean[] { false, false, false, false }, new int[] { 100,
+						-1, -1, 100 });
 
 		return fileds;
 	}
@@ -251,8 +251,7 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 
 	@Override
 	public void deleteRecords(List<Integer> deleteIds) {
-		// TODO Auto-generated method stub
-
+		dbService.deleteModel("StudentInfo", "student_id", deleteIds, delAsync);
 	}
 
 	@Override
@@ -298,9 +297,8 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 
 			public void init() {
 				super.init();
-				// form.setOverflow(Overflow.HIDDEN);
 				// 这里form不能自适应大小，shit！
-				form.setWidth(560);
+				form.setWidth(600);
 				form.setHeight(280);
 				form.hideSaveItem();
 				form.setPadding(5);
@@ -311,6 +309,7 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 						ethnic_groupValues, political_statusValues,
 						graduate_collegeValues, student_typeValues,
 						major_categoryValues);
+				form.setBorder("1px solid gray");
 			}
 
 			@Override
@@ -325,11 +324,12 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 
 			public void show() {
 				super.show();
+//				redraw();
 			}
 		};
 		adminDialog.setAutoHeight();
 		adminDialog.setAutoWidth();
-		adminDialog.setSize("520", "340");
+		adminDialog.setSize("620", "340");
 		adminDialog.setAdminPanel(this);
 		return adminDialog;
 	}

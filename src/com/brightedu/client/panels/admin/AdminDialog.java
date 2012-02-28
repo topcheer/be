@@ -5,6 +5,7 @@ import java.io.Serializable;
 import com.brightedu.client.BrightEdu;
 import com.brightedu.client.CommonAsyncCall;
 import com.brightedu.client.panels.BasicAdminPanel;
+import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.IButton;
@@ -46,6 +47,11 @@ public abstract class AdminDialog extends Window {
 		setAnimateShowEffect(AnimationEffect.WIPE);
 		setAnimateShowTime(800);
 		form = createContentForm();
+		form.setAutoShowParent(true);
+		form.setAutoDraw(true);
+//		form.setWidth100();
+//		form.setHeight100();
+//		form.setLayoutAlign(Alignment.CENTER);
 		okBtn.addClickHandler(new ClickHandler() {
 
 			@Override
@@ -56,10 +62,10 @@ public abstract class AdminDialog extends Window {
 		form.setAutoFocus(true);
 		form.setWrapItemTitles(false);
 		// form.setAutoHeight();
-
+		
 		addItem(form);
-
-		bottomLayout.addMember(new Label("  "));
+		bottomLayout.setAlign(Alignment.RIGHT);
+//		bottomLayout.addMember(new Label("  "));
 		bottomLayout.addMember(new LayoutSpacer());
 		bottomLayout.setPadding(5);
 		okBtn.setWidth(70);
@@ -67,8 +73,9 @@ public abstract class AdminDialog extends Window {
 		bottomLayout.addMember(okBtn);
 
 		bottomLayout.setAutoHeight();
+		
 		bottomLayout.setWidth100();
-
+		
 		addItem(bottomLayout);
 
 		// RegExpValidator lenValidator = new RegExpValidator("^\\d{10}$");

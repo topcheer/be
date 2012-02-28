@@ -179,7 +179,6 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 
 			public void init() {
 				super.init();
-				form.setOverflow(Overflow.HIDDEN);
 				// 这里form不能自适应大小，shit！
 				form.setWidth(500);
 				form.setHeight(280);
@@ -193,6 +192,7 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 
 				form.agent_typeItem.setValueMap(agentTypes);
 				form.parentAgentItem.setValueMap(agentRelations);
+				form.setBorder("1px solid gray");
 				return form;
 			}
 
@@ -207,8 +207,9 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 		};
 		adminDialog.setAutoHeight();
 		adminDialog.setAutoWidth();
-		adminDialog.setSize("520", "340");
+		adminDialog.setSize("525", "350");
 		adminDialog.setAdminPanel(this);
+		
 		return adminDialog;
 	}
 
