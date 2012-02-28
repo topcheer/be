@@ -19,13 +19,11 @@ public class TextAdminDialog extends AdminDialog {
 
 	public void init() {
 		int maxTitleLen = 0;
-		LengthRangeValidator lenValidator = new LengthRangeValidator();
-		lenValidator.setMax(127);
-		lenValidator.setErrorMessage("内容已经超过了最大允许数量!");
+		
 		items = new TextItem[titles.length];
 		for (int i = 0; i < titles.length; i++) {
 			items[i] = new TextItem(titles[i],titles[i]);
-			items[i].setValidators(lenValidator);
+			items[i].setValidators(standardLenthValidator);
 			items[i].setRequired(true);
 			if (titles[i].length() > maxTitleLen) {
 				maxTitleLen = titles[i].length();

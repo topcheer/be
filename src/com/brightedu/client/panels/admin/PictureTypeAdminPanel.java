@@ -13,6 +13,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.util.SC;
+import com.smartgwt.client.widgets.form.validator.Validator;
 import com.smartgwt.client.widgets.grid.ListGridField;
 
 public class PictureTypeAdminPanel extends BasicAdminPanel {
@@ -30,7 +31,7 @@ public class PictureTypeAdminPanel extends BasicAdminPanel {
 		return parseGridFields(new String[] { "obj_name" },
 				new String[] { "照片类型" },
 				new ListGridFieldType[] { ListGridFieldType.TEXT },
-				new boolean[] { true }, new int[] { -1 });
+				new boolean[] { true }, new int[] { -1 },new Validator[] { standardLenthValidator});
 	}
 
 	public void update(final Record rec) {

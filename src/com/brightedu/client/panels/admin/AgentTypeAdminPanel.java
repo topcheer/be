@@ -14,6 +14,7 @@ import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.BooleanItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
+import com.smartgwt.client.widgets.form.validator.Validator;
 import com.smartgwt.client.widgets.grid.ListGridField;
 
 public class AgentTypeAdminPanel extends BasicAdminPanel {
@@ -56,7 +57,8 @@ public class AgentTypeAdminPanel extends BasicAdminPanel {
 		return parseGridFields(new String[] { "obj_name", "is_return" },
 				new String[] { "机构类型", "是否有返利" }, new ListGridFieldType[] {
 						ListGridFieldType.TEXT, ListGridFieldType.BOOLEAN },
-				new boolean[] { true, true }, new int[] { -1, 200 });
+				new boolean[] { true, true }, new int[] { -1, 200 },
+				new Validator[] { standardLenthValidator, null });
 	}
 
 	@Override

@@ -19,6 +19,7 @@ import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
+import com.smartgwt.client.widgets.form.validator.LengthRangeValidator;
 import com.smartgwt.client.widgets.form.validator.Validator;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.LayoutSpacer;
@@ -28,9 +29,12 @@ public abstract class AdminDialog extends Window {
 	IButton okBtn = new IButton("确定");
 	DynamicForm form;
 	protected HLayout bottomLayout = new HLayout();
+	LengthRangeValidator standardLenthValidator = new LengthRangeValidator();
+	
 
 	public AdminDialog() {
-
+		standardLenthValidator.setMax(127);standardLenthValidator.setMin(1);
+		standardLenthValidator.setErrorMessage("内容已经超过了最大允许数量!");
 	}
 
 	public void init() {

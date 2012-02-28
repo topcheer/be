@@ -11,6 +11,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.util.SC;
+import com.smartgwt.client.widgets.form.validator.Validator;
 import com.smartgwt.client.widgets.grid.ListGridField;
 
 public class CorpCollegeAdminPanel extends BasicAdminPanel {
@@ -53,7 +54,8 @@ public class CorpCollegeAdminPanel extends BasicAdminPanel {
 		return parseGridFields(new String[] { "obj_name", "reg_time" },
 				new String[] { "高校名称", "录入时间" }, new ListGridFieldType[] {
 						ListGridFieldType.TEXT, ListGridFieldType.DATE },
-				new boolean[] { true, false }, new int[] { -1, 200 });
+				new boolean[] { true, false }, new int[] { -1, 200 },
+				new Validator[] { standardLenthValidator, null });
 	}
 
 	@Override

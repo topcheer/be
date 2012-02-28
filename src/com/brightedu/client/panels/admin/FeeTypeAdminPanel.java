@@ -16,6 +16,7 @@ import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.BooleanItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
+import com.smartgwt.client.widgets.form.validator.Validator;
 import com.smartgwt.client.widgets.grid.ListGridField;
 
 public class FeeTypeAdminPanel extends BasicAdminPanel {
@@ -30,10 +31,14 @@ public class FeeTypeAdminPanel extends BasicAdminPanel {
 	}
 
 	public ListGridField[] createGridFileds() {
-		return parseGridFields(new String[] { "obj_name","is_split","is_by_end","can_return" },
-				new String[] { "费用名称","是否按年支付","是否期末支付","是否涉及返利计算" },
-				new ListGridFieldType[] { ListGridFieldType.TEXT,ListGridFieldType.BOOLEAN,ListGridFieldType.BOOLEAN ,ListGridFieldType.BOOLEAN },
-				new boolean[] { true,true,true,true }, new int[] { -1,120,120,120 });
+		return parseGridFields(new String[] { "obj_name", "is_split",
+				"is_by_end", "can_return" }, new String[] { "费用名称", "是否按年支付",
+				"是否期末支付", "是否涉及返利计算" }, new ListGridFieldType[] {
+				ListGridFieldType.TEXT, ListGridFieldType.BOOLEAN,
+				ListGridFieldType.BOOLEAN, ListGridFieldType.BOOLEAN },
+				new boolean[] { true, true, true, true }, new int[] { -1, 120,
+						120, 120 }, new Validator[] { standardLenthValidator,
+						null, null, null });
 	}
 
 	public void update(final Record rec) {
@@ -100,13 +105,11 @@ public class FeeTypeAdminPanel extends BasicAdminPanel {
 				currentRowsInOnePage, init, callback);
 	}
 
-
 	@Override
 	public void add(Serializable model) {
 		final FeeType at = (FeeType) model;
 
-		if (at.getFee_name() != null
-				&& at.getFee_name().trim().length() > 0) {
+		if (at.getFee_name() != null && at.getFee_name().trim().length() > 0) {
 
 			dbService.addModel(at, getAdminDialog().getAddAsync());
 		} else {
@@ -123,11 +126,11 @@ public class FeeTypeAdminPanel extends BasicAdminPanel {
 
 	private class FeeTypeAddDialog extends AdminDialog {
 
-		private TextItem feeTypeNameItem = new TextItem("feeTypeName",
-				"费用名称");
+		private TextItem feeTypeNameItem = new TextItem("feeTypeName", "费用名称");
 		private BooleanItem isEndItem = new BooleanItem("is_by_end", "是否期末支付");
 		private BooleanItem isSplitItem = new BooleanItem("is_split", "是否按年支付");
-		private BooleanItem canReturnItem = new BooleanItem("can_return", "是否涉及返利计算");
+		private BooleanItem canReturnItem = new BooleanItem("can_return",
+				"是否涉及返利计算");
 		int len = 250;
 
 		public void init() {
@@ -157,11 +160,11 @@ public class FeeTypeAdminPanel extends BasicAdminPanel {
 			canReturnItem.setWidth(len);
 			canReturnItem.setValue(false);
 			form.setPadding(5);
-			form.setFields(feeTypeNameItem, isEndItem,isSplitItem,canReturnItem);
+			form.setFields(feeTypeNameItem, isEndItem, isSplitItem,
+					canReturnItem);
 			return form;
 		}
 
 	}
-
 
 }

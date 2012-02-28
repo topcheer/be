@@ -8,7 +8,6 @@ import com.brightedu.client.BrightEdu;
 import com.brightedu.client.CommonAsyncCall;
 import com.brightedu.client.DataBaseRPCAsync;
 import com.brightedu.client.panels.admin.AdminDialog;
-import com.brightedu.model.edu.RecruitAgent;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.Alignment;
@@ -30,6 +29,8 @@ import com.smartgwt.client.widgets.form.fields.events.IconClickEvent;
 import com.smartgwt.client.widgets.form.fields.events.IconClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
+import com.smartgwt.client.widgets.form.validator.LengthRangeValidator;
+import com.smartgwt.client.widgets.form.validator.Validator;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.events.CellSavedEvent;
@@ -66,6 +67,8 @@ public abstract class BasicAdminPanel extends VLayout {
 
 	protected int currentRowsInOnePage = 20;
 
+	protected LengthRangeValidator standardLenthValidator = new LengthRangeValidator();
+
 	private AdminDialog dialog;
 
 	public BasicAdminPanel() {
@@ -79,6 +82,9 @@ public abstract class BasicAdminPanel extends VLayout {
 	}
 
 	public void init() {
+		standardLenthValidator.setMax(127);//不管中英文一刀切！！！！
+		standardLenthValidator.setMin(1);
+		standardLenthValidator.setErrorMessage("内容已经超过了最大允许数量!");
 		initListGrid();
 		addButton.setAutoFit(true);
 		delButton.setAutoFit(true);
@@ -375,6 +381,12 @@ public abstract class BasicAdminPanel extends VLayout {
 
 	protected ListGridField[] parseGridFields(String[] names, String[] titles,
 			ListGridFieldType[] types, boolean[] canEdit, int[] width) {
+		return parseGridFields(names, titles, types, canEdit, width, null);
+	}
+
+	protected ListGridField[] parseGridFields(String[] names, String[] titles,
+			ListGridFieldType[] types, boolean[] canEdit, int[] width,
+			Validator[] val) {
 		ListGridField[] fields = new ListGridField[names.length];
 		for (int i = 0; i < names.length; i++) {
 			fields[i] = new ListGridField(names[i], titles[i]);
@@ -386,6 +398,7 @@ public abstract class BasicAdminPanel extends VLayout {
 			}
 			fields[i].setCanEdit(canEdit[i]);
 			fields[i].setAlign(Alignment.CENTER);
+
 			if (canEdit[i]) {
 				fields[i].addCellSavedHandler(new CellSavedHandler() {
 
@@ -395,6 +408,9 @@ public abstract class BasicAdminPanel extends VLayout {
 						update(rec);
 					}
 				});
+				if (val != null && val[i] != null) {
+					fields[i].setValidators(val[i]);
+				}
 			}
 		}
 		return fields;

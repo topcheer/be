@@ -47,7 +47,7 @@ public class StudentClassesAdminPanel extends BasicAdminPanel {
 					rec.setAttribute("id", sc.getClassified_id());
 					rec.setAttribute("object", sc);
 					rec.setAttribute("obj_name", sc.getClassified_name());
-					rec.setAttribute("default_lol", (int)sc.getDefault_lol());
+					rec.setAttribute("default_lol", (int) sc.getDefault_lol());
 					rec.setAttribute("reg_time", sc.getRegister_date());
 					listData[i] = rec;
 				}
@@ -66,10 +66,13 @@ public class StudentClassesAdminPanel extends BasicAdminPanel {
 
 	@Override
 	public ListGridField[] createGridFileds() {
-		return parseGridFields(new String[] { "obj_name","default_lol", "reg_time" },
-				new String[] { "学生层次名称","缺省学制(年)", "录入时间" }, new ListGridFieldType[] {
-						ListGridFieldType.TEXT,ListGridFieldType.INTEGER, ListGridFieldType.DATE },
-				new boolean[] { true,true, false }, new int[] { -1,120, 200 });
+		return parseGridFields(new String[] { "obj_name", "default_lol",
+				"reg_time" }, new String[] { "学生层次名称", "缺省学制(年)", "录入时间" },
+				new ListGridFieldType[] { ListGridFieldType.TEXT,
+						ListGridFieldType.INTEGER, ListGridFieldType.DATE },
+				new boolean[] { true, true, false },
+				new int[] { -1, 120, 200 }, new Validator[] {
+						standardLenthValidator, null, null });
 	}
 
 	@Override
@@ -79,7 +82,8 @@ public class StudentClassesAdminPanel extends BasicAdminPanel {
 		final String oldName = editedSC.getClassified_name();
 		final int lol = editedSC.getDefault_lol();
 		editedSC.setClassified_name(rec.getAttributeAsString("obj_name"));
-		editedSC.setDefault_lol((short)rec.getAttributeAsInt("default_lol").intValue());
+		editedSC.setDefault_lol((short) rec.getAttributeAsInt("default_lol")
+				.intValue());
 		dbService.saveStudentClasses(editedSC, new CommonAsyncCall<Boolean>() {
 			@Override
 			public void onSuccess(Boolean result) {
@@ -88,9 +92,9 @@ public class StudentClassesAdminPanel extends BasicAdminPanel {
 
 			protected void failed() { // rollback in UI
 				editedSC.setClassified_name(oldName);
-				editedSC.setDefault_lol((short)lol);
+				editedSC.setDefault_lol((short) lol);
 				rec.setAttribute("obj_name", oldName);
-				
+
 			}
 		});
 	}
@@ -117,8 +121,7 @@ public class StudentClassesAdminPanel extends BasicAdminPanel {
 
 	private class StudentClassifiedAddDialog extends AdminDialog {
 
-		private TextItem classifiedName = new TextItem("classifiedName",
-				"层次名称");
+		private TextItem classifiedName = new TextItem("classifiedName", "层次名称");
 		private TextItem lol = new TextItem("lol", "缺省学制(年)");
 		int len = 250;
 
@@ -147,11 +150,11 @@ public class StudentClassesAdminPanel extends BasicAdminPanel {
 			validator.setAttribute("min", 1);
 			validator.setAttribute("max", 6);
 			lol.setValidators(validator);
-			
+
 			form.setPadding(5);
 			form.setFields(classifiedName, lol);
 			form.setValidateOnExit(true);
-			
+
 			return form;
 		}
 

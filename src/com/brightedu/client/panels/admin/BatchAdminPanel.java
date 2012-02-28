@@ -11,6 +11,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.util.SC;
+import com.smartgwt.client.widgets.form.validator.Validator;
 import com.smartgwt.client.widgets.grid.ListGridField;
 
 public class BatchAdminPanel extends BasicAdminPanel {
@@ -21,7 +22,7 @@ public class BatchAdminPanel extends BasicAdminPanel {
 
 	@Override
 	public void deleteRecords(final List<Integer> deleteIds) {
-//		dbService.deleteBatch(deleteIds, delAsync);
+		// dbService.deleteBatch(deleteIds, delAsync);
 		dbService.deleteModel("BatchIndex", "batch_id", deleteIds, delAsync);
 	}
 
@@ -29,7 +30,8 @@ public class BatchAdminPanel extends BasicAdminPanel {
 		return parseGridFields(new String[] { "obj_name", "reg_time" },
 				new String[] { "批次名称", "录入时间" }, new ListGridFieldType[] {
 						ListGridFieldType.TEXT, ListGridFieldType.DATE },
-				new boolean[] { true, false }, new int[] { -1, 200 });
+				new boolean[] { true, false }, new int[] { -1, 200 },
+				new Validator[] { standardLenthValidator, null });
 	}
 
 	public void update(final Record rec) {
