@@ -1,4 +1,4 @@
-package com.brightedu.client.panels.admin.students;
+package com.brightedu.client.panels.admin;
 
 import java.io.Serializable;
 import java.util.Date;

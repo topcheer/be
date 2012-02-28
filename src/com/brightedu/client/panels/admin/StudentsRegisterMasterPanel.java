@@ -1,4 +1,4 @@
-package com.brightedu.client.panels.admin.students;
+package com.brightedu.client.panels.admin;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -9,7 +9,6 @@ import com.brightedu.client.BrightEdu;
 import com.brightedu.client.CommonAsyncCall;
 import com.brightedu.client.panels.BasicAdminPanel;
 import com.brightedu.client.panels.MasterDetailAdmin;
-import com.brightedu.client.panels.admin.AdminDialog;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.EthnicGroup;

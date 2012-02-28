@@ -1,7 +1,6 @@
 package com.brightedu.client.panels;
 
 import com.brightedu.client.panels.admin.*;
-import com.brightedu.client.panels.admin.students.StudentsRegister;
 
 public class PanelData {
 
