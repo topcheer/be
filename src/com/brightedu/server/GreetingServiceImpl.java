@@ -123,32 +123,28 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 
 	private String getUserRights(User user) {
 		StringBuffer rights = new StringBuffer();
-		Connection conn = ConnectionManager.getConnection("edu");
-
-		PreparedStatement ps;
-		try {
-			ps = conn
-					.prepareStatement("select distinct category_id,category_name from userrights_effective where user_id = ?");
-
-			ps.setInt(1, user.getUser_id());
-
-			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
-				rights.append(rs.getString(1)).append(" ")
-						.append(rs.getString(2)).append(" root|");
-			}
-
-			rs.close();
-			ps.close();
-		} catch (SQLException e) {
-			Log.e("", e);
-		} finally {
-			ConnectionManager.releaseConnection(conn);
-		}
-
 		SqlSession session = ConnectionManager.getSessionFactory()
 				.openSession();
+		Connection conn = session.getConnection();
 		try {
+			PreparedStatement ps;
+			try {
+				ps = conn
+						.prepareStatement("select distinct category_id,category_name from userrights_effective where user_id = ?");
+
+				ps.setInt(1, user.getUser_id());
+
+				ResultSet rs = ps.executeQuery();
+				while (rs.next()) {
+					rights.append(rs.getString(1)).append(" ")
+							.append(rs.getString(2)).append(" root|");
+				}
+
+				rs.close();
+				ps.close();
+			} catch (SQLException e) {
+				Log.e("", e);
+			}
 			UserRightsEffectiveMapper scm = session
 					.getMapper(UserRightsEffectiveMapper.class);
 			UserRightsEffectiveExample ex = new UserRightsEffectiveExample();
@@ -161,9 +157,11 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 			}
 
 			return rights.toString();
+
 		} finally {
 			session.close();
 
 		}
 	}
+
 }

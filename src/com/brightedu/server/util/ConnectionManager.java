@@ -43,42 +43,42 @@ public class ConnectionManager {
 		}
 	}
 	
-	protected static void loadCustomPool(){
-		Iterator<DataSource> it = dataSources.values().iterator();
-		while (it.hasNext()) {
-			DataSource source = it.next();
-			if (source instanceof ComboPooledDataSource) {
-				((ComboPooledDataSource) source).close();
-			}
-		}
-		defaultSource = null;
-		Document config = Utils.getXMLDocument(ConnectionManager.class
-				.getResource("/datasource.xml"));
-		NodeList sourceList = config.getElementsByTagName("pool");
-		for (int i = 0; i < sourceList.getLength(); i++) {
-			Element pool = (Element) sourceList.item(i);
-			String poolType = pool.getAttribute("type");
-			String name = pool.getAttribute("name");
-			boolean defaultPool = "true".equals(pool.getAttribute("default")
-					.toLowerCase());
-			if (defaultPool)
-				defaultSource = name;
-			if (dataSources.containsKey("name")) {
-				Log.e("duplicated datasource defined:" + name);
-				break;
-			}
-			if (poolType.equals("jdbc")) {
-				initJdbcDataSource(pool);
-			} else if (poolType.equals("jndi")) {
-				initJndiDataSource(pool);
-			} else {
-				Log.e("no such connection pool type: " + poolType);
-				break;
-			}
-			Connection conn = getConnection(name);
-			releaseConnection(conn);
-		}
-	}
+//	protected static void loadCustomPool(){
+//		Iterator<DataSource> it = dataSources.values().iterator();
+//		while (it.hasNext()) {
+//			DataSource source = it.next();
+//			if (source instanceof ComboPooledDataSource) {
+//				((ComboPooledDataSource) source).close();
+//			}
+//		}
+//		defaultSource = null;
+//		Document config = Utils.getXMLDocument(ConnectionManager.class
+//				.getResource("/datasource.xml"));
+//		NodeList sourceList = config.getElementsByTagName("pool");
+//		for (int i = 0; i < sourceList.getLength(); i++) {
+//			Element pool = (Element) sourceList.item(i);
+//			String poolType = pool.getAttribute("type");
+//			String name = pool.getAttribute("name");
+//			boolean defaultPool = "true".equals(pool.getAttribute("default")
+//					.toLowerCase());
+//			if (defaultPool)
+//				defaultSource = name;
+//			if (dataSources.containsKey("name")) {
+//				Log.e("duplicated datasource defined:" + name);
+//				break;
+//			}
+//			if (poolType.equals("jdbc")) {
+//				initJdbcDataSource(pool);
+//			} else if (poolType.equals("jndi")) {
+//				initJndiDataSource(pool);
+//			} else {
+//				Log.e("no such connection pool type: " + poolType);
+//				break;
+//			}
+//			Connection conn = getConnection(name);
+//			releaseConnection(conn);
+//		}
+//	}
 	
 	static SqlSessionFactory sessionFactory;
 	
@@ -150,50 +150,50 @@ public class ConnectionManager {
 		pooledDataSource.setAutoCommitOnClose(true);
 	}
 
-	@Deprecated
-	public synchronized static Connection getConnection() {
-		return getConnection(defaultSource);
-	}
-
-	@Deprecated
-	public synchronized static Connection getConnection(String poolName) {
-		Connection conn = null;
-		try {
-			DataSource datasource = dataSources.get(poolName);
-			if (datasource == null) {
-				Log.e("cannot get connection, no such datasource: " + poolName);
-				return null;
-			}
-			conn = datasource.getConnection();
-			if (conn != null) {
-				conn.setAutoCommit(false);
-			}
-		} catch (SQLException e) {
-			Log.e("SQL exception " + e.getMessage(), e);
-		}
-		return conn;
-	}
-
-	@Deprecated
-	public synchronized static void releaseConnection(Connection conn) {
-		if (conn != null) {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				Log.e("release connection failed", e);
-			}
-		}
-	}
-
-	@Deprecated
-	public synchronized static void rollbackConnection(Connection conn) {
-		if (conn != null) {
-			try {
-				conn.rollback();
-			} catch (SQLException e) {
-				Log.e("roll back failed", e);
-			}
-		}
-	}
+//	@Deprecated
+//	public synchronized static Connection getConnection() {
+//		return getConnection(defaultSource);
+//	}
+//
+//	@Deprecated
+//	public synchronized static Connection getConnection(String poolName) {
+//		Connection conn = null;
+//		try {
+//			DataSource datasource = dataSources.get(poolName);
+//			if (datasource == null) {
+//				Log.e("cannot get connection, no such datasource: " + poolName);
+//				return null;
+//			}
+//			conn = datasource.getConnection();
+//			if (conn != null) {
+//				conn.setAutoCommit(false);
+//			}
+//		} catch (SQLException e) {
+//			Log.e("SQL exception " + e.getMessage(), e);
+//		}
+//		return conn;
+//	}
+//
+//	@Deprecated
+//	public synchronized static void releaseConnection(Connection conn) {
+//		if (conn != null) {
+//			try {
+//				conn.close();
+//			} catch (SQLException e) {
+//				Log.e("release connection failed", e);
+//			}
+//		}
+//	}
+//
+//	@Deprecated
+//	public synchronized static void rollbackConnection(Connection conn) {
+//		if (conn != null) {
+//			try {
+//				conn.rollback();
+//			} catch (SQLException e) {
+//				Log.e("roll back failed", e);
+//			}
+//		}
+//	}
 
 }
