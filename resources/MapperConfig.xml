@@ -86,6 +86,9 @@
 		
 		<mapper resource="com/brightedu/xml/edu/CollegeAggregationMapper.xml" />
 		
+		<mapper resource="com/brightedu/xml/edu/MessagesMapper.xml" />
+   		<mapper resource="com/brightedu/xml/edu/MessageRealMapper.xml" />
+		
 	</mappers>
 
 
