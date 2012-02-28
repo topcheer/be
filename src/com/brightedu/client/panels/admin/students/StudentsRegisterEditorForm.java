@@ -154,24 +154,11 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 			SC.say("数据结构所需数量未达到需求");
 			return;
 		} else {
-			// batchValues = new LinkedHashMap<String, String>();
-			// collegeValues = new LinkedHashMap<String, String>();
-			// sdudentClassfiedValues = new LinkedHashMap<String, String>();
-			// subjectsValues = new LinkedHashMap<String, String>();
-			// fundAgentValues = new LinkedHashMap<String, String>();
-			// managedAgentValues = new LinkedHashMap<String, String>();
-			// stu_statustValues = new LinkedHashMap<String, String>();
-			// ethnic_groupValues = new LinkedHashMap<String, String>();
-			// political_statusValues = new LinkedHashMap<String, String>();
-			// graduate_collegeValues = new LinkedHashMap<String, String>();
-			// student_typeValues = new LinkedHashMap<String, String>();
-			// major_categoryValues = new LinkedHashMap<String, String>();
 			int i=0;
 			batchItem.setValueMap(valueMaps[i++]);
 			collegwOwnerItem.setValueMap(valueMaps[i++]);
 			classfiedItem.setValueMap(valueMaps[i++]);
 			subject_ownerItem.setValueMap(valueMaps[i++]);
-//			agent_ownerItem.setValueMap(valueMaps[4]);
 			fund_agentItem.setValueMap(valueMaps[i++]);
 			managed_agentItem.setValueMap(valueMaps[i++]);
 			stu_status_idItem.setValueMap(valueMaps[i++]);

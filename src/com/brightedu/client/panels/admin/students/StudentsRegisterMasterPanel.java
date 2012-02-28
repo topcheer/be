@@ -188,6 +188,7 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 					political_statusValues, graduate_collegeValues,
 					student_typeValues, major_categoryValues);
 		}
+		fileds[3].setValueMap(managedAgentValues);
 	}
 
 	public void refresh() {
@@ -220,7 +221,8 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 					rec.setAttribute("identity_card", bi.getIdentity_card());
 					rec.setAttribute("student_college_id",
 							bi.getStudent_college_id());
-
+					rec.setAttribute("agent_owner",
+							bi.getAgent_owner());
 					listData[i] = rec;
 				}
 				resultList.setData(listData);
@@ -234,11 +236,11 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 	@Override
 	public ListGridField[] createGridFileds() {
 		fileds = parseGridFields(new String[] { "obj_name", "identity_card",
-				"student_college_id" }, new String[] { "学生", "身份证", "学号" },
+				"student_college_id","agent_owner" }, new String[] { "学生", "身份证", "学号","学生管理机构" },
 				new ListGridFieldType[] { ListGridFieldType.TEXT,
-						ListGridFieldType.TEXT, ListGridFieldType.TEXT },
-				new boolean[] { false, false, false },
-				new int[] { 100, -1, -1 });
+						ListGridFieldType.TEXT, ListGridFieldType.TEXT, ListGridFieldType.TEXT },
+				new boolean[] { false, false, false,false },
+				new int[] { 100, -1, -1,100 });
 
 		return fileds;
 	}
