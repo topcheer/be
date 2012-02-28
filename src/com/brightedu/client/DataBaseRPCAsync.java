@@ -272,4 +272,6 @@ public interface DataBaseRPCAsync {
 
 	void checkNewMessages(User user, AsyncCallback<Boolean> callback);
 
+	void markAsRead(MessageReal message, AsyncCallback<Boolean> callback);
+
 }

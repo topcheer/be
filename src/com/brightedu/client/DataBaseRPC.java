@@ -236,5 +236,5 @@ public interface DataBaseRPC extends RemoteService {
 	public boolean sendMessage(List<Messages> messages);
 	public List<MessageReal> readMessage(User user);
 	public boolean checkNewMessages(User user);
-	
+	public boolean markAsRead(MessageReal message);
 }

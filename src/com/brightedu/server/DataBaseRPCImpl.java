@@ -533,4 +533,9 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 		return agent.checkNewMessages(user);
 	}
 
+	@Override
+	public boolean markAsRead(MessageReal message) {
+		return agent.markAsRead(message);
+	}
+
 }

@@ -1939,18 +1939,8 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 					.getMapper(MessageRealMapper.class);
 			
 			MessageRealExample ex = new MessageRealExample();
-			ex.createCriteria().andFrom_userEqualTo(user.getUser_id());
+			ex.createCriteria().andTo_userEqualTo(user.getUser_id());
 			List<MessageReal> list =  bim.selectByExample(ex);
-	
-			//update unread messages to read
-			MessagesMapper mm = session.getMapper(MessagesMapper.class);
-		    MessagesExample me = new MessagesExample();
-		    me.createCriteria().andIs_readEqualTo(false).andFrom_userEqualTo(user.getUser_id());
-		    Messages rec = new Messages();
-		    rec.setIs_read(true);
-		    rec.setRead_tstp(new Date());
-		    mm.updateByExampleSelective(rec, me);
-		    session.commit();
 			
 			return list;
 			
@@ -1960,6 +1950,28 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		}
 	}
 
+	@Override
+	public boolean markAsRead(MessageReal message)
+	{
+		
+		SqlSession session = sessionFactory.openSession();
+		try {
+					
+		//update unread messages to read
+		MessagesMapper mm = session.getMapper(MessagesMapper.class);
+	    MessagesExample me = new MessagesExample();
+	    me.createCriteria().andMessage_idEqualTo(message.getMessage_id());
+	    Messages rec = new Messages();
+	    rec.setIs_read(true);
+	    rec.setRead_tstp(new Date());
+	    mm.updateByExampleSelective(rec, me);
+	    session.commit();
+	    return true;
+		} finally {
+			session.close();
+		}
+	}
+	
 	@Override
 	public boolean checkNewMessages(User user) {
 		SqlSession session = sessionFactory.openSession();
