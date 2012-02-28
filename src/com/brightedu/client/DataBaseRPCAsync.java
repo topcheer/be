@@ -15,6 +15,8 @@ import com.brightedu.model.edu.CollegeSubject;
 import com.brightedu.model.edu.CollegeSubjectView;
 import com.brightedu.model.edu.EntranceCost;
 import com.brightedu.model.edu.FeeType;
+import com.brightedu.model.edu.MessageReal;
+import com.brightedu.model.edu.Messages;
 import com.brightedu.model.edu.PictureType;
 import com.brightedu.model.edu.RecruitAgent;
 import com.brightedu.model.edu.RecruitPlan;
@@ -263,5 +265,11 @@ public interface DataBaseRPCAsync {
 
 	void getStudentList(int offset, int limit, boolean needTotalCounts,
 			AsyncCallback<List> callback);
+
+	void sendMessage(List<Messages> messages, AsyncCallback<Boolean> callback);
+
+	void readMessage(User user, AsyncCallback<List<MessageReal>> callback);
+
+	void checkNewMessages(User user, AsyncCallback<Boolean> callback);
 
 }

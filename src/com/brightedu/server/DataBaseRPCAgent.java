@@ -27,6 +27,8 @@ import com.brightedu.dao.edu.CollegeSubjectViewMapper;
 import com.brightedu.dao.edu.CurrentBatchMapper;
 import com.brightedu.dao.edu.EntranceCostMapper;
 import com.brightedu.dao.edu.FeeTypeMapper;
+import com.brightedu.dao.edu.MessageRealMapper;
+import com.brightedu.dao.edu.MessagesMapper;
 import com.brightedu.dao.edu.PictureTypeMapper;
 import com.brightedu.dao.edu.RecruitAgentMapper;
 import com.brightedu.dao.edu.RecruitPlanMapper;
@@ -70,6 +72,10 @@ import com.brightedu.model.edu.EntranceCost;
 import com.brightedu.model.edu.EntranceCostExample;
 import com.brightedu.model.edu.FeeType;
 import com.brightedu.model.edu.FeeTypeExample;
+import com.brightedu.model.edu.MessageReal;
+import com.brightedu.model.edu.MessageRealExample;
+import com.brightedu.model.edu.Messages;
+import com.brightedu.model.edu.MessagesExample;
 import com.brightedu.model.edu.PictureType;
 import com.brightedu.model.edu.PictureTypeExample;
 import com.brightedu.model.edu.RecruitAgent;
@@ -1895,6 +1901,83 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 				return false;
 
 			return true;
+
+		} finally {
+			session.close();
+		}
+	}
+	
+	/**************************站内用户短信******************************/
+	
+	@Override
+	public boolean sendMessage(List<Messages> messages) {
+		
+		SqlSession session = sessionFactory.openSession();
+		try {
+			MessagesMapper bim = session
+					.getMapper(MessagesMapper.class);
+			for(Messages mess : messages)
+			{
+				bim.insertSelective(mess);
+			}
+			session.commit();
+			return true;
+
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public List<MessageReal> readMessage(User user) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			
+		    //get list of unread mesages
+			
+			MessageRealMapper bim = session
+					.getMapper(MessageRealMapper.class);
+			
+			MessageRealExample ex = new MessageRealExample();
+			ex.createCriteria().andFrom_userEqualTo(user.getUser_id());
+			List<MessageReal> list =  bim.selectByExample(ex);
+	
+			//update unread messages to read
+			MessagesMapper mm = session.getMapper(MessagesMapper.class);
+		    MessagesExample me = new MessagesExample();
+		    me.createCriteria().andIs_readEqualTo(false).andFrom_userEqualTo(user.getUser_id());
+		    Messages rec = new Messages();
+		    rec.setIs_read(true);
+		    rec.setRead_tstp(new Date());
+		    mm.updateByExampleSelective(rec, me);
+		    session.commit();
+			
+			return list;
+			
+
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean checkNewMessages(User user) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			
+		    //get count of unread mesages
+			
+			MessageRealMapper bim = session
+					.getMapper(MessageRealMapper.class);
+			
+			MessageRealExample ex = new MessageRealExample();
+			ex.createCriteria().andFrom_userEqualTo(user.getUser_id());
+			int count =  bim.countByExample(ex);
+	
+			if(count > 0) return true;
+			
+			return false;
+			
 
 		} finally {
 			session.close();

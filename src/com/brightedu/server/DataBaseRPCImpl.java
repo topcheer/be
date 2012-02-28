@@ -31,6 +31,8 @@ import com.brightedu.model.edu.CollegeSubject;
 import com.brightedu.model.edu.CollegeSubjectView;
 import com.brightedu.model.edu.EntranceCost;
 import com.brightedu.model.edu.FeeType;
+import com.brightedu.model.edu.MessageReal;
+import com.brightedu.model.edu.Messages;
 import com.brightedu.model.edu.PictureType;
 import com.brightedu.model.edu.RecruitAgent;
 import com.brightedu.model.edu.RecruitPlan;
@@ -513,6 +515,22 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	@Override
 	public List getStudentList(int offset, int limit, boolean needTotalCounts) {
 		return agent.getStudentList(offset, limit, needTotalCounts);
+	}
+
+	/**************************站内用户短信******************************/
+	@Override
+	public boolean sendMessage(List<Messages> messages) {
+		return agent.sendMessage(messages);
+	}
+
+	@Override
+	public List<MessageReal> readMessage(User user) {
+		return agent.readMessage(user);
+	}
+
+	@Override
+	public boolean checkNewMessages(User user) {
+		return agent.checkNewMessages(user);
 	}
 
 }

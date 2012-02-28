@@ -30,6 +30,8 @@ import com.brightedu.model.edu.CollegeSubject;
 import com.brightedu.model.edu.CollegeSubjectView;
 import com.brightedu.model.edu.EntranceCost;
 import com.brightedu.model.edu.FeeType;
+import com.brightedu.model.edu.MessageReal;
+import com.brightedu.model.edu.Messages;
 import com.brightedu.model.edu.PictureType;
 import com.brightedu.model.edu.RecruitAgent;
 import com.brightedu.model.edu.RecruitPlan;
@@ -228,5 +230,11 @@ public interface DataBaseRPC extends RemoteService {
 
 	/**************************学生管理********************************/
 	List getStudentList(int offset, int limit, boolean needTotalCounts);
+	
+	/**************************站内用户短信******************************/
+	
+	public boolean sendMessage(List<Messages> messages);
+	public List<MessageReal> readMessage(User user);
+	public boolean checkNewMessages(User user);
 	
 }
