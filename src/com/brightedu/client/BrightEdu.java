@@ -7,17 +7,22 @@ import com.brightedu.client.nav.ExplorerTreeNode;
 import com.brightedu.client.nav.FunctionTree;
 import com.brightedu.client.panels.PanelData;
 import com.brightedu.client.panels.PanelFactory;
+import com.brightedu.client.window.IMWindow;
 import com.brightedu.client.window.LoginDialog;
 import com.brightedu.model.edu.User;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.smartgwt.client.core.KeyIdentifier;
+import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Img;
+import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.CloseClickEvent;
@@ -58,7 +63,7 @@ public class BrightEdu implements EntryPoint {
 	public static final String idSuffix = "_bright";
 	
 	private static User user = null;
-
+	final Label mess = new Label("没有新短消息");
 	/**
 	 * This is the entry point method.
 	 */
@@ -180,7 +185,57 @@ public class BrightEdu implements EntryPoint {
 		topBar.addSpacer(6);
 
 		topBar.addFill();
+		
+		
+		mess.setWidth(200);
+		mess.setHeight(20);
+		mess.setAlign(Alignment.RIGHT);
+		mess.setOpacity(50);
+		
+		mess.addClickHandler(new ClickHandler(){
 
+			@Override
+			public void onClick(ClickEvent event) {
+				IMWindow win = new IMWindow(user);
+				
+				win.show();
+			}});
+		
+		final MessTimer mt = new MessTimer();
+		new Timer(){
+
+			@Override
+			public void run() {
+				
+				
+				dbService.checkNewMessages(user, new CommonAsyncCall<Boolean>(){
+
+					@Override
+					public void onSuccess(Boolean result) {
+						if(result)
+						{
+
+							mess.setOpacity(100);
+							mess.setContents("<b><font color=red>你有新短消息</font></b>");							
+							mt.scheduleRepeating(500);
+	
+						}
+						else
+						{
+							mess.setOpacity(50);
+							mess.setContents("没有新短消息");
+							mess.setVisible(true);
+							mt.cancel();
+							
+						}
+						
+					}});
+				
+			}}.scheduleRepeating(20000);
+		
+		topBar.addMember(mess);
+		topBar.addSeparator();
+		
 		ToolStripButton login_logout_Btn = new ToolStripButton();
 		login_logout_Btn.setTitle("退出");
 		login_logout_Btn.setPrompt("退出");
@@ -441,5 +496,23 @@ public class BrightEdu implements EntryPoint {
 
 	public static GreetingServiceAsync createGreetingRPC() {
 		return greetingService;
+	}
+	
+	private class MessTimer extends Timer{
+
+		@Override
+		public void run() {
+
+			if(mess.isVisible())
+			{
+				mess.animateHide(AnimationEffect.FADE);
+			}
+			else
+			{
+				mess.animateShow(AnimationEffect.FADE);
+			}
+			
+		}
+		
 	}
 }

@@ -1939,8 +1939,10 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 					.getMapper(MessageRealMapper.class);
 			
 			MessageRealExample ex = new MessageRealExample();
+			ex.setOrderByClause("message_id desc");
 			ex.createCriteria().andTo_userEqualTo(user.getUser_id());
 			List<MessageReal> list =  bim.selectByExample(ex);
+			MessageReal  s = new MessageReal();
 			
 			return list;
 			
@@ -1983,7 +1985,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 					.getMapper(MessageRealMapper.class);
 			
 			MessageRealExample ex = new MessageRealExample();
-			ex.createCriteria().andFrom_userEqualTo(user.getUser_id());
+			ex.createCriteria().andTo_userEqualTo(user.getUser_id());
 			int count =  bim.countByExample(ex);
 	
 			if(count > 0) return true;
