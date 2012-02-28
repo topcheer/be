@@ -31,8 +31,8 @@ public class NewMessageWindow extends Window {
 		l.setPadding(5);
 		this.setAutoSize(true);
 
-		x.setWidth(200);
-		x.setHeight(300);
+		x.setWidth(550);
+		x.setHeight(200);
 		x.setShowEdges(true);
 		x.setEdgeOpacity(50);
 		l.addMember(x);
@@ -46,8 +46,7 @@ public class NewMessageWindow extends Window {
 			@Override
 			public void onClick(ClickEvent event) {
 				
-			System.out.println("CLICKED ME+++++++++++++++++++++++++++++++++++++++++++++++++");
-				
+						
 				newMessage.setMessage(x.getValue());
 				
 				ArrayList<Messages> list = new ArrayList<Messages>();

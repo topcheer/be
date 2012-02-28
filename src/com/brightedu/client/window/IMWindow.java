@@ -194,6 +194,7 @@ public class IMWindow extends Window {
 			public void onCloseClick(CloseClickEvent event) {
 				_self.hide();
 				if(cw!=null)cw.hide();
+				if(nw!=null)nw.hide();
 				
 			}});
 		

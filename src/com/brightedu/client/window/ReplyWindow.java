@@ -24,29 +24,34 @@ public class ReplyWindow extends Window {
 
 	ReplyWindow _self;
 	MessageReal oldMessage;
-	HTMLFlow displayPane;
+	HTMLPane displayPane;
 	RichTextEditor x = new RichTextEditor();
 	IButton sendBtn = new IButton("发送");
 	public ReplyWindow()
 	{
 		_self = this;
 
-//		this.setTitle("发送给" + oldMessage.getFrom_user_name());
 		VLayout l = new VLayout();
+		
 		l.setMargin(5);
 		l.setPadding(5);
 		this.setAutoSize(true);
 		
-		displayPane = new HTMLFlow();
+		displayPane = new HTMLPane();
+		displayPane.setShowShadow(true);
+		displayPane.setMargin(10);
 		
-		displayPane.setHeight(50);
-		displayPane.setWidth100();
+//		displayPane.setEdgeSize(2);
+//		displayPane.setShowEdges(true);
+		displayPane.setHeight(120);
+		displayPane.setWidth(600);
 		
 		addItem(displayPane);
 		
 		
-		x.setWidth(200);
-		x.setHeight(300);
+		x.setWidth(550);
+		x.setHeight(200);
+
 		x.setValue("回复...");
 		x.setShowEdges(true);
 		x.setEdgeOpacity(50);
