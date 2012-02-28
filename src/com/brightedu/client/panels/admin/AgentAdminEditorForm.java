@@ -105,4 +105,9 @@ public class AgentAdminEditorForm extends DetailedEditorForm {
 		}
 	}
 
+	@Override
+	public void reset() {
+		setValue(new RecruitAgent());		
+	}
+
 }

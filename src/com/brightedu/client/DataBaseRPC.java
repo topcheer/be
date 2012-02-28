@@ -178,7 +178,6 @@ public interface DataBaseRPC extends RemoteService {
 	public List<RightsCategory> getRightsCategory();
 	public List<RightsFunction> getRightsFunction();
 	public List<RightsCategoryFunctionKey> getRightsCategoryFunction(String categoryID);
-	public boolean addRightsFunction(RightsFunction function);
 	public boolean addRightsCatetoryFunctions(List<RightsCategoryFunctionKey> rightsCategoryFunctionList);
 	public boolean deleteRightsCategory(RightsCategory category);
 	public boolean deleteRightsFunction(List<String> function);
@@ -200,6 +199,11 @@ public interface DataBaseRPC extends RemoteService {
 	/*******************通用方法***************************/
 	public Serializable getObjectById(String mapperClassName, int id);
 	public List getNameValuePareList(String[] beanNames); 
+	boolean addModel(Serializable model);
+	boolean deleteModel(String modelName, String id_field_name,
+			List<Integer> modelIds);
+	boolean saveModel(Serializable model);
+	boolean singleModelAction(Serializable model, String methodName);
 	
 	/************************ 入学费用设置 *********************************/
 	public List<EntranceCost> getEntranceCost(String batchID,String agentID);
@@ -220,6 +224,9 @@ public interface DataBaseRPC extends RemoteService {
 	public List<AgentReturnType> getAgentReturnType(String agentID, String batch);
 	public boolean checkIfLastCollegeAggregation(CollegeAggregation item);
 
-	boolean addModel(Serializable model);
+
+
+	/**************************学生管理********************************/
+	List getStudentList(int offset, int limit, boolean needTotalCounts);
 	
 }

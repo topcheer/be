@@ -307,23 +307,22 @@ public class RightsManagePanel extends VLayout {
 					RightsFunction rc = new RightsFunction();
 					rc.setFunction_id(functionId.getValue().toString());
 					rc.setFunction_name(functionName.getValue().toString());
-					dbService.addRightsFunction(rc,
-							new AsyncCallback<Boolean>() {
+					dbService.addModel(rc, new AsyncCallback<Boolean>() {
 
-								@Override
-								public void onFailure(Throwable caught) {
-									BrightEdu.showTip("保存失败");
+						@Override
+						public void onFailure(Throwable caught) {
+							BrightEdu.showTip("保存失败");
 
-								}
+						}
 
-								@Override
-								public void onSuccess(Boolean result) {
+						@Override
+						public void onSuccess(Boolean result) {
 
-									BrightEdu.showTip("保存成功");
-									refreshFunction();
+							BrightEdu.showTip("保存成功");
+							refreshFunction();
 
-								}
-							});
+						}
+					});
 					w.hide();
 				}
 

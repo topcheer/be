@@ -5,9 +5,6 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,6 +36,7 @@ import com.brightedu.dao.edu.RightsDefaultMapper;
 import com.brightedu.dao.edu.RightsFunctionMapper;
 import com.brightedu.dao.edu.RightsOverrideMapper;
 import com.brightedu.dao.edu.StudentClassifiedMapper;
+import com.brightedu.dao.edu.StudentInfoMapper;
 import com.brightedu.dao.edu.StudentStatusMapper;
 import com.brightedu.dao.edu.StudentTypeMapper;
 import com.brightedu.dao.edu.SubjectsMapper;
@@ -89,6 +87,8 @@ import com.brightedu.model.edu.RightsFunctionExample;
 import com.brightedu.model.edu.RightsOverride;
 import com.brightedu.model.edu.StudentClassified;
 import com.brightedu.model.edu.StudentClassifiedExample;
+import com.brightedu.model.edu.StudentInfo;
+import com.brightedu.model.edu.StudentInfoExample;
 import com.brightedu.model.edu.StudentStatus;
 import com.brightedu.model.edu.StudentStatusExample;
 import com.brightedu.model.edu.StudentType;
@@ -1061,21 +1061,6 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	}
 
 	@Override
-	public boolean addRightsFunction(RightsFunction function) {
-		SqlSession session = sessionFactory.openSession();
-		try {
-			RightsFunctionMapper scm = session
-					.getMapper(RightsFunctionMapper.class);
-
-			int count = scm.insertSelective(function);
-			session.commit();
-			return true;
-		} finally {
-			session.close();
-		}
-	}
-
-	@Override
 	public boolean addRightsCatetoryFunctions(
 			List<RightsCategoryFunctionKey> rightsCategoryFunctionList) {
 		SqlSession session = sessionFactory.openSession();
@@ -1338,15 +1323,106 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	}
 
 	@Override
-	public boolean addModel(Serializable model) {
+	public List getStudentList(int offset, int limit, boolean needTotalCounts) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			String beanName = model.getClass().getSimpleName();
-			Class mapperClass = Class.forName(daoPackageName + beanName
+			StudentInfoMapper mp = session.getMapper(StudentInfoMapper.class);
+
+			StudentInfoExample ex = new StudentInfoExample();
+			ex.setOrderByClause("batch_owner,student_name");
+			List<RecruitAgent> agents = new ArrayList<RecruitAgent>();
+			int userAgentId = remoteServlet.getUser().getAgent_id();
+			getChildAgents(agents, session, userAgentId);
+			List<Integer> agentIds = new ArrayList<Integer>(agents.size() + 1);
+			agentIds.add(userAgentId);
+			for (RecruitAgent ra : agents) {
+				agentIds.add(ra.getAgent_id());
+			}
+			ex.createCriteria().andAgent_ownerIn(agentIds);
+			List result = mp.selectByExample(ex);
+			if (needTotalCounts) {
+				Integer counts = mp.countByExample(null);
+				result.add(counts);
+			}
+			return result;
+		} finally {
+			session.close();
+		}
+	}
+
+	/**
+	 * 获取当前用户所有可以查看/操作的机构
+	 * 
+	 * @return
+	 */
+	public void getChildAgents(List<RecruitAgent> agents, SqlSession session,
+			int agentId) {
+		RecruitAgentMapper mapper = session.getMapper(RecruitAgentMapper.class);
+		RecruitAgentExample ex = new RecruitAgentExample();
+		RecruitAgentExample.Criteria cr = ex.createCriteria();
+		cr.andParent_agent_idEqualTo(agentId);
+		List<RecruitAgent> childAgents = mapper.selectByExample(ex);
+		agents.addAll(childAgents);
+		for (RecruitAgent ra : childAgents) {
+			getChildAgents(agents, session, ra.getAgent_id());
+		}
+	}
+
+	@Override
+	public boolean addModel(Serializable model) {
+		return singleModelAction(model, "insertSelective");
+	}
+
+	@Override
+	public boolean deleteModel(String modelName, String id_field_name,
+			List<Integer> modelIds) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			Class mapperClass = Class.forName(daoPackageName + modelName
 					+ "Mapper");
-			Class beanClass = Class.forName(modelPackageName + beanName);
+			Class beanClass = Class.forName(modelPackageName + modelName);
 			Object mapper = session.getMapper(mapperClass);
-			Method method = mapperClass.getMethod("insertSelective", beanClass);
+			Class exampleClass = Class.forName(modelPackageName + modelName
+					+ "Example");
+			Method delMethod = mapperClass.getMethod("deleteByExample",
+					exampleClass);
+
+			Object example = exampleClass.newInstance();
+			Method createCriteriaMethod = ReflectUtil.getDeclaredMethod(
+					exampleClass, "createCriteria");
+			Object criteriaObj = createCriteriaMethod.invoke(example);
+			id_field_name = id_field_name.toLowerCase();
+			id_field_name = id_field_name.replaceFirst(id_field_name.substring(
+					0, 1), id_field_name.substring(0, 1).toUpperCase());
+			Method andIdInMethod = ReflectUtil.getDeclaredMethod(
+					criteriaObj.getClass(), "and" + id_field_name + "In",
+					List.class);
+			andIdInMethod.invoke(criteriaObj, modelIds);
+			delMethod.invoke(mapper, example);
+			session.commit();
+		} catch (Exception e) {
+			Log.e("", e);
+		} finally {
+			session.close();
+		}
+		return true;
+	}
+
+	@Override
+	public boolean saveModel(Serializable model) {
+		return singleModelAction(model, "updateByPrimaryKey");
+	}
+
+	@Override
+	public boolean singleModelAction(Serializable model, String methodName) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			String modelName = model.getClass().getSimpleName();
+			Class mapperClass = Class.forName(daoPackageName + modelName
+					+ "Mapper");
+			Class beanClass = Class.forName(modelPackageName + modelName);
+			Object mapper = session.getMapper(mapperClass);
+			Method method = mapperClass.getMethod(methodName, beanClass);
 			method.invoke(mapper, model);
 			session.commit();
 		} catch (Exception e) {
@@ -1358,30 +1434,30 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	}
 
 	@Override
-	public List getNameValuePareList(String[] beanNames) {
+	public List getNameValuePareList(String[] modelNames) {
 		List nameValuePares = new ArrayList();
 		SqlSession session = sessionFactory.openSession();
 
 		try {
-			for (String beanName : beanNames) {
+			for (String modelName : modelNames) {
 
-				Class mapperClass = Class.forName(daoPackageName + beanName
+				Class mapperClass = Class.forName(daoPackageName + modelName
 						+ "Mapper");
-				Class beanClass = Class.forName(modelPackageName + beanName);
+				Class modelClass = Class.forName(modelPackageName + modelName);
 				Object mapper = session.getMapper(mapperClass);
-				Class exampleClass = Class.forName(modelPackageName + beanName
+				Class exampleClass = Class.forName(modelPackageName + modelName
 						+ "Example");
 				Method method = mapperClass.getMethod("selectByExample",
 						exampleClass);
 
 				Object example = exampleClass.newInstance();
 
-				Field[] fields = ReflectUtil.getDeclaredFields(beanClass);
+				Field[] fields = ReflectUtil.getDeclaredFields(modelClass);
 				int nameFieldIndex = -1;
 				for (int i = 0; i < fields.length; i++) {
 					if (fields[i].getName().toLowerCase().contains("name")) { // 一般这种表中只有一个带name的字段
 						nameFieldIndex = i;
-						System.out.println(beanName + " nameField: "
+						System.out.println(modelName + " nameField: "
 								+ fields[i].getName());
 						break;
 					}
@@ -1397,7 +1473,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 				} else {
 					result = (List) method
 							.invoke(mapper, new Object[] { null });
-					Log.d("No name field for class " + beanClass.getName());
+					Log.d("No name field for class " + modelClass.getName());
 				}
 				nameValuePares.add(result);
 			}

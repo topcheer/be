@@ -7,10 +7,13 @@ import java.util.LinkedHashMap;
 
 import sun.security.action.GetIntegerAction;
 
+import com.brightedu.client.BrightEdu;
 import com.brightedu.client.panels.DetailedEditorForm;
 import com.brightedu.client.panels.MasterDetailAdmin;
+import com.brightedu.model.edu.RecruitAgent;
 import com.brightedu.model.edu.StudentInfo;
 import com.smartgwt.client.util.SC;
+import com.smartgwt.client.widgets.form.fields.DateItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 
@@ -31,49 +34,51 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 	SelectItem batchItem = new SelectItem("batch_owner", "隶属批次");
 	SelectItem classfiedItem = new SelectItem("classified_owner", "隶属层次");
 	SelectItem subject_ownerItem = new SelectItem("subject_owner", "隶属专业");
-	SelectItem agent_ownerItem = new SelectItem("agent_owner", "隶属招生点");
+//	SelectItem agent_ownerItem = new SelectItem("agent_owner", "隶属招生点");
 	SelectItem fund_agentItem = new SelectItem("fund_agent", "费用接收机构");
 	SelectItem managed_agentItem = new SelectItem("managed_agent", "学生管理机构");
 	SelectItem stu_status_idItem = new SelectItem("stu_status_id", "学生状态");
 
-	TextItem birthdayItem = new TextItem("birthday", "出生年月日");
+	DateItem birthdayItem = new DateItem("birthday", "出生年月日");
 	SelectItem ethnic_group_idItem = new SelectItem("ethnic_group_id", "民族");
 	SelectItem political_status_idItem = new SelectItem("political_status_id",
 			"政治面貌");
 	TextItem employerItem = new TextItem("employer", "工作单位");
 	SelectItem graduate_college_idItem = new SelectItem("graduate_college_id",
 			"之前毕业院校");
-	TextItem graduate_dateItem = new TextItem("graduate_date", "之前毕业时间");
+	DateItem graduate_dateItem = new DateItem("graduate_date", "之前毕业时间");
 	TextItem graduate_certificate_numberItem = new TextItem(
 			"graduate_certificate_number", "之前毕业证号码");
 
 	SelectItem student_type_idItem = new SelectItem("student_type_id", "学生类型");
 	SelectItem major_category_idItem = new SelectItem("major_category_id",
 			"成教学生大类");
-	TextItem register_dateItem = new TextItem("regster_date", "登记时间");
-	TextItem update_dateItem = new TextItem("update_date", "更新时间");
+//	DateItem register_dateItem = new DateItem("regster_date", "登记时间");
+//	DateItem update_dateItem = new DateItem("update_date", "更新时间");
 
 	public StudentsRegisterEditorForm(MasterDetailAdmin admin) {
 		super(admin);
 		sexItem.setValueMap("男", "女");
+		
 		setFields(student_nameItem, identity_cardItem, sexItem, exam_numItem,
 				student_addressItem, student_phoneItem, postal_codeItem,
 				student_linkmanItem, linkman_phoneItem, student_college_idItem,
 				collegwOwnerItem, batchItem, classfiedItem, subject_ownerItem,
-				agent_ownerItem, fund_agentItem, managed_agentItem,
+				 fund_agentItem, managed_agentItem,
 				stu_status_idItem, birthdayItem, ethnic_group_idItem,
 				political_status_idItem, employerItem, graduate_college_idItem,
 				graduate_dateItem, graduate_certificate_numberItem,
-				student_type_idItem, major_category_idItem, register_dateItem,
-				update_dateItem, saveBtn);
+				student_type_idItem, major_category_idItem
+				,saveBtn);
 	}
 
 	@Override
 	public void setValue(Serializable model) {
 		StudentInfo student = (StudentInfo) model;
-		agent_ownerItem.setValue(student.getAgent_owner());
+		
 		batchItem.setValue(student.getBatch_owner());
-		birthdayItem.setValue(student.getBirthday());
+		long birthTime = Long.parseLong(student.getBirthday());
+		birthdayItem.setValue(new Date(birthTime));
 		classfiedItem.setValue(student.getClassified_owner());
 		collegwOwnerItem.setValue(student.getCollege_owner());
 		employerItem.setValue(student.getEmployer());
@@ -90,7 +95,7 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 		managed_agentItem.setValue(student.getManaged_agent());
 		political_status_idItem.setValue(student.getPolitical_status_id());
 		postal_codeItem.setValue(student.getPostal_code());
-		register_dateItem.setValue(student.getRegister_date());
+//		register_dateItem.setValue(student.getRegister_date());
 		stu_status_idItem.setValue(student.getStu_status_id());
 		student_addressItem.setValue(student.getStudent_address());
 		student_college_idItem.setValue(student.getStudent_college_id());
@@ -101,15 +106,17 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 		sexItem.setValue(student.getStudent_sex());
 		student_type_idItem.setValue(student.getStudent_type_id());
 		subject_ownerItem.setValue(student.getSubject_owner());
-		update_dateItem.setValue(student.getUpdate_date());
+//		update_dateItem.setValue(student.getUpdate_date());
 	}
 
 	@Override
 	public StudentInfo getModel() {
 		StudentInfo s = new StudentInfo();
-		s.setAgent_owner(getValueAsInteger(agent_ownerItem));
+		s.setAgent_owner(BrightEdu.getUser().getAgent_id());
+//		s.setAgent_owner(getValueAsInteger(agent_ownerItem));
 		s.setBatch_owner(getValueAsInteger(batchItem));
-		s.setBirthday(birthdayItem.getValueAsString());
+		Date birthday = (Date)birthdayItem.getValue();
+		s.setBirthday(String.valueOf(birthday.getTime()));
 		s.setClassified_owner(getValueAsInteger(classfiedItem));
 		s.setCollege_owner(getValueAsInteger(collegwOwnerItem));
 		s.setEmployer(employerItem.getValueAsString());
@@ -143,7 +150,7 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 	}
 
 	public void setValueMaps(LinkedHashMap<String, String>... valueMaps) {
-		if (valueMaps.length != 13) {
+		if (valueMaps.length != 12) {
 			SC.say("数据结构所需数量未达到需求");
 			return;
 		} else {
@@ -151,7 +158,6 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 			// collegeValues = new LinkedHashMap<String, String>();
 			// sdudentClassfiedValues = new LinkedHashMap<String, String>();
 			// subjectsValues = new LinkedHashMap<String, String>();
-			// agentOwnerValues = new LinkedHashMap<String, String>();
 			// fundAgentValues = new LinkedHashMap<String, String>();
 			// managedAgentValues = new LinkedHashMap<String, String>();
 			// stu_statustValues = new LinkedHashMap<String, String>();
@@ -160,19 +166,25 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 			// graduate_collegeValues = new LinkedHashMap<String, String>();
 			// student_typeValues = new LinkedHashMap<String, String>();
 			// major_categoryValues = new LinkedHashMap<String, String>();
-			batchItem.setValueMap(valueMaps[0]);
-			collegwOwnerItem.setValueMap(valueMaps[1]);
-			classfiedItem.setValueMap(valueMaps[2]);
-			subject_ownerItem.setValueMap(valueMaps[3]);
-			agent_ownerItem.setValueMap(valueMaps[4]);
-			fund_agentItem.setValueMap(valueMaps[5]);
-			managed_agentItem.setValueMap(valueMaps[6]);
-			stu_status_idItem.setValueMap(valueMaps[7]);
-			ethnic_group_idItem.setValueMap(valueMaps[8]);
-			political_status_idItem.setValueMap(valueMaps[9]);
-			graduate_college_idItem.setValueMap(valueMaps[10]);
-			student_type_idItem.setValueMap(valueMaps[11]);
-			major_category_idItem.setValueMap(valueMaps[12]);
+			int i=0;
+			batchItem.setValueMap(valueMaps[i++]);
+			collegwOwnerItem.setValueMap(valueMaps[i++]);
+			classfiedItem.setValueMap(valueMaps[i++]);
+			subject_ownerItem.setValueMap(valueMaps[i++]);
+//			agent_ownerItem.setValueMap(valueMaps[4]);
+			fund_agentItem.setValueMap(valueMaps[i++]);
+			managed_agentItem.setValueMap(valueMaps[i++]);
+			stu_status_idItem.setValueMap(valueMaps[i++]);
+			ethnic_group_idItem.setValueMap(valueMaps[i++]);
+			political_status_idItem.setValueMap(valueMaps[i++]);
+			graduate_college_idItem.setValueMap(valueMaps[i++]);
+			student_type_idItem.setValueMap(valueMaps[i++]);
+			major_category_idItem.setValueMap(valueMaps[i++]);
 		}
+	}
+	
+	@Override
+	public void reset() {
+		setValue(new StudentInfo());		
 	}
 }

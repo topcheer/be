@@ -21,7 +21,8 @@ public class BatchAdminPanel extends BasicAdminPanel {
 
 	@Override
 	public void deleteRecords(final List<Integer> deleteIds) {
-		dbService.deleteBatch(deleteIds, delAsync);
+//		dbService.deleteBatch(deleteIds, delAsync);
+		dbService.deleteModel("BatchIndex", "batch_id", deleteIds, delAsync);
 	}
 
 	public ListGridField[] createGridFileds() {

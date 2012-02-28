@@ -1,9 +1,11 @@
 package com.brightedu.client.panels.admin.students;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import com.brightedu.client.BrightEdu;
 import com.brightedu.client.CommonAsyncCall;
 import com.brightedu.client.panels.BasicAdminPanel;
 import com.brightedu.client.panels.MasterDetailAdmin;
@@ -16,9 +18,12 @@ import com.brightedu.model.edu.PoliticalStatus;
 import com.brightedu.model.edu.RecruitAgent;
 import com.brightedu.model.edu.School;
 import com.brightedu.model.edu.StudentClassified;
+import com.brightedu.model.edu.StudentInfo;
 import com.brightedu.model.edu.StudentStatus;
 import com.brightedu.model.edu.StudentType;
 import com.brightedu.model.edu.Subjects;
+import com.brightedu.model.edu.UserType;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -32,8 +37,7 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 	LinkedHashMap<String, String> collegeValues;
 	LinkedHashMap<String, String> sdudentClassfiedValues;
 	LinkedHashMap<String, String> subjectsValues;
-	/************* 这三个都来自recruit_agent **************************************/
-	LinkedHashMap<String, String> agentOwnerValues;
+	/************* 这两个都来自recruit_agent **************************************/
 	LinkedHashMap<String, String> fundAgentValues;
 	LinkedHashMap<String, String> managedAgentValues;
 	/***************************************************/
@@ -62,7 +66,6 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 		collegeValues = new LinkedHashMap<String, String>();
 		sdudentClassfiedValues = new LinkedHashMap<String, String>();
 		subjectsValues = new LinkedHashMap<String, String>();
-		agentOwnerValues = new LinkedHashMap<String, String>();
 		fundAgentValues = new LinkedHashMap<String, String>();
 		managedAgentValues = new LinkedHashMap<String, String>();
 		stu_statustValues = new LinkedHashMap<String, String>();
@@ -118,8 +121,7 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 			case 4:
 				for (int x = 0; x < nameValuePare.size(); x++) {
 					RecruitAgent agent = (RecruitAgent) nameValuePare.get(x);
-					agentOwnerValues.put(agent.getAgent_id() + "",
-							agent.getAgent_name());
+
 					fundAgentValues.put(agent.getAgent_id() + "",
 							agent.getAgent_name());
 					managedAgentValues.put(agent.getAgent_id() + "",
@@ -173,20 +175,18 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 			}
 		}
 		detailedForm.setValueMaps(batchValues, collegeValues,
-				sdudentClassfiedValues, subjectsValues, agentOwnerValues,
-				fundAgentValues, managedAgentValues, stu_statustValues,
-				ethnic_groupValues, political_statusValues,
-				graduate_collegeValues, student_typeValues,
-				major_categoryValues);
+				sdudentClassfiedValues, subjectsValues, fundAgentValues,
+				managedAgentValues, stu_statustValues, ethnic_groupValues,
+				political_statusValues, graduate_collegeValues,
+				student_typeValues, major_categoryValues);
 		if (getAdminDialog() != null) {
 			StudentsRegisterEditorForm editorForm = (StudentsRegisterEditorForm) getAdminDialog()
 					.getContentForm();
 			editorForm.setValueMaps(batchValues, collegeValues,
-					sdudentClassfiedValues, subjectsValues, agentOwnerValues,
-					fundAgentValues, managedAgentValues, stu_statustValues,
-					ethnic_groupValues, political_statusValues,
-					graduate_collegeValues, student_typeValues,
-					major_categoryValues);
+					sdudentClassfiedValues, subjectsValues, fundAgentValues,
+					managedAgentValues, stu_statustValues, ethnic_groupValues,
+					political_statusValues, graduate_collegeValues,
+					student_typeValues, major_categoryValues);
 		}
 	}
 
@@ -196,16 +196,47 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 	}
 
 	@Override
-	protected void gotoPage(int indexGoto, boolean init) {
+	protected void gotoPage(final int indexGoto, final boolean init) {
+		AsyncCallback<List> callback = new CommonAsyncCall<List>() {
+			@Override
+			public void onSuccess(List result) {
+				int size = result.size();
+				Record[] listData = init ? new Record[size - 1]
+						: new Record[size];
+				for (int i = 0; i < size; i++) {
+					if (i == size - 1) {
+						if (init) {
+							int counts = (Integer) result.get(size - 1);
+							setTotalCounts(counts);
+							break;
+						}
+					}
+					StudentInfo bi = (StudentInfo) result.get(i);
+					Record rec = new Record();
+					rec.setAttribute("select", false);
+					rec.setAttribute("id", bi.getStudent_id());
+					rec.setAttribute("object", bi);
+					rec.setAttribute("obj_name", bi.getStudent_name());
+					rec.setAttribute("identity_card", bi.getIdentity_card());
+					rec.setAttribute("student_college_id",
+							bi.getStudent_college_id());
 
+					listData[i] = rec;
+				}
+				resultList.setData(listData);
+				setCurrentPage(indexGoto);
+			}
+		};
+		dbService.getStudentList((indexGoto - 1) * currentRowsInOnePage,
+				currentRowsInOnePage, init, callback);
 	}
 
 	@Override
 	public ListGridField[] createGridFileds() {
-		fileds = parseGridFields(new String[] { "student_name",
-				"identity_card", "exam_num" }, new String[] { "学生", "身份证",
-				"准考证" }, new ListGridFieldType[] { ListGridFieldType.TEXT,
-				ListGridFieldType.TEXT, ListGridFieldType.TEXT },
+		fileds = parseGridFields(new String[] { "obj_name", "identity_card",
+				"student_college_id" }, new String[] { "学生", "身份证", "学号" },
+				new ListGridFieldType[] { ListGridFieldType.TEXT,
+						ListGridFieldType.TEXT, ListGridFieldType.TEXT },
 				new boolean[] { false, false, false },
 				new int[] { 100, -1, -1 });
 
@@ -224,8 +255,30 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 
 	@Override
 	public void update(Record record) {
-		// TODO Auto-generated method stub
+		final StudentInfo newagt = (StudentInfo) admin.getDetailed()
+				.getDetailedForm().getModel();
+		final Record rec = resultList.getSelectedRecord();
+		final StudentInfo oldagt = (StudentInfo) rec
+				.getAttributeAsObject("object");
+		newagt.setRegister_date(oldagt.getRegister_date());
+		newagt.setUpdate_date(oldagt.getUpdate_date());
 
+		dbService.saveModel(newagt, new CommonAsyncCall<Boolean>() {
+			@Override
+			public void onSuccess(Boolean result) {
+				BrightEdu.showTip("已保存!");
+				rec.setAttribute("object", newagt);
+				rec.setAttribute("obj_name", newagt.getStudent_name());
+				rec.setAttribute("identity_card", newagt.getIdentity_card());
+				rec.setAttribute("student_college_id",
+						newagt.getStudent_college_id());
+				resultList.redraw();
+			}
+
+			protected void failed() { // rollback in UI
+				// List UI would not be changed here
+			}
+		});
 	}
 
 	@Override
@@ -245,23 +298,21 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 				super.init();
 				// form.setOverflow(Overflow.HIDDEN);
 				// 这里form不能自适应大小，shit！
-				form.setWidth(500);
+				form.setWidth(560);
 				form.setHeight(280);
 				form.hideSaveItem();
 				form.setPadding(5);
 				form.setWrapItemTitles(true);
 				form.setValueMaps(batchValues, collegeValues,
 						sdudentClassfiedValues, subjectsValues,
-						agentOwnerValues, fundAgentValues, managedAgentValues,
-						stu_statustValues, ethnic_groupValues,
-						political_statusValues, graduate_collegeValues,
-						student_typeValues, major_categoryValues);
+						fundAgentValues, managedAgentValues, stu_statustValues,
+						ethnic_groupValues, political_statusValues,
+						graduate_collegeValues, student_typeValues,
+						major_categoryValues);
 			}
 
 			@Override
 			protected DynamicForm createContentForm() {
-				form.register_dateItem.setVisible(false);
-				form.update_dateItem.setVisible(false);
 				return form;
 			}
 

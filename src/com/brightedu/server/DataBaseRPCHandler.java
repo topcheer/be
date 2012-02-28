@@ -76,7 +76,7 @@ public class DataBaseRPCHandler implements InvocationHandler {
 				if (!Modifier.isStatic(f.getModifiers())) {
 					Method getMethod = null;
 					try {
-						getMethod = ReflectUtil.getDeclaredMethod(o,
+						getMethod = ReflectUtil.getDeclaredMethod(o.getClass(),
 								Utils.getStandardGetMethodName(f.getName()));
 
 						Object filedValue = getMethod.invoke(o, null);

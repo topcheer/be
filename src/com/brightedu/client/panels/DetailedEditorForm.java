@@ -50,6 +50,8 @@ public abstract class DetailedEditorForm extends DynamicForm {
 	// }
 
 	public abstract void setValue(Serializable model);
+	
+	public abstract void reset();
 
 	public abstract Serializable getModel();
 

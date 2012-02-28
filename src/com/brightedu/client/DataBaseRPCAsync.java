@@ -164,9 +164,6 @@ public interface DataBaseRPCAsync {
 			List<RightsCategoryFunctionKey> rightsCategoryFunctionList,
 			AsyncCallback<Boolean> callback);
 
-	void addRightsFunction(RightsFunction function,
-			AsyncCallback<Boolean> callback);
-
 	void getRightsCategory(AsyncCallback<List<RightsCategory>> callback);
 
 	void getRightsCategoryFunction(String categoryID,
@@ -255,5 +252,16 @@ public interface DataBaseRPCAsync {
 			AsyncCallback<Boolean> callback);
 
 	void addModel(Serializable model, AsyncCallback<Boolean> callback);
+
+	void deleteModel(String modelName, String id_field_name,
+			List<Integer> modelIds, AsyncCallback<Boolean> callback);
+
+	void saveModel(Serializable model, AsyncCallback<Boolean> callback);
+
+	void singleModelAction(Serializable model, String methodName,
+			AsyncCallback<Boolean> callback);
+
+	void getStudentList(int offset, int limit, boolean needTotalCounts,
+			AsyncCallback<List> callback);
 
 }

@@ -1,5 +1,7 @@
 package com.brightedu.client.panels;
 
+import java.io.Serializable;
+
 import com.brightedu.model.edu.RecruitAgent;
 import com.smartgwt.client.types.VisibilityMode;
 import com.smartgwt.client.widgets.Canvas;
@@ -33,7 +35,7 @@ public abstract class MasterDetailAdmin extends FunctionPanel {
 					public void onSelectionChanged(SelectionEvent event) {
 						if (event.getState()) {
 							getDetailed().getDetailedForm().setValue(
-									(RecruitAgent) event.getRecord()
+									(Serializable) event.getRecord()
 											.getAttributeAsObject("object"));
 							getDetailed().getDetailedForm().enableSaveItem();
 						} else {

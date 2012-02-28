@@ -7,10 +7,11 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.management.MBeanServer;
+
 import org.apache.log4j.Logger;
 
 public class ReflectUtil {
-	private static Logger log = Logger.getLogger(ReflectUtil.class);
 
 	private static Object operate(Object obj, String fieldName,
 			Object fieldVal, String type) {
@@ -44,7 +45,7 @@ public class ReflectUtil {
 				}
 			}
 		} catch (Exception e) {
-			log.warn("reflect error:" + fieldName, e);
+			Log.e("reflect error:" + fieldName, e);
 		}
 		return ret;
 	}
@@ -57,9 +58,9 @@ public class ReflectUtil {
 		operate(obj, fieldName, fieldVal, "set");
 	}
 
-	public static Method getDeclaredMethod(Object object, String methodName,
+	public static Method getDeclaredMethod(Class oc, String methodName,
 			Class<?>... parameterTypes) {
-		for (Class<?> superClass = object.getClass(); superClass != Object.class; superClass = superClass
+		for (Class<?> superClass = oc; superClass != Object.class; superClass = superClass
 				.getSuperclass()) {
 			try {
 				// superClass.getMethod(methodName, parameterTypes);
@@ -100,7 +101,7 @@ public class ReflectUtil {
 					fields.add(f);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				Log.e("",e);
 			}
 		}
 		return fields.toArray(new Field[fields.size()]);
@@ -109,7 +110,7 @@ public class ReflectUtil {
 	public static Object invokeMethod(Object object, String methodName,
 			Class<?>[] parameterTypes, Object[] parameters)
 			throws InvocationTargetException {
-		Method method = getDeclaredMethod(object, methodName, parameterTypes);
+		Method method = getDeclaredMethod(object.getClass(), methodName, parameterTypes);
 
 		if (method == null) {
 			throw new IllegalArgumentException("Could not find method ["
@@ -121,7 +122,7 @@ public class ReflectUtil {
 		try {
 			return method.invoke(object, parameters);
 		} catch (IllegalAccessException e) {
-
+			Log.e("",e);
 		}
 
 		return null;
@@ -140,7 +141,7 @@ public class ReflectUtil {
 		try {
 			field.set(object, value);
 		} catch (IllegalAccessException e) {
-			e.printStackTrace();
+			Log.e("",e);
 		}
 	}
 
@@ -156,7 +157,7 @@ public class ReflectUtil {
 		try {
 			result = field.get(object);
 		} catch (IllegalAccessException e) {
-			e.printStackTrace();
+			Log.e("",e);
 		}
 
 		return result;

@@ -78,7 +78,6 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 		return agent.getStudentClassesList(offset, limit, needTotalCounts);
 	}
 
-
 	@Override
 	public boolean deleteStudentClasses(List<Integer> studentClassesId) {
 		return agent.deleteStudentClasses(studentClassesId);
@@ -199,7 +198,6 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 		return agent.getUserTypeList(offset, limit, needTotaoCounts);
 	}
 
-
 	@Override
 	public boolean deletUserType(List<Integer> UserType_ids) {
 		return agent.deletUserType(UserType_ids);
@@ -216,7 +214,7 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 			boolean needTotaoCounts) {
 		return agent.getPictureTypeList(offset, limit, needTotaoCounts);
 	}
-	
+
 	@Override
 	public boolean deletPictureType(List<Integer> PictureType_ids) {
 		return agent.deletPictureType(PictureType_ids);
@@ -233,7 +231,6 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 			boolean needTotaoCounts) {
 		return agent.getStudentStatusList(offset, limit, needTotaoCounts);
 	}
-
 
 	@Override
 	public boolean deletStudentStatus(List<Integer> StudentStatus_ids) {
@@ -332,11 +329,6 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	}
 
 	@Override
-	public boolean addRightsFunction(RightsFunction function) {
-		return agent.addRightsFunction(function);
-	}
-
-	@Override
 	public boolean addRightsCatetoryFunctions(
 			List<RightsCategoryFunctionKey> rightsCategoryFunctionList) {
 		return agent.addRightsCatetoryFunctions(rightsCategoryFunctionList);
@@ -385,7 +377,6 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	public List<User> getUserList(int offset, int limit, boolean needTotalCounts) {
 		return agent.getUserList(offset, limit, needTotalCounts);
 	}
-
 
 	@Override
 	public boolean deletUser(List<Integer> user_ids) {
@@ -501,6 +492,27 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	@Override
 	public boolean addModel(Serializable model) {
 		return agent.addModel(model);
+	}
+
+	@Override
+	public boolean deleteModel(String modelName, String id_field_name,
+			List<Integer> modelIds) {
+		return agent.deleteModel(modelName, id_field_name, modelIds);
+	}
+
+	@Override
+	public boolean saveModel(Serializable model) {
+		return agent.saveModel(model);
+	}
+
+	@Override
+	public boolean singleModelAction(Serializable model, String methodName) {
+		return agent.singleModelAction(model, methodName);
+	}
+
+	@Override
+	public List getStudentList(int offset, int limit, boolean needTotalCounts) {
+		return agent.getStudentList(offset, limit, needTotalCounts);
 	}
 
 }
