@@ -1457,8 +1457,6 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 				for (int i = 0; i < fields.length; i++) {
 					if (fields[i].getName().toLowerCase().contains("name")) { // 一般这种表中只有一个带name的字段
 						nameFieldIndex = i;
-						System.out.println(modelName + " nameField: "
-								+ fields[i].getName());
 						break;
 					}
 				}

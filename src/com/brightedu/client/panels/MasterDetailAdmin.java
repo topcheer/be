@@ -39,8 +39,7 @@ public abstract class MasterDetailAdmin extends FunctionPanel {
 											.getAttributeAsObject("object"));
 							getDetailed().getDetailedForm().enableSaveItem();
 						} else {
-							getDetailed().getDetailedForm().setValue(
-									new RecruitAgent());// empty all fields
+							getDetailed().getDetailedForm().reset();
 							getDetailed().getDetailedForm().disableSaveItem();
 						}
 					}
