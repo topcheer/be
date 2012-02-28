@@ -30,7 +30,7 @@ public class ConnectionManager {
 
 	public static void load() {
 		loadMybatis();
-		loadCustomPool();
+//		loadCustomPool();
 	}
 	
 	protected static void loadMybatis(){
@@ -150,10 +150,12 @@ public class ConnectionManager {
 		pooledDataSource.setAutoCommitOnClose(true);
 	}
 
+	@Deprecated
 	public synchronized static Connection getConnection() {
 		return getConnection(defaultSource);
 	}
 
+	@Deprecated
 	public synchronized static Connection getConnection(String poolName) {
 		Connection conn = null;
 		try {
@@ -172,6 +174,7 @@ public class ConnectionManager {
 		return conn;
 	}
 
+	@Deprecated
 	public synchronized static void releaseConnection(Connection conn) {
 		if (conn != null) {
 			try {
@@ -182,6 +185,7 @@ public class ConnectionManager {
 		}
 	}
 
+	@Deprecated
 	public synchronized static void rollbackConnection(Connection conn) {
 		if (conn != null) {
 			try {

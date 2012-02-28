@@ -49,23 +49,26 @@ public abstract class AdminDialog extends Window {
 		form = createContentForm();
 		form.setAutoShowParent(true);
 		form.setAutoDraw(true);
-//		form.setWidth100();
-//		form.setHeight100();
-//		form.setLayoutAlign(Alignment.CENTER);
+		parseRequired();
+		// form.setWidth100();
+		// form.setHeight100();
+		// form.setLayoutAlign(Alignment.CENTER);
 		okBtn.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				add();
+				if (form.validate()) {
+					add();
+				}
 			}
 		});
 		form.setAutoFocus(true);
 		form.setWrapItemTitles(false);
 		// form.setAutoHeight();
-		
+
 		addItem(form);
 		bottomLayout.setAlign(Alignment.RIGHT);
-//		bottomLayout.addMember(new Label("  "));
+		// bottomLayout.addMember(new Label("  "));
 		bottomLayout.addMember(new LayoutSpacer());
 		bottomLayout.setPadding(5);
 		okBtn.setWidth(70);
@@ -73,9 +76,9 @@ public abstract class AdminDialog extends Window {
 		bottomLayout.addMember(okBtn);
 
 		bottomLayout.setAutoHeight();
-		
+
 		bottomLayout.setWidth100();
-		
+
 		addItem(bottomLayout);
 
 		// RegExpValidator lenValidator = new RegExpValidator("^\\d{10}$");
@@ -91,12 +94,21 @@ public abstract class AdminDialog extends Window {
 			}
 		}, null);
 		addCloseClickHandler(new CloseClickHandler() {
-			
+
 			@Override
 			public void onCloseClick(CloseClickEvent event) {
 				hide();
 			}
 		});
+	}
+
+	private void parseRequired() {
+		FormItem[] items = form.getFields();
+		for (FormItem item : items) {
+			if (item.getRequired()) {
+				item.setTitle(item.getTitle() + "*");
+			}
+		}
 	}
 
 	protected void add() {
@@ -130,8 +142,8 @@ public abstract class AdminDialog extends Window {
 	protected abstract Serializable getAddedModel();
 
 	protected abstract DynamicForm createContentForm();
-	
-	public DynamicForm getContentForm(){
+
+	public DynamicForm getContentForm() {
 		return form;
 	}
 
