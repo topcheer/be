@@ -74,8 +74,11 @@ public class PanelData {
 		}		
 		if (id.equals("user_manage")) { //用户管理
 			return new UserAdmin.Factory();
-		}		
-
+		}	
+		if (id.equals("ann_manage")) { //通知通告维护
+			return new AnnouncementAdmin.Factory();
+		}	
+		
 		return null;
 	}
 }
