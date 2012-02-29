@@ -6,6 +6,7 @@ import java.util.List;
 import com.brightedu.model.edu.AgentReturnKey;
 import com.brightedu.model.edu.AgentReturnType;
 import com.brightedu.model.edu.AgentType;
+import com.brightedu.model.edu.Announcement;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.ChargeType;
 import com.brightedu.model.edu.College;
@@ -273,5 +274,15 @@ public interface DataBaseRPCAsync {
 	void checkNewMessages(User user, AsyncCallback<Boolean> callback);
 
 	void markAsRead(MessageReal message, AsyncCallback<Boolean> callback);
+
+	void addAnnouncement(Announcement ann, AsyncCallback<Boolean> callback);
+
+	void deleteAnnouncement(List<Integer> annIDs,
+			AsyncCallback<Boolean> callback);
+
+	void saveAnnouncement(Announcement ann, AsyncCallback<Boolean> callback);
+
+	void getAnnouncementList(int offset, int limit, boolean needTotalCounts,
+			AsyncCallback<List<Announcement>> callback);
 
 }

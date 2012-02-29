@@ -21,6 +21,7 @@ import java.util.List;
 import com.brightedu.model.edu.AgentReturnKey;
 import com.brightedu.model.edu.AgentReturnType;
 import com.brightedu.model.edu.AgentType;
+import com.brightedu.model.edu.Announcement;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.ChargeType;
 import com.brightedu.model.edu.College;
@@ -237,4 +238,11 @@ public interface DataBaseRPC extends RemoteService {
 	public List<MessageReal> readMessage(User user);
 	public boolean checkNewMessages(User user);
 	public boolean markAsRead(MessageReal message);
+	
+	/**************************通知通告管理******************************/
+	public boolean addAnnouncement(Announcement ann);
+	public boolean deleteAnnouncement(List<Integer> annIDs);
+	public boolean saveAnnouncement(Announcement ann);
+	public List<Announcement> getAnnouncementList(int offset, int limit,
+			boolean needTotalCounts);
 }

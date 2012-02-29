@@ -17,6 +17,7 @@ import com.brightedu.client.ds.Page;
 import com.brightedu.dao.edu.AgentReturnMapper;
 import com.brightedu.dao.edu.AgentReturnTypeMapper;
 import com.brightedu.dao.edu.AgentTypeMapper;
+import com.brightedu.dao.edu.AnnouncementMapper;
 import com.brightedu.dao.edu.BatchIndexMapper;
 import com.brightedu.dao.edu.ChargeTypeMapper;
 import com.brightedu.dao.edu.CollegeAggregationMapper;
@@ -52,6 +53,8 @@ import com.brightedu.model.edu.AgentReturnType;
 import com.brightedu.model.edu.AgentReturnTypeExample;
 import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.AgentTypeExample;
+import com.brightedu.model.edu.Announcement;
+import com.brightedu.model.edu.AnnouncementExample;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.BatchIndexExample;
 import com.brightedu.model.edu.BatchIndexExample.Criteria;
@@ -1993,6 +1996,78 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			return false;
 			
 
+		} finally {
+			session.close();
+		}
+	}
+	/**************************通知通告管理******************************/
+	@Override
+	public boolean addAnnouncement(Announcement ann) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+
+			AnnouncementMapper map = session.getMapper(AnnouncementMapper.class);
+			map.insertSelective(ann);
+			session.commit();
+			return true;
+			
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean deleteAnnouncement(List<Integer> annIDs) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+
+			AnnouncementMapper map = session.getMapper(AnnouncementMapper.class);
+			for(Integer annId : annIDs)
+			{
+				map.deleteByPrimaryKey(annId);
+			}
+			
+			session.commit();
+			return true;
+			
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean saveAnnouncement(Announcement ann) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+
+			AnnouncementMapper map = session.getMapper(AnnouncementMapper.class);
+			map.updateByPrimaryKeySelective(ann);
+			session.commit();
+			return true;
+			
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public List<Announcement> getAnnouncementList(int offset, int limit,
+			boolean needTotalCounts) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			AnnouncementExample ex = new AnnouncementExample();
+			if (offset != -1 || limit != -1) {
+				ex.setPage(new Page(offset, limit));
+			}
+			ex.setOrderByClause("ann_id desc");
+
+			AnnouncementMapper map = session.getMapper(AnnouncementMapper.class);
+			List result = map.selectByExample(ex);
+			if (needTotalCounts) {
+				Integer counts = map.countByExample(null);
+				result.add(counts);
+			}
+			return result;
 		} finally {
 			session.close();
 		}

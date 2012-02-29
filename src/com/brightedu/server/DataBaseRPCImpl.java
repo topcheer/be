@@ -22,6 +22,7 @@ import com.brightedu.client.DataBaseRPC;
 import com.brightedu.model.edu.AgentReturnKey;
 import com.brightedu.model.edu.AgentReturnType;
 import com.brightedu.model.edu.AgentType;
+import com.brightedu.model.edu.Announcement;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.ChargeType;
 import com.brightedu.model.edu.College;
@@ -536,6 +537,29 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	@Override
 	public boolean markAsRead(MessageReal message) {
 		return agent.markAsRead(message);
+	}
+	
+	/**************************通知通告管理******************************/
+	@Override
+	public boolean addAnnouncement(Announcement ann) {
+		return agent.addAnnouncement(ann);
+	}
+
+	@Override
+	public boolean deleteAnnouncement(List<Integer> annIDs) {
+		return agent.deleteAnnouncement(annIDs);
+	}
+
+	@Override
+	public boolean saveAnnouncement(Announcement ann) {
+		return agent.saveAnnouncement(ann);
+	}
+
+	@Override
+	public List<Announcement> getAnnouncementList(int offset, int limit,
+			boolean needTotalCounts) {
+		return agent.getAnnouncementList(offset, limit, needTotalCounts);
+				
 	}
 
 }
