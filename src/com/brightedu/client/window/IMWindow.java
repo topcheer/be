@@ -9,9 +9,6 @@ import com.brightedu.client.CommonAsyncCall;
 import com.brightedu.model.edu.MessageReal;
 import com.brightedu.model.edu.Messages;
 import com.brightedu.model.edu.User;
-
-
-import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.util.SC;
@@ -125,6 +122,7 @@ public class IMWindow extends Window {
 		
 		BrightEdu.createDataBaseRPC().readMessage(user, new CommonAsyncCall<List<MessageReal>>(){
 
+			@SuppressWarnings("deprecation")
 			@Override
 			public void onSuccess(List<MessageReal> result) {
 				RecordList list = new RecordList();
@@ -147,7 +145,7 @@ public class IMWindow extends Window {
 			
 			@Override
 			public void onRecordClick(RecordClickEvent event) {
-				final Record rec = event.getRecord();
+				
 				final MessageReal message = (MessageReal)event.getRecord().getAttributeAsObject("obj");
 				if(cw == null ) cw = new ReplyWindow();
 				
