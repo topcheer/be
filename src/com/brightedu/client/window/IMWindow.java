@@ -1,6 +1,6 @@
 package com.brightedu.client.window;
 
-import java.util.ArrayList;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -9,8 +9,7 @@ import com.brightedu.client.CommonAsyncCall;
 import com.brightedu.model.edu.MessageReal;
 import com.brightedu.model.edu.Messages;
 import com.brightedu.model.edu.User;
-import com.google.gwt.user.client.ui.SuggestBox;
-import com.google.gwt.user.client.ui.SuggestOracle;
+
 
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
@@ -22,16 +21,6 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.CloseClickEvent;
 import com.smartgwt.client.widgets.events.CloseClickHandler;
-import com.smartgwt.client.widgets.events.DragMoveEvent;
-import com.smartgwt.client.widgets.events.DragMoveHandler;
-import com.smartgwt.client.widgets.events.DragRepositionMoveEvent;
-import com.smartgwt.client.widgets.events.DragRepositionMoveHandler;
-import com.smartgwt.client.widgets.events.DragRepositionStopEvent;
-import com.smartgwt.client.widgets.events.DragRepositionStopHandler;
-import com.smartgwt.client.widgets.events.MaximizeClickEvent;
-import com.smartgwt.client.widgets.events.MaximizeClickHandler;
-import com.smartgwt.client.widgets.events.MinimizeClickEvent;
-import com.smartgwt.client.widgets.events.MinimizeClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.grid.ListGrid;
@@ -198,27 +187,6 @@ public class IMWindow extends Window {
 				
 			}});
 		
-
-//		this.addDragRepositionMoveHandler(new DragRepositionMoveHandler(){
-//
-//
-//			@Override
-//			public void onDragRepositionMove(DragRepositionMoveEvent event) {
-//				System.out.println(_self.getAbsoluteTop());
-//				System.out.println(_self.getAbsoluteLeft());
-//				
-//				if(cw !=null){
-//				cw.setTop(_self.getAbsoluteTop());
-//				cw.setLeft(_self.getAbsoluteLeft() + _self.getWidth());
-//				}
-//			}});
-//		
-//		this.addDragMoveHandler(new DragMoveHandler(){
-//
-//			@Override
-//			public void onDragMove(DragMoveEvent event) {
-//
-//			}});
-//		
+		
 	}
 }
