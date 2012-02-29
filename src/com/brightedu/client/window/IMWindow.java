@@ -20,6 +20,8 @@ import com.smartgwt.client.widgets.events.CloseClickEvent;
 import com.smartgwt.client.widgets.events.CloseClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
+import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
+import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -39,7 +41,10 @@ public class IMWindow extends Window {
 	{
 		_self = this;
 		this.setTitle("未读消息列表");
-		this.setAutoCenter(true);
+		//this.setAutoCenter(true);
+		this.setTop(200);
+		this.setLeft(200);
+		
 		this.setIsModal(true);
 		this.setAutoSize(true);
 		this.setShowModalMask(true);
@@ -88,6 +93,39 @@ public class IMWindow extends Window {
 		
 		addItem(messages);
 		addItem(buttonLayout);
+		
+		userItem.addChangedHandler(new ChangedHandler(){
+
+			@Override
+			public void onChanged(ChangedEvent event) {
+				if(userItem.getSelectedRecord() == null)
+				{
+					SC.say("请选择要发送的对象");
+					return;
+				}
+//				final MessageReal mr = new MessageReal();
+//				mr.setFrom_user(new Integer(userItem.getValueAsString()));
+//				mr.setFrom_user_name(users.get(userItem.getValue()));
+//				mr.setTo_user(user.getUser_id());
+//				mr.setTo_user_name(user.getUser_name());
+				if(cw!=null)cw.hide();
+				if(nw == null ) nw = new NewMessageWindow();
+				
+				Messages mess = new Messages();
+				mess.setFrom_user(user.getUser_id());
+				mess.setTo_user(new Integer(userItem.getValueAsString()));
+				
+				nw.setMessage(mess);
+				
+				nw.setTitle("发送给" + users.get(userItem.getValue()));
+				nw.setTop(_self.getTop());
+				nw.setLeft(_self.getLeft() + _self.getWidth());
+				nw.x.setValue("");
+				nw.show();	
+				
+			}});
+		
+		
 		newBtn.addClickHandler(new ClickHandler(){
 
 			@Override
