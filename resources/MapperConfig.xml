@@ -89,6 +89,8 @@
 		<mapper resource="com/brightedu/xml/edu/MessagesMapper.xml" />
    		<mapper resource="com/brightedu/xml/edu/MessageRealMapper.xml" />
 		
+		<mapper resource="com/brightedu/xml/edu/AnnouncementMapper.xml" />
+		
 	</mappers>
 
 
