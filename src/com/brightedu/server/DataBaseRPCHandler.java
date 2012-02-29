@@ -36,7 +36,7 @@ public class DataBaseRPCHandler implements InvocationHandler {
 
 		// 方法调用之后，录入audit
 		String methodName = method.getName();
-		if (!methodName.startsWith("get")) {
+		if (!methodName.startsWith("get") && !methodName.startsWith("checkNewMessages")) {
 			StringBuilder sb = new StringBuilder();
 			sb.append("(UserID=").append(user.getUser_id());
 			sb.append(" UserName=").append(user.getUser_name()).append(")");
