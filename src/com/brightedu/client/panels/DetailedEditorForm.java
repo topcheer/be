@@ -57,7 +57,7 @@ public abstract class DetailedEditorForm extends DynamicForm {
 
 	public Integer getValueAsInteger(SelectItem item){
 		String s = item.getValueAsString();
-		if(s!=null){
+		if(s!=null && !s.trim().equals("")){
 			return new Integer(s);
 		}
 		return null;
