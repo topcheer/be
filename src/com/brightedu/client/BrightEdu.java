@@ -23,6 +23,7 @@ import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
+import com.smartgwt.client.widgets.calendar.Calendar;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.CloseClickEvent;
@@ -36,6 +37,7 @@ import com.smartgwt.client.widgets.menu.Menu;
 import com.smartgwt.client.widgets.menu.MenuItem;
 import com.smartgwt.client.widgets.menu.MenuItemIfFunction;
 import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
+import com.smartgwt.client.widgets.plugins.Flashlet;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.tab.events.TabSelectedEvent;
@@ -64,6 +66,8 @@ public class BrightEdu implements EntryPoint {
 	
 	private static User user = null;
 	final Label mess = new Label("没有新短消息");
+	MessTimer mt = new MessTimer();
+	MainTimer mainTimer = new MainTimer();
 	/**
 	 * This is the entry point method.
 	 */
@@ -186,7 +190,7 @@ public class BrightEdu implements EntryPoint {
 
 		topBar.addFill();
 		
-		
+		mess.setAnimateFadeTime(1000);
 		mess.setWidth(200);
 		mess.setHeight(20);
 		mess.setAlign(Alignment.RIGHT);
@@ -201,38 +205,10 @@ public class BrightEdu implements EntryPoint {
 				win.show();
 			}});
 		
-		final MessTimer mt = new MessTimer();
-		new Timer(){
-
-			@Override
-			public void run() {
-				
-				
-				dbService.checkNewMessages(user, new CommonAsyncCall<Boolean>(){
-
-					@Override
-					public void onSuccess(Boolean result) {
-						if(result)
-						{
-
-							mess.setOpacity(100);
-							mess.setContents("<b><font color=red>你有新短消息</font></b>");							
-							mt.scheduleRepeating(500);
-	
-						}
-						else
-						{
-							mess.setOpacity(50);
-							mess.setContents("没有新短消息");
-							mess.setVisible(true);
-							mt.cancel();
-							
-						}
-						
-					}});
-				
-			}}.scheduleRepeating(20000);
 		
+		mainTimer.run();
+		mainTimer.scheduleRepeating(20000);
+	
 		topBar.addMember(mess);
 		topBar.addSeparator();
 		
@@ -328,7 +304,18 @@ public class BrightEdu implements EntryPoint {
 		HLayout mainPanel = new HLayout();
 		mainPanel.setHeight100();
 		mainPanel.setWidth100();
-
+		
+		Calendar ca = new Calendar();
+		
+		//mainPanel.addMember(ca);
+		
+		Flashlet g = new Flashlet();
+		g.setSrc("http://player.youku.com/player.php/Type/Folder/Fid/17079166/Ob/1/Pt/0/sid/XMzU4MDI1ODA4/v.swf");
+		g.setWidth(600);
+		g.setHeight(400);
+//		mainPanel.addMember(g);
+		
+		
 		// TileView tileView = new TileView(mainPanel);
 		// mainPanel.addMember(tileView);
 
@@ -498,6 +485,37 @@ public class BrightEdu implements EntryPoint {
 		return greetingService;
 	}
 	
+	private class MainTimer extends Timer{
+
+		@Override
+		public void run() {
+			
+			dbService.checkNewMessages(user, new CommonAsyncCall<Boolean>(){
+
+				@Override
+				public void onSuccess(Boolean result) {
+					if(result)
+					{
+
+						mess.setOpacity(100);
+						mess.setContents("<b><font color=red>你有新短消息</font></b>");							
+						mt.scheduleRepeating(1000);
+						
+
+					}
+					else
+					{
+						mess.setOpacity(50);
+						mess.setContents("没有新短消息");
+						mess.setVisible(true);
+						mt.cancel();
+						
+					}
+					
+				}});
+		}
+		
+	}
 	private class MessTimer extends Timer{
 
 		@Override
