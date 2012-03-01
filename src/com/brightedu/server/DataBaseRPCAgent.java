@@ -114,9 +114,13 @@ import com.brightedu.model.edu.UserType;
 import com.brightedu.model.edu.UserTypeExample;
 import com.brightedu.server.util.ConnectionManager;
 import com.brightedu.server.util.Log;
+import com.brightedu.server.util.MyRPC;
 import com.brightedu.server.util.ReflectUtil;
 import com.brightedu.server.util.ServerProperties;
 import com.brightedu.server.util.Utils;
+import com.brightedu.shared.OperatioinFailedException;
+import com.google.gwt.user.client.rpc.SerializationException;
+import com.google.gwt.user.server.rpc.impl.StandardSerializationPolicy;
 
 public class DataBaseRPCAgent implements DataBaseRPC {
 	SqlSessionFactory sessionFactory;
@@ -141,6 +145,11 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	public List getBatchList(int offset, int limit, boolean needTotalCounts) {
 		SqlSession session = sessionFactory.openSession();
 		try {
+			// if (remoteServlet.getUser().getUser_id() == 1) {
+			// OperatioinFailedException ex = new OperatioinFailedException(
+			// "session expired or user not login");
+			// throw ex;
+			// }
 			BatchIndexExample ex = new BatchIndexExample();
 			if (offset != -1 || limit != -1) {
 				ex.setPage(new Page(offset, limit));
@@ -966,11 +975,13 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			return (Serializable) method.invoke(mapper, id);
 
 		} catch (Exception e) {
-			Log.e("", e);
+			OperatioinFailedException ex = new OperatioinFailedException(e);
+			Log.e("", ex);
+			throw ex;
 		} finally {
 			session.close();
 		}
-		return null;
+
 	}
 
 	@Override
@@ -1410,7 +1421,9 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			delMethod.invoke(mapper, example);
 			session.commit();
 		} catch (Exception e) {
-			Log.e("", e);
+			OperatioinFailedException ex = new OperatioinFailedException(e);
+			Log.e("", ex);
+			throw ex;
 		} finally {
 			session.close();
 		}
@@ -1435,7 +1448,9 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			method.invoke(mapper, model);
 			session.commit();
 		} catch (Exception e) {
-			Log.e("", e);
+			OperatioinFailedException ex = new OperatioinFailedException(e);
+			Log.e("", ex);
+			throw ex;
 		} finally {
 			session.close();
 		}
@@ -1485,7 +1500,9 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 				nameValuePares.add(result);
 			}
 		} catch (Exception e) {
-			Log.e("", e);
+			OperatioinFailedException ex = new OperatioinFailedException(e);
+			Log.e("", ex);
+			throw ex;
 		} finally {
 			session.close();
 		}
@@ -1909,18 +1926,16 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			session.close();
 		}
 	}
-	
-	/**************************站内用户短信******************************/
-	
+
+	/************************** 站内用户短信 ******************************/
+
 	@Override
 	public boolean sendMessage(List<Messages> messages) {
-		
+
 		SqlSession session = sessionFactory.openSession();
 		try {
-			MessagesMapper bim = session
-					.getMapper(MessagesMapper.class);
-			for(Messages mess : messages)
-			{
+			MessagesMapper bim = session.getMapper(MessagesMapper.class);
+			for (Messages mess : messages) {
 				bim.insertSelective(mess);
 			}
 			session.commit();
@@ -1935,82 +1950,77 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	public List<MessageReal> readMessage(User user) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			
-		    //get list of unread mesages
-			
-			MessageRealMapper bim = session
-					.getMapper(MessageRealMapper.class);
-			
+
+			// get list of unread mesages
+
+			MessageRealMapper bim = session.getMapper(MessageRealMapper.class);
+
 			MessageRealExample ex = new MessageRealExample();
 			ex.setOrderByClause("message_id desc");
-			ex.createCriteria().andTo_userEqualTo(user.getUser_id());
-			List<MessageReal> list =  bim.selectByExample(ex);
-			MessageReal  s = new MessageReal();
-			
+			if (user != null) {
+				ex.createCriteria().andTo_userEqualTo(user.getUser_id());
+			}
+			List<MessageReal> list = bim.selectByExample(ex);
 			return list;
-			
-
 		} finally {
 			session.close();
 		}
 	}
 
 	@Override
-	public boolean markAsRead(MessageReal message)
-	{
-		
+	public boolean markAsRead(MessageReal message) {
+
 		SqlSession session = sessionFactory.openSession();
 		try {
-					
-		//update unread messages to read
-		MessagesMapper mm = session.getMapper(MessagesMapper.class);
-	    MessagesExample me = new MessagesExample();
-	    me.createCriteria().andMessage_idEqualTo(message.getMessage_id());
-	    Messages rec = new Messages();
-	    rec.setIs_read(true);
-	    rec.setRead_tstp(new Date());
-	    mm.updateByExampleSelective(rec, me);
-	    session.commit();
-	    return true;
+
+			// update unread messages to read
+			MessagesMapper mm = session.getMapper(MessagesMapper.class);
+			MessagesExample me = new MessagesExample();
+			me.createCriteria().andMessage_idEqualTo(message.getMessage_id());
+			Messages rec = new Messages();
+			rec.setIs_read(true);
+			rec.setRead_tstp(new Date());
+			mm.updateByExampleSelective(rec, me);
+			session.commit();
+			return true;
 		} finally {
 			session.close();
 		}
 	}
-	
+
 	@Override
 	public boolean checkNewMessages(User user) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			
-		    //get count of unread mesages
-			
-			MessageRealMapper bim = session
-					.getMapper(MessageRealMapper.class);
-			
+			// get count of unread mesages
+			MessageRealMapper bim = session.getMapper(MessageRealMapper.class);
+
 			MessageRealExample ex = new MessageRealExample();
 			ex.createCriteria().andTo_userEqualTo(user.getUser_id());
-			int count =  bim.countByExample(ex);
-	
-			if(count > 0) return true;
-			
+			int count = bim.countByExample(ex);
+
+			if (count > 0)
+				return true;
+
 			return false;
-			
 
 		} finally {
 			session.close();
 		}
 	}
-	/**************************通知通告管理******************************/
+
+	/************************** 通知通告管理 ******************************/
 	@Override
 	public boolean addAnnouncement(Announcement ann) {
 		SqlSession session = sessionFactory.openSession();
 		try {
 
-			AnnouncementMapper map = session.getMapper(AnnouncementMapper.class);
+			AnnouncementMapper map = session
+					.getMapper(AnnouncementMapper.class);
 			map.insertSelective(ann);
 			session.commit();
 			return true;
-			
+
 		} finally {
 			session.close();
 		}
@@ -2021,15 +2031,15 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		SqlSession session = sessionFactory.openSession();
 		try {
 
-			AnnouncementMapper map = session.getMapper(AnnouncementMapper.class);
-			for(Integer annId : annIDs)
-			{
+			AnnouncementMapper map = session
+					.getMapper(AnnouncementMapper.class);
+			for (Integer annId : annIDs) {
 				map.deleteByPrimaryKey(annId);
 			}
-			
+
 			session.commit();
 			return true;
-			
+
 		} finally {
 			session.close();
 		}
@@ -2040,11 +2050,12 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		SqlSession session = sessionFactory.openSession();
 		try {
 
-			AnnouncementMapper map = session.getMapper(AnnouncementMapper.class);
+			AnnouncementMapper map = session
+					.getMapper(AnnouncementMapper.class);
 			map.updateByPrimaryKeySelective(ann);
 			session.commit();
 			return true;
-			
+
 		} finally {
 			session.close();
 		}
@@ -2061,7 +2072,8 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			}
 			ex.setOrderByClause("ann_id desc");
 
-			AnnouncementMapper map = session.getMapper(AnnouncementMapper.class);
+			AnnouncementMapper map = session
+					.getMapper(AnnouncementMapper.class);
 			List result = map.selectByExample(ex);
 			if (needTotalCounts) {
 				Integer counts = map.countByExample(null);
