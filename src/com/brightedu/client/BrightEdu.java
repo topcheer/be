@@ -202,15 +202,6 @@ public class BrightEdu implements EntryPoint {
 		mess.setAlign(Alignment.RIGHT);
 		mess.setOpacity(50);
 
-		mess.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				IMWindow win = new IMWindow(user);
-
-				win.show();
-			}
-		});
 
 		// final MessTimer mt = new MessTimer();
 		// new Timer(){
