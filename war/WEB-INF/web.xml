@@ -53,20 +53,41 @@
 		<servlet-name>DataBaseRPC</servlet-name>
 		<url-pattern>/brightedu/DataBaseRPC</url-pattern>
 	</servlet-mapping>
-  <servlet>
-  	<servlet-name>PaymentRPC</servlet-name>
-  	<servlet-class>com.brightedu.server.PaymentRPCImpl</servlet-class>
-  </servlet>
-  <servlet-mapping>
-  	<servlet-name>PaymentRPC</servlet-name>
-  	<url-pattern>/brightedu/PaymentRPC</url-pattern>
-  </servlet-mapping>
-  <servlet>
-  	<servlet-name>CallbackServlet</servlet-name>
-  	<servlet-class>com.brightedu.server.bank.CallbackServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-  	<servlet-name>CallbackServlet</servlet-name>
-  	<url-pattern>/brightedu/CallbackServlet</url-pattern>
-  </servlet-mapping>
+	<servlet>
+		<servlet-name>PaymentRPC</servlet-name>
+		<servlet-class>com.brightedu.server.PaymentRPCImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>PaymentRPC</servlet-name>
+		<url-pattern>/brightedu/PaymentRPC</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>CallbackServlet</servlet-name>
+		<servlet-class>com.brightedu.server.bank.CallbackServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CallbackServlet</servlet-name>
+		<url-pattern>/brightedu/CallbackServlet</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>EventServiceImpl</servlet-name>
+		<servlet-class>de.novanic.eventservice.service.EventServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>EventServiceImpl</servlet-name>
+		<url-pattern>/brightedu/gwteventservice</url-pattern>
+	</servlet-mapping>
+	
+	
+	<servlet>
+		<servlet-name>MessageService</servlet-name>
+		<servlet-class>com.brightedu.server.MessageService</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MessageService</servlet-name>
+		<url-pattern>/brightedu/MessageService</url-pattern>
+	</servlet-mapping>
+
 </web-app>
