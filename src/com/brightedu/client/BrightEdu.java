@@ -79,7 +79,6 @@ public class BrightEdu implements EntryPoint {
 	 */
 	public void onModuleLoad() {
 		// System.out.println("Auth: " + auth);
-		mess.setID("newmessagelabel");
 		final LoginDialog loginDialog = new LoginDialog();
 		loginDialog.show();
 

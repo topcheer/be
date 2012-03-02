@@ -6,6 +6,8 @@ import java.util.List;
 
 import com.brightedu.client.BrightEdu;
 import com.brightedu.client.CommonAsyncCall;
+import com.brightedu.client.canvas.BrightCanvas;
+import com.brightedu.client.label.MessageLabel;
 import com.brightedu.model.edu.MessageReal;
 import com.brightedu.model.edu.Messages;
 import com.brightedu.model.edu.User;
@@ -210,7 +212,8 @@ public class IMWindow extends Window {
 					public void onSuccess(Boolean result) {
 						messages.removeData(event.getRecord());
 						if(messages.getRecords() == null || messages.getRecords().length==0){
-							
+							MessageLabel ca = (MessageLabel) MessageLabel.getById(MessageLabel.ID);
+							ca.dismissNewMessageTip();
 						}
 					}});
 			}});

@@ -57,7 +57,7 @@ public class NewMessageWindow extends Window {
 					@Override
 					public void onSuccess(Boolean result) {
 						
-						SC.say("发送成功");
+						BrightEdu.showTip("发送成功");
 						_self.hide();
 					}});
 				
