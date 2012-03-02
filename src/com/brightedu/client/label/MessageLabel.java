@@ -32,7 +32,7 @@ public class MessageLabel extends Label {
 	public void showNewMessageTip() {
 		if (win != null && win.isVisible()) {
 			// 其实这个不怎么完美，由于Messages和MessageReal对象有用户名的差别，push
-			// event传递过来的只是Message，只能冲刷一次，以后再优化
+			// event传递过来的只是Message，只能重刷一次，以后再优化
 			win.refreshMessagelist();
 		}
 		if (getOpacity() != 100) {
