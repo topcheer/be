@@ -2,6 +2,8 @@ package com.brightedu.client;
 
 import java.io.Serializable;
 
+import com.brightedu.client.canvas.BrightCanvas;
+import com.brightedu.client.label.MessageLabel;
 import com.brightedu.client.message.event.MessageEventListener;
 import com.brightedu.client.message.event.MessageRealEvent;
 import com.brightedu.client.nav.CommandTreeNode;
@@ -15,16 +17,13 @@ import com.brightedu.model.edu.User;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.smartgwt.client.core.KeyIdentifier;
 import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Img;
-import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.CloseClickEvent;
@@ -71,15 +70,16 @@ public class BrightEdu implements EntryPoint {
 	public static final String idSuffix = "_bright";
 
 	private static User user = null;
-	final Label mess = new Label("没有新短消息");
-	MessTimer mt = new MessTimer();
-//	MainTimer mainTimer = new MainTimer();
+	final MessageLabel mess = new MessageLabel();
+
+	// MainTimer mainTimer = new MainTimer();
 
 	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
 		// System.out.println("Auth: " + auth);
+		mess.setID("newmessagelabel");
 		final LoginDialog loginDialog = new LoginDialog();
 		loginDialog.show();
 
@@ -245,10 +245,9 @@ public class BrightEdu implements EntryPoint {
 		//
 		// }}.scheduleRepeating(20000);
 
-		
-//
-//		mainTimer.run();
-//		mainTimer.scheduleRepeating(20000);
+		//
+		// mainTimer.run();
+		// mainTimer.scheduleRepeating(20000);
 
 		topBar.addMember(mess);
 		topBar.addSeparator();
@@ -346,7 +345,7 @@ public class BrightEdu implements EntryPoint {
 		mainPanel.setHeight100();
 		mainPanel.setWidth100();
 
-//		Calendar ca = new Calendar();
+		// Calendar ca = new Calendar();
 
 		// mainPanel.addMember(ca);
 
@@ -525,16 +524,17 @@ public class BrightEdu implements EntryPoint {
 	public static GreetingServiceAsync createGreetingRPC() {
 		return greetingService;
 	}
-	
-	private void initMessageContext(){
+
+	private void initMessageContext() {
 		checkNewMessageOnLogin();
 		/*******************************************/
-		MessageServiceRPCAsync messageService = GWT.create(MessageServiceRPC.class);
+		MessageServiceRPCAsync messageService = GWT
+				.create(MessageServiceRPC.class);
 		messageService.startMessageSession(new CommonAsyncCall<Void>() {
 
 			@Override
 			public void onSuccess(Void result) {
-				
+				// 这里只是建立一个连接，成功后不做任何业务操作
 			}
 		});
 		RemoteEventServiceFactory theEventServiceFactory = RemoteEventServiceFactory
@@ -547,79 +547,55 @@ public class BrightEdu implements EntryPoint {
 
 			@Override
 			public void onMessage(MessageRealEvent event) {
-				mess.setOpacity(100);
-				mess.setContents("<b><font color=red>你有新短消息</font></b>");
-				mt.scheduleRepeating(1000);
+				mess.showNewMessageTip();
 			}
 
 		});
 		/*********************************************/
 	}
-	
-	private void checkNewMessageOnLogin(){
-		dbService.checkNewMessages(user, new CommonAsyncCall<Boolean>() {
 
+	private void checkNewMessageOnLogin() {
+		dbService.checkNewMessages(user, new CommonAsyncCall<Boolean>() {
 			@Override
 			public void onSuccess(Boolean result) {
 				if (result) {
-
-					mess.setOpacity(100);
-					mess.setContents("<b><font color=red>你有新短消息</font></b>");
-					mt.scheduleRepeating(1000);
-
+					mess.showNewMessageTip();
 				} else {
-					mess.setOpacity(50);
-					mess.setContents("没有新短消息");
-					mess.setVisible(true);
-					mt.cancel();
-
+					mess.dismissNewMessageTip();
 				}
 
 			}
 		});
 	}
 
-//	private class MainTimer extends Timer {
-//
-//		@Override
-//		public void run() {
-//
-//			dbService.checkNewMessages(user, new CommonAsyncCall<Boolean>() {
-//
-//				@Override
-//				public void onSuccess(Boolean result) {
-//					if (result) {
-//
-//						mess.setOpacity(100);
-//						mess.setContents("<b><font color=red>你有新短消息</font></b>");
-//						mt.scheduleRepeating(1000);
-//
-//					} else {
-//						mess.setOpacity(50);
-//						mess.setContents("没有新短消息");
-//						mess.setVisible(true);
-//						mt.cancel();
-//
-//					}
-//
-//				}
-//			});
-//		}
-//
-//	}
+	// private class MainTimer extends Timer {
+	//
+	// @Override
+	// public void run() {
+	//
+	// dbService.checkNewMessages(user, new CommonAsyncCall<Boolean>() {
+	//
+	// @Override
+	// public void onSuccess(Boolean result) {
+	// if (result) {
+	//
+	// mess.setOpacity(100);
+	// mess.setContents("<b><font color=red>你有新短消息</font></b>");
+	// mt.scheduleRepeating(1000);
+	//
+	// } else {
+	// mess.setOpacity(50);
+	// mess.setContents("没有新短消息");
+	// mess.setVisible(true);
+	// mt.cancel();
+	//
+	// }
+	//
+	// }
+	// });
+	// }
+	//
+	// }
 
-	private class MessTimer extends Timer {
-
-		@Override
-		public void run() {
-
-			if (mess.isVisible()) {
-				mess.animateHide(AnimationEffect.FADE);
-			} else {
-				mess.animateShow(AnimationEffect.FADE);
-			}
-
-		}
-
-	}
+	
 }

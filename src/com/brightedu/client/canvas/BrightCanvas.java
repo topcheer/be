@@ -1,4 +1,4 @@
-package com.brightedu.client;
+package com.brightedu.client.canvas;
 
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.AnimationEffect;
@@ -49,7 +49,7 @@ public class BrightCanvas extends Canvas {
 		busyLabel.setKeepInParentRect(true);
 	}
 
-	protected void showTip(String tip) {
+	public void showTip(String tip) {
 		int width = getWidth();
 		final int left = width / 2 - tipLabel.getWidth() / 2;
 		int height = getHeight();

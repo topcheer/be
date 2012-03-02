@@ -209,7 +209,9 @@ public class IMWindow extends Window {
 					@Override
 					public void onSuccess(Boolean result) {
 						messages.removeData(event.getRecord());
-						
+						if(messages.getRecords() == null || messages.getRecords().length==0){
+							
+						}
 					}});
 			}});
 		
