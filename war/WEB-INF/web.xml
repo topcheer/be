@@ -70,6 +70,8 @@
 		<url-pattern>/brightedu/CallbackServlet</url-pattern>
 	</servlet-mapping>
 
+
+    <!-- EventServiceImpl 和 MessageService 是消息server push机制必须的-->
 	<servlet>
 		<servlet-name>EventServiceImpl</servlet-name>
 		<servlet-class>de.novanic.eventservice.service.EventServiceImpl</servlet-class>
