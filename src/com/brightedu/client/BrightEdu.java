@@ -2,6 +2,8 @@ package com.brightedu.client;
 
 import java.io.Serializable;
 
+import com.brightedu.client.message.event.MessageEventListener;
+import com.brightedu.client.message.event.MessageRealEvent;
 import com.brightedu.client.nav.CommandTreeNode;
 import com.brightedu.client.nav.ExplorerTreeNode;
 import com.brightedu.client.nav.FunctionTree;
@@ -23,7 +25,6 @@ import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
-import com.smartgwt.client.widgets.calendar.Calendar;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.CloseClickEvent;
@@ -48,6 +49,11 @@ import com.smartgwt.client.widgets.tree.TreeNode;
 import com.smartgwt.client.widgets.tree.events.LeafClickEvent;
 import com.smartgwt.client.widgets.tree.events.LeafClickHandler;
 
+import de.novanic.eventservice.client.event.RemoteEventService;
+import de.novanic.eventservice.client.event.RemoteEventServiceFactory;
+import de.novanic.eventservice.client.event.domain.Domain;
+import de.novanic.eventservice.client.event.domain.DomainFactory;
+
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
@@ -63,11 +69,12 @@ public class BrightEdu implements EntryPoint {
 	private static ExplorerTreeNode[] treeNodeData = null;
 
 	public static final String idSuffix = "_bright";
-	
+
 	private static User user = null;
 	final Label mess = new Label("没有新短消息");
 	MessTimer mt = new MessTimer();
-	MainTimer mainTimer = new MainTimer();
+//	MainTimer mainTimer = new MainTimer();
+
 	/**
 	 * This is the entry point method.
 	 */
@@ -127,8 +134,8 @@ public class BrightEdu implements EntryPoint {
 
 			@Override
 			public void onSuccess(Serializable[] result) {
-				setUser((User)result[0]);
-				auth = (String)result[1];
+				setUser((User) result[0]);
+				auth = (String) result[1];
 				String[] nodes = auth.split("\\|");
 				treeNodeData = new ExplorerTreeNode[nodes.length];
 				for (int i = 0; i < nodes.length; i++) {
@@ -147,12 +154,12 @@ public class BrightEdu implements EntryPoint {
 			}
 		});
 	}
-	
-	private static void setUser(User newUser){
+
+	private static void setUser(User newUser) {
 		user = newUser;
 	}
-	
-	public static User getUser(){
+
+	public static User getUser() {
 		return user;
 	}
 
@@ -189,29 +196,63 @@ public class BrightEdu implements EntryPoint {
 		topBar.addSpacer(6);
 
 		topBar.addFill();
-		
+
 		mess.setAnimateFadeTime(1000);
 		mess.setWidth(200);
 		mess.setHeight(20);
 		mess.setAlign(Alignment.RIGHT);
 		mess.setOpacity(50);
-		
-		mess.addClickHandler(new ClickHandler(){
+
+		mess.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
 				IMWindow win = new IMWindow(user);
-				
+
 				win.show();
-			}});
+			}
+		});
+
+		// final MessTimer mt = new MessTimer();
+		// new Timer(){
+		//
+		// @Override
+		// public void run() {
+		//
+		//
+		// dbService.checkNewMessages(user, new CommonAsyncCall<Boolean>(){
+		//
+		// @Override
+		// public void onSuccess(Boolean result) {
+		// if(result)
+		// {
+		//
+		// mess.setOpacity(100);
+		// mess.setContents("<b><font color=red>你有新短消息</font></b>");
+		// mt.scheduleRepeating(500);
+		//
+		// }
+		// else
+		// {
+		// mess.setOpacity(50);
+		// mess.setContents("没有新短消息");
+		// mess.setVisible(true);
+		// mt.cancel();
+		//
+		// }
+		//
+		// }});
+		//
+		// }}.scheduleRepeating(20000);
+
 		
-		
-		mainTimer.run();
-		mainTimer.scheduleRepeating(20000);
-	
+//
+//		mainTimer.run();
+//		mainTimer.scheduleRepeating(20000);
+
 		topBar.addMember(mess);
 		topBar.addSeparator();
-		
+
 		ToolStripButton login_logout_Btn = new ToolStripButton();
 		login_logout_Btn.setTitle("退出");
 		login_logout_Btn.setPrompt("退出");
@@ -304,18 +345,17 @@ public class BrightEdu implements EntryPoint {
 		HLayout mainPanel = new HLayout();
 		mainPanel.setHeight100();
 		mainPanel.setWidth100();
-		
-		Calendar ca = new Calendar();
-		
-		//mainPanel.addMember(ca);
-		
+
+//		Calendar ca = new Calendar();
+
+		// mainPanel.addMember(ca);
+
 		Flashlet g = new Flashlet();
 		g.setSrc("http://player.youku.com/player.php/Type/Folder/Fid/17079166/Ob/1/Pt/0/sid/XMzU4MDI1ODA4/v.swf");
 		g.setWidth(600);
 		g.setHeight(400);
-//		mainPanel.addMember(g);
-		
-		
+		// mainPanel.addMember(g);
+
 		// TileView tileView = new TileView(mainPanel);
 		// mainPanel.addMember(tileView);
 
@@ -349,6 +389,7 @@ public class BrightEdu implements EntryPoint {
 		// main.addMember(fbWindow);
 		// }
 		main.draw();
+		initMessageContext();
 	}
 
 	public static void showTip(String tips) {
@@ -485,52 +526,100 @@ public class BrightEdu implements EntryPoint {
 		return greetingService;
 	}
 	
-	private class MainTimer extends Timer{
+	private void initMessageContext(){
+		checkNewMessageOnLogin();
+		/*******************************************/
+		MessageServiceRPCAsync messageService = GWT.create(MessageServiceRPC.class);
+		messageService.startMessageSession(new CommonAsyncCall<Void>() {
 
-		@Override
-		public void run() {
-			
-			dbService.checkNewMessages(user, new CommonAsyncCall<Boolean>(){
-
-				@Override
-				public void onSuccess(Boolean result) {
-					if(result)
-					{
-
-						mess.setOpacity(100);
-						mess.setContents("<b><font color=red>你有新短消息</font></b>");							
-						mt.scheduleRepeating(1000);
-						
-
-					}
-					else
-					{
-						mess.setOpacity(50);
-						mess.setContents("没有新短消息");
-						mess.setVisible(true);
-						mt.cancel();
-						
-					}
-					
-				}});
-		}
-		
-	}
-	private class MessTimer extends Timer{
-
-		@Override
-		public void run() {
-
-			if(mess.isVisible())
-			{
-				mess.animateHide(AnimationEffect.FADE);
+			@Override
+			public void onSuccess(Void result) {
+				
 			}
-			else
-			{
+		});
+		RemoteEventServiceFactory theEventServiceFactory = RemoteEventServiceFactory
+				.getInstance();
+		RemoteEventService theEventService = theEventServiceFactory
+				.getRemoteEventService();
+		Domain messageDomain = DomainFactory.getDomain("Message_User_"
+				+ user.getUser_id());
+		theEventService.addListener(messageDomain, new MessageEventListener() {
+
+			@Override
+			public void onMessage(MessageRealEvent event) {
+				mess.setOpacity(100);
+				mess.setContents("<b><font color=red>你有新短消息</font></b>");
+				mt.scheduleRepeating(1000);
+			}
+
+		});
+		/*********************************************/
+	}
+	
+	private void checkNewMessageOnLogin(){
+		dbService.checkNewMessages(user, new CommonAsyncCall<Boolean>() {
+
+			@Override
+			public void onSuccess(Boolean result) {
+				if (result) {
+
+					mess.setOpacity(100);
+					mess.setContents("<b><font color=red>你有新短消息</font></b>");
+					mt.scheduleRepeating(1000);
+
+				} else {
+					mess.setOpacity(50);
+					mess.setContents("没有新短消息");
+					mess.setVisible(true);
+					mt.cancel();
+
+				}
+
+			}
+		});
+	}
+
+//	private class MainTimer extends Timer {
+//
+//		@Override
+//		public void run() {
+//
+//			dbService.checkNewMessages(user, new CommonAsyncCall<Boolean>() {
+//
+//				@Override
+//				public void onSuccess(Boolean result) {
+//					if (result) {
+//
+//						mess.setOpacity(100);
+//						mess.setContents("<b><font color=red>你有新短消息</font></b>");
+//						mt.scheduleRepeating(1000);
+//
+//					} else {
+//						mess.setOpacity(50);
+//						mess.setContents("没有新短消息");
+//						mess.setVisible(true);
+//						mt.cancel();
+//
+//					}
+//
+//				}
+//			});
+//		}
+//
+//	}
+
+	private class MessTimer extends Timer {
+
+		@Override
+		public void run() {
+
+			if (mess.isVisible()) {
+				mess.animateHide(AnimationEffect.FADE);
+			} else {
 				mess.animateShow(AnimationEffect.FADE);
 			}
-			
+
 		}
-		
+
 	}
 }

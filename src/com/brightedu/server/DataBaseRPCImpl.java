@@ -49,6 +49,7 @@ import com.brightedu.model.edu.User;
 import com.brightedu.model.edu.UserRights;
 import com.brightedu.model.edu.UserRightsEffective;
 import com.brightedu.model.edu.UserType;
+import com.google.gwt.user.server.rpc.RPCRequest;
 
 public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 
@@ -538,6 +539,7 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	public boolean markAsRead(MessageReal message) {
 		return agent.markAsRead(message);
 	}
+
 	
 	/**************************通知通告管理******************************/
 	@Override

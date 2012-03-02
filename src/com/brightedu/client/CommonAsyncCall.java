@@ -7,10 +7,19 @@ public abstract class CommonAsyncCall<T> implements AsyncCallback<T> {
 
 	@Override
 	public void onFailure(Throwable caught) {
-		failed();
-		SC.warn(caught.getMessage());
+		
+//		if(caught instanceof InvocationTargetException){
+//			caught = getRootCause((InvocationTargetException)caught);
+//		}
+		failed(caught);
+		caught.printStackTrace();
+		SC.warn("错误: "+caught.getMessage());
 	}
 
-	protected void failed() {
+	protected void failed(Throwable caught) {
 	}
+	
+//	private Exception getRootCause(InvocationTargetException caught){
+//		return (Exception)caught.getTargetException();
+//	}
 }

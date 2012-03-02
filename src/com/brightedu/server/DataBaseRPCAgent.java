@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.ServletException;
+
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
@@ -1939,6 +1941,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 				bim.insertSelective(mess);
 			}
 			session.commit();
+			MessageService.enqueue(messages);
 			return true;
 
 		} finally {

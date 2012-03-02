@@ -10,6 +10,7 @@ import com.brightedu.model.edu.User;
 import com.brightedu.server.util.Log;
 import com.brightedu.server.util.ReflectUtil;
 import com.brightedu.server.util.Utils;
+import com.brightedu.shared.OperatioinFailedException;
 
 public class DataBaseRPCHandler implements InvocationHandler {
 	// 要代理的原始对象
@@ -23,38 +24,43 @@ public class DataBaseRPCHandler implements InvocationHandler {
 	public Object invoke(Object proxy, Method method, Object[] args)
 			throws Throwable {
 		// 方法调用之前,校验权限
-		long start = System.nanoTime();
-		User user = (User) rpcAgent.getRemoteServlet().getUser();
-		if (user == null) {
-			Log.d("session expired or user not login");
-			rpcAgent.getRemoteServlet().unAuthorized();
-			return null;
-		}
-
-		// 调用原始对象的方法
-		Object result = method.invoke(this.rpcAgent, args);
-
-		// 方法调用之后，录入audit
-		String methodName = method.getName();
-		if (!methodName.startsWith("get") && !methodName.startsWith("checkNewMessages")) {
-			StringBuilder sb = new StringBuilder();
-			sb.append("(UserID=").append(user.getUser_id());
-			sb.append(" UserName=").append(user.getUser_name()).append(")");
-			sb.append(methodName);
-			sb.append(": ");
-			if (args != null) {
-				for (Object o : args) {
-					String audit = getObjectAudit(o);
-					sb.append(audit).append("   #");
-				}
+		try {
+			long start = System.nanoTime();
+			User user = (User) rpcAgent.getRemoteServlet().getUser();
+			if (user == null) {
+				rpcAgent.getRemoteServlet().unAuthorized();
+				return null;
 			}
-			audit(sb.toString());
+
+			// 调用原始对象的方法
+			Object result = method.invoke(this.rpcAgent, args);
+
+			// 方法调用之后，录入audit
+			String methodName = method.getName();
+			if (!methodName.startsWith("get")) {
+				StringBuilder sb = new StringBuilder();
+				sb.append("(UserID=").append(user.getUser_id());
+				sb.append(" UserName=").append(user.getUser_name()).append(")");
+				sb.append(methodName);
+				sb.append(": ");
+				if (args != null) {
+					for (Object o : args) {
+						String audit = getObjectAudit(o);
+						sb.append(audit).append("   #");
+					}
+
+				}
+				audit(sb.toString());
+			}
+			long end = System.nanoTime();
+			System.out.println("-----user: " + user.getUser_name() + "     "
+					+ method.getName() + ", eclapsed " + (end - start)
+					/ 1000000 + "ms");
+			return result;
+		} catch (Exception e) {
+			Log.e("", e);
+			throw e;
 		}
-		long end = System.nanoTime();
-		System.out.println("-----user: " + user.getUser_name() + "     "
-				+ method.getName() + ", eclapsed " + (end - start) / 1000000
-				+ "ms");
-		return result;
 	}
 
 	private String getObjectAudit(Object o) {
@@ -83,6 +89,7 @@ public class DataBaseRPCHandler implements InvocationHandler {
 						sb.append(f.getName()).append("=").append(filedValue)
 								.append(" - ");
 					} catch (Exception e) {
+						//Do nothing here
 					}
 				}
 			}

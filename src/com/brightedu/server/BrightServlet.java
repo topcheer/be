@@ -33,6 +33,8 @@ import javax.servlet.http.HttpSession;
 import com.brightedu.client.DataBaseRPC;
 import com.brightedu.model.edu.User;
 import com.brightedu.server.util.Log;
+import com.brightedu.shared.OperatioinFailedException;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException;
 import com.google.gwt.user.client.rpc.RpcTokenException;
 import com.google.gwt.user.client.rpc.SerializationException;
@@ -420,6 +422,10 @@ public class BrightServlet extends AbstractRemoteServiceServlet implements
 
 		RPCServletUtils.writeResponse(getServletContext(), response,
 				responsePayload, gzipEncode);
+	}
+
+	public SerializationPolicy getSerializationPolicy() {
+		return getSerializationPolicy(GWT.getModuleBaseURL(), getPermutationStrongName());
 	}
 
 }
