@@ -60,6 +60,19 @@ h1 {
 	background-color: #F4F4F4;
 }
 
+.tipmessage{
+	background-color: #f0f0f0;
+}
+
+.busymessage{
+	background-color: #f0f0f0;
+}
+
+.messagelabel {
+	cursor: pointer;
+}
+
+
 .test {
 	background-color: #a8d0ff;
 	color: black;
