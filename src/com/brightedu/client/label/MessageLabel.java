@@ -16,7 +16,7 @@ public class MessageLabel extends Label {
 	public MessageLabel() {
 		setID(ID);
 		setContents("没有新短消息");
-
+		setStyleName("messagelabel");
 		addClickHandler(new ClickHandler() {
 
 			@Override
