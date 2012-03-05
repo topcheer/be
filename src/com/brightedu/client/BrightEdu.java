@@ -28,6 +28,8 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.CloseClickEvent;
 import com.smartgwt.client.widgets.events.CloseClickHandler;
+import com.smartgwt.client.widgets.events.ResizedEvent;
+import com.smartgwt.client.widgets.events.ResizedHandler;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
@@ -178,7 +180,8 @@ public class BrightEdu implements EntryPoint {
 
 	private void createAdminUI() {
 		VLayout main = new VLayout();
-
+		main.setWidth(500);
+		main.setHeight(500);
 		ToolStrip topBar = new ToolStrip();
 		topBar.setHeight(62);
 		topBar.setWidth100();
@@ -291,12 +294,12 @@ public class BrightEdu implements EntryPoint {
 		hLayout.setWidth100();
 		hLayout.setHeight100();
 
-		VLayout sideNavLayout = new VLayout();
+		final VLayout sideNavLayout = new VLayout();
 		sideNavLayout.setStyleName("test");
 		sideNavLayout.setHeight100();
-		sideNavLayout.setWidth(200);
+		sideNavLayout.setWidth(185);
 		sideNavLayout.setShowResizeBar(true);
-		FunctionTree sideNav = new FunctionTree();
+		final FunctionTree sideNav = new FunctionTree();
 
 		sideNav.addLeafClickHandler(new LeafClickHandler() {
 			public void onLeafClick(LeafClickEvent event) {
@@ -381,6 +384,7 @@ public class BrightEdu implements EntryPoint {
 		// fbWindow.setRedrawOnResize(true);
 		// main.addMember(fbWindow);
 		// }
+
 		main.draw();
 		initMessageContext();
 	}

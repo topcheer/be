@@ -8,8 +8,10 @@ public class ExplorerTreeNode extends TreeNode {
     public ExplorerTreeNode(String name, String nodeID, String parentNodeID, String icon, PanelFactory factory, boolean enabled, String idSuffix) {
         if (enabled) {
             setName(name);
+            setTitle(name);
         } else {
             setName("<span style='color:808080'>" + name + "</span>");
+            setTitle("<span style='color:808080'>" + name + "</span>");
         }
         setNodeID(nodeID.replace("-", "_") + idSuffix);
         setParentNodeID(parentNodeID.replace("-", "_") + idSuffix);

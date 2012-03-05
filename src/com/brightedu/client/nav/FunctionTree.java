@@ -28,15 +28,8 @@ public class FunctionTree extends TreeGrid {
 		setLoadDataOnDemand(false);
 		setCanSort(false);
 		
-		TreeGridField field = new TreeGridField("name","<b>功能导航</b>",300);
-//		field.setCanFilter(true);
-//		field.setName("name");
-//		field.setTitle("<b>Samples</b>");
-//		field.setName("xxxx");
-//		field.setTitle("uuuxxx");
-		
-//		ListGridField nameField = new ListGridField("countryName", "Country", 120);
-		setFields(field);
+		TreeGridField field = new TreeGridField("name","<b>功能导航</b>"); //这个field不能指定宽度，否则会引起split和resize不正常！
+     	setFields(field);
 		
 		Tree tree = new Tree();
 		
@@ -46,8 +39,13 @@ public class FunctionTree extends TreeGrid {
 		tree.setIdField("nodeID");
 		tree.setParentIdField("parentNodeID");
 		tree.setRootValue("root" + idSuffix);
-		tree.setTitleProperty("nodeTitle");
+		tree.setTitleProperty("title");
+		
+		
 		tree.setData(navTreeData);
+		
+		
+		
    
 		setData(tree);
 	}
