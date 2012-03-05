@@ -91,7 +91,7 @@ public class ZZUUploader implements IUploader {
     	
     	
     	Clientexaminee ee = new Clientexaminee();
-    	//TODO: populate Examinee with information from StudentInfo (transfromation required)
+    	//TODO: populate Examinee with information from StudentInfo (transformation required)
     	ee.setShifoumianshi("0");
     	ee.setKaochang(0);
     	ee.setKaohao(0);
