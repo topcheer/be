@@ -39,7 +39,7 @@ public class UPOLUploader implements IUploader{
 	}
 	@Override
 	public boolean upload(StudentInfo student) {
-		// TODO Auto-generated method stub
+		// TODO 代码
 		return false;
 	}
 
