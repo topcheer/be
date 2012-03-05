@@ -295,9 +295,8 @@ public class BrightEdu implements EntryPoint {
 		hLayout.setHeight100();
 
 		final VLayout sideNavLayout = new VLayout();
-		sideNavLayout.setStyleName("test");
 		sideNavLayout.setHeight100();
-		sideNavLayout.setWidth(185);
+		sideNavLayout.setWidth(240);
 		sideNavLayout.setShowResizeBar(true);
 		final FunctionTree sideNav = new FunctionTree();
 
