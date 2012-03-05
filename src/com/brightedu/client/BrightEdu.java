@@ -78,7 +78,11 @@ public class BrightEdu implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-		// System.out.println("Auth: " + auth);
+		initLogin();	
+//		createAdminUI();
+	}
+	
+	private void initLogin(){
 		final LoginDialog loginDialog = new LoginDialog();
 		loginDialog.show();
 
@@ -165,9 +169,9 @@ public class BrightEdu implements EntryPoint {
 	private void createUI() {
 		createAdminUI();
 		// remove headers, divs
-		RootPanel p = RootPanel.get("loading");
-		if (p != null)
-			RootPanel.getBodyElement().removeChild(p.getElement());
+//		RootPanel p = RootPanel.get("loading");
+//		if (p != null)
+//			RootPanel.getBodyElement().removeChild(p.getElement());
 	}
 
 	private TabSet mainTabSet;

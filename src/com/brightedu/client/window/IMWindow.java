@@ -81,12 +81,13 @@ public class IMWindow extends Window {
 		userItem.setShowTitle(false);
 		form.setItems(userItem);
 		final LinkedHashMap<String, String> users = new LinkedHashMap<String, String>();
-		BrightEdu.createDataBaseRPC().getUserList(-1, -1, false,
-				new CommonAsyncCall<List<User>>() {
+		BrightEdu.createDataBaseRPC().getNameValuePareList(new String[]{"User"},
+				new CommonAsyncCall<List>() {
 
 					@Override
-					public void onSuccess(List<User> result) {
-						for (User user : result) {
+					public void onSuccess(List result) {
+						List<User> usersResult =(List<User>) result.get(0);
+						for (User user : usersResult) {
 							users.put(user.getUser_id() + "",
 									user.getUser_name());
 						}
