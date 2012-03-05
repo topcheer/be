@@ -16,7 +16,7 @@ import com.brightedu.server.soap.zzu.holders.ClientexamineeHolder;
  */
 public class SOAPSession
 {
-	private static String GID="17BB6E2D-9415-4383-BDBD-A237D4B70ECE";
+	public static String GID="17BB6E2D-9415-4383-BDBD-A237D4B70ECE";
     private CapServiceLocator capServiceLocator;
     private CapServiceSoap_PortType capService;
     private Boolean token;
@@ -165,7 +165,7 @@ public class SOAPSession
     	 *<gendu>0</gendu>
     	 *</e><stationstr>001</stationstr><gid>17BB6E2D-9415-4383-BDBD-A237D4B70ECE</gid><msg />
 
-    	 */
+    	
     	
     	Clientexaminee ee = new Clientexaminee();
 
@@ -238,7 +238,7 @@ public class SOAPSession
 		boolean added = session.getCapService().addExaminee(e, session.stationno.value, GID, session.msg);
 		
 		System.out.println(added + ":" + session.msg.value);
-    	
+    	 */
     	
     }
     
