@@ -19,6 +19,8 @@
 				<property name="url" value="jdbc:postgresql://localhost:55555/edu" />
 				<property name="username" value="edu" />
 				<property name="password" value="edu2012" />
+				<property name="poolMaximumActiveConnections" value="30" />
+				<property name="poolMaximumIdleConnections" value="10" />
 			</dataSource>
 		</environment>
 		<environment id="dev_external">
@@ -29,6 +31,8 @@
 					value="jdbc:postgresql://jmedu.wassecurity.net:5432/edu" />
 				<property name="username" value="edu" />
 				<property name="password" value="edu2012" />
+				<property name="poolMaximumActiveConnections" value="30" />
+				<property name="poolMaximumIdleConnections" value="10" />
 			</dataSource>
 		</environment>
 	</environments>
