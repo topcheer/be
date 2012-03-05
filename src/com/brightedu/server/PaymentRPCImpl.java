@@ -28,6 +28,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import com.brightedu.client.PaymentRPC;
 import com.brightedu.model.edu.ChargeAdmin;
+import com.brightedu.server.util.ConnectionManager;
 import com.brightedu.server.util.Log;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.hitrust.trustpay.client.TrxResponse;
@@ -38,20 +39,20 @@ import com.hitrust.trustpay.client.b2c.PaymentRequest;
 
 public class PaymentRPCImpl extends RemoteServiceServlet implements
 		PaymentRPC {
-	String resource = "com/brightedu/MapperConfig.xml";
+/*	String resource = "com/brightedu/MapperConfig.xml";
 	Reader reader = null;
 
-	SqlSessionFactory sessionFactory;
+	SqlSessionFactory sessionFactory;*/
 	SqlSession session;
 
 	public PaymentRPCImpl() {
-		try {
-			reader = Resources.getResourceAsReader(resource);
-		} catch (IOException e) {
-			Log.e(e.getMessage(), e);
-		}
-		sessionFactory = new SqlSessionFactoryBuilder().build(reader);
-		session = sessionFactory.openSession();
+//		try {
+//			reader = Resources.getResourceAsReader(resource);
+//		} catch (IOException e) {
+//			Log.e(e.getMessage(), e);
+//		}
+//		sessionFactory = new SqlSessionFactoryBuilder().build(reader);
+		session = ConnectionManager.getSessionFactory().openSession();
 	}
 
 	@Override
