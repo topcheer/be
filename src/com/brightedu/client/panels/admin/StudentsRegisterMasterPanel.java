@@ -13,6 +13,7 @@ import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.EthnicGroup;
 import com.brightedu.model.edu.MajorCategory;
+import com.brightedu.model.edu.PictureType;
 import com.brightedu.model.edu.PoliticalStatus;
 import com.brightedu.model.edu.RecruitAgent;
 import com.brightedu.model.edu.School;
@@ -46,6 +47,7 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 	LinkedHashMap<String, String> graduate_collegeValues;
 	LinkedHashMap<String, String> student_typeValues;
 	LinkedHashMap<String, String> major_categoryValues;
+	LinkedHashMap<String, String> pic_typeValues;
 
 	String[] nameValuePareModels;
 
@@ -56,7 +58,7 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 		nameValuePareModels = new String[] { "BatchIndex", "College",
 				"StudentClassified", "Subjects", "RecruitAgent",
 				"StudentStatus", "EthnicGroup", "PoliticalStatus", "School",
-				"StudentType", "MajorCategory" };
+				"StudentType", "MajorCategory", "PictureType" };
 		initValueMaps();
 	}
 
@@ -73,6 +75,7 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 		graduate_collegeValues = new LinkedHashMap<String, String>();
 		student_typeValues = new LinkedHashMap<String, String>();
 		major_categoryValues = new LinkedHashMap<String, String>();
+		pic_typeValues = new LinkedHashMap<String, String>();
 		dbService.getNameValuePareList(nameValuePareModels,
 				new CommonAsyncCall<List>() {
 					@Override
@@ -83,8 +86,10 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 	}
 
 	private void parseValueMaps(List totalNameValuePares) {
-		StudentsRegisterEditorForm detailedForm = (StudentsRegisterEditorForm) admin
-				.getDetailed().getDetailedForm();
+		StudentsRegisterDetailedPanel detailedPanel = (StudentsRegisterDetailedPanel) admin
+				.getDetailed();
+		StudentsRegisterEditorForm detailedForm = (StudentsRegisterEditorForm) detailedPanel
+				.getInfoForm();
 		for (int i = 0; i < totalNameValuePares.size(); i++) {
 			List nameValuePare = (List) totalNameValuePares.get(i);
 			switch (i) {
@@ -169,6 +174,13 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 							+ "", c.getStudent_major_category_name());
 				}
 				break;
+			case 11:
+				for (int x = 0; x < nameValuePare.size(); x++) {
+					PictureType c = (PictureType) nameValuePare.get(x);
+					major_categoryValues.put(c.getPic_type_id() + "",
+							c.getPic_type_name());
+				}
+				break;
 			default:
 				break;
 			}
@@ -179,9 +191,9 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 				political_statusValues, graduate_collegeValues,
 				student_typeValues, major_categoryValues);
 		if (getAdminDialog() != null) {
-			StudentsRegisterEditorForm editorForm = (StudentsRegisterEditorForm) getAdminDialog()
+			StudentsRegisterEditorForm adminDialogEditorForm = (StudentsRegisterEditorForm) getAdminDialog()
 					.getContentForm();
-			editorForm.setValueMaps(batchValues, collegeValues,
+			adminDialogEditorForm.setValueMaps(batchValues, collegeValues,
 					sdudentClassfiedValues, subjectsValues, fundAgentValues,
 					managedAgentValues, stu_statustValues, ethnic_groupValues,
 					political_statusValues, graduate_collegeValues,
@@ -255,8 +267,10 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 
 	@Override
 	public void update(Record record) {
-		final StudentInfo newagt = (StudentInfo) admin.getDetailed()
-				.getDetailedForm().getModel();
+		StudentsRegisterDetailedPanel detailed = (StudentsRegisterDetailedPanel) admin
+				.getDetailed();
+		final StudentInfo newagt = (StudentInfo) detailed.getInfoForm()
+				.getModel();
 		final Record rec = resultList.getSelectedRecord();
 		final StudentInfo oldagt = (StudentInfo) rec
 				.getAttributeAsObject("object");
@@ -323,7 +337,7 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 
 			public void show() {
 				super.show();
-//				redraw();
+				// redraw();
 			}
 		};
 		adminDialog.setAutoHeight();

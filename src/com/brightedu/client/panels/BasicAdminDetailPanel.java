@@ -11,7 +11,9 @@ public abstract class BasicAdminDetailPanel extends VLayout {
 	public BasicAdminDetailPanel(MasterDetailAdmin masterDetail) {
 		this.masterDetail = masterDetail;
 		detailedForm = createDetailEditorForm();
-		addMember(detailedForm);
+		if (detailedForm != null) {
+			addMember(detailedForm);
+		}
 	}
 
 	protected abstract DetailedEditorForm createDetailEditorForm();

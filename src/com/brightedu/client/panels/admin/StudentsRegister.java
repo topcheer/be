@@ -1,5 +1,7 @@
 package com.brightedu.client.panels.admin;
 
+import java.io.Serializable;
+
 import com.brightedu.client.panels.BasicAdminDetailPanel;
 import com.brightedu.client.panels.BasicAdminPanel;
 import com.brightedu.client.panels.DetailedEditorForm;
@@ -7,6 +9,8 @@ import com.brightedu.client.panels.FunctionPanel;
 import com.brightedu.client.panels.MasterDetailAdmin;
 import com.brightedu.client.panels.PanelFactory;
 import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
+import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 
 /**
  * 专业代码维护
@@ -38,18 +42,24 @@ public final class StudentsRegister extends MasterDetailAdmin {
 		return DESCRIPTION;
 	}
 
-	public class StudentAdminDetaiPanel extends BasicAdminDetailPanel {
+	protected void initSelectionChange() {
+		master.getResultList().addSelectionChangedHandler(
+				new SelectionChangedHandler() {
 
-		public StudentAdminDetaiPanel(MasterDetailAdmin masterDetail) {
-			super(masterDetail);
-
-		}
-
-		@Override
-		protected DetailedEditorForm createDetailEditorForm() {
-			return new StudentsRegisterEditorForm(getMasterDetail());
-		}
-
+					@Override
+					public void onSelectionChanged(SelectionEvent event) {
+						StudentsRegisterDetailedPanel detailed = (StudentsRegisterDetailedPanel) getDetailed();
+						if (event.getState()) {
+							detailed.getInfoForm().setValue(
+									(Serializable) event.getRecord()
+											.getAttributeAsObject("object"));
+							detailed.getInfoForm().enableSaveItem();
+						} else {
+							detailed.getInfoForm().reset();
+							detailed.getInfoForm().disableSaveItem();
+						}
+					}
+				});
 	}
 
 	@Override
@@ -59,7 +69,7 @@ public final class StudentsRegister extends MasterDetailAdmin {
 
 	@Override
 	public BasicAdminDetailPanel createDetailPanel() {
-		return new StudentAdminDetaiPanel(this);
+		return new StudentsRegisterDetailedPanel(this);
 	}
 
 	@Override

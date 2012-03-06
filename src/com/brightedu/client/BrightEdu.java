@@ -342,10 +342,10 @@ public class BrightEdu implements EntryPoint {
 
 		// mainPanel.addMember(ca);
 
-		Flashlet g = new Flashlet();
-		g.setSrc("http://player.youku.com/player.php/Type/Folder/Fid/17079166/Ob/1/Pt/0/sid/XMzU4MDI1ODA4/v.swf");
-		g.setWidth(600);
-		g.setHeight(400);
+//		Flashlet g = new Flashlet();
+//		g.setSrc("http://player.youku.com/player.php/Type/Folder/Fid/17079166/Ob/1/Pt/0/sid/XMzU4MDI1ODA4/v.swf");
+//		g.setWidth(600);
+//		g.setHeight(400);
 		// mainPanel.addMember(g);
 
 		// TileView tileView = new TileView(mainPanel);

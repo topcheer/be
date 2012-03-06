@@ -28,22 +28,7 @@ public abstract class MasterDetailAdmin extends FunctionPanel {
 	public Canvas getViewPanel() {
 		master = createMasterPanel();
 		master.setHeight(300);
-		master.resultList
-				.addSelectionChangedHandler(new SelectionChangedHandler() {
-
-					@Override
-					public void onSelectionChanged(SelectionEvent event) {
-						if (event.getState()) {
-							getDetailed().getDetailedForm().setValue(
-									(Serializable) event.getRecord()
-											.getAttributeAsObject("object"));
-							getDetailed().getDetailedForm().enableSaveItem();
-						} else {
-							getDetailed().getDetailedForm().reset();
-							getDetailed().getDetailedForm().disableSaveItem();
-						}
-					}
-				});
+		initSelectionChange();
 		detailed = createDetailPanel();
 		SectionStack rightSideLayout = new SectionStack();
 		rightSideLayout.setScrollSectionIntoView(true);
@@ -65,6 +50,25 @@ public abstract class MasterDetailAdmin extends FunctionPanel {
 
 		rightSideLayout.setSections(masterSection, detailedSection);
 		return rightSideLayout;
+	}
+
+	protected void initSelectionChange() {
+		master.resultList
+				.addSelectionChangedHandler(new SelectionChangedHandler() {
+
+					@Override
+					public void onSelectionChanged(SelectionEvent event) {
+						if (event.getState()) {
+							getDetailed().getDetailedForm().setValue(
+									(Serializable) event.getRecord()
+											.getAttributeAsObject("object"));
+							getDetailed().getDetailedForm().enableSaveItem();
+						} else {
+							getDetailed().getDetailedForm().reset();
+							getDetailed().getDetailedForm().disableSaveItem();
+						}
+					}
+				});
 	}
 
 	public BasicAdminPanel getMaster() {

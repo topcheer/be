@@ -328,6 +328,7 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 					}
 				}
 			});
+			
 			bottomLayout.addMember(frame);
 			busyImg.setSize("16", "16");
 			busyImg.setVisible(false);
