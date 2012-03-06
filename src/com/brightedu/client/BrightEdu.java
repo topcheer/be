@@ -11,7 +11,6 @@ import com.brightedu.client.nav.ExplorerTreeNode;
 import com.brightedu.client.nav.FunctionTree;
 import com.brightedu.client.panels.PanelData;
 import com.brightedu.client.panels.PanelFactory;
-import com.brightedu.client.window.IMWindow;
 import com.brightedu.client.window.LoginDialog;
 import com.brightedu.model.edu.User;
 import com.google.gwt.core.client.EntryPoint;
@@ -28,8 +27,6 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.CloseClickEvent;
 import com.smartgwt.client.widgets.events.CloseClickHandler;
-import com.smartgwt.client.widgets.events.ResizedEvent;
-import com.smartgwt.client.widgets.events.ResizedHandler;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
@@ -123,12 +120,12 @@ public class BrightEdu implements EntryPoint {
 	}
 
 	private void login(final LoginDialog loginDialog) {
+		loginDialog.hide();
 		String username = loginDialog.getUserItem().getValueAsString();
-		@SuppressWarnings("unused")
 		String password = loginDialog.getPassItem().getValueAsString();
 		User user = new User();
 		user.setUser_name(username);
-
+		user.setUser_password(password);
 		greetingService.login(user, new AsyncCallback<Serializable[]>() {
 
 			@Override
@@ -154,7 +151,7 @@ public class BrightEdu implements EntryPoint {
 
 				}
 				createUI();
-				loginDialog.destroy();
+				
 				showTip("已登录！");
 			}
 		});
@@ -544,7 +541,7 @@ public class BrightEdu implements EntryPoint {
 
 			@Override
 			public void onMessage(MessageRealEvent event) {
-				mess.showNewMessageTip();
+				mess.showNewMessageTip(event.getMessage());
 			}
 
 		});
@@ -556,7 +553,7 @@ public class BrightEdu implements EntryPoint {
 			@Override
 			public void onSuccess(Boolean result) {
 				if (result) {
-					mess.showNewMessageTip();
+					mess.showNewMessageTip(null);
 				} else {
 					mess.dismissNewMessageTip();
 				}

@@ -1,12 +1,10 @@
 package com.brightedu.server.util;
 
 import java.beans.PropertyVetoException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import javax.naming.Context;
@@ -17,7 +15,6 @@ import javax.sql.DataSource;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -36,8 +33,10 @@ public class ConnectionManager {
 	protected static void loadMybatis(){
 		try {
 			Reader reader = null;
-			reader = Resources.getResourceAsReader("/MapperConfig.xml");
+//			reader = Resources.getResourceAsReader("/MapperConfig.xml");
+			reader = new FileReader(ConnectionManager.class.getResource("/MapperConfig.xml").getPath());
 			sessionFactory = new SqlSessionFactoryBuilder().build(reader);
+			reader.close();
 		} catch (IOException e) {
 			Log.e(e.getMessage(), e);
 		}

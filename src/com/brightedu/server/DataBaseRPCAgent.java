@@ -1933,9 +1933,14 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 
 	@Override
 	public boolean sendMessage(List<Messages> messages) {
-
 		SqlSession session = sessionFactory.openSession();
 		try {
+			Date timestamp = new Date();
+			long maxId = (long)Utils.getNextId(session, "messages", "message_id",messages.size());
+			for(int i=0;i<messages.size();i++){
+				messages.get(i).setReceive_tstp(timestamp);
+				messages.get(i).setMessage_id(maxId--);
+			}
 			MessagesMapper bim = session.getMapper(MessagesMapper.class);
 			for (Messages mess : messages) {
 				bim.insertSelective(mess);

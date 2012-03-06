@@ -28,8 +28,7 @@ public class LoginDialog extends Window {
 	DynamicForm loginForm = new DynamicForm();
 
 	public LoginDialog() {
-		// setWidth(250);
-		// setHeight(150);
+
 		setTitle("登录");
 		setShowMinimizeButton(false);
 		setIsModal(true);
@@ -38,7 +37,8 @@ public class LoginDialog extends Window {
 		setShowModalMask(true);
 		setOverflow(Overflow.VISIBLE);
 		setAutoSize(true);
-
+		setWidth(205);
+		setHeight(100);
 		forgetPass = UiUtils.getLink("忘记密码?", new ClickHandler() {
 
 			@Override
@@ -53,7 +53,7 @@ public class LoginDialog extends Window {
 				notLogin();
 			}
 		});
-		
+
 		// form.setHeight100();
 		// form.setWidth100();
 		loginForm.setAutoFocus(true);
@@ -70,7 +70,7 @@ public class LoginDialog extends Window {
 		HLayout hLayout = new HLayout(10);
 		hLayout.setLayoutAlign(VerticalAlignment.BOTTOM);
 		hLayout.setPadding(5);
-		
+
 		okBtn.setWidth(70);
 
 		hLayout.addMember(forgetPass);
@@ -90,10 +90,10 @@ public class LoginDialog extends Window {
 		setOpacity(80);
 		setEdgeOffset(5);
 		centerInPage();
-		
+
 	}
-	
-	public void addFiledsKeyPressHandler(KeyPressHandler pressHandler){
+
+	public void addFiledsKeyPressHandler(KeyPressHandler pressHandler) {
 		userItem.addKeyPressHandler(pressHandler);
 		passItem.addKeyPressHandler(pressHandler);
 	}

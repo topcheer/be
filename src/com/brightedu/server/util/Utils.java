@@ -198,28 +198,64 @@ public class Utils {
 	 */
 	public static Integer getNextId(SqlSession session, String tableName,
 			String columnName) {
-		boolean emptySession = session == null;
-		if (emptySession)
-			session = ConnectionManager.sessionFactory.openSession();
-		Integer id = null;
-		try {
-			String sql = new StringBuilder("select fun_table_seq('")
-					.append(tableName).append("','").append(columnName)
-					.append("','next')").toString();
-			PreparedStatement prep = session.getConnection().prepareStatement(
-					sql);
-			ResultSet rs = prep.executeQuery();
-			while (rs.next()) {
-				id = rs.getInt(1);
-				break;
+		synchronized (columnName) {
+			boolean emptySession = session == null;
+			if (emptySession)
+				session = ConnectionManager.sessionFactory.openSession();
+			Integer id = null;
+			try {
+				String sql = new StringBuilder("select fun_table_seq('")
+						.append(tableName).append("','").append(columnName)
+						.append("','next')").toString();
+				PreparedStatement prep = session.getConnection()
+						.prepareStatement(sql);
+				ResultSet rs = prep.executeQuery();
+				while (rs.next()) {
+					id = rs.getInt(1);
+					break;
+				}
+			} catch (SQLException e) {
+				Log.e("", e);
+			} finally {
+				if (emptySession) {
+					session.close();
+				}
 			}
-		} catch (SQLException e) {
-			Log.e("", e);
-		} finally {
-			if (emptySession) {
-				session.close();
-			}
+			return id;
 		}
-		return id;
+	}
+	
+	public static Integer getNextId(SqlSession session, String tableName,
+			String columnName,int offset) {
+		synchronized (columnName) {
+			boolean emptySession = session == null;
+			if (emptySession)
+				session = ConnectionManager.sessionFactory.openSession();
+			Integer id = null;
+			try {
+				String sql = new StringBuilder("select fun_increase_seq('")
+						.append(tableName).append("','").append(columnName)
+						.append("',").append(offset).append(")").toString();
+				PreparedStatement prep = session.getConnection()
+						.prepareStatement(sql);
+				ResultSet rs = prep.executeQuery();
+				while (rs.next()) {
+					id = rs.getInt(1);
+					break;
+				}
+			} catch (SQLException e) {
+				Log.e("", e);
+			} finally {
+				if (emptySession) {
+					session.close();
+				}
+			}
+			return id;
+		}
+	}
+	
+	public static void main(String[] xxx){
+		ConnectionManager.loadMybatis();
+		System.out.println(getNextId(null, "user_admin", "user_id", 5));
 	}
 }

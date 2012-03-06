@@ -9,6 +9,10 @@ import com.brightedu.client.label.MessageLabel;
 import com.brightedu.model.edu.MessageReal;
 import com.brightedu.model.edu.Messages;
 import com.brightedu.model.edu.User;
+import com.google.gwt.i18n.client.DateTimeFormat;
+import com.smartgwt.client.data.DSCallback;
+import com.smartgwt.client.data.DSRequest;
+import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.SelectionStyle;
@@ -39,7 +43,8 @@ public class IMWindow extends Window {
 	NewMessageWindow nw;
 	ListGrid messages = new ListGrid();
 	User user;
-
+	LinkedHashMap<String, String> users = new LinkedHashMap<String, String>();
+	DateTimeFormat sdf = DateTimeFormat.getFormat("yyyy-MM-dd HH:mm:ss");
 	public IMWindow(final User user) {
 		_self = this;
 		this.user = user;
@@ -80,13 +85,13 @@ public class IMWindow extends Window {
 		final SelectItem userItem = new SelectItem("users", "选择用户");
 		userItem.setShowTitle(false);
 		form.setItems(userItem);
-		final LinkedHashMap<String, String> users = new LinkedHashMap<String, String>();
-		BrightEdu.createDataBaseRPC().getNameValuePareList(new String[]{"User"},
-				new CommonAsyncCall<List>() {
+
+		BrightEdu.createDataBaseRPC().getNameValuePareList(
+				new String[] { "User" }, new CommonAsyncCall<List>() {
 
 					@Override
 					public void onSuccess(List result) {
-						List<User> usersResult =(List<User>) result.get(0);
+						List<User> usersResult = (List<User>) result.get(0);
 						for (User user : usersResult) {
 							users.put(user.getUser_id() + "",
 									user.getUser_name());
@@ -228,8 +233,10 @@ public class IMWindow extends Window {
 							ListGridRecord record = new ListGridRecord();
 							record.setAttribute("from_user",
 									message.getFrom_user_name());
-							record.setAttribute("receiveTstp", message
-									.getReceive_tstp().toLocaleString());
+//							record.setAttribute("receiveTstp", message
+//									.getReceive_tstp().toGMTString());
+							record.setAttribute("receiveTstp", sdf.format(message
+									.getReceive_tstp()));
 							record.setAttribute("detailsField",
 									message.getMessage());
 							record.setAttribute("obj", message);
@@ -256,5 +263,28 @@ public class IMWindow extends Window {
 						}
 					}
 				});
+	}
+	
+
+	public void addMessage(Messages msg) {
+		Record record = new Record();
+		MessageReal message = new MessageReal();
+		message.setFrom_user(msg.getFrom_user());
+		message.setFrom_user_name(users.get(msg.getFrom_user()+""));
+		message.setMessage(msg.getMessage());
+		message.setMessage_id(msg.getMessage_id());
+		message.setReceive_tstp(msg.getReceive_tstp());
+		message.setTo_user(msg.getTo_user());
+		message.setTo_user_name(users.get(msg.getTo_user()+""));
+		record.setAttribute("from_user",
+				message.getFrom_user_name());
+		record.setAttribute("receiveTstp", sdf.format(message
+				.getReceive_tstp()));
+		record.setAttribute("detailsField",
+				message.getMessage());
+		record.setAttribute("obj", message);
+		RecordList data = messages.getDataAsRecordList();
+		data.addAt(record, 0);
+		messages.setData(data);
 	}
 }

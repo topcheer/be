@@ -2,6 +2,7 @@ package com.brightedu.client.label;
 
 import com.brightedu.client.BrightEdu;
 import com.brightedu.client.window.IMWindow;
+import com.brightedu.model.edu.Messages;
 import com.google.gwt.user.client.Timer;
 import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.widgets.Label;
@@ -29,11 +30,11 @@ public class MessageLabel extends Label {
 		});
 	}
 
-	public void showNewMessageTip() {
+	public void showNewMessageTip(Messages msg) {
 		if (win != null && win.isVisible()) {
-			// 其实这个不怎么完美，由于Messages和MessageReal对象有用户名的差别，push
-			// event传递过来的只是Message，只能重刷一次，以后再优化
-			win.refreshMessagelist();
+			if (msg != null) {
+				win.addMessage(msg);
+			}
 			win.redraw();
 		}
 		if (getOpacity() != 100) {
@@ -60,7 +61,7 @@ public class MessageLabel extends Label {
 			} else {
 				animateShow(AnimationEffect.FADE);
 			}
-			
+
 		}
 
 	}
