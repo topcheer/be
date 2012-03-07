@@ -37,32 +37,33 @@ public class FileFormServlet extends BrightServlet {
 
 	private String agreementSubDir;
 	private String studentPicDir;
-	private String tempFileRelative = ServerProperties.getDataLocation()
-			+ "/tmp/";
+	private String tempFileRelative = "/tmp/";
 	private String tempFileDir;
 
 	public void init() {
 		super.init();
 		agreementSubDir = new File(ServerProperties.getDataLocation())
 				.getAbsolutePath() + "/agreement/";
-		Log.i("agreementSubDir: "+agreementSubDir);
+		Log.i("agreementSubDir: " + agreementSubDir);
 		File agreementsDir = new File(agreementSubDir);
 		if (!agreementsDir.exists()) {
 			agreementsDir.mkdirs();
 		}
 		studentPicDir = new File(ServerProperties.getDataLocation())
 				.getAbsolutePath() + "/student_pics/";
-		Log.i("studentPicDir: "+studentPicDir);
+		Log.i("studentPicDir: " + studentPicDir);
 		File sdutentPicFile = new File(studentPicDir);
 		if (!sdutentPicFile.exists()) {
 			sdutentPicFile.mkdirs();
 		}
-		tempFileDir = new File(tempFileRelative).getAbsolutePath();
+		tempFileDir = new File(ServerProperties.dataLocation + "/"
+				+ tempFileRelative).getAbsolutePath()
+				+ "/";
 		File tempFile = new File(tempFileDir);
 		if (!tempFile.exists()) {
 			tempFile.mkdirs();
 		}
-		Log.i("tempFileDir: "+tempFileDir);
+		Log.i("tempFileDir: " + tempFileDir);
 	}
 
 	public void processPost(HttpServletRequest request,
@@ -116,8 +117,8 @@ public class FileFormServlet extends BrightServlet {
 						response(response, "保存文件失败", false);
 						return;
 					} else {
-						response(response, tempFileRelative + serverFileName,
-								true);
+						response(response, ServerProperties.dataConfig
+								+ tempFileRelative + serverFileName, true);
 					}
 				}
 			}

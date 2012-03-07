@@ -7,10 +7,11 @@ import java.util.Properties;
 
 public class ServerProperties {
 
-	private static String dataLocation;
+	public static String dataLocation;
+	
+	public static String dataConfig;
 
 	private static int auditLevel = 1;
-
 
 	static {
 		ConfigurationFileWatcher.watchFile(
@@ -35,8 +36,9 @@ public class ServerProperties {
 		} catch (IOException e) {
 			Log.e("failed to load server.props", e);
 		}
-		dataLocation = p.getProperty("dataLocation","data");
-		auditLevel = Integer.parseInt(p.getProperty("auditLevel","4"));
+		dataConfig = p.getProperty("dataLocation", "data");
+		dataLocation = dataLocation + p.getProperty("dataLocation", "data");
+		auditLevel = Integer.parseInt(p.getProperty("auditLevel", "4"));
 		Log.i("Data location: " + new File(dataLocation).getAbsolutePath());
 		Log.i("Audit Level: " + auditLevel);
 	}
