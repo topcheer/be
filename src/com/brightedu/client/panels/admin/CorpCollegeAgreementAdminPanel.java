@@ -328,7 +328,13 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 					}
 				}
 			});
-			
+//			fileItem.addChangeHandler(new ChangeHandler() {
+//				
+//				@Override
+//				public void onChange(ChangeEvent event) {
+////					System.out.println("change "+ event.g);
+//				}
+//			});
 			bottomLayout.addMember(frame);
 			busyImg.setSize("16", "16");
 			busyImg.setVisible(false);

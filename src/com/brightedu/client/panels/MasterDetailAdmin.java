@@ -42,12 +42,11 @@ public abstract class MasterDetailAdmin extends FunctionPanel {
 
 		SectionStackSection detailedSection = new SectionStackSection(
 				getDetialTitle());// "详细信息"
+	
 		VLayout detailedV = new VLayout();
-
 		detailedV.addMember(detailed);
 		detailedSection.setItems(detailedV);
 		detailedSection.setExpanded(true);
-
 		rightSideLayout.setSections(masterSection, detailedSection);
 		return rightSideLayout;
 	}

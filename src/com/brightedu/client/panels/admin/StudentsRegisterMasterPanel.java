@@ -47,14 +47,13 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 	LinkedHashMap<String, String> graduate_collegeValues;
 	LinkedHashMap<String, String> student_typeValues;
 	LinkedHashMap<String, String> major_categoryValues;
-	LinkedHashMap<String, String> pic_typeValues;
 
 	String[] nameValuePareModels;
 
-	MasterDetailAdmin admin;
+	MasterDetailAdmin msterDetail;
 
-	public StudentsRegisterMasterPanel(MasterDetailAdmin admin) {
-		this.admin = admin;
+	public StudentsRegisterMasterPanel(MasterDetailAdmin msterDetail) {
+		this.msterDetail = msterDetail;
 		nameValuePareModels = new String[] { "BatchIndex", "College",
 				"StudentClassified", "Subjects", "RecruitAgent",
 				"StudentStatus", "EthnicGroup", "PoliticalStatus", "School",
@@ -75,7 +74,6 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 		graduate_collegeValues = new LinkedHashMap<String, String>();
 		student_typeValues = new LinkedHashMap<String, String>();
 		major_categoryValues = new LinkedHashMap<String, String>();
-		pic_typeValues = new LinkedHashMap<String, String>();
 		dbService.getNameValuePareList(nameValuePareModels,
 				new CommonAsyncCall<List>() {
 					@Override
@@ -86,7 +84,7 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 	}
 
 	private void parseValueMaps(List totalNameValuePares) {
-		StudentsRegisterDetailedPanel detailedPanel = (StudentsRegisterDetailedPanel) admin
+		StudentsRegisterDetailedPanel detailedPanel = (StudentsRegisterDetailedPanel) msterDetail
 				.getDetailed();
 		StudentsRegisterEditorForm detailedForm = (StudentsRegisterEditorForm) detailedPanel
 				.getInfoForm();
@@ -172,13 +170,6 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 					MajorCategory c = (MajorCategory) nameValuePare.get(x);
 					major_categoryValues.put(c.getStudent_major_category_id()
 							+ "", c.getStudent_major_category_name());
-				}
-				break;
-			case 11:
-				for (int x = 0; x < nameValuePare.size(); x++) {
-					PictureType c = (PictureType) nameValuePare.get(x);
-					major_categoryValues.put(c.getPic_type_id() + "",
-							c.getPic_type_name());
 				}
 				break;
 			default:
@@ -267,7 +258,7 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 
 	@Override
 	public void update(Record record) {
-		StudentsRegisterDetailedPanel detailed = (StudentsRegisterDetailedPanel) admin
+		StudentsRegisterDetailedPanel detailed = (StudentsRegisterDetailedPanel) msterDetail
 				.getDetailed();
 		final StudentInfo newagt = (StudentInfo) detailed.getInfoForm()
 				.getModel();
@@ -306,7 +297,7 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 	public AdminDialog createAdminDialog() {
 		AdminDialog adminDialog = new AdminDialog() {
 			StudentsRegisterEditorForm form = new StudentsRegisterEditorForm(
-					admin);
+					msterDetail);
 
 			public void init() {
 				super.init();

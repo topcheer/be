@@ -12,6 +12,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,6 +36,10 @@ import com.brightedu.server.util.Utils;
 public class FileFormServlet extends BrightServlet {
 
 	private String agreementSubDir;
+	private String studentPicDir;
+	private String tempFileRelative = ServerProperties.getDataLocation()
+			+ "/tmp/";
+	private String tempFileDir;
 
 	public void init() {
 		super.init();
@@ -43,6 +48,17 @@ public class FileFormServlet extends BrightServlet {
 		File agreementsDir = new File(agreementSubDir);
 		if (!agreementsDir.exists()) {
 			agreementsDir.mkdirs();
+		}
+		studentPicDir = new File(ServerProperties.getDataLocation())
+				.getAbsolutePath() + "/student_pics/";
+		File sdutentPicFile = new File(studentPicDir);
+		if (!sdutentPicFile.exists()) {
+			sdutentPicFile.mkdirs();
+		}
+		tempFileDir = new File(tempFileRelative).getAbsolutePath();
+		File tempFile = new File(tempFileDir);
+		if (!tempFile.exists()) {
+			tempFile.mkdirs();
 		}
 	}
 
@@ -68,6 +84,8 @@ public class FileFormServlet extends BrightServlet {
 					addCollegeAgreement(request, response);
 				} else if (actionType.equals("updatecollegeagreement")) {
 					updateCollegeAgreementFile(request, response);
+				} else if (actionType.equals("pic_upload")) {
+					addPicture(request, response);
 				} else {
 					Log.e("Undefied action for FileFormServlet: " + actionType);
 				}
@@ -75,6 +93,40 @@ public class FileFormServlet extends BrightServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void addPicture(HttpServletRequest request,
+			HttpServletResponse response) {
+		try {
+			ServletFileUpload upload = new ServletFileUpload();
+			FileItemIterator iter = upload.getItemIterator(request);
+			// pick up parameters first and note actual FileItem
+
+			while (iter.hasNext()) {
+				FileItemStream item = iter.next();
+				String name = item.getFieldName();
+				if (item.isFormField()) {
+					Log.w("no definition for form field " + name);
+				} else {
+					String serverFileName = createTempFile(item, response);
+					if (serverFileName == null) {
+						response(response, "保存文件失败", false);
+						return;
+					} else {
+						response(response, tempFileRelative + serverFileName,
+								true);
+					}
+				}
+			}
+		} catch (Exception e) {
+			Log.e(e.getMessage(), e);
+			try {
+				response(response, e.getMessage(), false);
+			} catch (IOException e1) {
+				Log.e(e1.getMessage(), e1);
+			}
+		}
+
 	}
 
 	private void updateCollegeAgreementFile(HttpServletRequest request,
@@ -94,7 +146,7 @@ public class FileFormServlet extends BrightServlet {
 		while (iter.hasNext()) {
 			FileItemStream item = iter.next();
 			if (!item.isFormField()) {
-				String serverFileName = createFile(item, response,
+				String serverFileName = createAgreementFile(item, response,
 						agreement.getAgent_id(), now);
 				if (serverFileName == null) {
 					response(response, "更新文件失败", false);
@@ -185,7 +237,7 @@ public class FileFormServlet extends BrightServlet {
 						Log.w("Unknown param form field: " + name);
 					}
 				} else {
-					String serverFileName = createFile(item, response,
+					String serverFileName = createAgreementFile(item, response,
 							agreement.getAgreement_id(), now);
 					if (serverFileName == null) {
 						response(response, "保存文件失败", false);
@@ -208,7 +260,7 @@ public class FileFormServlet extends BrightServlet {
 		}
 	}
 
-	private String createFile(FileItemStream item,
+	private String createAgreementFile(FileItemStream item,
 			HttpServletResponse response, int objectRelatedId, Date now)
 			throws IOException {
 		InputStream in = null;
@@ -246,6 +298,45 @@ public class FileFormServlet extends BrightServlet {
 			Log.e("", e);
 			response(response, e.getMessage(), false);
 
+		} finally {
+			if (in != null) {
+				try {
+					in.close();
+				} catch (Exception e) {
+					Log.e("", e);
+				}
+			}
+		}
+		return serverFileName;
+	}
+
+	private String createTempFile(FileItemStream item,
+			HttpServletResponse response) throws IOException {
+		InputStream in = null;
+		String serverFileName = null;
+		try {
+			in = item.openStream();
+			String fileName = item.getName();
+			UUID uuid = UUID.randomUUID();
+			serverFileName = uuid.toString() + fileName;
+			File tempFile = new File(tempFileDir + serverFileName);
+			RandomAccessFile raf = new RandomAccessFile(tempFile, "rw");
+			if (in != null) {
+				byte[] buff = new byte[1024];
+				int readLen = 0;
+				while ((readLen = in.read(buff)) > 0) {
+					raf.write(buff, 0, readLen);
+				}
+				raf.close();
+				Log.i("stored temp file in " + tempFile.getAbsolutePath());
+			} else {
+				Log.e("no inputsteam created for " + fileName);
+			}
+
+		} catch (IOException e) {
+			Log.e("", e);
+			response(response, e.getMessage(), false);
+			return null;
 		} finally {
 			if (in != null) {
 				try {

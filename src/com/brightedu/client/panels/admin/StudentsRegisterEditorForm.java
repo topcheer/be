@@ -56,7 +56,7 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 	public StudentsRegisterEditorForm(MasterDetailAdmin admin) {
 		super(admin);
 		sexItem.setValueMap("男", "女");
-
+		setNumCols(6);
 		setFields(student_nameItem, identity_cardItem, sexItem, exam_numItem,
 				student_addressItem, student_phoneItem, postal_codeItem,
 				student_linkmanItem, linkman_phoneItem, student_college_idItem,

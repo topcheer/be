@@ -22,10 +22,13 @@ public abstract class FunctionPanel extends VLayout {
 		Layout layout = topIntro ? new VLayout() : new HLayout();
 
 		layout.setWidth100();
-		layout.setMargin(10);
-		layout.setMembersMargin(10);
+//		layout.
+//		layout.setMargin(10);
+//		layout.setMembersMargin(10);
 
 		viewPanel = getViewPanel();
+		viewPanel.setHeight100();
+		viewPanel.setWidth100();
 		HLayout wrapper = new HLayout();
 		wrapper.setWidth100();
 		wrapper.setHeight100();
@@ -47,7 +50,7 @@ public abstract class FunctionPanel extends VLayout {
 			String introContents = "<p class='intro-para'>" + intro + "</p>";
 			Canvas contents = new Canvas();
 			contents.setCanSelectText(true);
-			contents.setPadding(10);
+//			contents.setPadding(10);
 			contents.setContents(introContents);
 			if (topIntro) {
 				contents.setWidth100();
@@ -69,9 +72,8 @@ public abstract class FunctionPanel extends VLayout {
 		} else {
 			addMember(wrapper);
 		}
-
+//		layout.setStyleName("test");
 		addMember(layout);
-		
 	}
 
 	protected boolean isTopIntro() {
