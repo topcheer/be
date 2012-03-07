@@ -60,6 +60,7 @@ public class FileFormServlet extends BrightServlet {
 		if (!tempFile.exists()) {
 			tempFile.mkdirs();
 		}
+		Log.i("USER.DIR="+System.getProperty("user.dir"));
 	}
 
 	public void processPost(HttpServletRequest request,
