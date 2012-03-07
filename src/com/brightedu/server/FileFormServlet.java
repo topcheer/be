@@ -45,12 +45,14 @@ public class FileFormServlet extends BrightServlet {
 		super.init();
 		agreementSubDir = new File(ServerProperties.getDataLocation())
 				.getAbsolutePath() + "/agreement/";
+		Log.i("agreementSubDir: "+agreementSubDir);
 		File agreementsDir = new File(agreementSubDir);
 		if (!agreementsDir.exists()) {
 			agreementsDir.mkdirs();
 		}
 		studentPicDir = new File(ServerProperties.getDataLocation())
 				.getAbsolutePath() + "/student_pics/";
+		Log.i("studentPicDir: "+studentPicDir);
 		File sdutentPicFile = new File(studentPicDir);
 		if (!sdutentPicFile.exists()) {
 			sdutentPicFile.mkdirs();
@@ -60,7 +62,7 @@ public class FileFormServlet extends BrightServlet {
 		if (!tempFile.exists()) {
 			tempFile.mkdirs();
 		}
-		
+		Log.i("tempFileDir: "+tempFileDir);
 	}
 
 	public void processPost(HttpServletRequest request,
