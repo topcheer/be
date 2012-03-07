@@ -10,6 +10,7 @@ public class InitServlet extends HttpServlet {
 		ServerProperties.load();
 		AuthManager.load();
 		ConnectionManager.load();
+		Log.i("USER.DIR="+System.getProperty("user.dir"));
 		Log.i("初始化完成");
 	}
 
