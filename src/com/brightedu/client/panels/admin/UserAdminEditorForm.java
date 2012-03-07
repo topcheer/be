@@ -40,7 +40,7 @@ public class UserAdminEditorForm extends DynamicForm {
 
 	private void init() {
 		setMargin(20);
-		setWidth(600);
+		setWidth(480);
 		setNumCols(4);
 		setOverflow(Overflow.AUTO);
 		saveBtn.setLeft(300);

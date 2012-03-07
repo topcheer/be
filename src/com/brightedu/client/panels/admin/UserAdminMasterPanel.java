@@ -44,7 +44,6 @@ public class UserAdminMasterPanel extends BasicAdminPanel {
 							(User) event.getRecord().getAttributeAsObject(
 									"object"));
 					admin.detailed.getDetailedForm().getSaveBtn().enable();
-					admin.rightsSection.setExpanded(true);
 					populateRights((User) event.getRecord()
 							.getAttributeAsObject("object"));
 
@@ -53,7 +52,7 @@ public class UserAdminMasterPanel extends BasicAdminPanel {
 																			// all
 																			// fields
 					admin.detailed.getDetailedForm().getSaveBtn().disable();
-					admin.rightsSection.setExpanded(false);
+					
 					admin.rights.userRightsGrid.setData(new RecordList());
 				}
 			}
