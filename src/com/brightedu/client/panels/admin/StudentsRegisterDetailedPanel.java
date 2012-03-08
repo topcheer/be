@@ -1,5 +1,6 @@
 package com.brightedu.client.panels.admin;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class StudentsRegisterDetailedPanel extends BasicAdminDetailPanel {
 
 	LinkedHashMap<String, String> pic_typeValues;
 	HLayout picPanel = new HLayout();
+	List<StudentsRegisterPictureForm> picForms = new ArrayList<StudentsRegisterPictureForm>();
 
 	public StudentsRegisterDetailedPanel(StudentsRegister reg) {
 		super(reg);
@@ -35,8 +37,6 @@ public class StudentsRegisterDetailedPanel extends BasicAdminDetailPanel {
 		paneContainerProperties.setLayoutTopMargin(1);
 		mainTabSet.setPaneContainerProperties(paneContainerProperties);
 
-		mainTabSet.setWidth100();
-		mainTabSet.setHeight100();
 		mainTabSet.addTabSelectedHandler(new TabSelectedHandler() {
 			public void onTabSelected(TabSelectedEvent event) {
 				Tab selectedTab = event.getTab();
@@ -73,8 +73,8 @@ public class StudentsRegisterDetailedPanel extends BasicAdminDetailPanel {
 
 		createPicPanel();
 		infoForm = new StudentsRegisterEditorForm(reg);
-		infoForm.setWidth100();
-		infoForm.setHeight100();
+		// infoForm.setWidth100();
+		// infoForm.setHeight100();
 		picTabPanel.addMember(picPanel);
 		studentTabPanel.addMember(infoForm);
 		mainTabSet.addTab(studentInfoTab);
@@ -110,6 +110,7 @@ public class StudentsRegisterDetailedPanel extends BasicAdminDetailPanel {
 							layout.addMember(img);
 							layout.addMember(picForm.getBrightFrame());
 							picForm.setViewImg(img);
+							picForms.add(picForm);
 							picPanel.addMember(layout);
 						}
 						picPanel.redraw();
@@ -123,9 +124,9 @@ public class StudentsRegisterDetailedPanel extends BasicAdminDetailPanel {
 		return null;
 	}
 
-	// public StudentsRegisterPictureForm getPictureForm() {
-	// return picForm;
-	// }
+	public List<StudentsRegisterPictureForm> getPictureForms() {
+		return picForms;
+	}
 
 	public StudentsRegisterEditorForm getInfoForm() {
 		return infoForm;

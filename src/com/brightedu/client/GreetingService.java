@@ -14,4 +14,6 @@ public interface GreetingService extends RemoteService {
 	String greetServer(String name) throws IllegalArgumentException;
 	
 	Serializable[] login(User user);
+
+	void logout(User user);
 }

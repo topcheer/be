@@ -51,8 +51,8 @@ public abstract class AdminDialog extends Window {
 		setAnimateShowEffect(AnimationEffect.WIPE);
 		setAnimateShowTime(800);
 		form = createContentForm();
-		form.setAutoShowParent(true);
-		form.setAutoDraw(true);
+//		form.setAutoShowParent(true);
+//		form.setAutoDraw(true);
 		parseRequired();
 		// form.setWidth100();
 		// form.setHeight100();
@@ -70,7 +70,8 @@ public abstract class AdminDialog extends Window {
 		form.setWrapItemTitles(false);
 		// form.setAutoHeight();
 
-		addItem(form);
+		addAdminContentUI();
+		
 		bottomLayout.setAlign(Alignment.RIGHT);
 		// bottomLayout.addMember(new Label("  "));
 		bottomLayout.addMember(new LayoutSpacer());
@@ -105,11 +106,15 @@ public abstract class AdminDialog extends Window {
 			}
 		});
 	}
+	
+	protected void addAdminContentUI(){
+		addItem(form);
+	}
 
 	private void parseRequired() {
 		FormItem[] items = form.getFields();
 		for (FormItem item : items) {
-			if (item.getRequired()) {
+			if (item.getRequired()!=null && item.getRequired()) {
 				item.setTitle(item.getTitle() + "*");
 			}
 		}

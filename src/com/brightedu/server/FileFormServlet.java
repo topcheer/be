@@ -35,37 +35,6 @@ import com.brightedu.server.util.Utils;
  */
 public class FileFormServlet extends BrightServlet {
 
-	private String agreementSubDir;
-	private String studentPicDir;
-	private String tempFileRelative = "/tmp/";
-	private String tempFileDir;
-
-	public void init() {
-		super.init();
-		agreementSubDir = new File(ServerProperties.getDataLocation())
-				.getAbsolutePath() + "/agreement/";
-		Log.i("agreementSubDir: " + agreementSubDir);
-		File agreementsDir = new File(agreementSubDir);
-		if (!agreementsDir.exists()) {
-			agreementsDir.mkdirs();
-		}
-		studentPicDir = new File(ServerProperties.getDataLocation())
-				.getAbsolutePath() + "/student_pics/";
-		Log.i("studentPicDir: " + studentPicDir);
-		File sdutentPicFile = new File(studentPicDir);
-		if (!sdutentPicFile.exists()) {
-			sdutentPicFile.mkdirs();
-		}
-		tempFileDir = new File(ServerProperties.dataLocation + "/"
-				+ tempFileRelative).getAbsolutePath()
-				+ "/";
-		File tempFile = new File(tempFileDir);
-		if (!tempFile.exists()) {
-			tempFile.mkdirs();
-		}
-		Log.i("tempFileDir: " + tempFileDir);
-	}
-
 	public void processPost(HttpServletRequest request,
 			HttpServletResponse response) {
 		process(request, response);
@@ -118,7 +87,8 @@ public class FileFormServlet extends BrightServlet {
 						return;
 					} else {
 						response(response, ServerProperties.dataConfig
-								+ tempFileRelative + serverFileName, true);
+								+ ServerProperties.tempFileRelative
+								+ serverFileName, true);
 					}
 				}
 			}
@@ -175,7 +145,7 @@ public class FileFormServlet extends BrightServlet {
 				agreement_filename.lastIndexOf("."));
 		String respContentType = agreement_filename
 				.substring(agreement_filename.lastIndexOf("-") + 1);
-		File serverAgreementFile = new File(agreementSubDir
+		File serverAgreementFile = new File(ServerProperties.agreementSubDir
 				+ agreement_filename);
 		Log.d("Server side file: " + serverAgreementFile.getAbsolutePath());
 		respContentType = decodeContentTypeForURL(respContentType);
@@ -283,7 +253,8 @@ public class FileFormServlet extends BrightServlet {
 
 			serverFileName = fileName + "." + objectRelatedId + "_"
 					+ sdf.format(now) + "-" + encodeContentTypeForURL(type);
-			File agreementFile = new File(agreementSubDir + serverFileName);
+			File agreementFile = new File(ServerProperties.agreementSubDir
+					+ serverFileName);
 
 			RandomAccessFile raf = new RandomAccessFile(agreementFile, "rw");
 			if (in != null) {
@@ -323,7 +294,8 @@ public class FileFormServlet extends BrightServlet {
 			String fileName = item.getName();
 			UUID uuid = UUID.randomUUID();
 			serverFileName = uuid.toString() + fileName;
-			File tempFile = new File(tempFileDir + serverFileName);
+			File tempFile = new File(ServerProperties.tempFileDir
+					+ serverFileName);
 			RandomAccessFile raf = new RandomAccessFile(tempFile, "rw");
 			if (in != null) {
 				byte[] buff = new byte[1024];

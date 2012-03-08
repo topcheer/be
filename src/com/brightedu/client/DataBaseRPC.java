@@ -41,6 +41,8 @@ import com.brightedu.model.edu.RightsCategoryFunctionKey;
 import com.brightedu.model.edu.RightsDefaultKey;
 import com.brightedu.model.edu.RightsFunction;
 import com.brightedu.model.edu.StudentClassified;
+import com.brightedu.model.edu.StudentInfo;
+import com.brightedu.model.edu.StudentPicture;
 import com.brightedu.model.edu.StudentStatus;
 import com.brightedu.model.edu.StudentType;
 import com.brightedu.model.edu.Subjects;
@@ -206,7 +208,7 @@ public interface DataBaseRPC extends RemoteService {
 	boolean deleteModel(String modelName, String id_field_name,
 			List<Integer> modelIds);
 	boolean saveModel(Serializable model);
-	boolean singleModelAction(Serializable model, String methodName);
+	boolean modelAction(Serializable[] model, String methodName);
 	
 	/************************ 入学费用设置 *********************************/
 	public List<EntranceCost> getEntranceCost(String batchID,String agentID);
@@ -231,7 +233,7 @@ public interface DataBaseRPC extends RemoteService {
 
 	/**************************学生管理********************************/
 	List getStudentList(int offset, int limit, boolean needTotalCounts);
-	
+	boolean addStudent(StudentInfo stu, List<StudentPicture> pictures);
 	/**************************站内用户短信******************************/
 	
 	public boolean sendMessage(List<Messages> messages);
@@ -245,4 +247,8 @@ public interface DataBaseRPC extends RemoteService {
 	public boolean saveAnnouncement(Announcement ann);
 	public List<Announcement> getAnnouncementList(int offset, int limit,
 			boolean needTotalCounts);
+
+	
+
+	
 }

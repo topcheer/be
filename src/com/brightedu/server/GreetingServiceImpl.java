@@ -1,17 +1,13 @@
 package com.brightedu.server;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
@@ -19,7 +15,6 @@ import org.apache.ibatis.session.SqlSession;
 import com.brightedu.client.GreetingService;
 import com.brightedu.dao.edu.UserMapper;
 import com.brightedu.dao.edu.UserRightsEffectiveMapper;
-import com.brightedu.model.edu.CollegeAgreement;
 import com.brightedu.model.edu.User;
 import com.brightedu.model.edu.UserExample;
 import com.brightedu.model.edu.UserRightsEffective;
@@ -27,8 +22,6 @@ import com.brightedu.model.edu.UserRightsEffectiveExample;
 import com.brightedu.server.util.AuthManager;
 import com.brightedu.server.util.ConnectionManager;
 import com.brightedu.server.util.Log;
-import com.brightedu.server.util.ServerProperties;
-import com.brightedu.server.util.Utils;
 import com.brightedu.shared.FieldVerifier;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -38,6 +31,8 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 @SuppressWarnings("serial")
 public class GreetingServiceImpl extends RemoteServiceServlet implements
 		GreetingService {
+
+	public static AtomicInteger onlineUsers = new AtomicInteger();
 
 	public String greetServer(String input) throws IllegalArgumentException {
 		// Verify that the input is valid.
@@ -77,6 +72,15 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 				.replaceAll(">", "&gt;");
 	}
 
+	@Override
+	public void logout(User user) {
+		HttpSession session = this.getThreadLocalRequest().getSession();
+		System.out.println("logout session id: " + session.getId());
+		session.setAttribute("user", null);
+		session.invalidate();
+	}
+
+	@Override
 	public Serializable[] login(User user) {
 		String userRight = null;
 		if (user.getUser_name() == null) {
@@ -90,6 +94,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		Log.d("User login: " + user.getUser_name());
 		HttpSession session = this.getThreadLocalRequest().getSession();
 		session.setAttribute("user", loginedUser);
+		System.out.println("login session id: " + session.getId());
 		if (userRight == null) {
 			userRight = getUserRights(loginedUser);
 		}
@@ -108,7 +113,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 			ex.createCriteria().andUser_nameEqualTo(user.getUser_name());
 			List<User> users = scm.selectByExample(ex);
 			if (users.size() > 0) {
-
+				onlineUsers.addAndGet(1);
 				return users.get(0);
 			}
 

@@ -26,6 +26,8 @@ import com.brightedu.model.edu.RightsCategoryFunctionKey;
 import com.brightedu.model.edu.RightsDefaultKey;
 import com.brightedu.model.edu.RightsFunction;
 import com.brightedu.model.edu.StudentClassified;
+import com.brightedu.model.edu.StudentInfo;
+import com.brightedu.model.edu.StudentPicture;
 import com.brightedu.model.edu.StudentStatus;
 import com.brightedu.model.edu.StudentType;
 import com.brightedu.model.edu.Subjects;
@@ -261,7 +263,7 @@ public interface DataBaseRPCAsync {
 
 	void saveModel(Serializable model, AsyncCallback<Boolean> callback);
 
-	void singleModelAction(Serializable model, String methodName,
+	void modelAction(Serializable[] model, String methodName,
 			AsyncCallback<Boolean> callback);
 
 	void getStudentList(int offset, int limit, boolean needTotalCounts,
@@ -284,5 +286,8 @@ public interface DataBaseRPCAsync {
 
 	void getAnnouncementList(int offset, int limit, boolean needTotalCounts,
 			AsyncCallback<List<Announcement>> callback);
+
+	void addStudent(StudentInfo stu, List<StudentPicture> pictures,
+			AsyncCallback<Boolean> addAsync);
 
 }

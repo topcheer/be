@@ -13,4 +13,6 @@ public interface GreetingServiceAsync {
 			throws IllegalArgumentException;
 
 	void login(User user, AsyncCallback<Serializable[]> callback);
+
+	void logout(User user, AsyncCallback<Void> callback);
 }

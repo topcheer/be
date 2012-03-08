@@ -1,6 +1,7 @@
 package com.brightedu.server;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -8,8 +9,6 @@ import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import javax.servlet.ServletException;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -42,6 +41,7 @@ import com.brightedu.dao.edu.RightsFunctionMapper;
 import com.brightedu.dao.edu.RightsOverrideMapper;
 import com.brightedu.dao.edu.StudentClassifiedMapper;
 import com.brightedu.dao.edu.StudentInfoMapper;
+import com.brightedu.dao.edu.StudentPictureMapper;
 import com.brightedu.dao.edu.StudentStatusMapper;
 import com.brightedu.dao.edu.StudentTypeMapper;
 import com.brightedu.dao.edu.SubjectsMapper;
@@ -100,6 +100,7 @@ import com.brightedu.model.edu.StudentClassified;
 import com.brightedu.model.edu.StudentClassifiedExample;
 import com.brightedu.model.edu.StudentInfo;
 import com.brightedu.model.edu.StudentInfoExample;
+import com.brightedu.model.edu.StudentPicture;
 import com.brightedu.model.edu.StudentStatus;
 import com.brightedu.model.edu.StudentStatusExample;
 import com.brightedu.model.edu.StudentType;
@@ -116,13 +117,10 @@ import com.brightedu.model.edu.UserType;
 import com.brightedu.model.edu.UserTypeExample;
 import com.brightedu.server.util.ConnectionManager;
 import com.brightedu.server.util.Log;
-import com.brightedu.server.util.MyRPC;
 import com.brightedu.server.util.ReflectUtil;
 import com.brightedu.server.util.ServerProperties;
 import com.brightedu.server.util.Utils;
 import com.brightedu.shared.OperatioinFailedException;
-import com.google.gwt.user.client.rpc.SerializationException;
-import com.google.gwt.user.server.rpc.impl.StandardSerializationPolicy;
 
 public class DataBaseRPCAgent implements DataBaseRPC {
 	SqlSessionFactory sessionFactory;
@@ -1392,7 +1390,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 
 	@Override
 	public boolean addModel(Serializable model) {
-		return singleModelAction(model, "insertSelective");
+		return modelAction(new Serializable[] { model }, "insertSelective");
 	}
 
 	@Override
@@ -1434,21 +1432,23 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 
 	@Override
 	public boolean saveModel(Serializable model) {
-		return singleModelAction(model, "updateByPrimaryKey");
+		return modelAction(new Serializable[] { model }, "updateByPrimaryKey");
 	}
 
 	@Override
-	public boolean singleModelAction(Serializable model, String methodName) {
+	public boolean modelAction(Serializable[] models, String methodName) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-			String modelName = model.getClass().getSimpleName();
-			Class mapperClass = Class.forName(daoPackageName + modelName
-					+ "Mapper");
-			Class beanClass = Class.forName(modelPackageName + modelName);
-			Object mapper = session.getMapper(mapperClass);
-			Method method = mapperClass.getMethod(methodName, beanClass);
-			method.invoke(mapper, model);
-			session.commit();
+			for (Serializable model : models) {
+				String modelName = model.getClass().getSimpleName();
+				Class mapperClass = Class.forName(daoPackageName + modelName
+						+ "Mapper");
+				Class beanClass = Class.forName(modelPackageName + modelName);
+				Object mapper = session.getMapper(mapperClass);
+				Method method = mapperClass.getMethod(methodName, beanClass);
+				method.invoke(mapper, model);
+				session.commit();
+			}
 		} catch (Exception e) {
 			OperatioinFailedException ex = new OperatioinFailedException(e);
 			Log.e("", ex);
@@ -1936,8 +1936,9 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		SqlSession session = sessionFactory.openSession();
 		try {
 			Date timestamp = new Date();
-			long maxId = (long)Utils.getNextId(session, "messages", "message_id",messages.size());
-			for(int i=0;i<messages.size();i++){
+			long maxId = (long) Utils.getNextId(session, "messages",
+					"message_id", messages.size());
+			for (int i = 0; i < messages.size(); i++) {
 				messages.get(i).setReceive_tstp(timestamp);
 				messages.get(i).setMessage_id(maxId--);
 			}
@@ -2087,6 +2088,34 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 				Integer counts = map.countByExample(null);
 				result.add(counts);
 			}
+			return result;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean addStudent(StudentInfo stu, List<StudentPicture> pictures) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+
+			int stu_id = Utils.getNextId(session, "student_info", "student_id");
+			stu.setStudent_id(stu_id);
+			stu.setRegister_date(new Date());
+			StudentInfoMapper map = session.getMapper(StudentInfoMapper.class);
+			map.insertSelective(stu);
+			StudentPictureMapper picMap = session
+					.getMapper(StudentPictureMapper.class);
+			for (StudentPicture p : pictures) {
+				p.setStudent_id(stu_id);
+				picMap.insertSelective(p);
+			}
+			boolean result = new StudentFileHandler(stu, pictures)
+					.movePictrues();
+			if (result)
+				session.commit();
+			else
+				session.rollback();
 			return result;
 		} finally {
 			session.close();

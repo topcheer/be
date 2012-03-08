@@ -1,7 +1,6 @@
 package com.brightedu.client.panels.admin;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -13,7 +12,6 @@ import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.EthnicGroup;
 import com.brightedu.model.edu.MajorCategory;
-import com.brightedu.model.edu.PictureType;
 import com.brightedu.model.edu.PoliticalStatus;
 import com.brightedu.model.edu.RecruitAgent;
 import com.brightedu.model.edu.School;
@@ -22,11 +20,9 @@ import com.brightedu.model.edu.StudentInfo;
 import com.brightedu.model.edu.StudentStatus;
 import com.brightedu.model.edu.StudentType;
 import com.brightedu.model.edu.Subjects;
-import com.brightedu.model.edu.UserType;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.ListGridFieldType;
-import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.grid.ListGridField;
 
 public class StudentsRegisterMasterPanel extends BasicAdminPanel {
@@ -295,47 +291,54 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 
 	@Override
 	public AdminDialog createAdminDialog() {
-		AdminDialog adminDialog = new AdminDialog() {
-			StudentsRegisterEditorForm form = new StudentsRegisterEditorForm(
-					msterDetail);
-
-			public void init() {
-				super.init();
-				// 这里form不能自适应大小，shit！
-				form.setWidth(600);
-				form.setHeight(280);
-				form.hideSaveItem();
-				form.setPadding(5);
-				form.setWrapItemTitles(true);
-				form.setValueMaps(batchValues, collegeValues,
-						sdudentClassfiedValues, subjectsValues,
-						fundAgentValues, managedAgentValues, stu_statustValues,
-						ethnic_groupValues, political_statusValues,
-						graduate_collegeValues, student_typeValues,
-						major_categoryValues);
-				form.setBorder("1px solid gray");
-			}
-
-			@Override
-			protected DynamicForm createContentForm() {
-				return form;
-			}
-
-			@Override
-			protected Serializable getAddedModel() {
-				return form.getModel();
-			}
-
-			public void show() {
-				super.show();
-				// redraw();
-			}
-		};
-		adminDialog.setAutoHeight();
-		adminDialog.setAutoWidth();
-		adminDialog.setSize("620", "340");
-		adminDialog.setAdminPanel(this);
-		return adminDialog;
+		StudentsRegisterAdminDialog dialog= new StudentsRegisterAdminDialog((StudentsRegister)msterDetail);
+//		dialog.setAutoHeight();
+//		dialog.setAutoWidth();
+		
+		dialog.setSize("620", "340");
+		return dialog;
+		
+		//		AdminDialog adminDialog = new AdminDialog() {
+//			StudentsRegisterEditorForm form = new StudentsRegisterEditorForm(
+//					msterDetail);
+//
+//			public void init() {
+//				super.init();
+//				// 这里form不能自适应大小，shit！
+//				form.setWidth(600);
+//				form.setHeight(280);
+//				form.hideSaveItem();
+//				form.setPadding(5);
+//				form.setWrapItemTitles(true);
+//				form.setValueMaps(batchValues, collegeValues,
+//						sdudentClassfiedValues, subjectsValues,
+//						fundAgentValues, managedAgentValues, stu_statustValues,
+//						ethnic_groupValues, political_statusValues,
+//						graduate_collegeValues, student_typeValues,
+//						major_categoryValues);
+//				form.setBorder("1px solid gray");
+//			}
+//
+//			@Override
+//			protected DynamicForm createContentForm() {
+//				return form;
+//			}
+//
+//			@Override
+//			protected Serializable getAddedModel() {
+//				return form.getModel();
+//			}
+//
+//			public void show() {
+//				super.show();
+//				// redraw();
+//			}
+//		};
+//		adminDialog.setAutoHeight();
+//		adminDialog.setAutoWidth();
+//		adminDialog.setSize("620", "340");
+//		adminDialog.setAdminPanel(this);
+//		return adminDialog;
 	}
 
 }

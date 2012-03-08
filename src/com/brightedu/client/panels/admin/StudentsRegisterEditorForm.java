@@ -8,6 +8,7 @@ import com.brightedu.client.BrightEdu;
 import com.brightedu.client.panels.DetailedEditorForm;
 import com.brightedu.client.panels.MasterDetailAdmin;
 import com.brightedu.model.edu.StudentInfo;
+import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.form.fields.DateItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
@@ -57,6 +58,7 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 		super(admin);
 		sexItem.setValueMap("男", "女");
 		setNumCols(6);
+		setLayoutAlign(VerticalAlignment.BOTTOM);
 		setFields(student_nameItem, identity_cardItem, sexItem, exam_numItem,
 				student_addressItem, student_phoneItem, postal_codeItem,
 				student_linkmanItem, linkman_phoneItem, student_college_idItem,

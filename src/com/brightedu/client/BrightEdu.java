@@ -293,7 +293,7 @@ public class BrightEdu implements EntryPoint {
 
 		final VLayout sideNavLayout = new VLayout();
 		sideNavLayout.setHeight100();
-		sideNavLayout.setWidth(240);
+		sideNavLayout.setWidth("20%");
 		sideNavLayout.setShowResizeBar(true);
 		final FunctionTree sideNav = new FunctionTree();
 
@@ -504,7 +504,13 @@ public class BrightEdu implements EntryPoint {
 	}
 
 	private void login_logout() {
-		SC.say("login or logout!");
+		greetingService.logout(user, new CommonAsyncCall<Void>() {
+
+			@Override
+			public void onSuccess(Void result) {
+				History.fireCurrentHistoryState();
+			}
+		});
 	}
 
 	public static ExplorerTreeNode[] getNavTreeData() {

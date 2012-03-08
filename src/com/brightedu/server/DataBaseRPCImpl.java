@@ -42,6 +42,8 @@ import com.brightedu.model.edu.RightsCategoryFunctionKey;
 import com.brightedu.model.edu.RightsDefaultKey;
 import com.brightedu.model.edu.RightsFunction;
 import com.brightedu.model.edu.StudentClassified;
+import com.brightedu.model.edu.StudentInfo;
+import com.brightedu.model.edu.StudentPicture;
 import com.brightedu.model.edu.StudentStatus;
 import com.brightedu.model.edu.StudentType;
 import com.brightedu.model.edu.Subjects;
@@ -49,7 +51,6 @@ import com.brightedu.model.edu.User;
 import com.brightedu.model.edu.UserRights;
 import com.brightedu.model.edu.UserRightsEffective;
 import com.brightedu.model.edu.UserType;
-import com.google.gwt.user.server.rpc.RPCRequest;
 
 public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 
@@ -510,8 +511,8 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	}
 
 	@Override
-	public boolean singleModelAction(Serializable model, String methodName) {
-		return agent.singleModelAction(model, methodName);
+	public boolean modelAction(Serializable[] model, String methodName) {
+		return agent.modelAction(model, methodName);
 	}
 
 	@Override
@@ -562,6 +563,11 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 			boolean needTotalCounts) {
 		return agent.getAnnouncementList(offset, limit, needTotalCounts);
 				
+	}
+
+	@Override
+	public boolean addStudent(StudentInfo stu, List<StudentPicture> pictures) {
+		return agent.addStudent(stu, pictures);
 	}
 
 }
