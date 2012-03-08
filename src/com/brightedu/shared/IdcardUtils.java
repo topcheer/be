@@ -460,7 +460,8 @@ public class IdcardUtils extends StringUtils {
         } else if (len == CHINA_ID_MIN_LENGTH) {
             idCard = conver15CardTo18(idCard);
         }
-        return idCard.substring(6, 14);
+        
+        return idCard.substring(6, 10) + "-" + idCard.substring(10, 12)+"-" + idCard.substring(12, 14);
     }
     /**
      * 根据身份编号获取生日年
@@ -516,15 +517,15 @@ public class IdcardUtils extends StringUtils {
      * @return 性别(M-男，F-女，N-未知)
      */
     public static String getGenderByIdCard(String idCard) {
-        String sGender = "N";
+        String sGender = "未知";
         if (idCard.length() == CHINA_ID_MIN_LENGTH) {
             idCard = conver15CardTo18(idCard);
         }
         String sCardNum = idCard.substring(16, 17);
         if (Integer.parseInt(sCardNum) % 2 != 0) {
-            sGender = "M";
+            sGender = "男";
         } else {
-            sGender = "F";
+            sGender = "女";
         }
         return sGender;
     }
