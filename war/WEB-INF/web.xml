@@ -92,4 +92,9 @@
 		<url-pattern>/brightedu/MessageService</url-pattern>
 	</servlet-mapping>
 
+
+    <listener>
+    	<description>session listener</description>
+    	<listener-class>com.brightedu.server.UserSessionListener</listener-class>
+    </listener>
 </web-app>
