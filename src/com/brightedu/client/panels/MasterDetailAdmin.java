@@ -2,7 +2,6 @@ package com.brightedu.client.panels;
 
 import java.io.Serializable;
 
-import com.brightedu.model.edu.RecruitAgent;
 import com.smartgwt.client.types.VisibilityMode;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
@@ -15,7 +14,7 @@ public abstract class MasterDetailAdmin extends FunctionPanel {
 
 	protected BasicAdminPanel master;
 	protected BasicAdminDetailPanel detailed;
-
+	protected VLayout detailedV;
 	public abstract BasicAdminPanel createMasterPanel();
 
 	public abstract BasicAdminDetailPanel createDetailPanel();
@@ -43,7 +42,7 @@ public abstract class MasterDetailAdmin extends FunctionPanel {
 		SectionStackSection detailedSection = new SectionStackSection(
 				getDetialTitle());// "详细信息"
 	
-		VLayout detailedV = new VLayout();
+		detailedV = new VLayout();
 		detailedV.addMember(detailed);
 		detailedSection.setItems(detailedV);
 		detailedSection.setExpanded(true);

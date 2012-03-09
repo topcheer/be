@@ -166,5 +166,15 @@ code>', or '
 	public String getMessage() {
 		return getInnerHtmlContent().trim();
 	}
+	
+	private boolean loaded = false;
+	
+	public boolean isLoaded(){
+		return loaded;
+	}
+	
+	public void setLoaded(boolean loaded){
+		this.loaded = loaded;
+	}
 
 }

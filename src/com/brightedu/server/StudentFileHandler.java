@@ -33,7 +33,7 @@ public class StudentFileHandler {
 			
 			File tmpPic = new File(ServerProperties.tempFileDir + new File(p.getRemark()).getName());
 			String picLocation = tmstmp + "/" + p.getPic_type_id() + "/"
-					+ student.getStudent_name() + "_" + tmpPic.getName();
+					+ student.getStudent_id() + "_" + tmpPic.getName();
 			String picURL = ServerProperties.dataConfig
 					+ "/student_pics/" + picLocation;
 			File destPic = new File(ServerProperties.studentPicDir

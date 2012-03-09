@@ -26,11 +26,15 @@ public abstract class DetailedEditorForm extends DynamicForm {
 		saveBtn.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				Record rec = admin.master.getResultList().getSelectedRecord();
-				admin.master.update(rec);
+				update();
 			}
 		});
 		disableSaveItem();
+	}
+	
+	public void update(){
+		Record rec = admin.master.getResultList().getSelectedRecord();
+		admin.master.update(rec);
 	}
 
 	public void hideSaveItem() {

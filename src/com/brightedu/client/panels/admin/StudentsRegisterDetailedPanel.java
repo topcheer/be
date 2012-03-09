@@ -11,11 +11,16 @@ import com.brightedu.client.panels.DetailedEditorForm;
 import com.brightedu.model.edu.PictureType;
 import com.brightedu.model.edu.StudentInfo;
 import com.brightedu.model.edu.StudentPicture;
+import com.brightedu.shared.Constants;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.History;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Side;
+import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Img;
+import com.smartgwt.client.widgets.events.ClickEvent;
+import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.form.fields.ButtonItem;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.Layout;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -28,6 +33,7 @@ public class StudentsRegisterDetailedPanel extends BasicAdminDetailPanel {
 	TabSet studentTabSet;
 	// StudentsRegisterPictureForm picForm;
 	StudentsRegisterEditorForm infoForm;
+	IButton removeBtn = new IButton("删除");
 
 	LinkedHashMap<String, String> pic_typeValues;
 	HLayout picPanel = new HLayout();
@@ -35,6 +41,7 @@ public class StudentsRegisterDetailedPanel extends BasicAdminDetailPanel {
 
 	public StudentsRegisterDetailedPanel(StudentsRegister reg) {
 		super(reg);
+		removeBtn.setWidth(50);
 		studentTabSet = new TabSet();
 		Layout paneContainerProperties = new Layout();
 		paneContainerProperties.setLayoutMargin(0);
@@ -108,11 +115,11 @@ public class StudentsRegisterDetailedPanel extends BasicAdminDetailPanel {
 						for (PictureType type : types) {
 							VLayout layout = new VLayout();
 							String typeName = type.getPic_type_name();
-							StudentsRegisterPictureForm picForm = new StudentsRegisterPictureForm(
+							final StudentsRegisterPictureForm picForm = new StudentsRegisterPictureForm(
 									getMasterDetail(), typeName, type
 											.getPic_type_id());
 							layout.addMember(picForm);
-							Img img = new Img();
+							final Img img = new Img();
 							img.setPadding(10);
 							img.setBorder("1px solid gray");
 							img.setWidth(200);
@@ -122,6 +129,15 @@ public class StudentsRegisterDetailedPanel extends BasicAdminDetailPanel {
 							picForm.setViewImg(img);
 							picForms.add(picForm);
 							picPanel.addMember(layout);
+							picPanel.addMember(removeBtn);
+							removeBtn.addClickHandler(new ClickHandler() {
+
+								@Override
+								public void onClick(ClickEvent event) {
+									img.setSrc(Constants.BLANK_IMAGE);
+									picForm.serverTempFile = null;
+								}
+							});
 						}
 						picPanel.redraw();
 					}
@@ -144,23 +160,33 @@ public class StudentsRegisterDetailedPanel extends BasicAdminDetailPanel {
 		// 再刷
 		if (selectRecord != null) {
 			if (student != picForms.get(0).getStudent()) {
-				BrightEdu.createDataBaseRPC().getPictures(
-						student.getStudent_id(),
-						new CommonAsyncCall<List<StudentPicture>>() {
-							@Override
-							public void onSuccess(List<StudentPicture> result) {
-								for (StudentPicture pic : result) {
-									// war/data/student_pics/register_year/pic_type_id/stu_id_pic.abc.jpg
-									StudentsRegisterPictureForm picForm = getPicForm(pic
-											.getPic_type_id());
-									picForm.getViewImg()
-											.setSrc(GWT.getHostPageBaseURL()+pic.getRemark());
-								}
-							}
-						});
+				refreshPicture(student);
 			}
-
 		}
+	}
+
+	public void refreshPicture(StudentInfo student) {
+		BrightEdu.createDataBaseRPC().getPictures(student.getStudent_id(),
+				new CommonAsyncCall<List<StudentPicture>>() {
+					@Override
+					public void onSuccess(List<StudentPicture> result) {
+						for (StudentPicture pic : result) {
+							// war/data/student_pics/register_year/pic_type_id/stu_id_pic.abc.jpg
+							StudentsRegisterPictureForm picForm = getPicForm(pic
+									.getPic_type_id());
+							if (pic.getRemark() != null
+									&& !pic.getRemark().trim().equals("")) {
+								picForm.getViewImg().setSrc(
+										GWT.getHostPageBaseURL()
+												+ pic.getRemark());
+							} else {
+								picForm.getViewImg().setSrc(
+										Constants.BLANK_IMAGE);
+							}
+							picForm.setPicture(pic);
+						}
+					}
+				});
 	}
 
 	private StudentsRegisterPictureForm getPicForm(int pic_type_id) {

@@ -15,6 +15,7 @@ import com.brightedu.client.window.FileUpdateDialog;
 import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.CollegeAgreement;
 import com.brightedu.model.edu.RecruitAgent;
+import com.brightedu.shared.Constants;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Event;
@@ -128,7 +129,10 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 								fileUpdate = new FileUpdateDialog("新协议",
 										"newCollegeAgreement", record);
 								fileUpdate.setActionURL(GWT.getModuleBaseURL()
-										+ "formwithfile?action=updatecollegeagreement&id="
+										+ Constants.FILE_HANDLE_SERVLET_NAMAE
+										+ "?action="
+										+ Constants.ACTION_UPDATE_COLLEGE_AGREEMENT
+										+ "&id="
 										+ record.getAttributeAsInt("id"));
 							}
 							fileUpdate.show();
@@ -148,7 +152,10 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 							CollegeAgreement agreement = (CollegeAgreement) record
 									.getAttributeAsObject("object");
 							String url = GWT.getModuleBaseURL()
-									+ "formwithfile?action=getcollegeagreement&agreement_name="
+									+ Constants.FILE_HANDLE_SERVLET_NAMAE
+									+ "?action="
+									+ Constants.ACTION_GET_COLLEGE_AGREEMENT
+									+ "&agreement_name="
 									+ agreement.getAgreement_name();
 							Window.open(URL.encode(url), "", null);
 						}
@@ -351,7 +358,8 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 			super.init();
 			setSize("325", "170");
 			form.setAction(GWT.getModuleBaseURL()
-					+ "formwithfile?action=addcollegeagreement");
+					+ Constants.FILE_HANDLE_SERVLET_NAMAE + "?action="
+					+ Constants.ACTION_ADD_COLLEGE_AGREEMENT);
 			agentItem.setValueMap(agents);
 			collegeItem.setValueMap(colleges);
 		}

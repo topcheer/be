@@ -9,8 +9,12 @@ import com.brightedu.client.panels.FunctionPanel;
 import com.brightedu.client.panels.MasterDetailAdmin;
 import com.brightedu.client.panels.PanelFactory;
 import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.IButton;
+import com.smartgwt.client.widgets.events.ClickEvent;
+import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionEvent;
+import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * 专业代码维护
@@ -21,6 +25,21 @@ import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 public final class StudentsRegister extends MasterDetailAdmin {
 
 	public static String DESCRIPTION = "学生注册";
+
+	IButton saveBtn = new IButton("修改");
+
+	public StudentsRegister() {
+		detailedV.setMembersMargin(5);
+		detailedV.addMember(saveBtn);
+		saveBtn.setWidth(50);
+		((StudentsRegisterDetailedPanel) detailed).infoForm.hideSaveItem(); // 这里不用这个saveItem
+		saveBtn.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				((StudentsRegisterDetailedPanel) detailed).infoForm.update();
+			}
+		});
+	}
 
 	public static class Factory implements PanelFactory {
 		String id;

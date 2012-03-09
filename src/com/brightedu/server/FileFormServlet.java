@@ -28,6 +28,7 @@ import com.brightedu.model.edu.CollegeAgreement;
 import com.brightedu.server.util.Log;
 import com.brightedu.server.util.ServerProperties;
 import com.brightedu.server.util.Utils;
+import com.brightedu.shared.Constants;
 
 /**
  * @author chetwang, 主要处理文件上传的form
@@ -51,13 +52,15 @@ public class FileFormServlet extends BrightServlet {
 			String actionType = request.getParameter("action");
 			if (actionType != null && !actionType.trim().equals("")) {
 				actionType = actionType.toLowerCase();
-				if (actionType.equals("getcollegeagreement")) {
+				if (actionType.equals(Constants.ACTION_GET_COLLEGE_AGREEMENT)) {
 					getCollegeAgreement(request, response);
-				} else if (actionType.equals("addcollegeagreement")) {
+				} else if (actionType
+						.equals(Constants.ACTION_ADD_COLLEGE_AGREEMENT)) {
 					addCollegeAgreement(request, response);
-				} else if (actionType.equals("updatecollegeagreement")) {
+				} else if (actionType
+						.equals(Constants.ACTION_UPDATE_COLLEGE_AGREEMENT)) {
 					updateCollegeAgreementFile(request, response);
-				} else if (actionType.equals("pic_upload")) {
+				} else if (actionType.equals(Constants.ACTION_UPLOAD_PICTURE)) {
 					addPicture(request, response);
 				} else {
 					Log.e("Undefied action for FileFormServlet: " + actionType);

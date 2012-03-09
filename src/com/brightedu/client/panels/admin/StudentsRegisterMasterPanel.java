@@ -1,6 +1,7 @@
 package com.brightedu.client.panels.admin;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import com.brightedu.model.edu.RecruitAgent;
 import com.brightedu.model.edu.School;
 import com.brightedu.model.edu.StudentClassified;
 import com.brightedu.model.edu.StudentInfo;
+import com.brightedu.model.edu.StudentPicture;
 import com.brightedu.model.edu.StudentStatus;
 import com.brightedu.model.edu.StudentType;
 import com.brightedu.model.edu.Subjects;
@@ -254,25 +256,34 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 
 	@Override
 	public void update(Record record) {
-		StudentsRegisterDetailedPanel detailed = (StudentsRegisterDetailedPanel) msterDetail
+		final StudentsRegisterDetailedPanel detailed = (StudentsRegisterDetailedPanel) msterDetail
 				.getDetailed();
-		final StudentInfo newagt = (StudentInfo) detailed.getInfoForm()
+		final StudentInfo newStu = (StudentInfo) detailed.getInfoForm()
 				.getModel();
 		final Record rec = resultList.getSelectedRecord();
-		final StudentInfo oldagt = (StudentInfo) rec
+		final StudentInfo oldStu = (StudentInfo) rec
 				.getAttributeAsObject("object");
-		newagt.setRegister_date(oldagt.getRegister_date());
-		newagt.setUpdate_date(oldagt.getUpdate_date());
+		newStu.setRegister_date(oldStu.getRegister_date());
+		List<StudentPicture> pictures = new ArrayList<StudentPicture>();
+		for (StudentsRegisterPictureForm form : detailed.picForms) {
+			StudentPicture pic = form.getPicture();
 
-		dbService.saveModel(newagt, new CommonAsyncCall<Boolean>() {
+			if (form.getBrightFrame().isLoaded()) {
+				
+				pic.setRemark(form.getServerTempFile());
+				pictures.add(pic);
+			}
+		}
+		dbService.saveStudent(newStu, pictures, new CommonAsyncCall<Boolean>() {
 			@Override
 			public void onSuccess(Boolean result) {
 				BrightEdu.showTip("已保存!");
-				rec.setAttribute("object", newagt);
-				rec.setAttribute("obj_name", newagt.getStudent_name());
-				rec.setAttribute("identity_card", newagt.getIdentity_card());
+				rec.setAttribute("object", newStu);
+				rec.setAttribute("obj_name", newStu.getStudent_name());
+				rec.setAttribute("identity_card", newStu.getIdentity_card());
 				rec.setAttribute("student_college_id",
-						newagt.getStudent_college_id());
+						newStu.getStudent_college_id());
+				detailed.refreshPicture(newStu);
 				resultList.redraw();
 			}
 
@@ -280,16 +291,34 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 				// List UI would not be changed here
 			}
 		});
+
+		// dbService.saveModel(newStu, new CommonAsyncCall<Boolean>() {
+		// @Override
+		// public void onSuccess(Boolean result) {
+		// BrightEdu.showTip("已保存!");
+		// rec.setAttribute("object", newStu);
+		// rec.setAttribute("obj_name", newStu.getStudent_name());
+		// rec.setAttribute("identity_card", newStu.getIdentity_card());
+		// rec.setAttribute("student_college_id",
+		// newStu.getStudent_college_id());
+		// resultList.redraw();
+		// }
+		//
+		// protected void failed() { // rollback in UI
+		// // List UI would not be changed here
+		// }
+		// });
 	}
 
 	@Override
 	public void add(Serializable model) {
-		dbService.addModel(model, getAdminDialog().getAddAsync());
+		// not used here, implemented in admindialog.add()
 	}
 
 	@Override
 	public AdminDialog createAdminDialog() {
-		StudentsRegisterAdminDialog dialog= new StudentsRegisterAdminDialog((StudentsRegister)msterDetail);
+		StudentsRegisterAdminDialog dialog = new StudentsRegisterAdminDialog(
+				(StudentsRegister) msterDetail);
 		dialog.setSize("620", "340");
 		return dialog;
 	}

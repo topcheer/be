@@ -574,4 +574,9 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 		return agent.getPictures(student_id);
 	}
 
+	@Override
+	public boolean saveStudent(StudentInfo stu, List<StudentPicture> pictures) {
+		return agent.saveStudent(stu, pictures);
+	}
+
 }

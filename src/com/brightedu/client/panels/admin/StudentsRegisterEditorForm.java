@@ -175,6 +175,10 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 			graduate_college_idItem.setValueMap(valueMaps[i++]);
 			student_type_idItem.setValueMap(valueMaps[i++]);
 			major_category_idItem.setValueMap(valueMaps[i++]);
+			
+			//default:
+			ethnic_group_idItem.setDefaultValue(1);
+			political_status_idItem.setDefaultValue(3);
 		}
 	}
 

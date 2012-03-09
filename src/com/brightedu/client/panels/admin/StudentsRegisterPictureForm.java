@@ -4,6 +4,8 @@ import com.brightedu.client.frame.BrightFrame;
 import com.brightedu.client.frame.BrightFrame.LoadHandler;
 import com.brightedu.client.panels.MasterDetailAdmin;
 import com.brightedu.model.edu.StudentInfo;
+import com.brightedu.model.edu.StudentPicture;
+import com.brightedu.shared.Constants;
 import com.brightedu.shared.UUID;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Event;
@@ -11,6 +13,7 @@ import com.smartgwt.client.types.Encoding;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.ButtonItem;
 import com.smartgwt.client.widgets.form.fields.UploadItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangeEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangeHandler;
@@ -26,6 +29,7 @@ public class StudentsRegisterPictureForm extends DynamicForm {
 	int picTypeId;
 	String defaultSrc;
 	StudentInfo student;
+	StudentPicture picture;
 
 	public StudentsRegisterPictureForm(MasterDetailAdmin masterDetail,
 			String title, int picTypeId) {
@@ -52,7 +56,7 @@ public class StudentsRegisterPictureForm extends DynamicForm {
 						// 保存成功
 						String tempfile = brightFrame.getMessage();
 						setServerTempFile(tempfile);
-
+						brightFrame.setLoaded(true);
 						viewImg.setSrc(GWT.getHostPageBaseURL() + tempfile);
 					}
 				}
@@ -67,7 +71,8 @@ public class StudentsRegisterPictureForm extends DynamicForm {
 			}
 		});
 
-		setAction(GWT.getModuleBaseURL() + "formwithfile?action=pic_upload");
+		setAction(GWT.getModuleBaseURL() + Constants.FILE_HANDLE_SERVLET_NAMAE
+				+ "?action=" + Constants.ACTION_UPLOAD_PICTURE);
 		setWrapItemTitles(false);
 		setFields(fileItem);
 		setEncoding(Encoding.MULTIPART);
@@ -103,7 +108,8 @@ public class StudentsRegisterPictureForm extends DynamicForm {
 
 	public void clean() {
 		serverTempFile = null;
-		viewImg.setSrc("blank.gif");
+		brightFrame.setLoaded(false);
+		viewImg.setSrc(Constants.BLANK_IMAGE);
 	}
 
 	public StudentInfo getStudent() {
@@ -112,6 +118,14 @@ public class StudentsRegisterPictureForm extends DynamicForm {
 
 	public void setStudent(StudentInfo student) {
 		this.student = student;
+	}
+
+	public StudentPicture getPicture() {
+		return picture;
+	}
+
+	public void setPicture(StudentPicture picture) {
+		this.picture = picture;
 	}
 
 }

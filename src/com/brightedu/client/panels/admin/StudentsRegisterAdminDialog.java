@@ -55,13 +55,10 @@ public class StudentsRegisterAdminDialog extends AdminDialog {
 		List<StudentPicture> pictures = new ArrayList<StudentPicture>();
 		for (StudentsRegisterPictureForm picForm : picForms) {
 			String serverTmpFile = picForm.getServerTempFile();
-			if (serverTmpFile != null) {
-				StudentPicture pic = new StudentPicture();
-				pic.setPic_type_id(picForm.getPicTypeId());
-				// pic.setStudent_id(stu)
-				pic.setRemark(serverTmpFile); // 将就下，没字段可用了
-				pictures.add(pic);
-			}
+			StudentPicture pic = new StudentPicture();
+			pic.setPic_type_id(picForm.getPicTypeId());
+			pic.setRemark(serverTmpFile); // 将就下，没字段可用了
+			pictures.add(pic);
 		}
 		BrightEdu.createDataBaseRPC().addStudent(stu, pictures, getAddAsync());
 	}

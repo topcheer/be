@@ -2098,7 +2098,6 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	public boolean addStudent(StudentInfo stu, List<StudentPicture> pictures) {
 		SqlSession session = sessionFactory.openSession();
 		try {
-
 			int stu_id = Utils.getNextId(session, "student_info", "student_id");
 			stu.setStudent_id(stu_id);
 			stu.setRegister_date(new Date());
@@ -2106,13 +2105,14 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			map.insertSelective(stu);
 			StudentPictureMapper picMap = session
 					.getMapper(StudentPictureMapper.class);
+			StudentFileHandler fileHandler = new StudentFileHandler(stu,
+					pictures);
+			boolean result = fileHandler.movePictrues();
 			for (StudentPicture p : pictures) {
 				p.setStudent_id(stu_id);
 				picMap.insertSelective(p);
 			}
-			StudentFileHandler fileHandler = new StudentFileHandler(stu,
-					pictures);
-			boolean result = fileHandler.movePictrues();
+			
 			if (result)
 				session.commit();
 			else
@@ -2133,6 +2133,31 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			StudentPictureMapper map = session
 					.getMapper(StudentPictureMapper.class);
 			List<StudentPicture> result = map.selectByExample(ex);
+			return result;
+		} finally {
+			session.close();
+		}
+	}
+	
+	@Override
+	public boolean saveStudent(StudentInfo stu, List<StudentPicture> pictures) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			stu.setUpdate_date(new Date());
+			StudentInfoMapper map = session.getMapper(StudentInfoMapper.class);
+			map.updateByPrimaryKey(stu);
+			StudentPictureMapper picMap = session
+					.getMapper(StudentPictureMapper.class);
+			for (StudentPicture p : pictures) {
+				picMap.updateByPrimaryKey(p);
+			}
+			StudentFileHandler fileHandler = new StudentFileHandler(stu,
+					pictures);
+			boolean result = fileHandler.movePictrues();
+			if (result)
+				session.commit();
+			else
+				session.rollback();
 			return result;
 		} finally {
 			session.close();
