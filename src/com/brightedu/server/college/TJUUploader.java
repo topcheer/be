@@ -212,34 +212,6 @@ public class TJUUploader implements IUploader {
             req2.setHeader(HttpHeaders.CONTENT_TYPE,LOGIN_FORM_CONTENT_TYPE);
             req2.setHeader("Cookie",cookie);
             
-            
-//            name=test
-//            &gender=%E7%94%B7
-//            		&folk=%E5%9B%9E%E6%97%8F
-//            		&birthday=1975-12-15
-//            		&zzmm=%E4%B8%AD%E5%85%B1%E5%85%9A%E5%91%98
-//            		&zylb=%E7%94%9F%E4%BA%A7%E3%80%81%E8%BF%90%E8%BE%93%E8%AE%BE%E5%A4%87%E6%93%8D%E4%BD%9C%E4%BA%BA%E5%91%98%E5%8F%8A%E6%9C%89%E5%85%B3%E4%BA%BA%E5%91%98
-//            		&edu=%E9%AB%98%E4%B8%AD%E6%AF%95%E4%B8%9A
-//            		&edutype_id=8
-//            		&premajor_status=1
-//            		&major_id=06
-//            		&card_type=%E8%BA%AB%E4%BB%BD%E8%AF%81
-//            		&card_no=320623197512156257
-//            		&postalcode=310000
-//            		&address=test+address
-//            		&gzdw=
-//            		&mobilephone=13958222222
-//            		&phone=
-//            		&email=
-//            		&school_name=test+school&
-//            		school_code=10001
-//            		&nian1=2002
-//            		&yue1=03
-//            		&ri1=04
-//            		&graduate_cardno=
-//            		&xxly=%E4%BB%96%E4%BA%BA%E4%BB%8B%E7%BB%8D
-//            		&considertype=0
-
             		
             List <NameValuePair> nvps2 = new ArrayList <NameValuePair>();
             nvps2.add(new BasicNameValuePair("name", "测试学生"));
