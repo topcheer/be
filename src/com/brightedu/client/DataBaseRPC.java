@@ -234,6 +234,7 @@ public interface DataBaseRPC extends RemoteService {
 	/**************************学生管理********************************/
 	List getStudentList(int offset, int limit, boolean needTotalCounts);
 	boolean addStudent(StudentInfo stu, List<StudentPicture> pictures);
+	List<StudentPicture> getPictures(int student_id);
 	/**************************站内用户短信******************************/
 	
 	public boolean sendMessage(List<Messages> messages);
@@ -247,6 +248,8 @@ public interface DataBaseRPC extends RemoteService {
 	public boolean saveAnnouncement(Announcement ann);
 	public List<Announcement> getAnnouncementList(int offset, int limit,
 			boolean needTotalCounts);
+
+	
 
 	
 

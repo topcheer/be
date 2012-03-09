@@ -1,7 +1,6 @@
 package com.brightedu.server;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -101,6 +100,7 @@ import com.brightedu.model.edu.StudentClassifiedExample;
 import com.brightedu.model.edu.StudentInfo;
 import com.brightedu.model.edu.StudentInfoExample;
 import com.brightedu.model.edu.StudentPicture;
+import com.brightedu.model.edu.StudentPictureExample;
 import com.brightedu.model.edu.StudentStatus;
 import com.brightedu.model.edu.StudentStatusExample;
 import com.brightedu.model.edu.StudentType;
@@ -2110,12 +2110,29 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 				p.setStudent_id(stu_id);
 				picMap.insertSelective(p);
 			}
-			boolean result = new StudentFileHandler(stu, pictures)
-					.movePictrues();
+			StudentFileHandler fileHandler = new StudentFileHandler(stu,
+					pictures);
+			boolean result = fileHandler.movePictrues();
 			if (result)
 				session.commit();
 			else
 				session.rollback();
+			return result;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public List<StudentPicture> getPictures(int student_id) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			StudentPictureExample ex = new StudentPictureExample();
+			ex.createCriteria().andStudent_idEqualTo(student_id);
+
+			StudentPictureMapper map = session
+					.getMapper(StudentPictureMapper.class);
+			List<StudentPicture> result = map.selectByExample(ex);
 			return result;
 		} finally {
 			session.close();

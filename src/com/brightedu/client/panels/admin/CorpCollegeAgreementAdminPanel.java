@@ -10,6 +10,7 @@ import com.brightedu.client.CommonAsyncCall;
 import com.brightedu.client.frame.BrightFrame;
 import com.brightedu.client.frame.BrightFrame.LoadHandler;
 import com.brightedu.client.panels.BasicAdminPanel;
+import com.brightedu.client.validator.StandardLengthValidator;
 import com.brightedu.client.window.FileUpdateDialog;
 import com.brightedu.model.edu.College;
 import com.brightedu.model.edu.CollegeAgreement;
@@ -90,7 +91,7 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 								break;
 							}
 						}
-						fields[0].setValueMap(colleges);//合作院校
+						fields[0].setValueMap(colleges);// 合作院校
 						fields[1].setValueMap(agents);// 我方高校
 						resultList.redraw();
 					}
@@ -305,7 +306,15 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 		BrightFrame frame = new BrightFrame(faketarget);
 
 		public void init() {
-
+			StandardLengthValidator notEmptyValidator = new StandardLengthValidator();
+			collegeItem.setValidators(notEmptyValidator);
+			collegeItem.setRequired(true);
+			agentItem.setValidators(notEmptyValidator);
+			agentItem.setRequired(true);
+			statusItem.setValidators(notEmptyValidator);
+			statusItem.setRequired(true);
+			fileItem.setValidators(notEmptyValidator);
+			fileItem.setRequired(true);
 			frame.setWidth("1");
 			frame.setHeight("1");
 			frame.setVisible(false);
@@ -328,13 +337,13 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 					}
 				}
 			});
-//			fileItem.addChangeHandler(new ChangeHandler() {
-//				
-//				@Override
-//				public void onChange(ChangeEvent event) {
-////					System.out.println("change "+ event.g);
-//				}
-//			});
+			// fileItem.addChangeHandler(new ChangeHandler() {
+			//
+			// @Override
+			// public void onChange(ChangeEvent event) {
+			// // System.out.println("change "+ event.g);
+			// }
+			// });
 			bottomLayout.addMember(frame);
 			busyImg.setSize("16", "16");
 			busyImg.setVisible(false);
@@ -355,9 +364,11 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 
 		// here it is form submit action
 		protected void add() {
-			busyImg.setVisible(true);
-			okBtn.disable();
-			form.submitForm();
+			if (form.validate()) {
+				busyImg.setVisible(true);
+				okBtn.disable();
+				form.submitForm();
+			}
 		}
 
 		protected void reset() {

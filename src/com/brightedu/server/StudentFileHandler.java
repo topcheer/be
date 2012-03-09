@@ -4,6 +4,8 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import org.mortbay.log.Log;
+
 import com.brightedu.model.edu.StudentInfo;
 import com.brightedu.model.edu.StudentPicture;
 import com.brightedu.server.util.ServerProperties;
@@ -27,15 +29,25 @@ public class StudentFileHandler {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
 		String tmstmp = sdf.format(student.getRegister_date());
 		for (StudentPicture p : pictures) {
-			File tmpPic = new File(ServerProperties.tempFileDir + p.getRemark());
-			File destPic = new File(ServerProperties.studentPicDir + tmstmp
-					+ File.separator + p.getPic_type_id() + File.separator
-					+ student.getStudent_name() + "_" + p.getRemark());
+			
+			
+			File tmpPic = new File(ServerProperties.tempFileDir + new File(p.getRemark()).getName());
+			String picLocation = tmstmp + "/" + p.getPic_type_id() + "/"
+					+ student.getStudent_name() + "_" + tmpPic.getName();
+			String picURL = ServerProperties.dataConfig
+					+ "/student_pics/" + picLocation;
+			File destPic = new File(ServerProperties.studentPicDir
+					+ picLocation);
 			File parent = destPic.getParentFile();
 			if (!parent.exists()) {
-				parent.mkdirs();
+				boolean mkdirResult = parent.mkdirs();
+				if (!mkdirResult) {
+					Log.warn("Cannot create dir: " + parent.getAbsolutePath());
+					return false;
+				}
 			}
 			boolean result = tmpPic.renameTo(destPic);
+			p.setRemark(picURL);
 			if (!result)
 				return false;
 		}

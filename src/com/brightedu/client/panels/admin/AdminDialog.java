@@ -30,10 +30,10 @@ public abstract class AdminDialog extends Window {
 	DynamicForm form;
 	protected HLayout bottomLayout = new HLayout();
 	LengthRangeValidator standardLenthValidator = new LengthRangeValidator();
-	
 
 	public AdminDialog() {
-		standardLenthValidator.setMax(127);standardLenthValidator.setMin(1);
+		standardLenthValidator.setMax(127);
+		standardLenthValidator.setMin(1);
 		standardLenthValidator.setErrorMessage("内容已经超过了最大允许数量!");
 	}
 
@@ -51,9 +51,9 @@ public abstract class AdminDialog extends Window {
 		setAnimateShowEffect(AnimationEffect.WIPE);
 		setAnimateShowTime(800);
 		form = createContentForm();
-//		form.setAutoShowParent(true);
-//		form.setAutoDraw(true);
-		parseRequired();
+		// form.setAutoShowParent(true);
+		// form.setAutoDraw(true);
+		
 		// form.setWidth100();
 		// form.setHeight100();
 		// form.setLayoutAlign(Alignment.CENTER);
@@ -61,7 +61,7 @@ public abstract class AdminDialog extends Window {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				if (form.validate()) {
+				if (validate()) {
 					add();
 				}
 			}
@@ -71,7 +71,7 @@ public abstract class AdminDialog extends Window {
 		// form.setAutoHeight();
 
 		addAdminContentUI();
-		
+
 		bottomLayout.setAlign(Alignment.RIGHT);
 		// bottomLayout.addMember(new Label("  "));
 		bottomLayout.addMember(new LayoutSpacer());
@@ -94,7 +94,9 @@ public abstract class AdminDialog extends Window {
 			public void onKeyPress(KeyPressEvent event) {
 				if (event.getKeyName() != null
 						&& event.getKeyName().toLowerCase().equals("enter")) {
-					add();
+					if (validate()) {
+						add();
+					}
 				}
 			}
 		}, null);
@@ -105,16 +107,17 @@ public abstract class AdminDialog extends Window {
 				hide();
 			}
 		});
+		parseRequired();
 	}
-	
-	protected void addAdminContentUI(){
+
+	protected void addAdminContentUI() {
 		addItem(form);
 	}
 
 	private void parseRequired() {
 		FormItem[] items = form.getFields();
 		for (FormItem item : items) {
-			if (item.getRequired()!=null && item.getRequired()) {
+			if (item.getRequired() != null && item.getRequired()) {
 				item.setTitle(item.getTitle() + "*");
 			}
 		}
@@ -128,6 +131,10 @@ public abstract class AdminDialog extends Window {
 	public void hide() {
 		super.hide();
 		reset();
+	}
+
+	public boolean validate() {
+		return form.validate();
 	}
 
 	public void addFieldsHandler(KeyPressHandler pressHandler,
@@ -173,7 +180,7 @@ public abstract class AdminDialog extends Window {
 		@Override
 		public void onSuccess(T result) {
 			adminPanel.afterAdd();
-			hide();
+//			hide();
 			BrightEdu.showTip("已添加!");
 		}
 

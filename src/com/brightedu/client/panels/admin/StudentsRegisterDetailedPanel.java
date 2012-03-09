@@ -9,7 +9,11 @@ import com.brightedu.client.CommonAsyncCall;
 import com.brightedu.client.panels.BasicAdminDetailPanel;
 import com.brightedu.client.panels.DetailedEditorForm;
 import com.brightedu.model.edu.PictureType;
+import com.brightedu.model.edu.StudentInfo;
+import com.brightedu.model.edu.StudentPicture;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.History;
+import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Side;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.layout.HLayout;
@@ -21,7 +25,7 @@ import com.smartgwt.client.widgets.tab.events.TabSelectedEvent;
 import com.smartgwt.client.widgets.tab.events.TabSelectedHandler;
 
 public class StudentsRegisterDetailedPanel extends BasicAdminDetailPanel {
-	TabSet mainTabSet;
+	TabSet studentTabSet;
 	// StudentsRegisterPictureForm picForm;
 	StudentsRegisterEditorForm infoForm;
 
@@ -31,13 +35,13 @@ public class StudentsRegisterDetailedPanel extends BasicAdminDetailPanel {
 
 	public StudentsRegisterDetailedPanel(StudentsRegister reg) {
 		super(reg);
-		mainTabSet = new TabSet();
+		studentTabSet = new TabSet();
 		Layout paneContainerProperties = new Layout();
 		paneContainerProperties.setLayoutMargin(0);
 		paneContainerProperties.setLayoutTopMargin(1);
-		mainTabSet.setPaneContainerProperties(paneContainerProperties);
+		studentTabSet.setPaneContainerProperties(paneContainerProperties);
 
-		mainTabSet.addTabSelectedHandler(new TabSelectedHandler() {
+		studentTabSet.addTabSelectedHandler(new TabSelectedHandler() {
 			public void onTabSelected(TabSelectedEvent event) {
 				Tab selectedTab = event.getTab();
 				String historyToken = selectedTab.getAttribute("historyToken");
@@ -77,14 +81,20 @@ public class StudentsRegisterDetailedPanel extends BasicAdminDetailPanel {
 		// infoForm.setHeight100();
 		picTabPanel.addMember(picPanel);
 		studentTabPanel.addMember(infoForm);
-		mainTabSet.addTab(studentInfoTab);
-		mainTabSet.addTab(picTab);
-		mainTabSet.setWidth100();
-		mainTabSet.setHeight100();
-		mainTabSet.setTabBarPosition(Side.LEFT);
-		addMember(mainTabSet);
+		studentTabSet.addTab(studentInfoTab);
+		studentTabSet.addTab(picTab);
+		studentTabSet.setWidth100();
+		studentTabSet.setHeight100();
+		studentTabSet.setTabBarPosition(Side.LEFT);
+		addMember(studentTabSet);
 		setWidth100();
 		setHeight100();
+		picTab.addTabSelectedHandler(new TabSelectedHandler() {
+			@Override
+			public void onTabSelected(TabSelectedEvent event) {
+				showPictures();
+			}
+		});
 	}
 
 	private void createPicPanel() {
@@ -100,7 +110,7 @@ public class StudentsRegisterDetailedPanel extends BasicAdminDetailPanel {
 							String typeName = type.getPic_type_name();
 							StudentsRegisterPictureForm picForm = new StudentsRegisterPictureForm(
 									getMasterDetail(), typeName, type
-											.getPic_type_id(), typeName);
+											.getPic_type_id());
 							layout.addMember(picForm);
 							Img img = new Img();
 							img.setPadding(10);
@@ -116,6 +126,50 @@ public class StudentsRegisterDetailedPanel extends BasicAdminDetailPanel {
 						picPanel.redraw();
 					}
 				});
+	}
+
+	private void showPictures() {
+		Record selectRecord = getMasterDetail().getMaster().getResultList()
+				.getSelectedRecord();
+		StudentInfo student = selectRecord != null ? (StudentInfo) selectRecord
+				.getAttributeAsObject("object") : null;
+		// 不是同一个学生就要刷新
+
+		// 先清空
+		for (StudentsRegisterPictureForm picForm : picForms) {
+			if (student != picForm.getStudent()) {
+				picForm.clean();
+			}
+		}
+		// 再刷
+		if (selectRecord != null) {
+			if (student != picForms.get(0).getStudent()) {
+				BrightEdu.createDataBaseRPC().getPictures(
+						student.getStudent_id(),
+						new CommonAsyncCall<List<StudentPicture>>() {
+							@Override
+							public void onSuccess(List<StudentPicture> result) {
+								for (StudentPicture pic : result) {
+									// war/data/student_pics/register_year/pic_type_id/stu_id_pic.abc.jpg
+									StudentsRegisterPictureForm picForm = getPicForm(pic
+											.getPic_type_id());
+									picForm.getViewImg()
+											.setSrc(GWT.getHostPageBaseURL()+pic.getRemark());
+								}
+							}
+						});
+			}
+
+		}
+	}
+
+	private StudentsRegisterPictureForm getPicForm(int pic_type_id) {
+		for (StudentsRegisterPictureForm form : picForms) {
+			if (form.getPicTypeId() == pic_type_id) {
+				return form;
+			}
+		}
+		return null;
 	}
 
 	@Override

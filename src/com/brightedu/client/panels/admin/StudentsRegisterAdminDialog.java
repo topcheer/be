@@ -18,15 +18,24 @@ public class StudentsRegisterAdminDialog extends AdminDialog {
 	public StudentsRegisterAdminDialog(StudentsRegister md) {
 		this.masterDetail = md;
 		detailedPanel = new StudentsRegisterDetailedPanel(masterDetail);
+		adminPanel = masterDetail.getMaster();
 	}
 
 	public void init() {
 		super.init();
-		detailedPanel.mainTabSet.setWidth(615);
-		detailedPanel.mainTabSet.setHeight(300);
+		detailedPanel.studentTabSet.setWidth(615);
+		detailedPanel.studentTabSet.setHeight(300);
 		form.setNumCols(4);
 		// form.getsav
 		form.setWrapItemTitles(false);
+		StudentsRegisterMasterPanel m = (StudentsRegisterMasterPanel) masterDetail
+				.getMaster();
+		detailedPanel.infoForm.setValueMaps(m.batchValues, m.collegeValues,
+				m.sdudentClassfiedValues, m.subjectsValues, m.fundAgentValues,
+				m.managedAgentValues, m.stu_statustValues,
+				m.ethnic_groupValues, m.political_statusValues,
+				m.graduate_collegeValues, m.student_typeValues,
+				m.major_categoryValues);
 	}
 
 	@Override
@@ -54,14 +63,7 @@ public class StudentsRegisterAdminDialog extends AdminDialog {
 				pictures.add(pic);
 			}
 		}
-		Serializable[] models = new Serializable[1 + pictures.size()];
-		models[0] = stu;
-		for (int i = 0; i < pictures.size(); i++) {
-			models[i + 1] = pictures.get(i);
-		}
-//		BrightEdu.createDataBaseRPC().modelAction(models, "insertSelective",
-//				getAddAsync());
-		BrightEdu.createDataBaseRPC().addStudent(stu,pictures,getAddAsync());
+		BrightEdu.createDataBaseRPC().addStudent(stu, pictures, getAddAsync());
 	}
 
 	@Override

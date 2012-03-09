@@ -49,6 +49,7 @@ public final class StudentsRegister extends MasterDetailAdmin {
 					@Override
 					public void onSelectionChanged(SelectionEvent event) {
 						StudentsRegisterDetailedPanel detailed = (StudentsRegisterDetailedPanel) getDetailed();
+						detailed.studentTabSet.selectTab(0);
 						if (event.getState()) {
 							detailed.getInfoForm().setValue(
 									(Serializable) event.getRecord()

@@ -7,12 +7,16 @@ import java.util.LinkedHashMap;
 import com.brightedu.client.BrightEdu;
 import com.brightedu.client.panels.DetailedEditorForm;
 import com.brightedu.client.panels.MasterDetailAdmin;
+import com.brightedu.client.validator.StandardLengthValidator;
 import com.brightedu.model.edu.StudentInfo;
 import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.form.fields.DateItem;
+import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
+import com.smartgwt.client.widgets.form.validator.CustomValidator;
+import com.smartgwt.client.widgets.form.validator.LengthRangeValidator;
 
 public class StudentsRegisterEditorForm extends DetailedEditorForm {
 
@@ -68,6 +72,8 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 				employerItem, graduate_college_idItem, graduate_dateItem,
 				graduate_certificate_numberItem, student_type_idItem,
 				major_category_idItem, saveBtn);
+		setValidators();
+		setRequired();
 	}
 
 	@Override
@@ -175,5 +181,46 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 	@Override
 	public void reset() {
 		setValue(new StudentInfo());
+	}
+
+	private void setValidators() {
+		LengthRangeValidator standardLenthValidator = new StandardLengthValidator();
+		String errorMsg = "身份证长度必须是15或18位";
+		// StringCountValidator idCardLenthValidator = new
+		// StringCountValidator();
+		CustomValidator idCardLenthValidator = new CustomValidator() {
+
+			@Override
+			protected boolean condition(Object value) {
+				String id = (String) value;
+				if (value != null && id.length() != 15 && id.length() != 18)
+					return false;
+				return true;
+			}
+		};
+		idCardLenthValidator.setErrorMessage(errorMsg);
+		identity_cardItem.setValidators(idCardLenthValidator);
+		TextItem[] standardLengthItems = new TextItem[] { employerItem,
+				exam_numItem, graduate_certificate_numberItem,
+				linkman_phoneItem, postal_codeItem, student_addressItem,
+				student_college_idItem, student_linkmanItem, student_nameItem,
+				student_phoneItem };
+		for (TextItem item : standardLengthItems) {
+			item.setValidators(standardLenthValidator);
+		}
+
+	}
+
+	private void setRequired() {
+		FormItem[] requiredItems = new FormItem[] { batchItem, birthdayItem,
+				classfiedItem, collegwOwnerItem, ethnic_group_idItem,
+				fund_agentItem, graduate_certificate_numberItem,
+				identity_cardItem, linkman_phoneItem, major_category_idItem,
+				managed_agentItem, political_status_idItem, sexItem,
+				stu_status_idItem, student_addressItem, student_linkmanItem,
+				student_nameItem, student_phoneItem,student_type_idItem,subject_ownerItem};
+		for (FormItem item : requiredItems) {
+			item.setRequired(true);
+		}
 	}
 }

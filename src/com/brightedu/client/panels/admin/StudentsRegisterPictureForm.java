@@ -3,6 +3,8 @@ package com.brightedu.client.panels.admin;
 import com.brightedu.client.frame.BrightFrame;
 import com.brightedu.client.frame.BrightFrame.LoadHandler;
 import com.brightedu.client.panels.MasterDetailAdmin;
+import com.brightedu.model.edu.StudentInfo;
+import com.brightedu.shared.UUID;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Event;
 import com.smartgwt.client.types.Encoding;
@@ -12,7 +14,6 @@ import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.UploadItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangeEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangeHandler;
-import com.smartgwt.client.widgets.layout.VLayout;
 
 public class StudentsRegisterPictureForm extends DynamicForm {
 
@@ -23,11 +24,14 @@ public class StudentsRegisterPictureForm extends DynamicForm {
 	private Img viewImg;
 	String serverTempFile;
 	int picTypeId;
+	String defaultSrc;
+	StudentInfo student;
 
 	public StudentsRegisterPictureForm(MasterDetailAdmin masterDetail,
-			String title, int picTypeId, String faketarget) {
+			String title, int picTypeId) {
 		this.picTypeId = picTypeId;
 		this.masterDetail = masterDetail;
+		String faketarget = UUID.uuid();
 		master = (StudentsRegisterMasterPanel) masterDetail.getMaster();
 		brightFrame = new BrightFrame(faketarget);
 		setTarget(faketarget);
@@ -95,6 +99,19 @@ public class StudentsRegisterPictureForm extends DynamicForm {
 
 	public void setPicTypeId(int picTypeId) {
 		this.picTypeId = picTypeId;
+	}
+
+	public void clean() {
+		serverTempFile = null;
+		viewImg.setSrc("blank.gif");
+	}
+
+	public StudentInfo getStudent() {
+		return student;
+	}
+
+	public void setStudent(StudentInfo student) {
+		this.student = student;
 	}
 
 }

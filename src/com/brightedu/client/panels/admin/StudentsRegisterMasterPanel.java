@@ -284,61 +284,14 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 
 	@Override
 	public void add(Serializable model) {
-
 		dbService.addModel(model, getAdminDialog().getAddAsync());
-
 	}
 
 	@Override
 	public AdminDialog createAdminDialog() {
 		StudentsRegisterAdminDialog dialog= new StudentsRegisterAdminDialog((StudentsRegister)msterDetail);
-//		dialog.setAutoHeight();
-//		dialog.setAutoWidth();
-		
 		dialog.setSize("620", "340");
 		return dialog;
-		
-		//		AdminDialog adminDialog = new AdminDialog() {
-//			StudentsRegisterEditorForm form = new StudentsRegisterEditorForm(
-//					msterDetail);
-//
-//			public void init() {
-//				super.init();
-//				// 这里form不能自适应大小，shit！
-//				form.setWidth(600);
-//				form.setHeight(280);
-//				form.hideSaveItem();
-//				form.setPadding(5);
-//				form.setWrapItemTitles(true);
-//				form.setValueMaps(batchValues, collegeValues,
-//						sdudentClassfiedValues, subjectsValues,
-//						fundAgentValues, managedAgentValues, stu_statustValues,
-//						ethnic_groupValues, political_statusValues,
-//						graduate_collegeValues, student_typeValues,
-//						major_categoryValues);
-//				form.setBorder("1px solid gray");
-//			}
-//
-//			@Override
-//			protected DynamicForm createContentForm() {
-//				return form;
-//			}
-//
-//			@Override
-//			protected Serializable getAddedModel() {
-//				return form.getModel();
-//			}
-//
-//			public void show() {
-//				super.show();
-//				// redraw();
-//			}
-//		};
-//		adminDialog.setAutoHeight();
-//		adminDialog.setAutoWidth();
-//		adminDialog.setSize("620", "340");
-//		adminDialog.setAdminPanel(this);
-//		return adminDialog;
 	}
 
 }

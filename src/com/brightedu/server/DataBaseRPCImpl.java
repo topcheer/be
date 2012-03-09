@@ -520,7 +520,7 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 		return agent.getStudentList(offset, limit, needTotalCounts);
 	}
 
-	/**************************站内用户短信******************************/
+	/************************** 站内用户短信 ******************************/
 	@Override
 	public boolean sendMessage(List<Messages> messages) {
 		return agent.sendMessage(messages);
@@ -541,8 +541,7 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 		return agent.markAsRead(message);
 	}
 
-	
-	/**************************通知通告管理******************************/
+	/************************** 通知通告管理 ******************************/
 	@Override
 	public boolean addAnnouncement(Announcement ann) {
 		return agent.addAnnouncement(ann);
@@ -562,12 +561,17 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	public List<Announcement> getAnnouncementList(int offset, int limit,
 			boolean needTotalCounts) {
 		return agent.getAnnouncementList(offset, limit, needTotalCounts);
-				
+
 	}
 
 	@Override
 	public boolean addStudent(StudentInfo stu, List<StudentPicture> pictures) {
 		return agent.addStudent(stu, pictures);
+	}
+
+	@Override
+	public List<StudentPicture> getPictures(int student_id) {
+		return agent.getPictures(student_id);
 	}
 
 }

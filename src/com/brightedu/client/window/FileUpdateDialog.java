@@ -13,14 +13,12 @@ import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Img;
-import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.UploadItem;
 import com.smartgwt.client.widgets.layout.HLayout;
-import com.smartgwt.client.widgets.layout.LayoutSpacer;
 
 public class FileUpdateDialog extends Window {
 
@@ -35,7 +33,7 @@ public class FileUpdateDialog extends Window {
 
 	public FileUpdateDialog(String title, String hiddenTarget, Record record) {
 		setTitle(title);
-
+		fileItem.setRequired(true);
 		hiddenFrame = new BrightFrame(hiddenTarget);
 		hiddenFrame.setWidth("1");
 		hiddenFrame.setHeight("1");

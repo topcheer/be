@@ -290,4 +290,6 @@ public interface DataBaseRPCAsync {
 	void addStudent(StudentInfo stu, List<StudentPicture> pictures,
 			AsyncCallback<Boolean> addAsync);
 
+	void getPictures(int student_id,AsyncCallback<List<StudentPicture>> addAsync);
+
 }
