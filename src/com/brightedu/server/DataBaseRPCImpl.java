@@ -579,4 +579,9 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 		return agent.saveStudent(stu, pictures);
 	}
 
+	@Override
+	public boolean deleteStudent(List<StudentInfo> studentIds) {
+		return agent.deleteStudent(studentIds);
+	}
+
 }

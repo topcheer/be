@@ -5,8 +5,10 @@ import java.util.LinkedHashMap;
 
 import com.brightedu.client.panels.DetailedEditorForm;
 import com.brightedu.client.panels.MasterDetailAdmin;
+import com.brightedu.client.validator.StandardLengthValidator;
 import com.brightedu.model.edu.RecruitAgent;
 import com.smartgwt.client.util.SC;
+import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextAreaItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
@@ -45,6 +47,8 @@ public class AgentAdminEditorForm extends DetailedEditorForm {
 				contact_mobileItem, account_nameItem, bank_nameItem,
 				bank_accountItem, college_urlItem, userid_for_collegeItem,
 				password_for_collegeItem, remarkItem, saveBtn);
+		setRequired();
+		setValidators();
 	}
 
 	public Serializable getModel() {
@@ -67,7 +71,7 @@ public class AgentAdminEditorForm extends DetailedEditorForm {
 		agent.setUserid_for_college(userid_for_collegeItem.getValueAsString());
 
 		agent.setParent_agent_id(getValueAsInteger(parentAgentItem));
-		
+
 		return agent;
 	}
 
@@ -107,7 +111,24 @@ public class AgentAdminEditorForm extends DetailedEditorForm {
 
 	@Override
 	public void reset() {
-		setValue(new RecruitAgent());		
+		setValue(new RecruitAgent());
+	}
+
+	private void setRequired() {
+		FormItem[] items = new FormItem[] { agent_nameItem,
+				agent_typeItem };
+		for(FormItem item:items){
+			item.setRequired(true);
+		}
+	}
+	
+	private void setValidators(){
+		StandardLengthValidator lenV = new StandardLengthValidator();
+		FormItem[] standardItems = new FormItem[] { agent_nameItem, responsible_personItem,
+				contact_personItem,contact_addressItem,contact_phoneItem,contact_mobileItem,account_nameItem,bank_nameItem,bank_accountItem,college_urlItem,userid_for_collegeItem,password_for_collegeItem, };
+		for(FormItem item:standardItems){
+			item.setValidators(lenV);
+		}
 	}
 
 }

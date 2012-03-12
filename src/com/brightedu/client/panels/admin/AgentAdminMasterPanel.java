@@ -180,8 +180,8 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 			public void init() {
 				super.init();
 				// 这里form不能自适应大小，shit！
-				form.setWidth(500);
-				form.setHeight(280);
+				form.setWidth(525);
+				form.setHeight(340);
 				form.hideSaveItem();
 				form.setPadding(5);
 				form.setWrapItemTitles(true);
@@ -207,7 +207,7 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 		};
 		adminDialog.setAutoHeight();
 		adminDialog.setAutoWidth();
-		adminDialog.setSize("525", "350");
+		adminDialog.setSize("535", "340");
 		adminDialog.setAdminPanel(this);
 		
 		return adminDialog;

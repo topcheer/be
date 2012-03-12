@@ -115,12 +115,12 @@ public abstract class AdminDialog extends Window {
 	}
 
 	private void parseRequired() {
-		FormItem[] items = form.getFields();
-		for (FormItem item : items) {
-			if (item.getRequired() != null && item.getRequired()) {
-				item.setTitle(item.getTitle() + "*");
-			}
-		}
+//		FormItem[] items = form.getFields();
+//		for (FormItem item : items) {
+//			if (item.getRequired() != null && item.getRequired()) {
+//				item.setTitle(item.getTitle() + "*");
+//			}
+//		}
 	}
 
 	protected void add() {

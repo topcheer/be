@@ -45,7 +45,7 @@ public class ServerProperties {
 			Log.e("failed to load server.props", e);
 		}
 		dataConfig = p.getProperty("dataLocation", "data");
-		dataLocation = deployPath + p.getProperty("dataLocation", "data");
+		dataLocation = deployPath + dataConfig;
 		agreementSubDir = new File(ServerProperties.getDataLocation())
 				.getAbsolutePath()
 				+ "/"

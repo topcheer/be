@@ -33,7 +33,7 @@ public class StudentsRegisterDetailedPanel extends BasicAdminDetailPanel {
 	TabSet studentTabSet;
 	// StudentsRegisterPictureForm picForm;
 	StudentsRegisterEditorForm infoForm;
-	IButton removeBtn = new IButton("删除");
+
 
 	LinkedHashMap<String, String> pic_typeValues;
 	HLayout picPanel = new HLayout();
@@ -41,7 +41,7 @@ public class StudentsRegisterDetailedPanel extends BasicAdminDetailPanel {
 
 	public StudentsRegisterDetailedPanel(StudentsRegister reg) {
 		super(reg);
-		removeBtn.setWidth(50);
+
 		studentTabSet = new TabSet();
 		Layout paneContainerProperties = new Layout();
 		paneContainerProperties.setLayoutMargin(0);
@@ -120,6 +120,8 @@ public class StudentsRegisterDetailedPanel extends BasicAdminDetailPanel {
 											.getPic_type_id());
 							layout.addMember(picForm);
 							final Img img = new Img();
+							IButton removeBtn = new IButton("删除");
+							removeBtn.setWidth(50);
 							img.setPadding(10);
 							img.setBorder("1px solid gray");
 							img.setWidth(200);
@@ -136,6 +138,7 @@ public class StudentsRegisterDetailedPanel extends BasicAdminDetailPanel {
 								public void onClick(ClickEvent event) {
 									img.setSrc(Constants.BLANK_IMAGE);
 									picForm.serverTempFile = null;
+									picForm.getBrightFrame().setLoaded(true);
 								}
 							});
 						}

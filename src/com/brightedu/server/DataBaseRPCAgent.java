@@ -2112,7 +2112,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 				p.setStudent_id(stu_id);
 				picMap.insertSelective(p);
 			}
-			
+
 			if (result)
 				session.commit();
 			else
@@ -2138,7 +2138,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			session.close();
 		}
 	}
-	
+
 	@Override
 	public boolean saveStudent(StudentInfo stu, List<StudentPicture> pictures) {
 		SqlSession session = sessionFactory.openSession();
@@ -2159,6 +2159,41 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			else
 				session.rollback();
 			return result;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean deleteStudent(List<StudentInfo> students) {
+		SqlSession session = sessionFactory.openSession();
+		List<Integer> studentIds = new ArrayList<Integer>();
+		for (StudentInfo s : students) {
+			studentIds.add(s.getStudent_id());
+		}
+		try {
+			StudentInfoMapper map = session.getMapper(StudentInfoMapper.class);
+			StudentInfoExample sex = new StudentInfoExample();
+
+			sex.createCriteria().andStudent_idIn(studentIds);
+			map.deleteByExample(sex);
+			
+			StudentPictureMapper picMap = session
+					.getMapper(StudentPictureMapper.class);
+			for (StudentInfo s : students) {
+				StudentPictureExample spepic = new StudentPictureExample();
+				spepic.createCriteria().andStudent_idEqualTo(s.getStudent_id());
+				List<StudentPicture> pictures = picMap.selectByExample(spepic);
+				StudentFileHandler fileHandler = new StudentFileHandler(s,pictures);
+				fileHandler.deletePictures();
+			}	
+			StudentPictureExample spe = new StudentPictureExample();
+			spe.createCriteria().andStudent_idIn(studentIds);
+			picMap.deleteByExample(spe);
+	
+			session.commit();
+			
+			return true;
 		} finally {
 			session.close();
 		}

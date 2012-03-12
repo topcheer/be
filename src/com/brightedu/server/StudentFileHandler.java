@@ -14,6 +14,7 @@ public class StudentFileHandler {
 
 	StudentInfo student;
 	List<StudentPicture> pictures;
+	String datemarkFormat = "yyyyMM";
 
 	public StudentFileHandler() {
 	}
@@ -25,17 +26,17 @@ public class StudentFileHandler {
 
 	public boolean movePictrues() {
 		// 图片路径：
-		// war/data/student_pics/register_year/pic_type_id/stu_id_pic.abc.jpg
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+		// war/data/student_pics/register_year/pic_type_id/stuid_UUID.jpg
+		SimpleDateFormat sdf = new SimpleDateFormat(datemarkFormat);
 		String tmstmp = sdf.format(student.getRegister_date());
 		for (StudentPicture p : pictures) {
-			
-			
-			File tmpPic = new File(ServerProperties.tempFileDir + new File(p.getRemark()).getName());
+
+			File tmpPic = new File(ServerProperties.tempFileDir
+					+ new File(p.getRemark()).getName());
 			String picLocation = tmstmp + "/" + p.getPic_type_id() + "/"
 					+ student.getStudent_id() + "_" + tmpPic.getName();
-			String picURL = ServerProperties.dataConfig
-					+ "/student_pics/" + picLocation;
+			String picURL = ServerProperties.dataConfig + "/student_pics/"
+					+ picLocation;
 			File destPic = new File(ServerProperties.studentPicDir
 					+ picLocation);
 			File parent = destPic.getParentFile();
@@ -52,6 +53,21 @@ public class StudentFileHandler {
 				return false;
 		}
 		return true;
+	}
+
+	public void deletePictures() {
+		for (StudentPicture pic : pictures) {
+			File destPic = new File(ServerProperties.deployPath
+					+ pic.getRemark());
+			if (destPic.exists()) {
+				destPic.delete();
+			} else {
+				Log.warn(student.getStudent_name() + "_"
+						+ student.getStudent_id() + " does not have picture: "
+						+ pic.getRemark());
+			}
+		}
+
 	}
 
 	public StudentInfo getStudent() {
