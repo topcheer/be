@@ -62,9 +62,9 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 	public StudentsRegisterEditorForm(MasterDetailAdmin admin) {
 		super(admin);
 		sexItem.setValueMap("男", "女");
-		//高中毕业 同等学历 中专技校 大专毕业 本科以上
-		edu_levelItem.setValueMap("高中毕业", "同等学历","中专技校","大专毕业","本科以上");
-		
+		// 高中毕业 同等学历 中专技校 大专毕业 本科以上
+		edu_levelItem.setValueMap("高中毕业", "同等学历", "中专技校", "大专毕业", "本科以上");
+
 		setNumCols(6);
 		setLayoutAlign(VerticalAlignment.BOTTOM);
 		setFields(student_nameItem, identity_cardItem, sexItem, exam_numItem,
@@ -75,7 +75,7 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 				birthdayItem, ethnic_group_idItem, political_status_idItem,
 				employerItem, graduate_college_idItem, graduate_dateItem,
 				graduate_certificate_numberItem, student_type_idItem,
-				major_category_idItem, saveBtn);
+				major_category_idItem, edu_levelItem, saveBtn);
 		setValidators();
 		setRequired();
 	}
@@ -179,8 +179,8 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 			graduate_college_idItem.setValueMap(valueMaps[i++]);
 			student_type_idItem.setValueMap(valueMaps[i++]);
 			major_category_idItem.setValueMap(valueMaps[i++]);
-			
-			//default:
+
+			// default:
 			ethnic_group_idItem.setDefaultValue(1);
 			political_status_idItem.setDefaultValue(3);
 		}
@@ -226,7 +226,8 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 				identity_cardItem, linkman_phoneItem, major_category_idItem,
 				managed_agentItem, political_status_idItem, sexItem,
 				stu_status_idItem, student_addressItem, student_linkmanItem,
-				student_nameItem, student_phoneItem,student_type_idItem,subject_ownerItem};
+				student_nameItem, student_phoneItem, student_type_idItem,
+				subject_ownerItem };
 		for (FormItem item : requiredItems) {
 			item.setRequired(true);
 		}
