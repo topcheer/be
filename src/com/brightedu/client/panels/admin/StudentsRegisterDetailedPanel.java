@@ -172,11 +172,11 @@ public class StudentsRegisterDetailedPanel extends BasicAdminDetailPanel {
 							// war/data/student_pics/register_year/pic_type_id/stu_id_pic.abc.jpg
 							StudentsRegisterPictureForm picForm = getPicForm(pic
 									.getPic_type_id());
-							if (pic.getRemark() != null
-									&& !pic.getRemark().trim().equals("")) {
+							if (pic.getPic() != null
+									&& !pic.getPic().trim().equals("")) {
 								picForm.getViewImg().setSrc(
 										GWT.getHostPageBaseURL()
-												+ pic.getRemark());
+												+ pic.getPic());
 							} else {
 								picForm.getViewImg().setSrc(
 										Constants.BLANK_IMAGE);

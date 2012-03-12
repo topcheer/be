@@ -58,7 +58,7 @@ public class StudentsRegisterAdminDialog extends AdminDialog {
 			String serverTmpFile = picForm.getServerTempFile();
 			StudentPicture pic = new StudentPicture();
 			pic.setPic_type_id(picForm.getPicTypeId());
-			pic.setRemark(serverTmpFile); // 将就下，没字段可用了
+			pic.setPic(serverTmpFile); // 将就下，没字段可用了
 			pictures.add(pic);
 		}
 		BrightEdu.createDataBaseRPC().addStudent(stu, pictures, getAddAsync());

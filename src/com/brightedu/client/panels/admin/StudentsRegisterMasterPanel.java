@@ -298,7 +298,7 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 
 			if (form.getBrightFrame().isLoaded()) {
 
-				pic.setRemark(form.getServerTempFile());
+				pic.setPic(form.getServerTempFile());
 				pictures.add(pic);
 			}
 		}

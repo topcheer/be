@@ -35,7 +35,7 @@ public class StudentFileHandler {
 		SimpleDateFormat sdf = new SimpleDateFormat(datemarkFormat);
 		String tmstmp = sdf.format(student.getRegister_date());
 		for (final StudentPicture p : pictures) {
-			if (p.getRemark() == null) {
+			if (p.getPic() == null) {
 				if (status == ADD) {
 
 					continue;
@@ -64,7 +64,7 @@ public class StudentFileHandler {
 			}
 
 			File tmpPic = new File(ServerProperties.tempFileDir
-					+ new File(p.getRemark()).getName());
+					+ new File(p.getPic()).getName());
 			String picLocation = tmstmp + "/" + p.getPic_type_id() + "/"
 					+ student.getStudent_id() + "_" + tmpPic.getName();
 			String picURL = ServerProperties.dataConfig + "/student_pics/"
@@ -80,7 +80,7 @@ public class StudentFileHandler {
 				}
 			}
 			boolean result = tmpPic.renameTo(destPic);
-			p.setRemark(picURL);
+			p.setPic(picURL);
 			if (!result)
 				return false;
 		}
@@ -90,7 +90,7 @@ public class StudentFileHandler {
 	public void deletePictures() {
 		for (StudentPicture pic : pictures) {
 			File destPic = new File(ServerProperties.deployPath
-					+ pic.getRemark());
+					+ pic.getPic());
 			if (destPic.exists()) {
 				destPic.delete();
 			} 
