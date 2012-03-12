@@ -1,0 +1,186 @@
+------------------------------------------------------
+createuser --no-superuser --no-createdb --no-createrole --pwprompt ngc
+createdb --owner ngc edu_ngc                              
+psql --username ngc  --dbname edu_ngc  
+
+
+
+createuser --no-superuser --no-createdb --no-createrole --pwprompt edu
+createdb --owner edu edu_slave                              
+/usr/local/pgsql/bin/createlang plpgsql edu_slave
+psql --username edu --dbname edu_slave 
+
+
+
+create table test_rep (
+a varchar(100),
+b varchar(100)
+);
+ALTER TABLE test_rep  ADD PRIMARY KEY (a);
+
+
+
+pg_dump -s -U ngc  -Fc edu_ngc > ngc.dump        
+pg_restore -d edu_slave  -U postgres  ngc.dump 
+
+
+--------------------------------------------------------
+1. 下载"slony1-2.1.1.tar.bz2"
+
+2. 上传"slony1-2.1.1.tar.bz2"到 Master 和Slave 的server 上。
+
+
+3. 登陆到Master server 上。
+   a. su - postgres
+   b. cp slony1-2.1.1.tar.bz2 ~postgres/
+   c. tar -vxjf slony1-2.1.1.tar.bz2 
+   d. cd slony1-2.1.1
+   e. ./configure
+   f. gmake all
+   g. su - root
+   h. cd ~postgres
+   i. cd slony1-2.1.1 
+   f. gmake install
+   
+
+4. 登陆到Slave server 上。
+   a. su - postgres
+   b. cp slony1-2.1.1.tar.bz2 ~postgres/
+   c. tar -vxjf slony1-2.1.1.tar.bz2 
+   d. cd slony1-2.1.1
+   e. ./configure
+   f. gmake all
+   g. su - root
+   h. cd ~postgres
+   i. cd slony1-2.1.1 
+   f. gmake install
+   
+
+5. 登陆到Master server 上， create "cluster_setup.sh"
+-------------------------------------------------------------------------
+#!/bin/sh
+
+CLUSTER=edu_cluster
+DB1=edu_ngc
+DB2=edu_slave
+H1=10.61.241.226
+H2=10.61.241.226
+U1=ngc
+P1=ngc
+U2=postgres
+P2=edu2012
+
+slonik <<_EOF_
+
+cluster name = $CLUSTER;
+
+node 1 admin conninfo = 'dbname=$DB1 host=$H1 user=$U1';
+node 2 admin conninfo = 'dbname=$DB2 host=$H2 user=$U2';
+
+init cluster (id = 1, comment = 'Master Node');
+
+create set (id = 1, origin = 1, comment = 'All edu_ngc tables');
+set add table (set id = 1, origin = 1, id = 1, full qualified name = 'public.test_rep', comment = 'Table test_ngc');
+
+
+store node (id = 2, comment = 'Slave node', event node=1);
+store path (server = 1, client = 2, conninfo = 'dbname=$DB1 host=$H1 user=$U1');
+store path (server = 2, client = 1, conninfo = 'dbname=$DB2 host=$H2 user=$U2');
+
+store listen (origin = 1, provider = 1, receiver = 2);
+store listen (origin = 2, provider = 2, receiver = 1);
+_EOF_
+   
+-------------------------------------------------------------------------
+
+
+
+6. 登陆到Slave server 上，create "subscribe.sh"
+-------------------------------------------------------------------------
+#!/bin/sh
+
+CLUSTER=edu_cluster
+DB1=edu_ngc
+DB2=edu_slave
+H1=10.61.241.226
+H2=10.61.241.226
+U1=ngc
+U2=postgres
+
+slonik <<_EOF_
+
+cluster name = $CLUSTER;
+
+node 1 admin conninfo = 'dbname=$DB1 host=$H1 user=$U1';
+node 2 admin conninfo = 'dbname=$DB2 host=$H2 user=$U2';
+
+subscribe set (id = 1, provider = 1, receiver = 2, forward = no);
+_EOF_
+-------------------------------------------------------------------------
+
+
+
+7. 登陆到Master server 上，启动 cluster setup.
+---------------------------------
+./cluster_setup.sh 
+---------------------------------
+
+8. 登陆到Master server 上，启动 slon 进程.
+---------------------------------
+slon edu_cluster "dbname=edu_ngc user=ngc host=10.61.241.226"
+---------------------------------
+
+
+
+9. 登陆到Slave server 上，启动 subscribe.
+---------------------------------
+./subscribe.sh
+---------------------------------
+
+10. 登陆到Slave server 上，启动 slon 进程.
+---------------------------------
+slon edu_cluster "dbname=edu_slave user=postgres host=10.61.241.226" 
+---------------------------------
+
+
+   
+   
+--------------------------------------------------------------------------------------------
+
+
+
+cluster 重新构建： 登陆到 Master 和Slave server 上。
+--------------------
+drop schema "_edu_cluster" cascade;   
+--------------------
+
+
+--------------------------------------------------------------------------------
+-bash-3.2$ /usr/local/pgsql/bin/initdb /var/lib/pgsql/test_ngc
+
+
+Success. You can now start the database server using:
+
+    /usr/local/pgsql/bin/postgres -D /var/lib/pgsql/test_ngc
+or
+    /usr/local/pgsql/bin/pg_ctl -D /var/lib/pgsql/test_ngc -l logfile start
+    
+    
+    ./configure  --prefix=/usr/local/pgsql -localstatedir=/var/lib/pgsql/test_ngc
+--------------------------------------------------------------------------------
+
+
+
+-bash-3.2$ cat .bash_profile
+[ -f /etc/profile ] && source /etc/profile
+
+PGDATA=/var/lib/pgsql/test_ngc
+export PGDATA
+
+PGLIB=/usr/local/pgsql/lib
+export PATH=/usr/local/pgsql/bin:$PATH:/usr/local/pgsql/bin
+MANPATH=/usr/local/pgsql/man:$MANPATH:/usr/local/pgsql/man
+export PGLIB PGDATA PATH MANPATH
+-bash-3.2$
+
+----------------------------------------------------------------------------------
