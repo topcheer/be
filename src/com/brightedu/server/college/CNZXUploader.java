@@ -29,6 +29,8 @@ import com.brightedu.shared.IdcardUtils;
 /**
  * 
  * 川农在线上传接口 
+ * 
+ * 
  * @author junzhang
  *
  */
@@ -43,7 +45,6 @@ public class CNZXUploader implements IUploader {
 	private static final String LOGIN_URL = "http://www.cnzx.info/ASPdotNET_NEW_publish_2/ZhaoShengBaoMing/default.aspx?xBMD=3604";
 	private static final String LOGIN_FORM_CONTENT_TYPE = "application/x-www-form-urlencoded";
 	private static final String REG_URL = "http://www.cnzx.info/ASPdotNET_NEW_publish_2/ZhaoShengBaoMing/BAOMING.ASPX?PageBMD=360401&PagePC=121&PageCONTROL=bm_page";
-	private static final String LIST_URL = "http://www.etju.com/netfiles3web/(y5ene1rpiarkyjnd132p4gjv)/CTXLView.aspx";
 
 	private DefaultHttpClient client;
 	
