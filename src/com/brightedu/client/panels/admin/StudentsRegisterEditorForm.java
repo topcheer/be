@@ -54,6 +54,7 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 	SelectItem student_type_idItem = new SelectItem("student_type_id", "学生类型");
 	SelectItem major_category_idItem = new SelectItem("major_category_id",
 			"成教学生大类");
+	SelectItem edu_levelItem = new SelectItem("edu_level", "学历");
 
 	// DateItem register_dateItem = new DateItem("regster_date", "登记时间");
 	// DateItem update_dateItem = new DateItem("update_date", "更新时间");
@@ -61,6 +62,9 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 	public StudentsRegisterEditorForm(MasterDetailAdmin admin) {
 		super(admin);
 		sexItem.setValueMap("男", "女");
+		//高中毕业 同等学历 中专技校 大专毕业 本科以上
+		edu_levelItem.setValueMap("高中毕业", "同等学历","中专技校","大专毕业","本科以上");
+		
 		setNumCols(6);
 		setLayoutAlign(VerticalAlignment.BOTTOM);
 		setFields(student_nameItem, identity_cardItem, sexItem, exam_numItem,
@@ -114,7 +118,7 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 		sexItem.setValue(student.getStudent_sex());
 		student_type_idItem.setValue(student.getStudent_type_id());
 		subject_ownerItem.setValue(student.getSubject_owner());
-		// update_dateItem.setValue(student.getUpdate_date());
+		edu_levelItem.setValue(student.getEdu_level());
 	}
 
 	@Override
@@ -153,7 +157,7 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 		s.setStudent_type_id(getValueAsInteger(student_type_idItem));
 		s.setSubject_owner(getValueAsInteger(subject_ownerItem));
 		// s.setUpdate_date(update_date)
-
+		s.setEdu_level(edu_levelItem.getValueAsString());
 		return s;
 	}
 
