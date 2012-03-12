@@ -13,8 +13,7 @@ public class ServerProperties {
 
 	public static String agreementSubDir;
 	public static String studentPicDir;
-	public static String tempFileRelative = "/" + "tmp"
-			+ "/";
+	public static String tempFileRelative = "/" + "tmp" + "/";
 	public static String tempFileDir;
 
 	private static int auditLevel = 1;
@@ -47,20 +46,14 @@ public class ServerProperties {
 		dataConfig = p.getProperty("dataLocation", "data");
 		dataLocation = deployPath + dataConfig;
 		agreementSubDir = new File(ServerProperties.getDataLocation())
-				.getAbsolutePath()
-				+ "/"
-				+ "agreement"
-				+ "/";
+				.getAbsolutePath() + "/" + "agreement" + "/";
 		Log.i("agreementSubDir: " + agreementSubDir);
 		File agreementsDir = new File(agreementSubDir);
 		if (!agreementsDir.exists()) {
 			agreementsDir.mkdirs();
 		}
 		studentPicDir = new File(ServerProperties.getDataLocation())
-				.getAbsolutePath()
-				+ "/"
-				+ "student_pics"
-				+ "/";
+				.getAbsolutePath() + "/student_pics/";
 		Log.i("studentPicDir: " + studentPicDir);
 		File sdutentPicFile = new File(studentPicDir);
 		if (!sdutentPicFile.exists()) {
@@ -68,7 +61,7 @@ public class ServerProperties {
 		}
 		tempFileDir = new File(ServerProperties.dataLocation + "/"
 				+ tempFileRelative).getAbsolutePath()
-				+"/";
+				+ "/";
 		File tempFile = new File(tempFileDir);
 		if (!tempFile.exists()) {
 			tempFile.mkdirs();

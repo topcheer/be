@@ -1,6 +1,7 @@
 package com.brightedu.server;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -12,9 +13,13 @@ import com.brightedu.server.util.ServerProperties;
 
 public class StudentFileHandler {
 
-	StudentInfo student;
-	List<StudentPicture> pictures;
-	String datemarkFormat = "yyyyMM";
+	private StudentInfo student;
+	private List<StudentPicture> pictures;
+	private static String datemarkFormat = "yyyyMM";
+
+	public static final boolean UPDATE = false;
+
+	public static final boolean ADD = true;
 
 	public StudentFileHandler() {
 	}
@@ -24,12 +29,39 @@ public class StudentFileHandler {
 		this.pictures = pictures;
 	}
 
-	public boolean movePictrues() {
+	public boolean movePictrues(boolean status) {
 		// 图片路径：
 		// war/data/student_pics/register_year/pic_type_id/stuid_UUID.jpg
 		SimpleDateFormat sdf = new SimpleDateFormat(datemarkFormat);
 		String tmstmp = sdf.format(student.getRegister_date());
-		for (StudentPicture p : pictures) {
+		for (final StudentPicture p : pictures) {
+			if (p.getRemark() == null) {
+				if (status == ADD) {
+
+					continue;
+				} else if (status == UPDATE) {
+					// 说明图片已被删除
+					File picFolder = new File(ServerProperties.studentPicDir
+							+ tmstmp + "/" + p.getPic_type_id());
+					if (picFolder.exists()) {
+						File[] files = picFolder.listFiles(new FileFilter() {
+
+							@Override
+							public boolean accept(File f) {
+								if (f.getName().startsWith(
+										p.getStudent_id() + "_")) {
+									return true;
+								}
+								return false;
+							}
+						});
+						for (File f : files) {
+							f.delete();
+						}
+					}
+					continue;
+				}
+			}
 
 			File tmpPic = new File(ServerProperties.tempFileDir
 					+ new File(p.getRemark()).getName());
@@ -43,7 +75,7 @@ public class StudentFileHandler {
 			if (!parent.exists()) {
 				boolean mkdirResult = parent.mkdirs();
 				if (!mkdirResult) {
-					Log.warn("Cannot create dir: " + parent.getAbsolutePath());
+					Log.warn("Cannot create dir: " + parent.getAbsolutePath()+", please check user permission");
 					return false;
 				}
 			}
@@ -61,13 +93,8 @@ public class StudentFileHandler {
 					+ pic.getRemark());
 			if (destPic.exists()) {
 				destPic.delete();
-			} else {
-				Log.warn(student.getStudent_name() + "_"
-						+ student.getStudent_id() + " does not have picture: "
-						+ pic.getRemark());
-			}
+			} 
 		}
-
 	}
 
 	public StudentInfo getStudent() {

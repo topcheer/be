@@ -9,6 +9,7 @@ import com.brightedu.client.CommonAsyncCall;
 import com.brightedu.model.edu.StudentInfo;
 import com.brightedu.model.edu.StudentPicture;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.FormItem;
 
 public class StudentsRegisterAdminDialog extends AdminDialog {
 
@@ -67,6 +68,14 @@ public class StudentsRegisterAdminDialog extends AdminDialog {
 	protected DynamicForm createContentForm() {
 		detailedPanel.infoForm.hideSaveItem();
 		return detailedPanel.infoForm;
+	}
+
+	protected void reset() {
+		FormItem[] items = detailedPanel.infoForm.getFields();
+		for (FormItem item : items) {
+			item.setValue("");
+		}
+		detailedPanel.cleanPictures();
 	}
 
 }

@@ -34,7 +34,6 @@ public class StudentsRegisterDetailedPanel extends BasicAdminDetailPanel {
 	// StudentsRegisterPictureForm picForm;
 	StudentsRegisterEditorForm infoForm;
 
-
 	LinkedHashMap<String, String> pic_typeValues;
 	HLayout picPanel = new HLayout();
 	List<StudentsRegisterPictureForm> picForms = new ArrayList<StudentsRegisterPictureForm>();
@@ -155,11 +154,7 @@ public class StudentsRegisterDetailedPanel extends BasicAdminDetailPanel {
 		// 不是同一个学生就要刷新
 
 		// 先清空
-		for (StudentsRegisterPictureForm picForm : picForms) {
-			if (student != picForm.getStudent()) {
-				picForm.clean();
-			}
-		}
+		cleanPictures();
 		// 再刷
 		if (selectRecord != null) {
 			if (student != picForms.get(0).getStudent()) {
@@ -213,5 +208,14 @@ public class StudentsRegisterDetailedPanel extends BasicAdminDetailPanel {
 
 	public StudentsRegisterEditorForm getInfoForm() {
 		return infoForm;
+	}
+
+	public void cleanPictures() {
+		List<StudentsRegisterPictureForm> picForms = getPictureForms();
+		if (picForms != null) {
+			for (StudentsRegisterPictureForm f : picForms) {
+				f.clean();
+			}
+		}
 	}
 }

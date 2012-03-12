@@ -24,7 +24,10 @@ import com.brightedu.model.edu.StudentType;
 import com.brightedu.model.edu.Subjects;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.data.Record;
+import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.ListGridFieldType;
+import com.smartgwt.client.util.BooleanCallback;
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.grid.ListGridField;
 
 public class StudentsRegisterMasterPanel extends BasicAdminPanel {
@@ -250,8 +253,31 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 	}
 
 	@Override
-	public void deleteRecords(List<Integer> deleteIds) {
-		dbService.deleteModel("StudentInfo", "student_id", deleteIds, delAsync);
+	public void deleteRecords(List<Integer> students) {
+		// implemented in del();
+	}
+
+	protected void del() {
+		RecordList recList = resultList.getDataAsRecordList();
+		final List<StudentInfo> students = new ArrayList<StudentInfo>();
+		for (int i = 0; i < recList.getLength(); i++) {
+			if (recList.get(i).getAttributeAsBoolean("select")) {
+				students.add((StudentInfo) recList.get(i)
+						.getAttributeAsObject("object"));
+			}
+		}
+		if (students.size() == 0) {
+			SC.say("请选择一些记录");
+			return;
+		}
+		SC.ask("确认", "你确认要删除选中的记录吗？", new BooleanCallback() {
+			@Override
+			public void execute(Boolean value) {
+				if (value) {
+					dbService.deleteStudent(students, delAsync);
+				}
+			}
+		});
 	}
 
 	@Override
@@ -263,13 +289,15 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 		final Record rec = resultList.getSelectedRecord();
 		final StudentInfo oldStu = (StudentInfo) rec
 				.getAttributeAsObject("object");
+		newStu.setStudent_id(oldStu.getStudent_id());
 		newStu.setRegister_date(oldStu.getRegister_date());
+		newStu.setUpload_flag(oldStu.getUpload_flag());
 		List<StudentPicture> pictures = new ArrayList<StudentPicture>();
 		for (StudentsRegisterPictureForm form : detailed.picForms) {
 			StudentPicture pic = form.getPicture();
 
 			if (form.getBrightFrame().isLoaded()) {
-				
+
 				pic.setRemark(form.getServerTempFile());
 				pictures.add(pic);
 			}

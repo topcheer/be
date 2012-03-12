@@ -269,7 +269,7 @@ public interface DataBaseRPCAsync {
 	void getStudentList(int offset, int limit, boolean needTotalCounts,
 			AsyncCallback<List> callback);
 	
-	void deleteStudent(List<StudentInfo> studentIds, AsyncCallback<Boolean> callback);
+	void deleteStudent(List<StudentInfo> students, AsyncCallback<Boolean> callback);
 
 	void sendMessage(List<Messages> messages, AsyncCallback<Boolean> callback);
 

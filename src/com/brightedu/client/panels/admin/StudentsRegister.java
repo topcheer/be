@@ -1,6 +1,7 @@
 package com.brightedu.client.panels.admin;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.brightedu.client.panels.BasicAdminDetailPanel;
 import com.brightedu.client.panels.BasicAdminPanel;
@@ -73,10 +74,11 @@ public final class StudentsRegister extends MasterDetailAdmin {
 							detailed.getInfoForm().setValue(
 									(Serializable) event.getRecord()
 											.getAttributeAsObject("object"));
-							detailed.getInfoForm().enableSaveItem();
+							saveBtn.enable();
 						} else {
 							detailed.getInfoForm().reset();
-							detailed.getInfoForm().disableSaveItem();
+							detailed.cleanPictures();
+							saveBtn.disable();
 						}
 					}
 				});

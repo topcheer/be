@@ -2107,7 +2107,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 					.getMapper(StudentPictureMapper.class);
 			StudentFileHandler fileHandler = new StudentFileHandler(stu,
 					pictures);
-			boolean result = fileHandler.movePictrues();
+			boolean result = fileHandler.movePictrues(StudentFileHandler.ADD);
 			for (StudentPicture p : pictures) {
 				p.setStudent_id(stu_id);
 				picMap.insertSelective(p);
@@ -2146,14 +2146,15 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			stu.setUpdate_date(new Date());
 			StudentInfoMapper map = session.getMapper(StudentInfoMapper.class);
 			map.updateByPrimaryKey(stu);
+			StudentFileHandler fileHandler = new StudentFileHandler(stu,
+					pictures);
+			boolean result = fileHandler.movePictrues(StudentFileHandler.UPDATE);
+			
 			StudentPictureMapper picMap = session
 					.getMapper(StudentPictureMapper.class);
 			for (StudentPicture p : pictures) {
 				picMap.updateByPrimaryKey(p);
 			}
-			StudentFileHandler fileHandler = new StudentFileHandler(stu,
-					pictures);
-			boolean result = fileHandler.movePictrues();
 			if (result)
 				session.commit();
 			else
