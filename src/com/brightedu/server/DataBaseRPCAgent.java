@@ -18,6 +18,7 @@ import com.brightedu.dao.edu.AgentReturnMapper;
 import com.brightedu.dao.edu.AgentReturnTypeMapper;
 import com.brightedu.dao.edu.AgentTypeMapper;
 import com.brightedu.dao.edu.AnnouncementMapper;
+import com.brightedu.dao.edu.BankAccountMapper;
 import com.brightedu.dao.edu.BatchIndexMapper;
 import com.brightedu.dao.edu.ChargeTypeMapper;
 import com.brightedu.dao.edu.CollegeAggregationMapper;
@@ -57,6 +58,7 @@ import com.brightedu.model.edu.AgentTypeExample;
 import com.brightedu.model.edu.Announcement;
 import com.brightedu.model.edu.AnnouncementExample;
 import com.brightedu.model.edu.BankAccount;
+import com.brightedu.model.edu.BankAccountExample;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.BatchIndexExample;
 import com.brightedu.model.edu.BatchIndexExample.Criteria;
@@ -2203,27 +2205,77 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	/**************************学生打款帐号管理******************************/
 	@Override
 	public boolean addBankAccount(BankAccount ba) {
-		// TODO Auto-generated method stub
-		return false;
+		SqlSession session = sessionFactory.openSession();
+		try {
+			BankAccountMapper bim = session.getMapper(BankAccountMapper.class);
+
+			bim.insertSelective(ba);
+
+			session.commit();
+
+			return true;
+
+		} finally {
+			session.close();
+		}
 	}
 
 	@Override
 	public boolean deleteBankAccount(BankAccount ba) {
-		// TODO Auto-generated method stub
-		return false;
+		SqlSession session = sessionFactory.openSession();
+		try {
+			BankAccountMapper bim = session.getMapper(BankAccountMapper.class);
+
+			bim.deleteByPrimaryKey(ba);
+
+			session.commit();
+
+			return true;
+
+		} finally {
+			session.close();
+		}
 	}
 
 	@Override
 	public boolean saveBankAccount(BankAccount ba) {
-		// TODO Auto-generated method stub
-		return false;
+		SqlSession session = sessionFactory.openSession();
+		try {
+			BankAccountMapper bim = session.getMapper(BankAccountMapper.class);
+
+			bim.updateByPrimaryKeySelective(ba);
+
+			session.commit();
+
+			return true;
+
+		} finally {
+			session.close();
+		}
 	}
 
 	@Override
 	public List<BankAccount> getBankAccountList(int offset, int limit,
 			boolean needTotalCounts) {
-		// TODO Auto-generated method stub
-		return null;
+		SqlSession session = sessionFactory.openSession();
+		try {
+			BankAccountExample ex = new BankAccountExample();
+			if (offset != -1 || limit != -1) {
+				ex.setPage(new Page(offset, limit));
+			}
+			ex.setOrderByClause("ann_id desc");
+
+			BankAccountMapper map = session
+					.getMapper(BankAccountMapper.class);
+			List result = map.selectByExample(ex);
+			if (needTotalCounts) {
+				Integer counts = map.countByExample(null);
+				result.add(counts);
+			}
+			return result;
+		} finally {
+			session.close();
+		}
 	}
 
 }
