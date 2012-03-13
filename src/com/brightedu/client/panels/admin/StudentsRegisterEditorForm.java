@@ -239,7 +239,7 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 		FormItem[] requiredItems = new FormItem[] { batchItem, birthdayItem,
 				classfiedItem, collegwOwnerItem, ethnic_group_idItem,
 				fund_agentItem, graduate_certificate_numberItem,
-				identity_cardItem, linkman_phoneItem, major_category_idItem,
+				identity_cardItem, linkman_phoneItem, 
 				managed_agentItem, political_status_idItem, sexItem,
 				stu_status_idItem, student_addressItem, student_linkmanItem,
 				student_nameItem, student_phoneItem, student_type_idItem,
