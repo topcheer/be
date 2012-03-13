@@ -2397,14 +2397,17 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		Properties prop = new Properties();
 		try {
 			prop.load(new FileInputStream(new File(
-					"default_bank_account.properties")));
+					"/default_bank_account.properties")));
 		} catch (FileNotFoundException e) {
 
 			Log.e("default_bank_account.properties 不存在");
+			return false;
+				
 
 		} catch (IOException e) {
 
 			Log.e("文件读取失败 default_bank_account.properties");
+			return false;
 		}
 		if (prop.getProperty("account") != null) {
 			return false;
