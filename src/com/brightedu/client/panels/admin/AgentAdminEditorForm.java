@@ -14,7 +14,8 @@ import com.smartgwt.client.widgets.form.fields.TextAreaItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 
 public class AgentAdminEditorForm extends DetailedEditorForm {
-	TextItem agent_nameItem = new TextItem("agent_name", "招生点名称");
+	TextItem agent_nameItem = new TextItem("agent_name", "机构全称");
+	TextItem agent_shortnameItem = new TextItem("shortname_name", "机构简称");
 	SelectItem agent_typeItem = new SelectItem("agent_type", "机构类型");
 	SelectItem parentAgentItem = new SelectItem("parent_agent", "隶属于");
 	TextItem responsible_personItem = new TextItem("responsible_person", "负责人");
@@ -42,7 +43,7 @@ public class AgentAdminEditorForm extends DetailedEditorForm {
 		remarkItem.setRowSpan(3);
 		remarkItem.setColSpan(4);
 		// agent_typeItem.
-		setFields(agent_nameItem, agent_typeItem, responsible_personItem,
+		setFields(agent_nameItem,agent_shortnameItem, agent_typeItem, responsible_personItem,
 				parentAgentItem, contact_personItem, contact_phoneItem,
 				contact_mobileItem, account_nameItem, bank_nameItem,
 				bank_accountItem, college_urlItem, userid_for_collegeItem,
@@ -53,6 +54,7 @@ public class AgentAdminEditorForm extends DetailedEditorForm {
 
 	public Serializable getModel() {
 		RecruitAgent agent = new RecruitAgent();
+		agent.setShort_name(agent_shortnameItem.getValueAsString());
 		agent.setAccount_name(account_nameItem.getValueAsString());
 		agent.setAgent_name(agent_nameItem.getValueAsString());
 		agent.setAgent_type_id(getValueAsInteger(agent_typeItem));
@@ -93,6 +95,7 @@ public class AgentAdminEditorForm extends DetailedEditorForm {
 		remarkItem.setValue(agent.getRemark());
 		responsible_personItem.setValue(agent.getResponsible_person());
 		userid_for_collegeItem.setValue(agent.getUserid_for_college());
+		agent_shortnameItem.setValue(agent.getShort_name());
 		if (agent.getParent_agent_id() == null) {
 			parentAgentItem.setValue("");
 		} else {
