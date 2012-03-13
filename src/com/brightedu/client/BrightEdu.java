@@ -3,6 +3,7 @@ package com.brightedu.client;
 import gwtupload.client.IUploadStatus.Status;
 import gwtupload.client.IUploader;
 import gwtupload.client.IUploader.UploadedInfo;
+import gwtupload.client.IUploader.UploaderConstants;
 import gwtupload.client.MultiUploader;
 import gwtupload.client.PreloadedImage;
 import gwtupload.client.PreloadedImage.OnLoadPreloadedImageHandler;
@@ -386,7 +387,7 @@ public class BrightEdu implements EntryPoint {
 		// Add a finish handler which will load the image once the upload finishes     
 		defaultUploader.addOnFinishUploadHandler(onFinishUploaderHandler); 
 		
-		
+				
 		// TileView tileView = new TileView(mainPanel);
 		mainPanel.addMember(panelImages);
 		mainPanel.addMember(defaultUploader);
