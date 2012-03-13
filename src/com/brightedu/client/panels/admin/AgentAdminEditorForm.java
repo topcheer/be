@@ -1,23 +1,27 @@
 package com.brightedu.client.panels.admin;
 
 import java.io.Serializable;
-import java.util.LinkedHashMap;
 
 import com.brightedu.client.panels.DetailedEditorForm;
 import com.brightedu.client.panels.MasterDetailAdmin;
 import com.brightedu.client.validator.StandardLengthValidator;
 import com.brightedu.model.edu.RecruitAgent;
-import com.smartgwt.client.util.SC;
+import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextAreaItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 
 public class AgentAdminEditorForm extends DetailedEditorForm {
-	TextItem agent_nameItem = new TextItem("agent_name", "机构全称");
+
+	TextItem agent_nameItem = new TextItem("agent_name", "机构名称");
+	SelectItem agent_typeItem = new SelectItem("agent_type_id", "机构类型");
+	ComboBoxItem parentAgentItem = new ComboBoxItem("parent_agent_id", "隶属于");
+
+	
 	TextItem agent_shortnameItem = new TextItem("shortname_name", "机构简称");
-	SelectItem agent_typeItem = new SelectItem("agent_type", "机构类型");
-	SelectItem parentAgentItem = new SelectItem("parent_agent", "隶属于");
+
+
 	TextItem responsible_personItem = new TextItem("responsible_person", "负责人");
 	TextItem contact_personItem = new TextItem("contact_person", "联系人");
 	TextItem contact_addressItem = new TextItem("contact_address", "联系地址");
@@ -103,14 +107,14 @@ public class AgentAdminEditorForm extends DetailedEditorForm {
 		}
 	}
 
-	public void setValueMaps(LinkedHashMap<String, String>... valueMaps) {
-		if (valueMaps.length != 2) {
-			SC.say("数据结构所需数量未达到需求");
-			return;
-		} else {
-
-		}
-	}
+//	public void setValueMaps(LinkedHashMap<String, String>... valueMaps) {
+//		if (valueMaps.length != 2) {
+//			SC.say("数据结构所需数量未达到需求");
+//			return;
+//		} else {
+//
+//		}
+//	}
 
 	@Override
 	public void reset() {

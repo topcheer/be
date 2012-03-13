@@ -36,6 +36,7 @@ import com.brightedu.model.edu.User;
 import com.brightedu.model.edu.UserRights;
 import com.brightedu.model.edu.UserRightsEffective;
 import com.brightedu.model.edu.UserType;
+import com.brightedu.shared.SearchCriteria;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface DataBaseRPCAsync {
@@ -297,6 +298,10 @@ public interface DataBaseRPCAsync {
 
 	void saveStudent(StudentInfo stu, List<StudentPicture> pictures,
 			AsyncCallback<Boolean> callback);
+
+	void getModels(String modelName, SearchCriteria[] searchCriteria,
+			int offset, int limit, boolean needTotalCounts,
+			AsyncCallback<List> callback);
 
 	void addBankAccount(BankAccount ba, AsyncCallback<Boolean> callback);
 

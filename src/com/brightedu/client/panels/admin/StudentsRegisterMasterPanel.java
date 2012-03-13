@@ -249,10 +249,6 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 	}
 
 	@Override
-	public void search(String keyWords, Record range) {
-	}
-
-	@Override
 	public void deleteRecords(List<Integer> students) {
 		// implemented in del();
 	}

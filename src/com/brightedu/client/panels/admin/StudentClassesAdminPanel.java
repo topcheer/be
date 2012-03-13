@@ -22,12 +22,8 @@ import com.smartgwt.client.widgets.grid.ListGridField;
 public class StudentClassesAdminPanel extends BasicAdminPanel {
 
 	@Override
-	public void search(String keyWords, Record range) {
-	}
-
-	@Override
 	public void gotoPage(final int indexGoto, final boolean init) {
-		AsyncCallback<List<StudentClassified>> callback = new CommonAsyncCall<List<StudentClassified>>() {
+		AsyncCallback<List> callback = new CommonAsyncCall<List>() {
 			@Override
 			public void onSuccess(List result) {
 				int size = result.size();
@@ -55,8 +51,11 @@ public class StudentClassesAdminPanel extends BasicAdminPanel {
 				setCurrentPage(indexGoto);
 			}
 		};
-		dbService.getStudentClassesList((indexGoto - 1) * currentRowsInOnePage,
-				currentRowsInOnePage, init, callback);
+//		dbService.getStudentClassesList((indexGoto - 1) * currentRowsInOnePage,
+//				currentRowsInOnePage, init, callback);
+		dbService.getModels("StudentClassified", searchCriteria,
+				((indexGoto - 1) * currentRowsInOnePage), currentRowsInOnePage,
+				init, callback);
 	}
 
 	@Override

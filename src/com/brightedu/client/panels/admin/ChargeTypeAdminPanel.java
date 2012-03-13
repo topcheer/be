@@ -17,10 +17,6 @@ import com.smartgwt.client.widgets.grid.ListGridField;
 public class ChargeTypeAdminPanel extends BasicAdminPanel {
 
 	@Override
-	public void search(String keyWords, Record range) {
-	}
-
-	@Override
 	public void deleteRecords(final List<Integer> deleteIds) {
 		dbService.deletChargeType(deleteIds, delAsync);
 	}
@@ -52,7 +48,7 @@ public class ChargeTypeAdminPanel extends BasicAdminPanel {
 	}
 
 	public void gotoPage(final int indexGoto, final boolean init) {
-		AsyncCallback<List<ChargeType>> callback = new CommonAsyncCall<List<ChargeType>>() {
+		AsyncCallback<List> callback = new CommonAsyncCall<List>() {
 			@Override
 			public void onSuccess(List result) {
 				int size = result.size();
@@ -79,13 +75,17 @@ public class ChargeTypeAdminPanel extends BasicAdminPanel {
 				setCurrentPage(indexGoto);
 			}
 		};
-		dbService.getChargeTypeList((indexGoto - 1) * currentRowsInOnePage,
-				currentRowsInOnePage, init, callback);
+//		dbService.getChargeTypeList((indexGoto - 1) * currentRowsInOnePage,
+//				currentRowsInOnePage, init, callback);
+		dbService.getModels("ChargeType", searchCriteria,
+				((indexGoto - 1) * currentRowsInOnePage), currentRowsInOnePage,
+				init, callback);
 	}
 
 	public AdminDialog createAdminDialog() {
 		TextAdminDialog text = new TextAdminDialog();
-		text.titles = new String[] { "入账方式" };
+		text.titles = new String[][] { new String[] { "charge_type_name",
+				"入账方式" } };
 		text.adminPanel = this;
 		return text;
 	}

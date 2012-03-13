@@ -2,23 +2,32 @@ package com.brightedu.client.panels;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import com.brightedu.client.BrightEdu;
 import com.brightedu.client.CommonAsyncCall;
 import com.brightedu.client.DataBaseRPCAsync;
 import com.brightedu.client.panels.admin.AdminDialog;
+import com.brightedu.client.validator.StandardLengthValidator;
+import com.brightedu.shared.SearchCriteria;
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.user.client.Timer;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.ListGridEditEvent;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.util.BooleanCallback;
+import com.smartgwt.client.util.JSOHelper;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
+import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.FormItemIcon;
 import com.smartgwt.client.widgets.form.fields.PickerIcon;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
@@ -29,7 +38,6 @@ import com.smartgwt.client.widgets.form.fields.events.IconClickEvent;
 import com.smartgwt.client.widgets.form.fields.events.IconClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
-import com.smartgwt.client.widgets.form.validator.LengthRangeValidator;
 import com.smartgwt.client.widgets.form.validator.Validator;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
@@ -47,7 +55,7 @@ public abstract class BasicAdminPanel extends VLayout {
 	protected ToolStripButton addButton = new ToolStripButton("添加");
 	protected ToolStripButton delButton = new ToolStripButton("删除");
 	protected TextItem searchItem = new TextItem("搜索内容");
-	protected SelectItem rangeItem = new SelectItem("搜索范围");
+	protected ComboBoxItem rangeItem = new ComboBoxItem("搜索范围");
 	protected ListGrid resultList;
 
 	protected SelectItem rowsPerPageItem = new SelectItem("每页行数");
@@ -67,9 +75,12 @@ public abstract class BasicAdminPanel extends VLayout {
 
 	protected int currentRowsInOnePage = 20;
 
-	protected LengthRangeValidator standardLenthValidator = new LengthRangeValidator();
+	protected StandardLengthValidator standardLenthValidator = new StandardLengthValidator();
 
 	private AdminDialog dialog;
+
+	protected SearchCriteria[] searchCriteria;
+	LinkedHashMap<String, String> searchItemValues = new LinkedHashMap<String, String>();
 
 	public BasicAdminPanel() {
 		init();
@@ -82,9 +93,6 @@ public abstract class BasicAdminPanel extends VLayout {
 	}
 
 	public void init() {
-		standardLenthValidator.setMax(127);//不管中英文一刀切！！！！
-		standardLenthValidator.setMin(1);
-		standardLenthValidator.setErrorMessage("内容已经超过了最大允许数量!");
 		initListGrid();
 		addButton.setAutoFit(true);
 		delButton.setAutoFit(true);
@@ -102,23 +110,25 @@ public abstract class BasicAdminPanel extends VLayout {
 				FormItemIcon icon = event.getIcon();
 				if (icon.getSrc().equals(cancelIcon.getSrc())) {
 					searchItem.setValue("");
+					searchCriteria = null;
+					gotoPage(1, true);
 				} else {
 					String keyWords = searchItem.getValueAsString();
 					keyWords = keyWords == null ? "" : keyWords.trim();
-					Record range = rangeItem.getSelectedRecord();
-					search(keyWords, range);
+					search(keyWords);
 				}
 			}
 		});
-		addButton.addClickHandler(new ClickHandler() {
+		searchItem.addKeyPressHandler(new KeyPressHandler() {
 
 			@Override
-			public void onClick(ClickEvent event) {
-				if (dialog == null) {
-					dialog = createAdminDialog();
-					dialog.init();
+			public void onKeyPress(KeyPressEvent event) {
+				if (event.getKeyName() != null
+						&& event.getKeyName().toLowerCase().equals("enter")) {
+					String keyWords = searchItem.getValueAsString();
+					keyWords = keyWords == null ? "" : keyWords.trim();
+					search(keyWords);
 				}
-				dialog.show();
 			}
 		});
 		delButton.addClickHandler(new ClickHandler() {
@@ -259,6 +269,31 @@ public abstract class BasicAdminPanel extends VLayout {
 		addMember(pagetools);
 		initPages();
 		postInit();
+		Timer t = new Timer() {
+			@Override
+			public void run() {
+				initAdminDialog();
+			}
+		};
+		t.schedule(3000);
+	}
+
+	protected void initAdminDialog() {
+		dialog = createAdminDialog();
+		dialog.init();
+		addButton.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				dialog.show();
+			}
+		});
+		initSearchItems();
+	}
+
+	protected void initSearchItems() {
+		searchItemValues = getSearchTitles();
+		rangeItem.setValueMap(searchItemValues);
 	}
 
 	public void refresh() {
@@ -431,7 +466,59 @@ public abstract class BasicAdminPanel extends VLayout {
 
 	public abstract ListGridField[] createGridFileds();
 
-	public abstract void search(String keyWords, Record range);
+	public void search(String keyWords) {
+		Serializable searchObj = searchItem.getValueAsString();
+		// searchItem.getValueField()
+		if (searchObj == null || searchObj.toString().trim().equals("")
+				|| rangeItem.getValueAsString() == null
+				|| rangeItem.getValueAsString().trim().equals("")) {
+			searchCriteria = null;
+
+		} else {
+			if (searchItemValues.containsKey(rangeItem.getValueAsString())) {
+				searchCriteria = new SearchCriteria[1];
+				SearchCriteria sc = new SearchCriteria();
+				String key = rangeItem.getValueAsString();
+				FormItem[] items = dialog.getContentForm().getFields();
+				for (FormItem item : items) {
+					if (item.getName().equals(key)) {
+						JavaScriptObject o = (JavaScriptObject) item
+								.getAttributeAsObject("valueMap");
+						if (o != null) {
+							LinkedHashMap<String, String> values =(LinkedHashMap<String, String>) JSOHelper.convertToMap(o);
+							
+							if (values != null) {
+								Iterator<String> it = values.keySet()
+										.iterator();
+								while (it.hasNext()) {
+									String itKey = it.next();
+									if (searchObj.equals(values.get(itKey))) {
+										searchObj = itKey;
+//										//此时，需要转换到整型的Integer
+										searchObj = Integer.parseInt(searchObj.toString());
+										sc.setLike(false);
+										break;
+									}
+								}
+							}
+						}
+
+						break;
+					}
+				}
+				sc.setCriteriaKey(key);
+				sc.setCriteriaValue(searchObj);
+				// sc.setLike(true);
+
+				searchCriteria[0] = sc;
+			} else {
+				BrightEdu.showTip("无效搜索范围: " + rangeItem.getValueAsString());
+				searchCriteria = null;
+			}
+			// rangeItem.getValue()
+		}
+		gotoPage(1, true);
+	}
 
 	// public abstract void addRecord();
 
@@ -446,7 +533,6 @@ public abstract class BasicAdminPanel extends VLayout {
 	public abstract AdminDialog createAdminDialog();
 
 	public void afterAdd() {
-		// showLastPageRecords(true);
 		showPage(1, true);
 	}
 
@@ -473,5 +559,33 @@ public abstract class BasicAdminPanel extends VLayout {
 
 	public ListGrid getResultList() {
 		return resultList;
+	}
+
+	protected LinkedHashMap<String, String> getSearchTitles() {
+		LinkedHashMap<String, String> searchTitles = new LinkedHashMap<String, String>();
+		FormItem[] items = dialog.getContentForm().getFields();
+		for (FormItem item : items) {
+			String title = item.getTitle();
+			String name = item.getName();
+			if (acceptSearchTitle(name, title)) {
+				searchTitles.put(name, title);
+			}
+		}
+		return searchTitles;
+	}
+
+	protected boolean acceptSearchTitle(String name, String title) {
+		if (name.contains("date") || name.contains("password")
+				|| name.contains("day") || name.contains("url"))
+			return false;
+		return true;
+	}
+
+	public SearchCriteria[] getSearchCriteria() {
+		return searchCriteria;
+	}
+
+	public void setSearchCriteria(SearchCriteria[] searchCriteria) {
+		this.searchCriteria = searchCriteria;
 	}
 }

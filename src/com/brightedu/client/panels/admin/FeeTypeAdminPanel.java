@@ -22,10 +22,6 @@ import com.smartgwt.client.widgets.grid.ListGridField;
 public class FeeTypeAdminPanel extends BasicAdminPanel {
 
 	@Override
-	public void search(String keyWords, Record range) {
-	}
-
-	@Override
 	public void deleteRecords(final List<Integer> deleteIds) {
 		dbService.deletFeeType(deleteIds, delAsync);
 	}
@@ -72,7 +68,7 @@ public class FeeTypeAdminPanel extends BasicAdminPanel {
 	}
 
 	public void gotoPage(final int indexGoto, final boolean init) {
-		AsyncCallback<List<FeeType>> callback = new CommonAsyncCall<List<FeeType>>() {
+		AsyncCallback<List> callback = new CommonAsyncCall<List>() {
 			@Override
 			public void onSuccess(List result) {
 				int size = result.size();
@@ -101,8 +97,12 @@ public class FeeTypeAdminPanel extends BasicAdminPanel {
 				setCurrentPage(indexGoto);
 			}
 		};
-		dbService.getFeeTypeList((indexGoto - 1) * currentRowsInOnePage,
-				currentRowsInOnePage, init, callback);
+//		dbService.getFeeTypeList((indexGoto - 1) * currentRowsInOnePage,
+//				currentRowsInOnePage, init, callback);
+		
+		dbService.getModels("FeeType", searchCriteria,
+				((indexGoto - 1) * currentRowsInOnePage), currentRowsInOnePage,
+				init, callback);
 	}
 
 	@Override

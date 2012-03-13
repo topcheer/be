@@ -51,6 +51,7 @@ import com.brightedu.model.edu.User;
 import com.brightedu.model.edu.UserRights;
 import com.brightedu.model.edu.UserRightsEffective;
 import com.brightedu.model.edu.UserType;
+import com.brightedu.shared.SearchCriteria;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
@@ -210,6 +211,8 @@ public interface DataBaseRPC extends RemoteService {
 			List<Integer> modelIds);
 	boolean saveModel(Serializable model);
 	boolean modelAction(Serializable[] model, String methodName);
+	List getModels(String modelName, SearchCriteria[] searchCriteria,
+			int offset, int limit, boolean needTotalCounts);
 	
 	/************************ 入学费用设置 *********************************/
 	public List<EntranceCost> getEntranceCost(String batchID,String agentID);
@@ -253,10 +256,12 @@ public interface DataBaseRPC extends RemoteService {
 	public List<Announcement> getAnnouncementList(int offset, int limit,
 			boolean needTotalCounts);
 
+
 	/**************************学生打款帐号管理******************************/
 	public boolean addBankAccount(BankAccount ba);
 	public boolean deleteBankAccount(BankAccount ba);
 	public boolean saveBankAccount(BankAccount ba);
 	public List<BankAccount> getBankAccountList(int offset, int limit,
 			boolean needTotalCounts);
+
 }

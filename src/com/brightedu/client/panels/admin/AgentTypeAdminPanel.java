@@ -21,7 +21,7 @@ public class AgentTypeAdminPanel extends BasicAdminPanel {
 
 	@Override
 	public void gotoPage(final int indexGoto, final boolean init) {
-		AsyncCallback<List<AgentType>> callback = new CommonAsyncCall<List<AgentType>>() {
+		AsyncCallback<List> callback = new CommonAsyncCall<List>() {
 			@Override
 			public void onSuccess(List result) {
 				int size = result.size();
@@ -48,8 +48,11 @@ public class AgentTypeAdminPanel extends BasicAdminPanel {
 				setCurrentPage(indexGoto);
 			}
 		};
-		dbService.getAgentTypeList((indexGoto - 1) * currentRowsInOnePage,
-				currentRowsInOnePage, init, callback);
+//		dbService.getAgentTypeList((indexGoto - 1) * currentRowsInOnePage,
+//				currentRowsInOnePage, init, callback);
+		dbService.getModels("AgentType", searchCriteria,
+				((indexGoto - 1) * currentRowsInOnePage), currentRowsInOnePage,
+				init, callback);
 	}
 
 	@Override
@@ -61,10 +64,6 @@ public class AgentTypeAdminPanel extends BasicAdminPanel {
 				new Validator[] { standardLenthValidator, null });
 	}
 
-	@Override
-	public void search(String keyWords, Record range) {
-
-	}
 
 	@Override
 	public void deleteRecords(List<Integer> deleteIds) {
@@ -105,7 +104,7 @@ public class AgentTypeAdminPanel extends BasicAdminPanel {
 
 	private class AgentTypeAddDialog extends AdminDialog {
 
-		private TextItem agentTypeNameItem = new TextItem("agentTypeName",
+		private TextItem agentTypeNameItem = new TextItem("agent_type_name",
 				"机构类型");
 		private BooleanItem isReturnItem = new BooleanItem("is_retrun", "是否有返利");
 		int len = 250;

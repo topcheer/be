@@ -9,7 +9,7 @@ import com.smartgwt.client.widgets.form.validator.LengthRangeValidator;
 
 public class TextAdminDialog extends AdminDialog {
 
-	protected String[] titles;
+	protected String[][] titles;
 
 	protected TextItem[] items;
 
@@ -22,11 +22,11 @@ public class TextAdminDialog extends AdminDialog {
 		
 		items = new TextItem[titles.length];
 		for (int i = 0; i < titles.length; i++) {
-			items[i] = new TextItem(titles[i],titles[i]);
+			items[i] = new TextItem(titles[i][0],titles[i][1]);
 			items[i].setValidators(standardLenthValidator);
 			items[i].setRequired(true);
-			if (titles[i].length() > maxTitleLen) {
-				maxTitleLen = titles[i].length();
+			if (titles[i][1].length() > maxTitleLen) {
+				maxTitleLen = titles[i][1].length();
 			}
 		}
 		super.init();

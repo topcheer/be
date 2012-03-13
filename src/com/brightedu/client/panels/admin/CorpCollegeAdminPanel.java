@@ -18,7 +18,7 @@ public class CorpCollegeAdminPanel extends BasicAdminPanel {
 
 	@Override
 	public void gotoPage(final int indexGoto, final boolean init) {
-		AsyncCallback<List<College>> callback = new CommonAsyncCall<List<College>>() {
+		AsyncCallback<List> callback = new CommonAsyncCall<List>() {
 			@Override
 			public void onSuccess(List result) {
 				int size = result.size();
@@ -45,8 +45,11 @@ public class CorpCollegeAdminPanel extends BasicAdminPanel {
 				setCurrentPage(indexGoto);
 			}
 		};
-		dbService.getCollegeList((indexGoto - 1) * currentRowsInOnePage,
-				currentRowsInOnePage, init, callback);
+		// dbService.getCollegeList((indexGoto - 1) * currentRowsInOnePage,
+		// currentRowsInOnePage, init, callback);
+		dbService.getModels("College", searchCriteria,
+				((indexGoto - 1) * currentRowsInOnePage), currentRowsInOnePage,
+				init, callback);
 	}
 
 	@Override
@@ -56,11 +59,6 @@ public class CorpCollegeAdminPanel extends BasicAdminPanel {
 						ListGridFieldType.TEXT, ListGridFieldType.DATE },
 				new boolean[] { true, false }, new int[] { -1, 200 },
 				new Validator[] { standardLenthValidator, null });
-	}
-
-	@Override
-	public void search(String keyWords, Record range) {
-
 	}
 
 	@Override
@@ -102,7 +100,7 @@ public class CorpCollegeAdminPanel extends BasicAdminPanel {
 	@Override
 	public AdminDialog createAdminDialog() {
 		TextAdminDialog text = new TextAdminDialog();
-		text.titles = new String[] { "高校" };
+		text.titles = new String[][] { new String[] { "college_name", "高校" } };
 		text.adminPanel = this;
 		return text;
 	}

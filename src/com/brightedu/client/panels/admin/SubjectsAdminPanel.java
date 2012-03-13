@@ -19,7 +19,7 @@ public class SubjectsAdminPanel extends BasicAdminPanel {
 
 	@Override
 	public void gotoPage(final int indexGoto, final boolean init) {
-		AsyncCallback<List<Subjects>> callback = new CommonAsyncCall<List<Subjects>>() {
+		AsyncCallback<List> callback = new CommonAsyncCall<List>() {
 			@Override
 			public void onSuccess(List result) {
 				int size = result.size();
@@ -46,8 +46,11 @@ public class SubjectsAdminPanel extends BasicAdminPanel {
 				setCurrentPage(indexGoto);
 			}
 		};
-		dbService.getSubjectsList((indexGoto - 1) * currentRowsInOnePage,
-				currentRowsInOnePage, init, callback);
+//		dbService.getSubjectsList((indexGoto - 1) * currentRowsInOnePage,
+//				currentRowsInOnePage, init, callback);
+		dbService.getModels("Subjects", searchCriteria,
+				((indexGoto - 1) * currentRowsInOnePage), currentRowsInOnePage,
+				init, callback);
 	}
 
 	@Override
@@ -55,13 +58,8 @@ public class SubjectsAdminPanel extends BasicAdminPanel {
 		return parseGridFields(new String[] { "obj_name", "reg_time" },
 				new String[] { "专业名称", "录入时间" }, new ListGridFieldType[] {
 						ListGridFieldType.TEXT, ListGridFieldType.DATE },
-				new boolean[] { true, false }, new int[] { -1, 200 },new Validator[] { standardLenthValidator, null });
-	}
-
-	@Override
-	public void search(String keyWords, Record range) {
-		// TODO Auto-generated method stub
-
+				new boolean[] { true, false }, new int[] { -1, 200 },
+				new Validator[] { standardLenthValidator, null });
 	}
 
 	@Override
@@ -103,7 +101,7 @@ public class SubjectsAdminPanel extends BasicAdminPanel {
 	@Override
 	public AdminDialog createAdminDialog() {
 		TextAdminDialog text = new TextAdminDialog();
-		text.titles = new String[] { "专业" };
+		text.titles = new String[][] { new String[] { "subject_name", "专业" } };
 		text.adminPanel = this;
 		return text;
 	}

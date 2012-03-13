@@ -18,10 +18,6 @@ import com.smartgwt.client.widgets.grid.ListGridField;
 public class UserTypeAdminPanel extends BasicAdminPanel {
 
 	@Override
-	public void search(String keyWords, Record range) {
-	}
-
-	@Override
 	public void deleteRecords(final List<Integer> deleteIds) {
 		dbService.deletUserType(deleteIds, delAsync);
 	}
@@ -30,7 +26,8 @@ public class UserTypeAdminPanel extends BasicAdminPanel {
 		return parseGridFields(new String[] { "obj_name" },
 				new String[] { "用户类型" },
 				new ListGridFieldType[] { ListGridFieldType.TEXT },
-				new boolean[] { true }, new int[] { -1 },new Validator[] { standardLenthValidator});
+				new boolean[] { true }, new int[] { -1 },
+				new Validator[] { standardLenthValidator });
 	}
 
 	public void update(final Record rec) {
@@ -52,7 +49,7 @@ public class UserTypeAdminPanel extends BasicAdminPanel {
 	}
 
 	public void gotoPage(final int indexGoto, final boolean init) {
-		AsyncCallback<List<UserType>> callback = new CommonAsyncCall<List<UserType>>() {
+		AsyncCallback<List> callback = new CommonAsyncCall<List>() {
 			@Override
 			public void onSuccess(List result) {
 				int size = result.size();
@@ -79,13 +76,16 @@ public class UserTypeAdminPanel extends BasicAdminPanel {
 				setCurrentPage(indexGoto);
 			}
 		};
-		dbService.getUserTypeList((indexGoto - 1) * currentRowsInOnePage,
-				currentRowsInOnePage, init, callback);
+//		dbService.getUserTypeList((indexGoto - 1) * currentRowsInOnePage,
+//				currentRowsInOnePage, init, callback);
+		dbService.getModels("UserType", searchCriteria,
+				((indexGoto - 1) * currentRowsInOnePage), currentRowsInOnePage,
+				init, callback);
 	}
 
 	public AdminDialog createAdminDialog() {
 		TextAdminDialog text = new TextAdminDialog();
-		text.titles = new String[] { "用户类型" };
+		text.titles = new String[][] { new String[] { "user_type_name", "用户类型" } };
 		text.adminPanel = this;
 		return text;
 	}

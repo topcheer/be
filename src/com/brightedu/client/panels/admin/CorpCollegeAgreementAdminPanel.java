@@ -177,7 +177,7 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 
 	@Override
 	public void gotoPage(final int indexGoto, final boolean init) {
-		AsyncCallback<List<CollegeAgreement>> callback = new CommonAsyncCall<List<CollegeAgreement>>() {
+		AsyncCallback<List> callback = new CommonAsyncCall<List>() {
 			@Override
 			public void onSuccess(List result) {
 				int size = result.size();
@@ -209,8 +209,11 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 			}
 		};
 
-		dbService.getCollegeAgreementList((indexGoto - 1)
-				* currentRowsInOnePage, currentRowsInOnePage, init, callback);
+//		dbService.getCollegeAgreementList((indexGoto - 1)
+//				* currentRowsInOnePage, currentRowsInOnePage, init, callback);
+		dbService.getModels("CollegeAgreement", searchCriteria,
+				((indexGoto - 1) * currentRowsInOnePage), currentRowsInOnePage,
+				init, callback);
 	}
 
 	@Override
@@ -223,11 +226,6 @@ public class CorpCollegeAgreementAdminPanel extends BasicAdminPanel {
 				new boolean[] { true, true, true, false, false }, new int[] {
 						-1, -1, 100, 200, 80 });
 		return fields;
-	}
-
-	@Override
-	public void search(String keyWords, Record range) {
-
 	}
 
 	@Override

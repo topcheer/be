@@ -6,10 +6,7 @@ import java.util.List;
 import com.brightedu.client.BrightEdu;
 import com.brightedu.client.CommonAsyncCall;
 import com.brightedu.client.panels.BasicAdminPanel;
-import com.brightedu.model.edu.ChargeType;
-import com.brightedu.model.edu.PictureType;
 import com.brightedu.model.edu.StudentStatus;
-import com.brightedu.model.edu.UserType;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.ListGridFieldType;
@@ -19,9 +16,6 @@ import com.smartgwt.client.widgets.grid.ListGridField;
 
 public class StudentStatusAdminPanel extends BasicAdminPanel {
 
-	@Override
-	public void search(String keyWords, Record range) {
-	}
 
 	@Override
 	public void deleteRecords(final List<Integer> deleteIds) {
@@ -55,7 +49,7 @@ public class StudentStatusAdminPanel extends BasicAdminPanel {
 	}
 
 	public void gotoPage(final int indexGoto, final boolean init) {
-		AsyncCallback<List<StudentStatus>> callback = new CommonAsyncCall<List<StudentStatus>>() {
+		AsyncCallback<List> callback = new CommonAsyncCall<List>() {
 			@Override
 			public void onSuccess(List result) {
 				int size = result.size();
@@ -82,13 +76,16 @@ public class StudentStatusAdminPanel extends BasicAdminPanel {
 				setCurrentPage(indexGoto);
 			}
 		};
-		dbService.getStudentStatusList((indexGoto - 1) * currentRowsInOnePage,
-				currentRowsInOnePage, init, callback);
+//		dbService.getStudentStatusList((indexGoto - 1) * currentRowsInOnePage,
+//				currentRowsInOnePage, init, callback);
+		dbService.getModels("StudentStatus", searchCriteria,
+				((indexGoto - 1) * currentRowsInOnePage), currentRowsInOnePage,
+				init, callback);
 	}
 
 	public AdminDialog createAdminDialog() {
 		TextAdminDialog text = new TextAdminDialog();
-		text.titles = new String[] { "学生状态" };
+		text.titles = new String[][] { new String[] { "student_status_name", "学生状态" } };
 		text.adminPanel = this;
 		return text;
 	}

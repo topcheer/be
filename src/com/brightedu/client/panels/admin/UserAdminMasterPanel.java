@@ -61,7 +61,7 @@ public class UserAdminMasterPanel extends BasicAdminPanel {
 
 	@Override
 	public void gotoPage(final int indexGoto, final boolean init) {
-		AsyncCallback<List<User>> callback = new CommonAsyncCall<List<User>>() {
+		AsyncCallback<List> callback = new CommonAsyncCall<List>() {
 			@Override
 			public void onSuccess(List result) {
 				int size = result.size();
@@ -92,8 +92,11 @@ public class UserAdminMasterPanel extends BasicAdminPanel {
 				setCurrentPage(indexGoto);
 			}
 		};
-		BrightEdu.createDataBaseRPC().getUserList(
-				(indexGoto - 1) * currentRowsInOnePage, currentRowsInOnePage,
+//		BrightEdu.createDataBaseRPC().getUserList(
+//				(indexGoto - 1) * currentRowsInOnePage, currentRowsInOnePage,
+//				init, callback);
+		dbService.getModels("User", searchCriteria,
+				((indexGoto - 1) * currentRowsInOnePage), currentRowsInOnePage,
 				init, callback);
 	}
 
@@ -137,12 +140,6 @@ public class UserAdminMasterPanel extends BasicAdminPanel {
 					}
 				});
 		return fields;
-	}
-
-	@Override
-	public void search(String keyWords, Record range) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

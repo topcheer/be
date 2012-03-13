@@ -6,9 +6,7 @@ import java.util.List;
 import com.brightedu.client.BrightEdu;
 import com.brightedu.client.CommonAsyncCall;
 import com.brightedu.client.panels.BasicAdminPanel;
-import com.brightedu.model.edu.ChargeType;
 import com.brightedu.model.edu.PictureType;
-import com.brightedu.model.edu.UserType;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.ListGridFieldType;
@@ -19,10 +17,6 @@ import com.smartgwt.client.widgets.grid.ListGridField;
 public class PictureTypeAdminPanel extends BasicAdminPanel {
 
 	@Override
-	public void search(String keyWords, Record range) {
-	}
-
-	@Override
 	public void deleteRecords(final List<Integer> deleteIds) {
 		dbService.deletPictureType(deleteIds, delAsync);
 	}
@@ -31,7 +25,8 @@ public class PictureTypeAdminPanel extends BasicAdminPanel {
 		return parseGridFields(new String[] { "obj_name" },
 				new String[] { "照片类型" },
 				new ListGridFieldType[] { ListGridFieldType.TEXT },
-				new boolean[] { true }, new int[] { -1 },new Validator[] { standardLenthValidator});
+				new boolean[] { true }, new int[] { -1 },
+				new Validator[] { standardLenthValidator });
 	}
 
 	public void update(final Record rec) {
@@ -53,7 +48,7 @@ public class PictureTypeAdminPanel extends BasicAdminPanel {
 	}
 
 	public void gotoPage(final int indexGoto, final boolean init) {
-		AsyncCallback<List<PictureType>> callback = new CommonAsyncCall<List<PictureType>>() {
+		AsyncCallback<List> callback = new CommonAsyncCall<List>() {
 			@Override
 			public void onSuccess(List result) {
 				int size = result.size();
@@ -80,13 +75,16 @@ public class PictureTypeAdminPanel extends BasicAdminPanel {
 				setCurrentPage(indexGoto);
 			}
 		};
-		dbService.getPictureTypeList((indexGoto - 1) * currentRowsInOnePage,
-				currentRowsInOnePage, init, callback);
+//		dbService.getPictureTypeList((indexGoto - 1) * currentRowsInOnePage,
+//				currentRowsInOnePage, init, callback);
+		dbService.getModels("PictureType", searchCriteria,
+				((indexGoto - 1) * currentRowsInOnePage), currentRowsInOnePage,
+				init, callback);
 	}
 
 	public AdminDialog createAdminDialog() {
 		TextAdminDialog text = new TextAdminDialog();
-		text.titles = new String[] { "用户类型" };
+		text.titles = new String[][] { new String[] { "user_type_name", "用户类型" } };
 		text.adminPanel = this;
 		return text;
 	}

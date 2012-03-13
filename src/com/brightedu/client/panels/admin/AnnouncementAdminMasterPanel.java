@@ -26,77 +26,78 @@ public class AnnouncementAdminMasterPanel extends BasicAdminPanel {
 	public AnnouncementAdminMasterPanel(MasterDetailAdmin agentadmin) {
 		this.admin = agentadmin;
 	}
+
 	@Override
 	public void postInit() {
-		
-		dbService.getUserList(-1, -1, false, new CommonAsyncCall<List<User>>(){
-			LinkedHashMap<String, String> users = new  LinkedHashMap<String, String>();
+
+		dbService.getUserList(-1, -1, false, new CommonAsyncCall<List<User>>() {
+			LinkedHashMap<String, String> users = new LinkedHashMap<String, String>();
+
 			@Override
 			public void onSuccess(List<User> result) {
-				for(User user : result){
-					users.put(user.getUser_id()+"", user.getUser_name());
+				for (User user : result) {
+					users.put(user.getUser_id() + "", user.getUser_name());
 				}
 				resultList.getField("created_by").setValueMap(users);
-			}});
+			}
+		});
 
-
-
-		
 	}
+
 	public void refresh() {
 		super.refresh();
-//		initValueMaps();
+		// initValueMaps();
 	}
 
-//	private void initValueMaps() {
-//		dbService.getNameValuePareList(new String[] { "AgentType",
-//				"RecruitAgent" }, new CommonAsyncCall<List>() {
-//
-//			@Override
-//			public void onSuccess(List result) {
-//				agentTypes = new LinkedHashMap<String, String>();
-//				agentRelations = new LinkedHashMap<String, String>();
-//				agentRelations.put("-1", "无");
-//				for (int i = 0; i < result.size(); i++) {
-//					if (i == 0) {// "AgentType"
-//						List<AgentType> types = (List<AgentType>) result.get(i);
-//						for (AgentType at : types) {
-//							agentTypes.put(at.getAgent_type_id() + "",
-//									at.getAgent_type_name());
-//						}
-//						fields[1].setValueMap(agentTypes);
-//						((AgentAdminEditorForm) admin.getDetailed()
-//								.getDetailedForm()).agent_typeItem
-//								.setValueMap(agentTypes);
-//						if (getAdminDialog() != null) {
-//							AgentAdminEditorForm adminForm = (AgentAdminEditorForm) getAdminDialog()
-//									.getContentForm();
-//							adminForm.agent_typeItem.setValueMap(agentTypes);
-//						}
-//					} else if (i == 1) {// "AgentRelation"
-//						List<RecruitAgent> types = (List<RecruitAgent>) result
-//								.get(i);
-//						for (RecruitAgent at : types) {
-//							agentRelations.put(at.getAgent_id() + "",
-//									at.getAgent_name());
-//						}
-//						((AgentAdminEditorForm) admin.getDetailed()
-//								.getDetailedForm()).parentAgentItem
-//								.setValueMap(agentRelations);
-//						if (getAdminDialog() != null) {
-//							AgentAdminEditorForm adminForm = (AgentAdminEditorForm) getAdminDialog()
-//									.getContentForm();
-//							adminForm.parentAgentItem.setValueMap(agentTypes);
-//						}
-//					}
-//				}
-//			}
-//		});
-//	}
+	// private void initValueMaps() {
+	// dbService.getNameValuePareList(new String[] { "AgentType",
+	// "RecruitAgent" }, new CommonAsyncCall<List>() {
+	//
+	// @Override
+	// public void onSuccess(List result) {
+	// agentTypes = new LinkedHashMap<String, String>();
+	// agentRelations = new LinkedHashMap<String, String>();
+	// agentRelations.put("-1", "无");
+	// for (int i = 0; i < result.size(); i++) {
+	// if (i == 0) {// "AgentType"
+	// List<AgentType> types = (List<AgentType>) result.get(i);
+	// for (AgentType at : types) {
+	// agentTypes.put(at.getAgent_type_id() + "",
+	// at.getAgent_type_name());
+	// }
+	// fields[1].setValueMap(agentTypes);
+	// ((AgentAdminEditorForm) admin.getDetailed()
+	// .getDetailedForm()).agent_typeItem
+	// .setValueMap(agentTypes);
+	// if (getAdminDialog() != null) {
+	// AgentAdminEditorForm adminForm = (AgentAdminEditorForm) getAdminDialog()
+	// .getContentForm();
+	// adminForm.agent_typeItem.setValueMap(agentTypes);
+	// }
+	// } else if (i == 1) {// "AgentRelation"
+	// List<RecruitAgent> types = (List<RecruitAgent>) result
+	// .get(i);
+	// for (RecruitAgent at : types) {
+	// agentRelations.put(at.getAgent_id() + "",
+	// at.getAgent_name());
+	// }
+	// ((AgentAdminEditorForm) admin.getDetailed()
+	// .getDetailedForm()).parentAgentItem
+	// .setValueMap(agentRelations);
+	// if (getAdminDialog() != null) {
+	// AgentAdminEditorForm adminForm = (AgentAdminEditorForm) getAdminDialog()
+	// .getContentForm();
+	// adminForm.parentAgentItem.setValueMap(agentTypes);
+	// }
+	// }
+	// }
+	// }
+	// });
+	// }
 
 	@Override
 	public void gotoPage(final int indexGoto, final boolean init) {
-		AsyncCallback<List<Announcement>> callback = new CommonAsyncCall<List<Announcement>>() {
+		AsyncCallback<List> callback = new CommonAsyncCall<List>() {
 			@Override
 			public void onSuccess(List result) {
 				int size = result.size();
@@ -116,26 +117,28 @@ public class AnnouncementAdminMasterPanel extends BasicAdminPanel {
 					rec.setAttribute("select", false);
 					rec.setAttribute("id", ann.getAnn_id());
 					rec.setAttribute("object", ann);
-					rec.setAttribute("obj_name",ann.getAnn_title());
-					rec.setAttribute("created_by",ann.getCreated_by()+"");
+					rec.setAttribute("obj_name", ann.getAnn_title());
+					rec.setAttribute("created_by", ann.getCreated_by() + "");
 					listData[i] = rec;
 				}
 				resultList.setData(listData);
 				setCurrentPage(indexGoto);
 			}
 		};
-		dbService.getAnnouncementList((indexGoto - 1) * currentRowsInOnePage,
-				currentRowsInOnePage, init, callback);
+		// dbService.getAnnouncementList((indexGoto - 1) * currentRowsInOnePage,
+		// currentRowsInOnePage, init, callback);
+		dbService.getModels("Announcement", searchCriteria,
+				((indexGoto - 1) * currentRowsInOnePage), currentRowsInOnePage,
+				init, callback);
 	}
 
 	@Override
 	public ListGridField[] createGridFileds() {
-		fields = parseGridFields(new String[] { "obj_name", "created_by",
-				 }, new String[] { "标题", "创建者" },
-				new ListGridFieldType[] { ListGridFieldType.TEXT,
-						ListGridFieldType.TEXT, }, new boolean[] { 
-						false, false }, new int[] {  -1, 80 });
-//		initValueMaps();
+		fields = parseGridFields(new String[] { "obj_name", "created_by", },
+				new String[] { "标题", "创建者" }, new ListGridFieldType[] {
+						ListGridFieldType.TEXT, ListGridFieldType.TEXT, },
+				new boolean[] { false, false }, new int[] { -1, 80 });
+		// initValueMaps();
 
 		return fields;
 	}
@@ -144,12 +147,6 @@ public class AnnouncementAdminMasterPanel extends BasicAdminPanel {
 		Announcement ann = (Announcement) model;
 		ann.setCreated_by(BrightEdu.getUser().getUser_id());
 		dbService.addModel(model, getAdminDialog().getAddAsync());
-	}
-
-	@Override
-	public void search(String keyWords, Record range) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -168,15 +165,15 @@ public class AnnouncementAdminMasterPanel extends BasicAdminPanel {
 		newann.setLast_edited_by(BrightEdu.getUser().getUser_id());
 		newann.setUpdate_time(new Date());
 		newann.setCreated_by(oldAnn.getCreated_by());
-		
+
 		dbService.saveAnnouncement(newann, new CommonAsyncCall<Boolean>() {
 			@Override
 			public void onSuccess(Boolean result) {
 				BrightEdu.showTip("已保存!");
 				rec.setAttribute("object", newann);
 				rec.setAttribute("obj_name", newann.getAnn_title());
-				rec.setAttribute("created_by", newann.getCreated_by()+"");
-				
+				rec.setAttribute("created_by", newann.getCreated_by() + "");
+
 				resultList.redraw();
 			}
 
@@ -189,13 +186,14 @@ public class AnnouncementAdminMasterPanel extends BasicAdminPanel {
 	@Override
 	public AdminDialog createAdminDialog() {
 		AdminDialog adminDialog = new AdminDialog() {
-			AnnouncementAdminEditorForm form = new AnnouncementAdminEditorForm(admin);
+			AnnouncementAdminEditorForm form = new AnnouncementAdminEditorForm(
+					admin);
 
 			public void init() {
 				super.init();
 				// 这里form不能自适应大小，shit！
-//				form.setWidth(500);
-//				form.setHeight(280);
+				// form.setWidth(500);
+				// form.setHeight(280);
 				form.hideSaveItem();
 				form.setPadding(5);
 				form.setWrapItemTitles(true);
@@ -221,7 +219,7 @@ public class AnnouncementAdminMasterPanel extends BasicAdminPanel {
 		adminDialog.setAutoWidth();
 		adminDialog.setSize("525", "350");
 		adminDialog.setAdminPanel(this);
-		
+
 		return adminDialog;
 	}
 

@@ -124,6 +124,8 @@ import com.brightedu.server.util.ReflectUtil;
 import com.brightedu.server.util.ServerProperties;
 import com.brightedu.server.util.Utils;
 import com.brightedu.shared.OperatioinFailedException;
+import com.brightedu.shared.SearchCriteria;
+import com.ibm.icu.util.IslamicCalendar;
 
 public class DataBaseRPCAgent implements DataBaseRPC {
 	SqlSessionFactory sessionFactory;
@@ -1397,6 +1399,93 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	}
 
 	@Override
+	public List getModels(String modelName, SearchCriteria[] searchCriteria,
+			int offset, int limit, boolean needTotalCounts) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			Class mapperClass = Class.forName(daoPackageName + modelName
+					+ "Mapper");
+			Class modelClass = Class.forName(modelPackageName + modelName);
+			Object mapper = session.getMapper(mapperClass);
+			Class exampleClass = Class.forName(modelPackageName + modelName
+					+ "Example");
+			Method selectMethod = mapperClass.getMethod("selectByExample",
+					exampleClass);
+			Object example = exampleClass.newInstance();
+			Method setPageMethod = ReflectUtil.getDeclaredMethod(exampleClass,
+					"setPage", Page.class);
+			if (offset != -1 || limit != -1) {
+				Page page = new Page(offset, limit);
+				setPageMethod.invoke(example, page);
+			}
+
+			Field[] fields = ReflectUtil.getDeclaredFields(modelClass);
+			int idFieldIndex = -1;
+			for (int i = 0; i < fields.length; i++) {
+				if (fields[i].getName().toLowerCase().contains("id")) { // 一般这种表中是需要的第一个id字段
+					idFieldIndex = i;
+					break;
+				}
+			}
+			if (idFieldIndex != -1) {
+				Method setOrderByClauseMethod = exampleClass.getDeclaredMethod(
+						"setOrderByClause", String.class);
+				setOrderByClauseMethod.invoke(example,
+						fields[idFieldIndex].getName() + " desc");
+			}
+			if (searchCriteria != null) {
+				Method createCriteriaMethod = ReflectUtil.getDeclaredMethod(
+						exampleClass, "createCriteria");
+				Object criteriaObj = createCriteriaMethod.invoke(example);
+				for (SearchCriteria sc : searchCriteria) {
+					String key = sc.getCriteriaKey();
+					Serializable value = sc.getCriteriaValue();
+					String id_field_name = uperFirst(key);
+					String lastCondition = sc.isLike() ? "Like" : "EqualTo";
+					Method scMethod = ReflectUtil.getDeclaredMethod(
+							criteriaObj.getClass(), "and" + id_field_name
+									+ lastCondition, value.getClass());
+					if (scMethod != null) {
+						if (sc.isLike()) {
+							scMethod.invoke(criteriaObj, "%" + value + "%");
+						} else {
+							scMethod.invoke(criteriaObj, value);
+						}
+					}else{
+						List result = new ArrayList();
+						if(needTotalCounts){
+							result.add(0);
+						}
+						return result;
+					}
+				}
+			}
+			List result = (List) selectMethod.invoke(mapper, example);
+			if (needTotalCounts) {
+				Method countMethod = ReflectUtil.getDeclaredMethod(mapperClass,
+						"countByExample", example.getClass());
+				setPageMethod.invoke(example, new Object[] { null });
+				Integer counts = (Integer) countMethod.invoke(mapper, example);
+				result.add(counts);
+			}
+			return result;
+		} catch (Exception e) {
+			OperatioinFailedException ex = new OperatioinFailedException(e);
+			Log.e("", ex);
+			throw ex;
+		} finally {
+			session.close();
+		}
+	}
+
+	private String uperFirst(String fieldName) {
+		fieldName = fieldName.toLowerCase();
+		fieldName = fieldName.replaceFirst(fieldName.substring(0, 1), fieldName
+				.substring(0, 1).toUpperCase());
+		return fieldName;
+	}
+
+	@Override
 	public boolean deleteModel(String modelName, String id_field_name,
 			List<Integer> modelIds) {
 		SqlSession session = sessionFactory.openSession();
@@ -1414,9 +1503,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			Method createCriteriaMethod = ReflectUtil.getDeclaredMethod(
 					exampleClass, "createCriteria");
 			Object criteriaObj = createCriteriaMethod.invoke(example);
-			id_field_name = id_field_name.toLowerCase();
-			id_field_name = id_field_name.replaceFirst(id_field_name.substring(
-					0, 1), id_field_name.substring(0, 1).toUpperCase());
+			id_field_name = uperFirst(id_field_name);
 			Method andIdInMethod = ReflectUtil.getDeclaredMethod(
 					criteriaObj.getClass(), "and" + id_field_name + "In",
 					List.class);
@@ -1483,9 +1570,12 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 
 				Field[] fields = ReflectUtil.getDeclaredFields(modelClass);
 				int nameFieldIndex = -1;
+				String orderItem = modelName.equals("BatchIndex") ? "id"
+						: "name";
 				for (int i = 0; i < fields.length; i++) {
-					if (fields[i].getName().toLowerCase().contains("name")) { // 一般这种表中只有一个带name的字段
+					if (fields[i].getName().toLowerCase().contains(orderItem)) { // 一般这种表中只有一个带name的字段
 						nameFieldIndex = i;
+
 						break;
 					}
 				}
@@ -1493,14 +1583,18 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 				if (nameFieldIndex != -1) {
 					Method setOrderByClauseMethod = exampleClass
 							.getDeclaredMethod("setOrderByClause", String.class);
-					setOrderByClauseMethod.invoke(example,
-							fields[nameFieldIndex].getName());
+					if (orderItem.equals("id")) {
+						setOrderByClauseMethod.invoke(example,
+								fields[nameFieldIndex].getName() + " desc");
+					} else {
+						setOrderByClauseMethod.invoke(example,
+								fields[nameFieldIndex].getName());
+					}
 
 					result = (List) method.invoke(mapper, example);
 				} else {
 					result = (List) method
 							.invoke(mapper, new Object[] { null });
-					Log.d("No name field for class " + modelClass.getName());
 				}
 				nameValuePares.add(result);
 			}
@@ -2151,8 +2245,9 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			map.updateByPrimaryKey(stu);
 			StudentFileHandler fileHandler = new StudentFileHandler(stu,
 					pictures);
-			boolean result = fileHandler.movePictrues(StudentFileHandler.UPDATE);
-			
+			boolean result = fileHandler
+					.movePictrues(StudentFileHandler.UPDATE);
+
 			StudentPictureMapper picMap = session
 					.getMapper(StudentPictureMapper.class);
 			for (StudentPicture p : pictures) {
@@ -2181,22 +2276,23 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 
 			sex.createCriteria().andStudent_idIn(studentIds);
 			map.deleteByExample(sex);
-			
+
 			StudentPictureMapper picMap = session
 					.getMapper(StudentPictureMapper.class);
 			for (StudentInfo s : students) {
 				StudentPictureExample spepic = new StudentPictureExample();
 				spepic.createCriteria().andStudent_idEqualTo(s.getStudent_id());
 				List<StudentPicture> pictures = picMap.selectByExample(spepic);
-				StudentFileHandler fileHandler = new StudentFileHandler(s,pictures);
+				StudentFileHandler fileHandler = new StudentFileHandler(s,
+						pictures);
 				fileHandler.deletePictures();
-			}	
+			}
 			StudentPictureExample spe = new StudentPictureExample();
 			spe.createCriteria().andStudent_idIn(studentIds);
 			picMap.deleteByExample(spe);
-	
+
 			session.commit();
-			
+
 			return true;
 		} finally {
 			session.close();

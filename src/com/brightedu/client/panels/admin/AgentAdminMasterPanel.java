@@ -13,7 +13,6 @@ import com.brightedu.model.edu.RecruitAgent;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.ListGridFieldType;
-import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.grid.ListGridField;
 
@@ -40,7 +39,6 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 			public void onSuccess(List result) {
 				agentTypes = new LinkedHashMap<String, String>();
 				agentRelations = new LinkedHashMap<String, String>();
-				agentRelations.put("-1", "无");
 				for (int i = 0; i < result.size(); i++) {
 					if (i == 0) {// "AgentType"
 						List<AgentType> types = (List<AgentType>) result.get(i);
@@ -80,7 +78,7 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 
 	@Override
 	public void gotoPage(final int indexGoto, final boolean init) {
-		AsyncCallback<List<RecruitAgent>> callback = new CommonAsyncCall<List<RecruitAgent>>() {
+		AsyncCallback<List> callback = new CommonAsyncCall<List>() {
 			@Override
 			public void onSuccess(List result) {
 				int size = result.size();
@@ -110,8 +108,11 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 				setCurrentPage(indexGoto);
 			}
 		};
-		dbService.getRecruitAgentList((indexGoto - 1) * currentRowsInOnePage,
-				currentRowsInOnePage, init, false, callback);
+//		dbService.getRecruitAgentList((indexGoto - 1) * currentRowsInOnePage,
+//				currentRowsInOnePage, init, false, callback);
+		dbService.getModels("RecruitAgent", searchCriteria,
+				((indexGoto - 1) * currentRowsInOnePage), currentRowsInOnePage,
+				init, callback);
 	}
 
 	@Override
@@ -133,11 +134,6 @@ public class AgentAdminMasterPanel extends BasicAdminPanel {
 		dbService.addModel(model, getAdminDialog().getAddAsync());
 	}
 
-	@Override
-	public void search(String keyWords, Record range) {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public void deleteRecords(List<Integer> deleteIds) {

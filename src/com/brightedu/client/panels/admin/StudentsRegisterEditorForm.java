@@ -199,6 +199,7 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 			// default:
 			ethnic_group_idItem.setDefaultValue(1);
 			political_status_idItem.setDefaultValue(3);
+//			batchItem.setDefaultValue(defaultValue)
 		}
 	}
 

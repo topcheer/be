@@ -17,12 +17,8 @@ import com.smartgwt.client.widgets.grid.ListGridField;
 public class StudentTypeAdminPanel extends BasicAdminPanel {
 
 	@Override
-	public void search(String keyWords, Record range) {
-	}
-
-	@Override
 	public void gotoPage(final int indexGoto, final boolean init) {
-		AsyncCallback<List<StudentType>> callback = new CommonAsyncCall<List<StudentType>>() {
+		AsyncCallback<List> callback = new CommonAsyncCall<List>() {
 			@Override
 			public void onSuccess(List result) {
 				int size = result.size();
@@ -49,8 +45,11 @@ public class StudentTypeAdminPanel extends BasicAdminPanel {
 				setCurrentPage(indexGoto);
 			}
 		};
-		dbService.getStudentTypeList((indexGoto - 1) * currentRowsInOnePage,
-				currentRowsInOnePage, init, callback);
+//		dbService.getStudentTypeList((indexGoto - 1) * currentRowsInOnePage,
+//				currentRowsInOnePage, init, callback);
+		dbService.getModels("StudentType", searchCriteria,
+				((indexGoto - 1) * currentRowsInOnePage), currentRowsInOnePage,
+				init, callback);
 	}
 
 	@Override
@@ -101,7 +100,7 @@ public class StudentTypeAdminPanel extends BasicAdminPanel {
 	@Override
 	public AdminDialog createAdminDialog() {
 		TextAdminDialog text = new TextAdminDialog();
-		text.titles = new String[] { "类型" };
+		text.titles = new String[][] { new String[] { "student_type_name", "类型" } };
 		text.adminPanel = this;
 		return text;
 	}

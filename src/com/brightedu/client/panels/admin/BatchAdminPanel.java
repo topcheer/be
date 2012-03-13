@@ -7,6 +7,7 @@ import com.brightedu.client.BrightEdu;
 import com.brightedu.client.CommonAsyncCall;
 import com.brightedu.client.panels.BasicAdminPanel;
 import com.brightedu.model.edu.BatchIndex;
+import com.brightedu.shared.SearchCriteria;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.ListGridFieldType;
@@ -16,9 +17,6 @@ import com.smartgwt.client.widgets.grid.ListGridField;
 
 public class BatchAdminPanel extends BasicAdminPanel {
 
-	@Override
-	public void search(String keyWords, Record range) {
-	}
 
 	@Override
 	public void deleteRecords(final List<Integer> deleteIds) {
@@ -54,7 +52,7 @@ public class BatchAdminPanel extends BasicAdminPanel {
 
 	public void gotoPage(final int indexGoto, final boolean init) {
 
-		AsyncCallback<List<BatchIndex>> callback = new CommonAsyncCall<List<BatchIndex>>() {
+		AsyncCallback<List> callback = new CommonAsyncCall<List>() {
 			@Override
 			public void onSuccess(List result) {
 				int size = result.size();
@@ -81,13 +79,14 @@ public class BatchAdminPanel extends BasicAdminPanel {
 				setCurrentPage(indexGoto);
 			}
 		};
-		dbService.getBatchList((indexGoto - 1) * currentRowsInOnePage,
-				currentRowsInOnePage, init, callback);
+		dbService.getModels("BatchIndex", searchCriteria,
+				((indexGoto - 1) * currentRowsInOnePage), currentRowsInOnePage,
+				init, callback);
 	}
 
 	public AdminDialog createAdminDialog() {
 		TextAdminDialog text = new TextAdminDialog();
-		text.titles = new String[] { "批次" };
+		text.titles = new String[][] { new String[]{"batch_name","批次"} };
 		text.adminPanel = this;
 		return text;
 	}

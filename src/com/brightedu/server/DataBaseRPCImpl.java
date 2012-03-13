@@ -52,6 +52,7 @@ import com.brightedu.model.edu.User;
 import com.brightedu.model.edu.UserRights;
 import com.brightedu.model.edu.UserRightsEffective;
 import com.brightedu.model.edu.UserType;
+import com.brightedu.shared.SearchCriteria;
 
 public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 
@@ -604,6 +605,14 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	public List<BankAccount> getBankAccountList(int offset, int limit,
 			boolean needTotalCounts) {
 		return agent.getBankAccountList(offset, limit, needTotalCounts);
+	}
+
+	@Override
+	public List getModels(String modelName, SearchCriteria[] searchCriteria,
+			int offset, int limit, boolean needTotalCounts) {
+
+		return agent.getModels(modelName, searchCriteria, offset, limit,
+				needTotalCounts);
 	}
 
 }
