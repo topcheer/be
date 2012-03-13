@@ -574,6 +574,7 @@ public class RecruitPlanManagePanel extends VLayout {
 					public void onSuccess(Boolean result) {
 						
 						BrightEdu.showTip("没有啥东西好存的,开玩笑? 我顺便把所有的组合全删了，你没意见吧？");
+						refreshCurrentList(new Integer(batchItem.getValueAsString()));
 					}});
 			
 				return;
