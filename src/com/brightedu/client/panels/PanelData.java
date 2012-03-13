@@ -82,6 +82,7 @@ public class PanelData {
 			return new BankAccountAdmin.Factory();
 		}	
 		
+		System.out.println(id + " 还没有实现");
 		return null;
 	}
 }
