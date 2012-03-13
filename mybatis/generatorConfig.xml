@@ -184,9 +184,23 @@
     <table  schema="edu" tableName="college_aggregation" domainObjectName="CollegeAggregation" >
       <property name="useActualColumnNames" value="true"/>
     </table>   
-   -->      
-
-              
+   
+     
+    <table schema="edu" tableName="messages" domainObjectName="Messages" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+            
+    <table schema="edu" tableName="messages_real" domainObjectName="MessageReal" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>
+         
+       <table schema="edu" tableName="announcement" domainObjectName="Announcement" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>      
+     -->          
+    <table  schema="edu" tableName="student_info" domainObjectName="StudentInfo" >
+      <property name="useActualColumnNames" value="true"/>
+    </table>  
   </context>
   
 </generatorConfiguration>

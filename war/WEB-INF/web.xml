@@ -71,7 +71,7 @@
 	</servlet-mapping>
 
 
-    <!-- EventServiceImpl 和 MessageService 是消息server push机制必须的-->
+	<!-- EventServiceImpl 和 MessageService 是消息server push机制必须的 -->
 	<servlet>
 		<servlet-name>EventServiceImpl</servlet-name>
 		<servlet-class>de.novanic.eventservice.service.EventServiceImpl</servlet-class>
@@ -80,8 +80,8 @@
 		<servlet-name>EventServiceImpl</servlet-name>
 		<url-pattern>/brightedu/gwteventservice</url-pattern>
 	</servlet-mapping>
-	
-	
+
+
 	<servlet>
 		<servlet-name>MessageService</servlet-name>
 		<servlet-class>com.brightedu.server.MessageService</servlet-class>
@@ -93,8 +93,30 @@
 	</servlet-mapping>
 
 
-    <listener>
-    	<description>session listener</description>
-    	<listener-class>com.brightedu.server.UserSessionListener</listener-class>
-    </listener>
+	<listener>
+		<description>session listener</description>
+		<listener-class>com.brightedu.server.UserSessionListener</listener-class>
+	</listener>
+
+	<context-param>
+		<!-- max size of the upload request -->
+		<param-name>maxSize</param-name>
+		<param-value>3145728</param-value>
+	</context-param>
+	<context-param>
+		<!-- Useful in development mode to slow down the uploads in fast networks. 
+			Put the number of milliseconds to sleep in each block received in the server. 
+			false or 0, means don't use slow uploads -->
+		<param-name>slowUploads</param-name>
+		<param-value>10</param-value>
+	</context-param>
+	<servlet>
+		<servlet-name>uploadServlet</servlet-name>
+		<!-- This is the default servlet, it puts files in session -->
+		<servlet-class>gwtupload.server.UploadServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>uploadServlet</servlet-name>
+		<url-pattern>*.gupld</url-pattern>
+	</servlet-mapping>
 </web-app>

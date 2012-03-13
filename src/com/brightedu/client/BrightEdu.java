@@ -1,5 +1,12 @@
 package com.brightedu.client;
 
+import gwtupload.client.IUploadStatus.Status;
+import gwtupload.client.IUploader;
+import gwtupload.client.IUploader.UploadedInfo;
+import gwtupload.client.MultiUploader;
+import gwtupload.client.PreloadedImage;
+import gwtupload.client.PreloadedImage.OnLoadPreloadedImageHandler;
+
 import java.io.Serializable;
 
 import com.brightedu.client.canvas.BrightCanvas;
@@ -17,6 +24,7 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.smartgwt.client.core.KeyIdentifier;
 import com.smartgwt.client.types.Alignment;
@@ -77,11 +85,11 @@ public class BrightEdu implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-		initLogin();	
-//		createAdminUI();
+		initLogin();
+		// createAdminUI();
 	}
-	
-	private void initLogin(){
+
+	private void initLogin() {
 		final LoginDialog loginDialog = new LoginDialog();
 		loginDialog.show();
 
@@ -151,7 +159,7 @@ public class BrightEdu implements EntryPoint {
 
 				}
 				createUI();
-				
+
 				showTip("已登录！");
 			}
 		});
@@ -205,7 +213,6 @@ public class BrightEdu implements EntryPoint {
 		mess.setHeight(20);
 		mess.setAlign(Alignment.RIGHT);
 		mess.setOpacity(50);
-
 
 		// final MessTimer mt = new MessTimer();
 		// new Timer(){
@@ -342,14 +349,47 @@ public class BrightEdu implements EntryPoint {
 
 		// mainPanel.addMember(ca);
 
-//		Flashlet g = new Flashlet();
-//		g.setSrc("http://player.youku.com/player.php/Type/Folder/Fid/17079166/Ob/1/Pt/0/sid/XMzU4MDI1ODA4/v.swf");
-//		g.setWidth(600);
-//		g.setHeight(400);
+		// Flashlet g = new Flashlet();
+		// g.setSrc("http://player.youku.com/player.php/Type/Folder/Fid/17079166/Ob/1/Pt/0/sid/XMzU4MDI1ODA4/v.swf");
+		// g.setWidth(600);
+		// g.setHeight(400);
 		// mainPanel.addMember(g);
+		final FlowPanel panelImages = new FlowPanel();
+		
+		final OnLoadPreloadedImageHandler showImage = new OnLoadPreloadedImageHandler() {
+			public void onLoad(PreloadedImage image) {
+				image.setWidth("75px");
+				panelImages.add(image);
+			}
+		};
+		
+		IUploader.OnFinishUploaderHandler onFinishUploaderHandler = new IUploader.OnFinishUploaderHandler() {
+			public void onFinish(IUploader uploader) {
+				if (uploader.getStatus() == Status.SUCCESS) {
+					new PreloadedImage(uploader.fileUrl(), showImage);
+					// The server sends useful information to the client by
+					// default
+					UploadedInfo info = uploader.getServerInfo();
+					System.out.println("File name " + info.name);
+					System.out.println("File content-type " + info.ctype);
+					System.out.println("File size " + info.size);
+					// You can send any customized message and parse it
+					System.out.println("Server message " + info.message);
+				}
+			}
+		};
 
+
+	    // Create a new uploader panel and attach it to the document     
+		MultiUploader defaultUploader = new MultiUploader();     
+		
+		// Add a finish handler which will load the image once the upload finishes     
+		defaultUploader.addOnFinishUploadHandler(onFinishUploaderHandler); 
+		
+		
 		// TileView tileView = new TileView(mainPanel);
-		// mainPanel.addMember(tileView);
+		mainPanel.addMember(panelImages);
+		mainPanel.addMember(defaultUploader);
 
 		homeTab.setPane(mainPanel);
 
@@ -597,5 +637,4 @@ public class BrightEdu implements EntryPoint {
 	//
 	// }
 
-	
 }
