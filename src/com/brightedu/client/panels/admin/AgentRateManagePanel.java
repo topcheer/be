@@ -34,8 +34,10 @@ import com.smartgwt.client.types.DragAppearance;
 import com.smartgwt.client.types.DragDataAction;
 import com.smartgwt.client.types.ListGridEditEvent;
 import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.types.SelectionAppearance;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.types.SelectionType;
+import com.smartgwt.client.types.ValidatorType;
 import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.types.VisibilityMode;
 import com.smartgwt.client.util.BooleanCallback;
@@ -56,6 +58,7 @@ import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.HiddenItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
+import com.smartgwt.client.widgets.form.validator.Validator;
 import com.smartgwt.client.widgets.grid.CellEditValueFormatter;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
@@ -140,6 +143,7 @@ public class AgentRateManagePanel extends VLayout {
 		collegeList.setDragAppearance(DragAppearance.TRACKER);
 		collegeList.setDragDataAction(DragDataAction.MOVE);
 		collegeList.setSelectionType(SelectionStyle.SIMPLE);
+		collegeList.setSelectionAppearance(SelectionAppearance.CHECKBOX);
 		collegeList.setTitle("选中合并计算的记录并拖动到下面的列表中以创建合并计算高校组合");
 		
 		selectionStack.setHeight(250);
@@ -241,11 +245,30 @@ public class AgentRateManagePanel extends VLayout {
 //							}
 //							return null;
 //						}});
+	        		Validator nv = new Validator();
+	        		nv.setType(ValidatorType.FLOATRANGE);
+	        		nv.setAttribute("min", 0.01);
+	        		nv.setAttribute("max", 0.99);
+	        		Validator nv4 = new Validator();
+	        		nv4.setType(ValidatorType.ISFLOAT);
+	        		
+	        		Validator nv2 = new Validator();
+	        		nv2.setType(ValidatorType.INTEGERRANGE);
+	        		
+	        		nv2.setAttribute("min", 0);
+	        		nv2.setAttribute("max", 99999);
+	        		
+	        		Validator nv3 = new Validator();
+	        		nv3.setType(ValidatorType.ISINTEGER);
+	        		
+	        		pepleCountField2.setValidators(nv2,nv3);
+	        		
 	        		pepleCountField2.setCanEdit(true);
 	        		
 //	        		pepleCountField2.setEditorType(people);
 	        		returnRateField.setCanEdit(true);
 //	        		returnRateField.setEditorType(rate);
+	        		returnRateField.setValidators(nv,nv4);
 	        		
 	        		collegeIDField2.setHidden(true);
 	        		rateList.setShowHeaderContextMenu(false);
@@ -465,10 +488,28 @@ public class AgentRateManagePanel extends VLayout {
 						setCanDragResize(true);
 //						setAnimateShowEffect(AnimationEffect.WIPE);
 //						setAnimateShowTime(800);
-						people.setMask("###");
-						people.setMaskPromptChar(" ");
 						
-						rate.setValue(0.1);
+		        		Validator nv = new Validator();
+		        		nv.setType(ValidatorType.FLOATRANGE);
+		        		nv.setAttribute("min", 0.01);
+		        		nv.setAttribute("max", 0.99);
+		        		Validator nv4 = new Validator();
+		        		nv4.setType(ValidatorType.ISFLOAT);
+		        		
+		        		Validator nv2 = new Validator();
+		        		nv2.setType(ValidatorType.INTEGERRANGE);
+		        		
+		        		nv2.setAttribute("min", 0);
+		        		nv2.setAttribute("max", 99999);
+		        		
+		        		Validator nv3 = new Validator();
+		        		nv3.setType(ValidatorType.ISINTEGER);
+		        		
+		        		people.setValidators(nv2,nv3);
+		        		rate.setValidators(nv,nv4);
+						
+		        		people.setValue(100);
+						rate.setValue(0.20);
 						
 						form.setFields(people,rate);
 						VLayout v = new VLayout();
@@ -508,10 +549,10 @@ public class AgentRateManagePanel extends VLayout {
 	        		ListGridField  returnRateField = new ListGridField("return_rate","返利系数");
 	        		ListGridField  orgField = new ListGridField("orgobj","老数据");
 	        		groupIDField2.setHidden(true);
-	        		pepleCountField2.setCanEdit(true);
+	        		//pepleCountField2.setCanEdit(true);
 	        		orgField.setHidden(true);
 
-	        		returnRateField.setCanEdit(true);
+//	        		returnRateField.setCanEdit(true);
 
 	        		
 	        		collegeIDField2.setHidden(true);
