@@ -2396,8 +2396,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	public boolean initBankAccount(Integer batchId) {
 		Properties prop = new Properties();
 		try {
-			prop.load(new FileInputStream(new File(
-					"/default_bank_account.properties")));
+			prop.load(DataBaseRPCAgent.class.getResourceAsStream("/default_bank_account.properties"));
 		} catch (FileNotFoundException e) {
 
 			Log.e("default_bank_account.properties 不存在");
@@ -2409,7 +2408,8 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			Log.e("文件读取失败 default_bank_account.properties");
 			return false;
 		}
-		if (prop.getProperty("account") != null) {
+		if (prop.getProperty("account") == null) {
+			Log.e("缺省帐号没有定义");
 			return false;
 		}
 		SqlSession session = sessionFactory.openSession();
