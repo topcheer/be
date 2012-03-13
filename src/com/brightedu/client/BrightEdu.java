@@ -356,10 +356,10 @@ public class BrightEdu implements EntryPoint {
 		// g.setHeight(400);
 		// mainPanel.addMember(g);
 //		final FlowPanel panelImages = new FlowPanel();
-//		
+//		panelImages.setWidth("200px");
 //		final OnLoadPreloadedImageHandler showImage = new OnLoadPreloadedImageHandler() {
 //			public void onLoad(PreloadedImage image) {
-//				image.setWidth("75px");
+//				image.setWidth("200px");
 //				panelImages.add(image);
 //			}
 //		};
