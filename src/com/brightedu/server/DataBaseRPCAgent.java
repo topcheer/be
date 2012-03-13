@@ -2436,7 +2436,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 				}
 			}
 			session.commit();
-			return false;
+			return true;
 		} finally {
 			session.close();
 		}
