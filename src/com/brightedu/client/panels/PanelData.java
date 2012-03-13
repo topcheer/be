@@ -23,7 +23,7 @@ public class PanelData {
 			return new CorpCollegeAdmin.Factory();// 合作高校维护
 		}
 		if (id.equals("subject_manage")) {
-			return new SubjectsAdmin.Factory();// 合作高校维护
+			return new SubjectsAdmin.Factory();// 专业代码维护
 		}
 		if (id.equals("college_agreement_manage")) { // 高校协议管理
 			return new CorpCollegeAgreementAdmin.Factory();
@@ -77,6 +77,9 @@ public class PanelData {
 		}	
 		if (id.equals("ann_manage")) { //通知通告维护
 			return new AnnouncementAdmin.Factory();
+		}	
+		if (id.equals("agent_bank_account_manage")) { //银行帐号维护
+			return new BankAccountAdmin.Factory();
 		}	
 		
 		return null;

@@ -602,10 +602,22 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	}
 
 	@Override
-	public List<BankAccount> getBankAccountList(int offset, int limit,
+	public List<BankAccount> getBankAccountList(Integer batchId,int offset, int limit,
 			boolean needTotalCounts) {
-		return agent.getBankAccountList(offset, limit, needTotalCounts);
+		return agent.getBankAccountList(batchId,offset, limit, needTotalCounts);
 	}
+
+	@Override
+	public BankAccount getBankAccount(BankAccount ba) {
+		return agent.getBankAccount(ba);
+				
+	}
+
+	@Override
+	public boolean initBankAccount(Integer batchId) {
+		return agent.initBankAccount(batchId);
+	}
+
 
 	@Override
 	public List getModels(String modelName, SearchCriteria[] searchCriteria,

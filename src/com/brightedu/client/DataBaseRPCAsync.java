@@ -309,7 +309,11 @@ public interface DataBaseRPCAsync {
 
 	void saveBankAccount(BankAccount ba, AsyncCallback<Boolean> callback);
 
-	void getBankAccountList(int offset, int limit, boolean needTotalCounts,
-			AsyncCallback<List<BankAccount>> callback);
+	void getBankAccountList(Integer batchId, int offset, int limit,
+			boolean needTotalCounts, AsyncCallback<List<BankAccount>> callback);
+
+	void getBankAccount(BankAccount ba, AsyncCallback<BankAccount> callback);
+
+	void initBankAccount(Integer batchId, AsyncCallback<Boolean> callback);
 
 }

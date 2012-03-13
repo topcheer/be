@@ -261,7 +261,9 @@ public interface DataBaseRPC extends RemoteService {
 	public boolean addBankAccount(BankAccount ba);
 	public boolean deleteBankAccount(BankAccount ba);
 	public boolean saveBankAccount(BankAccount ba);
-	public List<BankAccount> getBankAccountList(int offset, int limit,
+	public BankAccount getBankAccount(BankAccount ba);
+	public List<BankAccount> getBankAccountList(Integer batchId, int offset, int limit,
 			boolean needTotalCounts);
+	public boolean initBankAccount(Integer batchId);
 
 }

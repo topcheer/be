@@ -1,6 +1,9 @@
 package com.brightedu.server;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -8,6 +11,7 @@ import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -2298,7 +2302,8 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			session.close();
 		}
 	}
-	/**************************学生打款帐号管理******************************/
+
+	/************************** 学生打款帐号管理 ******************************/
 	@Override
 	public boolean addBankAccount(BankAccount ba) {
 		SqlSession session = sessionFactory.openSession();
@@ -2351,24 +2356,84 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	}
 
 	@Override
-	public List<BankAccount> getBankAccountList(int offset, int limit,
-			boolean needTotalCounts) {
+	public List<BankAccount> getBankAccountList(Integer batchId, int offset,
+			int limit, boolean needTotalCounts) {
 		SqlSession session = sessionFactory.openSession();
 		try {
 			BankAccountExample ex = new BankAccountExample();
 			if (offset != -1 || limit != -1) {
 				ex.setPage(new Page(offset, limit));
 			}
-			ex.setOrderByClause("ann_id desc");
+			ex.setOrderByClause(" college_id,agent_id desc");
+			ex.createCriteria().andBatch_idEqualTo(batchId);
 
-			BankAccountMapper map = session
-					.getMapper(BankAccountMapper.class);
+			BankAccountMapper map = session.getMapper(BankAccountMapper.class);
 			List result = map.selectByExample(ex);
 			if (needTotalCounts) {
 				Integer counts = map.countByExample(null);
 				result.add(counts);
 			}
 			return result;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public BankAccount getBankAccount(BankAccount ba) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+			BankAccountMapper bim = session.getMapper(BankAccountMapper.class);
+
+			return bim.selectByPrimaryKey(ba);
+
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean initBankAccount(Integer batchId) {
+		Properties prop = new Properties();
+		try {
+			prop.load(new FileInputStream(new File(
+					"default_bank_account.properties")));
+		} catch (FileNotFoundException e) {
+
+			Log.e("default_bank_account.properties 不存在");
+
+		} catch (IOException e) {
+
+			Log.e("文件读取失败 default_bank_account.properties");
+		}
+		if (prop.getProperty("account") != null) {
+			return false;
+		}
+		SqlSession session = sessionFactory.openSession();
+		try {
+			String defaultAccount = prop.getProperty("account");
+			
+			BankAccountMapper bim = session.getMapper(BankAccountMapper.class);
+			BankAccountExample ex = new BankAccountExample();
+			ex.createCriteria().andBatch_idEqualTo(batchId);
+			bim.deleteByExample(ex);
+			
+			List<College> colleges = getCollegeList(-1, -1, false);
+			List<RecruitAgent> agents = getRecruitAgentList(-1, -1, false,
+					false);
+
+			for (College co : colleges) {
+				for (RecruitAgent agent : agents) {
+					BankAccount ba = new BankAccount();
+					ba.setBatch_id(batchId);
+					ba.setCollege_id(co.getCollege_id());
+					ba.setAgent_id(agent.getAgent_id());
+					ba.setAccount(defaultAccount);
+					bim.insertSelective(ba);
+				}
+			}
+			session.commit();
+			return false;
 		} finally {
 			session.close();
 		}
