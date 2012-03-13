@@ -85,7 +85,7 @@ public class StudentStatusAdminPanel extends BasicAdminPanel {
 
 	public AdminDialog createAdminDialog() {
 		TextAdminDialog text = new TextAdminDialog();
-		text.titles = new String[][] { new String[] { "student_status_name", "学生状态" } };
+		text.titles = new String[][] { new String[] { "stu_status_name", "学生状态" } };
 		text.adminPanel = this;
 		return text;
 	}

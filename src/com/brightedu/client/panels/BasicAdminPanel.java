@@ -576,7 +576,7 @@ public abstract class BasicAdminPanel extends VLayout {
 
 	protected boolean acceptSearchTitle(String name, String title) {
 		if (name.contains("date") || name.contains("password")
-				|| name.contains("day") || name.contains("url"))
+				|| name.contains("day") || name.contains("url")||name.equals("saveBtn"))
 			return false;
 		return true;
 	}

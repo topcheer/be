@@ -126,9 +126,9 @@ public class FeeTypeAdminPanel extends BasicAdminPanel {
 
 	private class FeeTypeAddDialog extends AdminDialog {
 
-		private TextItem feeTypeNameItem = new TextItem("feeTypeName", "费用名称");
-		private BooleanItem isEndItem = new BooleanItem("is_by_end", "是否期末支付");
-		private BooleanItem isSplitItem = new BooleanItem("is_split", "是否按年支付");
+		private TextItem feeTypeNameItem = new TextItem("fee_name", "费用名称");
+		private BooleanItem isEndItem = new BooleanItem("charge_by_end", "是否期末支付");
+		private BooleanItem isSplitItem = new BooleanItem("split_by_year", "是否按年支付");
 		private BooleanItem canReturnItem = new BooleanItem("can_return",
 				"是否涉及返利计算");
 		int len = 250;

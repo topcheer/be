@@ -13,7 +13,7 @@ import com.smartgwt.client.widgets.form.fields.events.ClickHandler;
 
 public abstract class DetailedEditorForm extends DynamicForm {
 
-	protected ButtonItem saveBtn = new ButtonItem("save", "修改");
+	protected ButtonItem saveBtn = new ButtonItem("saveBtn", "修改");
 
 	MasterDetailAdmin admin;
 

@@ -84,7 +84,7 @@ public class PictureTypeAdminPanel extends BasicAdminPanel {
 
 	public AdminDialog createAdminDialog() {
 		TextAdminDialog text = new TextAdminDialog();
-		text.titles = new String[][] { new String[] { "user_type_name", "用户类型" } };
+		text.titles = new String[][] { new String[] { "pic_type_name", "照片类型" } };
 		text.adminPanel = this;
 		return text;
 	}
