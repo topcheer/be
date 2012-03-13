@@ -55,6 +55,10 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 	SelectItem major_category_idItem = new SelectItem("major_category_id",
 			"成教学生大类");
 	SelectItem edu_levelItem = new SelectItem("edu_level", "学历");
+	TextItem college_passwordItem = new TextItem("college_password","高校登陆密码");
+	TextItem test_passwordItem= new TextItem("test_password","考试密码");
+	SelectItem care_typeItem = new SelectItem("care_type", "照顾类型");
+	SelectItem edu_typeItem = new SelectItem("edu_type", "学历状态");
 
 	// DateItem register_dateItem = new DateItem("regster_date", "登记时间");
 	// DateItem update_dateItem = new DateItem("update_date", "更新时间");
@@ -64,7 +68,9 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 		sexItem.setValueMap("男", "女");
 		// 高中毕业 同等学历 中专技校 大专毕业 本科以上
 		edu_levelItem.setValueMap("高中毕业", "同等学历", "中专技校", "大专毕业", "本科以上");
-
+		care_typeItem.setValueMap("无加分项","有无加分项");
+		edu_typeItem.setValueMap("学历","非学历");
+		
 		setNumCols(6);
 		setLayoutAlign(VerticalAlignment.BOTTOM);
 		setFields(student_nameItem, identity_cardItem, sexItem, exam_numItem,
@@ -75,7 +81,8 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 				birthdayItem, ethnic_group_idItem, political_status_idItem,
 				employerItem, graduate_college_idItem, graduate_dateItem,
 				graduate_certificate_numberItem, student_type_idItem,
-				major_category_idItem, edu_levelItem, saveBtn);
+				major_category_idItem, edu_levelItem,college_passwordItem,
+				test_passwordItem,care_typeItem,edu_typeItem, saveBtn);
 		setValidators();
 		setRequired();
 	}
@@ -119,6 +126,10 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 		student_type_idItem.setValue(student.getStudent_type_id());
 		subject_ownerItem.setValue(student.getSubject_owner());
 		edu_levelItem.setValue(student.getEdu_level());
+		college_passwordItem.setValue(student.getCollege_passwd());
+		test_passwordItem.setValue(student.getExam_passwd());
+		care_typeItem.setValue(student.getCare_type());
+		edu_typeItem.setValue(student.getEdu_type());
 	}
 
 	@Override
@@ -158,6 +169,11 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 		s.setSubject_owner(getValueAsInteger(subject_ownerItem));
 		// s.setUpdate_date(update_date)
 		s.setEdu_level(edu_levelItem.getValueAsString());
+		s.setCollege_passwd(college_passwordItem.getValueAsString());
+		s.setExam_passwd(test_passwordItem.getValueAsString());
+		s.setCare_type(care_typeItem.getValueAsString());
+		s.setEdu_type(edu_typeItem.getValueAsString());
+		
 		return s;
 	}
 
