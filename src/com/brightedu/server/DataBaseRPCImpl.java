@@ -23,6 +23,7 @@ import com.brightedu.model.edu.AgentReturnKey;
 import com.brightedu.model.edu.AgentReturnType;
 import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.Announcement;
+import com.brightedu.model.edu.BankAccount;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.ChargeType;
 import com.brightedu.model.edu.College;
@@ -582,6 +583,27 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	@Override
 	public boolean deleteStudent(List<StudentInfo> studentIds) {
 		return agent.deleteStudent(studentIds);
+	}
+	/**************************学生打款帐号管理******************************/
+	@Override
+	public boolean addBankAccount(BankAccount ba) {
+		return agent.addBankAccount(ba);
+	}
+
+	@Override
+	public boolean deleteBankAccount(BankAccount ba) {
+		return agent.deleteBankAccount(ba);
+	}
+
+	@Override
+	public boolean saveBankAccount(BankAccount ba) {
+		return agent.saveBankAccount(ba);
+	}
+
+	@Override
+	public List<BankAccount> getBankAccountList(int offset, int limit,
+			boolean needTotalCounts) {
+		return agent.getBankAccountList(offset, limit, needTotalCounts);
 	}
 
 }

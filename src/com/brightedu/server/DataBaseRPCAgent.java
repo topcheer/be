@@ -56,6 +56,7 @@ import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.AgentTypeExample;
 import com.brightedu.model.edu.Announcement;
 import com.brightedu.model.edu.AnnouncementExample;
+import com.brightedu.model.edu.BankAccount;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.BatchIndexExample;
 import com.brightedu.model.edu.BatchIndexExample.Criteria;
@@ -2198,6 +2199,31 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		} finally {
 			session.close();
 		}
+	}
+	/**************************学生打款帐号管理******************************/
+	@Override
+	public boolean addBankAccount(BankAccount ba) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean deleteBankAccount(BankAccount ba) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean saveBankAccount(BankAccount ba) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public List<BankAccount> getBankAccountList(int offset, int limit,
+			boolean needTotalCounts) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

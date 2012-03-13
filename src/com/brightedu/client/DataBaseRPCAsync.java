@@ -7,6 +7,7 @@ import com.brightedu.model.edu.AgentReturnKey;
 import com.brightedu.model.edu.AgentReturnType;
 import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.Announcement;
+import com.brightedu.model.edu.BankAccount;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.ChargeType;
 import com.brightedu.model.edu.College;
@@ -296,5 +297,14 @@ public interface DataBaseRPCAsync {
 
 	void saveStudent(StudentInfo stu, List<StudentPicture> pictures,
 			AsyncCallback<Boolean> callback);
+
+	void addBankAccount(BankAccount ba, AsyncCallback<Boolean> callback);
+
+	void deleteBankAccount(BankAccount ba, AsyncCallback<Boolean> callback);
+
+	void saveBankAccount(BankAccount ba, AsyncCallback<Boolean> callback);
+
+	void getBankAccountList(int offset, int limit, boolean needTotalCounts,
+			AsyncCallback<List<BankAccount>> callback);
 
 }

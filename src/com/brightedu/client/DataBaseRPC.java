@@ -22,6 +22,7 @@ import com.brightedu.model.edu.AgentReturnKey;
 import com.brightedu.model.edu.AgentReturnType;
 import com.brightedu.model.edu.AgentType;
 import com.brightedu.model.edu.Announcement;
+import com.brightedu.model.edu.BankAccount;
 import com.brightedu.model.edu.BatchIndex;
 import com.brightedu.model.edu.ChargeType;
 import com.brightedu.model.edu.College;
@@ -252,5 +253,10 @@ public interface DataBaseRPC extends RemoteService {
 	public List<Announcement> getAnnouncementList(int offset, int limit,
 			boolean needTotalCounts);
 
-	
+	/**************************学生打款帐号管理******************************/
+	public boolean addBankAccount(BankAccount ba);
+	public boolean deleteBankAccount(BankAccount ba);
+	public boolean saveBankAccount(BankAccount ba);
+	public List<BankAccount> getBankAccountList(int offset, int limit,
+			boolean needTotalCounts);
 }
