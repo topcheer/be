@@ -224,7 +224,7 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 					rec.setAttribute("identity_card", bi.getIdentity_card());
 					rec.setAttribute("student_college_id",
 							bi.getStudent_college_id());
-					rec.setAttribute("agent_owner", bi.getAgent_owner());
+					rec.setAttribute("agent_owner", bi.getManaged_agent());
 					listData[i] = rec;
 				}
 				resultList.setData(listData);

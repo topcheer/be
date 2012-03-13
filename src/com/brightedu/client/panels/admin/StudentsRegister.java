@@ -30,14 +30,19 @@ public final class StudentsRegister extends MasterDetailAdmin {
 	IButton saveBtn = new IButton("修改");
 
 	public StudentsRegister() {
-		detailedV.setMembersMargin(5);
+		detailedV.setMembersMargin(15);
 		detailedV.addMember(saveBtn);
-		saveBtn.setWidth(50);
+		// saveBtn.setMargin(2);
+		saveBtn.setWidth(70);
+		saveBtn.disable();
 		((StudentsRegisterDetailedPanel) detailed).infoForm.hideSaveItem(); // 这里不用这个saveItem
 		saveBtn.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				((StudentsRegisterDetailedPanel) detailed).infoForm.update();
+				if (master.getResultList().getSelectedRecord() != null) {
+					((StudentsRegisterDetailedPanel) detailed).infoForm
+							.update();
+				}
 			}
 		});
 	}
