@@ -224,7 +224,7 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 					rec.setAttribute("identity_card", bi.getIdentity_card());
 					rec.setAttribute("student_college_id",
 							bi.getStudent_college_id());
-					rec.setAttribute("agent_owner", bi.getManaged_agent());
+					rec.setAttribute("managed_agent", bi.getManaged_agent());
 					listData[i] = rec;
 				}
 				resultList.setData(listData);
@@ -238,7 +238,7 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 	@Override
 	public ListGridField[] createGridFileds() {
 		fileds = parseGridFields(new String[] { "obj_name", "identity_card",
-				"student_college_id", "agent_owner" }, new String[] { "学生",
+				"student_college_id", "managed_agent" }, new String[] { "学生",
 				"身份证", "学号", "学生管理机构" }, new ListGridFieldType[] {
 				ListGridFieldType.TEXT, ListGridFieldType.TEXT,
 				ListGridFieldType.TEXT, ListGridFieldType.TEXT },
