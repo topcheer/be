@@ -27,6 +27,8 @@ public class AgentAdminEditorForm extends DetailedEditorForm {
 	TextItem contact_addressItem = new TextItem("contact_address", "联系地址");
 	TextItem contact_phoneItem = new TextItem("contact_phone", "电话");
 	TextItem contact_mobileItem = new TextItem("contact_mobile", "手机");
+	TextItem contact_emailItem = new TextItem("contact_email", "Email");
+	TextItem contact_qqItem = new TextItem("contact_qq", "QQ号");
 	TextItem account_nameItem = new TextItem("account_name", "账户名称");
 	TextItem bank_nameItem = new TextItem("bank_name", "开户行");
 	TextItem bank_accountItem = new TextItem("bank_account", "银行账号");
@@ -48,8 +50,8 @@ public class AgentAdminEditorForm extends DetailedEditorForm {
 		remarkItem.setColSpan(4);
 		// agent_typeItem.
 		setFields(agent_nameItem,agent_shortnameItem, agent_typeItem, responsible_personItem,
-				parentAgentItem, contact_personItem, contact_phoneItem,
-				contact_mobileItem, account_nameItem, bank_nameItem,
+				parentAgentItem, contact_personItem,contact_addressItem, contact_phoneItem,
+				contact_mobileItem,contact_emailItem,contact_qqItem, account_nameItem, bank_nameItem,
 				bank_accountItem, college_urlItem, userid_for_collegeItem,
 				password_for_collegeItem, remarkItem, saveBtn);
 		setRequired();
@@ -59,6 +61,8 @@ public class AgentAdminEditorForm extends DetailedEditorForm {
 	public Serializable getModel() {
 		RecruitAgent agent = new RecruitAgent();
 		agent.setShort_name(agent_shortnameItem.getValueAsString());
+		agent.setContact_email(contact_emailItem.getValueAsString());
+		agent.setContact_qq(contact_qqItem.getValueAsString());
 		agent.setAccount_name(account_nameItem.getValueAsString());
 		agent.setAgent_name(agent_nameItem.getValueAsString());
 		agent.setAgent_type_id(getValueAsInteger(agent_typeItem));
@@ -100,6 +104,8 @@ public class AgentAdminEditorForm extends DetailedEditorForm {
 		responsible_personItem.setValue(agent.getResponsible_person());
 		userid_for_collegeItem.setValue(agent.getUserid_for_college());
 		agent_shortnameItem.setValue(agent.getShort_name());
+		contact_emailItem.setValue(agent.getContact_email());
+		contact_qqItem.setValue(agent.getContact_qq());
 		if (agent.getParent_agent_id() == null) {
 			parentAgentItem.setValue("");
 		} else {
@@ -131,7 +137,7 @@ public class AgentAdminEditorForm extends DetailedEditorForm {
 	
 	private void setValidators(){
 		StandardLengthValidator lenV = new StandardLengthValidator();
-		FormItem[] standardItems = new FormItem[] { agent_nameItem, responsible_personItem,
+		FormItem[] standardItems = new FormItem[] { agent_nameItem,contact_emailItem,contact_qqItem, responsible_personItem,
 				contact_personItem,contact_addressItem,contact_phoneItem,contact_mobileItem,account_nameItem,bank_nameItem,bank_accountItem,college_urlItem,userid_for_collegeItem,password_for_collegeItem, };
 		for(FormItem item:standardItems){
 			item.setValidators(lenV);
