@@ -268,8 +268,8 @@ public interface DataBaseRPCAsync {
 	void modelAction(Serializable[] model, String methodName,
 			AsyncCallback<Boolean> callback);
 
-	void getStudentList(int offset, int limit, boolean needTotalCounts,
-			AsyncCallback<List> callback);
+	void getStudentList(SearchCriteria[] searchCriteria, int offset, int limit,
+			boolean needTotalCounts, AsyncCallback<List> callback);
 	
 	void deleteStudent(List<StudentInfo> students, AsyncCallback<Boolean> callback);
 

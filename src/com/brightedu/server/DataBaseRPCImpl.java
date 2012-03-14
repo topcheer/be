@@ -518,8 +518,8 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 	}
 
 	@Override
-	public List getStudentList(int offset, int limit, boolean needTotalCounts) {
-		return agent.getStudentList(offset, limit, needTotalCounts);
+	public List getStudentList(SearchCriteria[] searchCriteria,int offset, int limit, boolean needTotalCounts) {
+		return agent.getStudentList(searchCriteria,offset, limit, needTotalCounts);
 	}
 
 	/************************** 站内用户短信 ******************************/

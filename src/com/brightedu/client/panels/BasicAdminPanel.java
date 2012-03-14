@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.brightedu.client.BrightEdu;
 import com.brightedu.client.CommonAsyncCall;
@@ -26,6 +27,7 @@ import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.BooleanItem;
 import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.FormItemIcon;
@@ -482,22 +484,41 @@ public abstract class BasicAdminPanel extends VLayout {
 				FormItem[] items = dialog.getContentForm().getFields();
 				for (FormItem item : items) {
 					if (item.getName().equals(key)) {
-						JavaScriptObject o = (JavaScriptObject) item
-								.getAttributeAsObject("valueMap");
-						if (o != null) {
-							LinkedHashMap<String, String> values =(LinkedHashMap<String, String>) JSOHelper.convertToMap(o);
-							
-							if (values != null) {
-								Iterator<String> it = values.keySet()
-										.iterator();
-								while (it.hasNext()) {
-									String itKey = it.next();
-									if (searchObj.equals(values.get(itKey))) {
-										searchObj = itKey;
-//										//此时，需要转换到整型的Integer
-										searchObj = Integer.parseInt(searchObj.toString());
-										sc.setLike(false);
-										break;
+						if (item instanceof BooleanItem) {
+							searchObj = searchObj.equals("y")
+									|| searchObj.equals("Y")
+									|| searchObj.equals("是");
+							sc.setLike(false);
+						} else if (item instanceof SelectItem
+								|| item instanceof ComboBoxItem) {
+							JavaScriptObject o = (JavaScriptObject) item
+									.getAttributeAsObject("valueMap");
+							if (o != null) {
+								// 有两种可能，一种是list（没有key-value配对），一种是key-value配对的map
+								Object collection = JSOHelper.convertToJava(o);
+								if (collection instanceof Map) {
+									Map<String, String> values = (Map<String, String>) collection;
+									if (values != null) {
+										Iterator<String> it = values.keySet()
+												.iterator();
+										boolean updatedKey = false;
+										while (it.hasNext()) {
+											String itKey = it.next();
+											if (searchObj.equals(values
+													.get(itKey))) {
+												searchObj = itKey;
+												// //此时，需要转换到整型的Integer
+												searchObj = Integer
+														.parseInt(searchObj
+																.toString());
+												sc.setLike(false);
+												updatedKey = true;
+												break;
+											}
+										}
+										if (!updatedKey) {
+											searchObj = new Integer(-2311); // 一个不可能出现的数
+										}
 									}
 								}
 							}
@@ -576,7 +597,8 @@ public abstract class BasicAdminPanel extends VLayout {
 
 	protected boolean acceptSearchTitle(String name, String title) {
 		if (name.contains("date") || name.contains("password")
-				|| name.contains("day") || name.contains("url")||name.equals("saveBtn"))
+				|| name.contains("day") || name.contains("url")
+				|| name.equals("saveBtn"))
 			return false;
 		return true;
 	}

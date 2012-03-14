@@ -231,8 +231,8 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 				setCurrentPage(indexGoto);
 			}
 		};
-		dbService.getStudentList((indexGoto - 1) * currentRowsInOnePage,
-				currentRowsInOnePage, init, callback);
+		dbService.getStudentList(searchCriteria, (indexGoto - 1)
+				* currentRowsInOnePage, currentRowsInOnePage, init, callback);
 	}
 
 	@Override
@@ -258,8 +258,8 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 		final List<StudentInfo> students = new ArrayList<StudentInfo>();
 		for (int i = 0; i < recList.getLength(); i++) {
 			if (recList.get(i).getAttributeAsBoolean("select")) {
-				students.add((StudentInfo) recList.get(i)
-						.getAttributeAsObject("object"));
+				students.add((StudentInfo) recList.get(i).getAttributeAsObject(
+						"object"));
 			}
 		}
 		if (students.size() == 0) {

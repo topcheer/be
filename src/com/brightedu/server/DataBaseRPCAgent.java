@@ -1352,7 +1352,8 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	}
 
 	@Override
-	public List getStudentList(int offset, int limit, boolean needTotalCounts) {
+	public List getStudentList(SearchCriteria[] searchCriteria, int offset,
+			int limit, boolean needTotalCounts) {
 		SqlSession session = sessionFactory.openSession();
 		try {
 			StudentInfoMapper mp = session.getMapper(StudentInfoMapper.class);
@@ -1367,13 +1368,43 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			for (RecruitAgent ra : agents) {
 				agentIds.add(ra.getAgent_id());
 			}
-			ex.createCriteria().andAgent_ownerIn(agentIds);
+			StudentInfoExample.Criteria criteria = ex.createCriteria();
+			criteria.andAgent_ownerIn(agentIds);
+			if (searchCriteria != null) {
+				for (SearchCriteria sc : searchCriteria) {
+					String key = sc.getCriteriaKey();
+					Serializable value = sc.getCriteriaValue();
+					String id_field_name = uperFirst(key);
+					String lastCondition = sc.isLike() ? "Like" : "EqualTo";
+
+					Method scMethod = ReflectUtil.getDeclaredMethod(
+							criteria.getClass(), "and" + id_field_name
+									+ lastCondition, value.getClass());
+					if (scMethod != null) {
+						if (sc.isLike()) {
+							scMethod.invoke(criteria, "%" + value + "%");
+						} else {
+							scMethod.invoke(criteria, value);
+						}
+					} else {
+						List result = new ArrayList();
+						if (needTotalCounts) {
+							result.add(0);
+						}
+						return result;
+					}
+				}
+			}
 			List result = mp.selectByExample(ex);
 			if (needTotalCounts) {
 				Integer counts = mp.countByExample(null);
 				result.add(counts);
 			}
 			return result;
+		} catch (Exception e) {
+			OperatioinFailedException ex = new OperatioinFailedException(e);
+			Log.e("", ex);
+			throw ex;
 		} finally {
 			session.close();
 		}
@@ -1455,9 +1486,9 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 						} else {
 							scMethod.invoke(criteriaObj, value);
 						}
-					}else{
+					} else {
 						List result = new ArrayList();
-						if(needTotalCounts){
+						if (needTotalCounts) {
 							result.add(0);
 						}
 						return result;
@@ -2396,12 +2427,12 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 	public boolean initBankAccount(Integer batchId) {
 		Properties prop = new Properties();
 		try {
-			prop.load(DataBaseRPCAgent.class.getResourceAsStream("/default_bank_account.properties"));
+			prop.load(DataBaseRPCAgent.class
+					.getResourceAsStream("/default_bank_account.properties"));
 		} catch (FileNotFoundException e) {
 
 			Log.e("default_bank_account.properties 不存在");
 			return false;
-				
 
 		} catch (IOException e) {
 
@@ -2415,12 +2446,12 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		SqlSession session = sessionFactory.openSession();
 		try {
 			String defaultAccount = prop.getProperty("account");
-			
+
 			BankAccountMapper bim = session.getMapper(BankAccountMapper.class);
 			BankAccountExample ex = new BankAccountExample();
 			ex.createCriteria().andBatch_idEqualTo(batchId);
 			bim.deleteByExample(ex);
-			
+
 			List<College> colleges = getCollegeList(-1, -1, false);
 			List<RecruitAgent> agents = getRecruitAgentList(-1, -1, false,
 					false);
