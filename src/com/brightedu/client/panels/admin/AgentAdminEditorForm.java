@@ -48,6 +48,11 @@ public class AgentAdminEditorForm extends DetailedEditorForm {
 		remarkItem.setLength(2000);
 		remarkItem.setRowSpan(3);
 		remarkItem.setColSpan(4);
+		agent_nameItem.setColSpan(4);
+		agent_nameItem.setWidth(400);
+		contact_addressItem.setWidth(400);
+		contact_addressItem.setColSpan(4);
+		
 		// agent_typeItem.
 		setFields(agent_nameItem,agent_shortnameItem, agent_typeItem, responsible_personItem,
 				parentAgentItem, contact_personItem,contact_addressItem, contact_phoneItem,
