@@ -53,7 +53,7 @@ public class DataBaseRPCHandler implements InvocationHandler {
 				audit(sb.toString());
 			}
 			long end = System.nanoTime();
-			System.out.println("-----user: " + user.getUser_name() + "     "
+			Log.d("-----user: " + user.getUser_name() + "     "
 					+ method.getName() + ", eclapsed " + (end - start)
 					/ 1000000 + "ms");
 			return result;
@@ -100,7 +100,7 @@ public class DataBaseRPCHandler implements InvocationHandler {
 
 	private void audit(String content) {
 		// FIXME record audit content, better be another manager thread
-		Log.i("Audit -- " + content);
+		Log.d("Audit -- " + content);
 	}
 
 }
