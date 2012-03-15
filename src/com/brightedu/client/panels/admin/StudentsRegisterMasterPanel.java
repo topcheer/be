@@ -36,7 +36,7 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 
 	LinkedHashMap<String, String> batchValues;
 	LinkedHashMap<String, String> collegeValues;
-	LinkedHashMap<String, String> sdudentClassfiedValues;
+	LinkedHashMap<String, String> studentClassfiedValues;
 	LinkedHashMap<String, String> subjectsValues;
 	/************* 这两个都来自recruit_agent **************************************/
 	LinkedHashMap<String, String> fundAgentValues;
@@ -65,7 +65,7 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 	private void initValueMaps() {
 		batchValues = new LinkedHashMap<String, String>();
 		collegeValues = new LinkedHashMap<String, String>();
-		sdudentClassfiedValues = new LinkedHashMap<String, String>();
+		studentClassfiedValues = new LinkedHashMap<String, String>();
 		subjectsValues = new LinkedHashMap<String, String>();
 		fundAgentValues = new LinkedHashMap<String, String>();
 		managedAgentValues = new LinkedHashMap<String, String>();
@@ -110,7 +110,7 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 				for (int x = 0; x < nameValuePare.size(); x++) {
 					StudentClassified c = (StudentClassified) nameValuePare
 							.get(x);
-					sdudentClassfiedValues.put(c.getClassified_id() + "",
+					studentClassfiedValues.put(c.getClassified_id() + "",
 							c.getClassified_name());
 				}
 				break;
@@ -177,16 +177,14 @@ public class StudentsRegisterMasterPanel extends BasicAdminPanel {
 				break;
 			}
 		}
-		detailedForm.setValueMaps(batchValues, collegeValues,
-				sdudentClassfiedValues, subjectsValues, fundAgentValues,
+		detailedForm.setValueMaps(batchValues, fundAgentValues,
 				managedAgentValues, stu_statustValues, ethnic_groupValues,
 				political_statusValues, graduate_collegeValues,
 				student_typeValues, major_categoryValues);
 		if (getAdminDialog() != null) {
 			StudentsRegisterEditorForm adminDialogEditorForm = (StudentsRegisterEditorForm) getAdminDialog()
 					.getContentForm();
-			adminDialogEditorForm.setValueMaps(batchValues, collegeValues,
-					sdudentClassfiedValues, subjectsValues, fundAgentValues,
+			adminDialogEditorForm.setValueMaps(batchValues,fundAgentValues,
 					managedAgentValues, stu_statustValues, ethnic_groupValues,
 					political_statusValues, graduate_collegeValues,
 					student_typeValues, major_categoryValues);

@@ -31,8 +31,13 @@ public class StudentsRegisterAdminDialog extends AdminDialog {
 		form.setWrapItemTitles(false);
 		StudentsRegisterMasterPanel m = (StudentsRegisterMasterPanel) masterDetail
 				.getMaster();
-		detailedPanel.infoForm.setValueMaps(m.batchValues, m.collegeValues,
-				m.sdudentClassfiedValues, m.subjectsValues, m.fundAgentValues,
+//		detailedPanel.infoForm.setValueMaps(m.batchValues, m.collegeValues,
+//				m.sdudentClassfiedValues, m.subjectsValues, m.fundAgentValues,
+//				m.managedAgentValues, m.stu_statustValues,
+//				m.ethnic_groupValues, m.political_statusValues,
+//				m.graduate_collegeValues, m.student_typeValues,
+//				m.major_categoryValues);
+		detailedPanel.infoForm.setValueMaps(m.batchValues, m.fundAgentValues,
 				m.managedAgentValues, m.stu_statustValues,
 				m.ethnic_groupValues, m.political_statusValues,
 				m.graduate_collegeValues, m.student_typeValues,
@@ -71,10 +76,7 @@ public class StudentsRegisterAdminDialog extends AdminDialog {
 	}
 
 	protected void reset() {
-		FormItem[] items = detailedPanel.infoForm.getFields();
-		for (FormItem item : items) {
-			item.setValue("");
-		}
+		detailedPanel.infoForm.reset();
 		detailedPanel.cleanPictures();
 	}
 

@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.log4j.Level;
+import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.spi.LocationInfo;
@@ -29,6 +30,7 @@ public class Log {
 	}
 
 	public static boolean isDebugEnabled() {
+		 
 		return getLogger().isDebugEnabled();
 	}
 

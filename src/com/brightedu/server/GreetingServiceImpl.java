@@ -22,6 +22,7 @@ import com.brightedu.model.edu.UserRightsEffectiveExample;
 import com.brightedu.server.util.AuthManager;
 import com.brightedu.server.util.ConnectionManager;
 import com.brightedu.server.util.Log;
+import com.brightedu.server.util.ServerProperties;
 import com.brightedu.shared.FieldVerifier;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -99,7 +100,8 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 			userRight = getUserRights(loginedUser);
 		}
 
-		return new Serializable[] { loginedUser, userRight };
+		return new Serializable[] { loginedUser, userRight,
+				ServerProperties.currentBatch };
 
 	}
 

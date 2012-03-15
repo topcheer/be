@@ -3,11 +3,16 @@ package com.brightedu.server.util;
 import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.servlet.http.HttpServlet;
 
+import org.apache.ibatis.session.SqlSession;
+
+import com.brightedu.dao.edu.CurrentBatchMapper;
+import com.brightedu.model.edu.CurrentBatch;
 import com.brightedu.server.GreetingServiceImpl;
 
 public class InitServlet extends HttpServlet {
@@ -35,7 +40,34 @@ public class InitServlet extends HttpServlet {
 				}
 			}
 		}, nextMidnight(), 24 * 60 * 60 * 1000);
+		initCurrentBatch();
+		scheduler.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				initCurrentBatch();
+			}
+		}, 3600000, 3600000);
 		Log.i("初始化完成");
+	}
+
+	private void initCurrentBatch() {
+		SqlSession session = ConnectionManager.sessionFactory.openSession();
+		try {
+			CurrentBatchMapper map = session
+					.getMapper(CurrentBatchMapper.class);
+			List<CurrentBatch> result = map.selectByExample(null);
+			if (result == null || result.size() == 0) {
+				Log.w("Current patch is not set!");
+			} else if (result.size() > 1) {
+				Log.w("Multiple current patch is set!");
+			} else {
+				CurrentBatch cb = result.get(0);
+				ServerProperties.currentBatch = cb.getCurrent_batch_id();
+				Log.i("Current patch: " + ServerProperties.currentBatch);
+			}
+		} finally {
+			session.close();
+		}
 	}
 
 	private static Date nextMidnight() {

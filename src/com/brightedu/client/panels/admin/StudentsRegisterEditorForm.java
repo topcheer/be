@@ -1,20 +1,29 @@
 package com.brightedu.client.panels.admin;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import com.brightedu.client.BrightEdu;
+import com.brightedu.client.CommonAsyncCall;
 import com.brightedu.client.panels.DetailedEditorForm;
 import com.brightedu.client.panels.MasterDetailAdmin;
 import com.brightedu.client.validator.StandardLengthValidator;
+import com.brightedu.model.edu.CollegeSubject;
 import com.brightedu.model.edu.StudentInfo;
+import com.brightedu.shared.SearchCriteria;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.form.fields.DateItem;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
+import com.smartgwt.client.widgets.form.fields.events.ChangeEvent;
+import com.smartgwt.client.widgets.form.fields.events.ChangeHandler;
 import com.smartgwt.client.widgets.form.validator.CustomValidator;
 import com.smartgwt.client.widgets.form.validator.LengthRangeValidator;
 
@@ -31,8 +40,9 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 	TextItem student_linkmanItem = new TextItem("student_linkman", "联系人");
 	TextItem linkman_phoneItem = new TextItem("linkman_phone", "联系人电话");
 	TextItem student_college_idItem = new TextItem("student_college_id", "学号");
-	SelectItem collegwOwnerItem = new SelectItem("college_owner", "隶属学校");
 	SelectItem batchItem = new SelectItem("batch_owner", "隶属批次");
+	SelectItem collegwOwnerItem = new SelectItem("college_owner", "隶属学校");
+
 	SelectItem classfiedItem = new SelectItem("classified_owner", "隶属层次");
 	SelectItem subject_ownerItem = new SelectItem("subject_owner", "隶属专业");
 	// SelectItem agent_ownerItem = new SelectItem("agent_owner", "隶属招生点");
@@ -55,42 +65,125 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 	SelectItem major_category_idItem = new SelectItem("major_category_id",
 			"成教学生大类");
 	SelectItem edu_levelItem = new SelectItem("edu_level", "学历");
-	TextItem college_passwordItem = new TextItem("college_password","高校登陆密码");
-	TextItem test_passwordItem= new TextItem("test_password","考试密码");
+	TextItem college_passwordItem = new TextItem("college_password", "高校登陆密码");
+	TextItem test_passwordItem = new TextItem("test_password", "考试密码");
 	SelectItem care_typeItem = new SelectItem("care_type", "照顾类型");
 	SelectItem edu_typeItem = new SelectItem("edu_type", "学历状态");
 
 	// DateItem register_dateItem = new DateItem("regster_date", "登记时间");
 	// DateItem update_dateItem = new DateItem("update_date", "更新时间");
 
-	public StudentsRegisterEditorForm(MasterDetailAdmin admin) {
-		super(admin);
+	List<CollegeSubject> collegeSubjects = new ArrayList<CollegeSubject>();
+
+	public StudentsRegisterEditorForm(MasterDetailAdmin adm) {
+		super(adm);
 		sexItem.setValueMap("男", "女");
 		// 高中毕业 同等学历 中专技校 大专毕业 本科以上
 		edu_levelItem.setValueMap("高中毕业", "同等学历", "中专技校", "大专毕业", "本科以上");
-		care_typeItem.setValueMap("无加分项","有无加分项");
-		edu_typeItem.setValueMap("学历","非学历");
-		
+		care_typeItem.setValueMap("无加分项", "有无加分项");
+		edu_typeItem.setValueMap("学历", "非学历");
 		setNumCols(6);
 		setLayoutAlign(VerticalAlignment.BOTTOM);
 		setFields(student_nameItem, identity_cardItem, sexItem, exam_numItem,
 				student_addressItem, student_phoneItem, postal_codeItem,
 				student_linkmanItem, linkman_phoneItem, student_college_idItem,
-				collegwOwnerItem, batchItem, classfiedItem, subject_ownerItem,
+				batchItem, collegwOwnerItem, classfiedItem, subject_ownerItem,
 				fund_agentItem, managed_agentItem, stu_status_idItem,
 				birthdayItem, ethnic_group_idItem, political_status_idItem,
 				employerItem, graduate_college_idItem, graduate_dateItem,
 				graduate_certificate_numberItem, student_type_idItem,
-				major_category_idItem, edu_levelItem,college_passwordItem,
-				test_passwordItem,care_typeItem,edu_typeItem, saveBtn);
+				major_category_idItem, edu_levelItem, college_passwordItem,
+				test_passwordItem, care_typeItem, edu_typeItem, saveBtn);
 		setValidators();
 		setRequired();
+		batchItem.addChangeHandler(new ChangeHandler() {
+			@Override
+			public void onChange(ChangeEvent event) {
+				// 决定高校
+				collegwOwnerItem.setValueMap("");
+				classfiedItem.setValueMap("");
+				subject_ownerItem.setValueMap("");
+				String batchIdStr = (String) event.getValue();
+				batchChanged(batchIdStr);
+			}
+		});
+		collegwOwnerItem.addChangeHandler(new ChangeHandler() {
+			@Override
+			public void onChange(ChangeEvent event) {
+				// 决定层次
+				String collegeIdStr = (String) event.getValue();
+				if (collegeIdStr != null && !collegeIdStr.trim().equals("")) {
+					LinkedHashMap<String, String> classfiedMap = new LinkedHashMap<String, String>();
+					for (int i = 0; i < collegeSubjects.size(); i++) {
+						CollegeSubject cs = (CollegeSubject) collegeSubjects
+								.get(i);
+						StudentsRegisterMasterPanel master = (StudentsRegisterMasterPanel) admin
+								.getMaster();
+						classfiedMap.put(
+								cs.getClassified_id() + "",
+								master.studentClassfiedValues.get(cs
+										.getClassified_id() + ""));
+					}
+					classfiedItem.setValueMap(classfiedMap);
+				}
+			}
+		});
+		classfiedItem.addChangeHandler(new ChangeHandler() {
+			@Override
+			public void onChange(ChangeEvent event) {
+				// 与批次、高校、层次决定专业
+				String classifiedIdStr = (String) event.getValue();
+				if (classifiedIdStr != null
+						&& !classifiedIdStr.toString().trim().equals("")) {
+					LinkedHashMap<String, String> subjectsMap = new LinkedHashMap<String, String>();
+					for (int i = 0; i < collegeSubjects.size(); i++) {
+						CollegeSubject cs = (CollegeSubject) collegeSubjects
+								.get(i);
+						StudentsRegisterMasterPanel master = (StudentsRegisterMasterPanel) admin
+								.getMaster();
+						subjectsMap.put(
+								cs.getSubeject_id() + "",
+								master.studentClassfiedValues.get(cs
+										.getSubeject_id() + ""));
+					}
+					subject_ownerItem.setValueMap(subjectsMap);
+				}
+			}
+		});
+		batchChanged(BrightEdu.currentBatch + "");
+	}
+
+	private void batchChanged(String batchIdStr) {
+		if (batchIdStr != null && !batchIdStr.toString().trim().equals("")) {
+			SearchCriteria sc = new SearchCriteria("batch_id",
+					(Serializable) batchIdStr);
+			sc.setLike(false);
+			AsyncCallback<List> cb = new CommonAsyncCall<List>() {
+
+				@Override
+				public void onSuccess(List result) {
+					collegeSubjects = result;
+					StudentsRegisterMasterPanel master = (StudentsRegisterMasterPanel) admin
+							.getMaster();
+					LinkedHashMap<String, String> collegeMap = new LinkedHashMap<String, String>();
+					for (int i = 0; i < collegeSubjects.size(); i++) {
+						CollegeSubject cs = (CollegeSubject) result.get(i);
+						collegeMap.put(
+								cs.getCollege_id() + "",
+								master.collegeValues.get(cs.getCollege_id()
+										+ ""));
+					}
+					collegwOwnerItem.setValueMap(collegeMap);
+				}
+			};
+			BrightEdu.createDataBaseRPC().getModels("CollegeSubject",
+					new SearchCriteria[] { sc }, -1, -1, false, cb);
+		}
 	}
 
 	@Override
 	public void setValue(Serializable model) {
 		StudentInfo student = (StudentInfo) model;
-
 		batchItem.setValue(student.getBatch_owner());
 		if (student.getBirthday() != null) {
 			long birthTime = Long.parseLong(student.getBirthday());
@@ -173,20 +266,19 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 		s.setExam_passwd(test_passwordItem.getValueAsString());
 		s.setCare_type(care_typeItem.getValueAsString());
 		s.setEdu_type(edu_typeItem.getValueAsString());
-		
 		return s;
 	}
 
 	public void setValueMaps(LinkedHashMap<String, String>... valueMaps) {
-		if (valueMaps.length != 12) {
+		if (valueMaps.length != 9) {
 			SC.say("数据结构所需数量未达到需求");
 			return;
 		} else {
 			int i = 0;
 			batchItem.setValueMap(valueMaps[i++]);
-			collegwOwnerItem.setValueMap(valueMaps[i++]);
-			classfiedItem.setValueMap(valueMaps[i++]);
-			subject_ownerItem.setValueMap(valueMaps[i++]);
+			// collegwOwnerItem.setValueMap(valueMaps[i++]);
+			// classfiedItem.setValueMap(valueMaps[i++]);
+			// subject_ownerItem.setValueMap(valueMaps[i++]);
 			fund_agentItem.setValueMap(valueMaps[i++]);
 			managed_agentItem.setValueMap(valueMaps[i++]);
 			stu_status_idItem.setValueMap(valueMaps[i++]);
@@ -195,24 +287,26 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 			graduate_college_idItem.setValueMap(valueMaps[i++]);
 			student_type_idItem.setValueMap(valueMaps[i++]);
 			major_category_idItem.setValueMap(valueMaps[i++]);
-
 			// default:
-			ethnic_group_idItem.setDefaultValue(1);
-			political_status_idItem.setDefaultValue(3);
-//			batchItem.setDefaultValue(defaultValue)
+			setDefault();
 		}
+	}
+
+	private void setDefault() {
+		batchItem.setDefaultValue(BrightEdu.currentBatch);
+		ethnic_group_idItem.setDefaultValue(1);
+		political_status_idItem.setDefaultValue(3);
 	}
 
 	@Override
 	public void reset() {
 		setValue(new StudentInfo());
+		setDefault();
 	}
 
 	private void setValidators() {
 		LengthRangeValidator standardLenthValidator = new StandardLengthValidator();
 		String errorMsg = "身份证长度必须是15或18位";
-		// StringCountValidator idCardLenthValidator = new
-		// StringCountValidator();
 		CustomValidator idCardLenthValidator = new CustomValidator() {
 
 			@Override
@@ -240,11 +334,10 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 		FormItem[] requiredItems = new FormItem[] { batchItem, birthdayItem,
 				classfiedItem, collegwOwnerItem, ethnic_group_idItem,
 				fund_agentItem, graduate_certificate_numberItem,
-				identity_cardItem, linkman_phoneItem, 
-				managed_agentItem, political_status_idItem, sexItem,
-				stu_status_idItem, student_addressItem, student_linkmanItem,
-				student_nameItem, student_phoneItem, student_type_idItem,
-				subject_ownerItem };
+				identity_cardItem, linkman_phoneItem, managed_agentItem,
+				political_status_idItem, sexItem, stu_status_idItem,
+				student_addressItem, student_linkmanItem, student_nameItem,
+				student_phoneItem, student_type_idItem, subject_ownerItem };
 		for (FormItem item : requiredItems) {
 			item.setRequired(true);
 		}

@@ -15,7 +15,7 @@ public abstract class DetailedEditorForm extends DynamicForm {
 
 	protected ButtonItem saveBtn = new ButtonItem("saveBtn", "修改");
 
-	MasterDetailAdmin admin;
+	protected MasterDetailAdmin admin;
 
 	public DetailedEditorForm(MasterDetailAdmin masterDetailAdmin) {
 		this.admin = masterDetailAdmin;

@@ -19,6 +19,8 @@ public class ServerProperties {
 	private static int auditLevel = 1;
 
 	public static String deployPath;
+	
+	public static int currentBatch = 0;
 
 	static {
 		ConfigurationFileWatcher.watchFile(

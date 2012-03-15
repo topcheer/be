@@ -1,7 +1,6 @@
 package com.brightedu.server;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
@@ -129,7 +128,6 @@ import com.brightedu.server.util.ServerProperties;
 import com.brightedu.server.util.Utils;
 import com.brightedu.shared.OperatioinFailedException;
 import com.brightedu.shared.SearchCriteria;
-import com.ibm.icu.util.IslamicCalendar;
 
 public class DataBaseRPCAgent implements DataBaseRPC {
 	SqlSessionFactory sessionFactory;
@@ -827,6 +825,7 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			CollegeSubjectViewMapper mp = session
 					.getMapper(CollegeSubjectViewMapper.class);
 			CollegeSubjectViewExample ex = new CollegeSubjectViewExample();
+			
 			// ex.setOrderByClause("subeject_id");
 			ex.createCriteria().andBatch_idEqualTo(batch)
 					.andCollege_idEqualTo(college)
