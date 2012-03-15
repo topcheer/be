@@ -27,6 +27,8 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.CloseClickEvent;
 import com.smartgwt.client.widgets.events.CloseClickHandler;
+import com.smartgwt.client.widgets.events.MouseMoveEvent;
+import com.smartgwt.client.widgets.events.MouseMoveHandler;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
@@ -474,7 +476,6 @@ public class BrightEdu implements EntryPoint {
 	private Menu createContextMenu() {
 		Menu menu = new Menu();
 		menu.setWidth(140);
-
 		MenuItemIfFunction enableCondition = new MenuItemIfFunction() {
 			public boolean execute(Canvas target, Menu menu, MenuItem item) {
 				int selectedTab = mainTabSet.getSelectedTabNumber();

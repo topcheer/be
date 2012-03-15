@@ -150,6 +150,7 @@ public class StudentsRegisterEditorForm extends DetailedEditorForm {
 				}
 			}
 		});
+		//第一次还是要模拟变换下
 		batchChanged(BrightEdu.currentBatch + "");
 	}
 
