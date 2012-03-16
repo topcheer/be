@@ -23,6 +23,7 @@ import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.types.DragDataAction;
 import com.smartgwt.client.types.FormLayoutType;
 import com.smartgwt.client.types.ListGridEditEvent;
+import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.Positioning;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.types.ValidatorType;
@@ -76,11 +77,11 @@ public class RecruitPlanManagePanel extends VLayout {
 	
     ListGridField pkField = new ListGridField("subjectID", "id");
     ListGridField subjectField = new ListGridField("subjectName", "专业");   
-    ListGridField lolField = new ListGridField("lol", "学制(年)"); 
+    ListGridField lolField = new ListGridField("lol", "学费收缴次数"); 
 
     ListGridField pkField2 = new ListGridField("subjectID", "id");
     ListGridField subjectField2 = new ListGridField("subjectName", "专业");   
-    ListGridField lolField2 = new ListGridField("lol", "学制(年)"); 
+    ListGridField lolField2 = new ListGridField("lol", "学费收缴次数"); 
     
 	DynamicForm df = new DynamicForm();
 	HLayout hl = new HLayout();
@@ -101,7 +102,7 @@ public class RecruitPlanManagePanel extends VLayout {
 	ListGridField collegeField = new ListGridField("college","大学");
 	ListGridField levelField = new ListGridField("level","层次");
 	ListGridField  subjField = new ListGridField("subject","专业");
-	ListGridField lolField3 = new ListGridField("lol2","学制");
+	ListGridField lolField3 = new ListGridField("lol2","学费收缴次数");
 	
 	
 	public RecruitPlanManagePanel()
@@ -117,7 +118,8 @@ public class RecruitPlanManagePanel extends VLayout {
 		leftStack.setWidth(520);
 		leftStack.setHeight100();
 		leftStack.setVisibilityMode(VisibilityMode.MULTIPLE);
-
+		leftStack.setOverflow(Overflow.VISIBLE);
+		
 		conditionSection.setExpanded(true);
 		selectionSection.setExpanded(true);
 
@@ -258,7 +260,7 @@ public class RecruitPlanManagePanel extends VLayout {
         
         hl.setPadding(4);
         hl.setHeight(360);
-        hl.setWidth(580);
+        hl.setWidth(510);
         
         subjectList.setWidth("190");   
         subjectList.setHeight100();   
@@ -308,8 +310,8 @@ public class RecruitPlanManagePanel extends VLayout {
         selectedList2.setCanAcceptDroppedRecords(true);   
         selectedList2.setCanRemoveRecords(true);
         selectedList2.setShowHeaderContextMenu(false);
+         selectedList2.setFields(pkField2, subjectField2,lolField2);   
         
-        selectedList2.setFields(pkField2, subjectField2,lolField2);   
         
         selectedList2.setEditEvent(ListGridEditEvent.CLICK);
         selectedList2.setPreventDuplicates(true);
@@ -573,7 +575,7 @@ public class RecruitPlanManagePanel extends VLayout {
 					@Override
 					public void onSuccess(Boolean result) {
 						
-						BrightEdu.showTip("没有啥东西好存的,开玩笑? 我顺便把所有的组合全删了，你没意见吧？");
+						BrightEdu.showTip("组合已经清除");
 						refreshCurrentList(new Integer(batchItem.getValueAsString()));
 					}});
 			
