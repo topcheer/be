@@ -182,15 +182,16 @@ public class BrightEdu implements EntryPoint {
 		main.setWidth(500);
 		main.setHeight(500);
 		ToolStrip topBar = new ToolStrip();
-		topBar.setHeight(62);
+		topBar.setHeight(30);
 		topBar.setWidth100();
 		// topBar。
 		// topBar.addSpacer(6);
 		Img c = new Img();
 		c.setSrc("jm_banner.png");
 		c.setPrompt("今明教育在线");
-		c.setWidth(375);
-		c.setHeight(56);
+		c.setWidth(188);
+		c.setHeight(28);
+		c.setOpacity(50);
 		c.addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
 			public void onClick(ClickEvent event) {
 				com.google.gwt.user.client.Window.open(
