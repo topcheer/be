@@ -51,6 +51,8 @@ import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.events.CellDoubleClickEvent;
 import com.smartgwt.client.widgets.grid.events.CellDoubleClickHandler;
+import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
+import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordDoubleClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
@@ -323,7 +325,19 @@ public class BankAccountAdminPanel extends VLayout {
 		accountField.setWidth(180);
 		objField.setHidden(true);
 		currentList.setFields(collegeField,agentField,accountField,objField);
+		currentList.addRecordClickHandler(new RecordClickHandler(){
 
+			@Override
+			public void onRecordClick(RecordClickEvent event) {
+				BankAccount ba = (BankAccount)event.getRecord().getAttributeAsObject("obj");
+				
+				agentItem.setValue(ba.getAgent_id()+"");
+				collegeItem.setValue(ba.getCollege_id()+"");
+				accountItem.setValue(ba.getAccount());
+				
+				
+			}});
+		
 		 currentList.addRecordDoubleClickHandler(new RecordDoubleClickHandler(){
 
 			@Override
