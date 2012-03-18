@@ -82,6 +82,11 @@ public class PanelData {
 			return new BankAccountAdmin.Factory();
 		}	
 		
+		if(id.equals("student_batch_import"))  //批量导入学生
+		{
+			return new BatchImport.Factory();
+		}
+		
 		return null;
 	}
 }

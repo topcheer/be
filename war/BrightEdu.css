@@ -82,3 +82,10 @@ h1 {
 	background-color: #08dEf0;
 	color: black;
 }
+
+.upld-button {
+	font-size: 10px;
+	cursor: pointer;
+	font-style: bold;
+	margin:1px;
+}

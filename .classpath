@@ -32,6 +32,9 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jai_core.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mlibwrapper_jai.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwtupload-0.6.4.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/poi-ooxml-3.8-beta5-20111217.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/poi-ooxml-schemas-3.8-beta5-20111217.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/poi-scratchpad-3.8-beta5-20111217.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
