@@ -9,12 +9,14 @@ import gwtupload.client.SingleUploader;
 
 import java.io.LineNumberReader;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.brightedu.client.BrightEdu;
 import com.brightedu.client.CommonAsyncCall;
 import com.brightedu.client.panels.BasicAdminPanel;
 import com.brightedu.model.edu.ChargeType;
+import com.brightedu.model.edu.StudentInfo;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
@@ -193,7 +195,9 @@ public class BatchImportPanel extends VLayout {
 		Label choose = new Label("选择要上传的文件:");
 		uploadLayout.addMember(choose);
 		uploadLayout.addMember(defaultUploader);
-		
+		LayoutSpacer sp0 = new LayoutSpacer();
+		sp0.setWidth100();
+		uploadLayout.addMember(sp0);
 		IButton saveBtn = new IButton("保存");
 		
 		uploadLayout.addMember(saveBtn);
@@ -221,10 +225,43 @@ public class BatchImportPanel extends VLayout {
 	}
 
 	protected void transformAndSave() {
+		
+		if(uploaded.getRecords().length == 0) 
+		{
+			BrightEdu.showTip("你还没有上传文件");
+			return;
+		}
+			
 
-		//BrightEdu.createDataBaseRPC().adds
+		if(uploaded.getFields().length != 33) 
+		{
+			BrightEdu.showTip("你上传的文件格式不正确,请与系统管理员联系");
+			return;
+		}
+			
+
+		
+		List<StudentInfo> students = new ArrayList<StudentInfo>();
+				
+		for(Record x : uploaded.getRecords())
+		{
+			students.add(transform(x));
+		}
+		BrightEdu.createDataBaseRPC().addStudents(students, new CommonAsyncCall<Boolean>(){
+
+			@Override
+			public void onSuccess(Boolean result) {
+				BrightEdu.showTip("成功倒入");
+				
+			}});
 		
 		
+	}
+
+	private StudentInfo transform(Record x) {
+        //transform each row into a StudentInfo object
+		
+		return null;
 	}
 
 	protected void createDataGrid(String message) {
