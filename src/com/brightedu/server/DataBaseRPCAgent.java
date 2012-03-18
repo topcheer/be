@@ -2254,6 +2254,26 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 		}
 	}
 
+
+	@Override
+	public boolean addStudents(List<StudentInfo> stus) {
+		SqlSession session = sessionFactory.openSession();
+		try {
+
+			StudentInfoMapper map = session.getMapper(StudentInfoMapper.class);
+			for(StudentInfo stu : stus)
+			{
+				map.insertSelective(stu);
+			}
+			
+
+			session.commit();
+
+			return true;
+		} finally {
+			session.close();
+		}
+	}
 	@Override
 	public List<StudentPicture> getPictures(int student_id) {
 		SqlSession session = sessionFactory.openSession();
@@ -2471,5 +2491,6 @@ public class DataBaseRPCAgent implements DataBaseRPC {
 			session.close();
 		}
 	}
+
 
 }

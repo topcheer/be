@@ -22,7 +22,10 @@ import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.util.SC;
+import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Label;
+import com.smartgwt.client.widgets.events.ClickEvent;
+import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.validator.Validator;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
@@ -190,6 +193,19 @@ public class BatchImportPanel extends VLayout {
 		Label choose = new Label("选择要上传的文件:");
 		uploadLayout.addMember(choose);
 		uploadLayout.addMember(defaultUploader);
+		
+		IButton saveBtn = new IButton("保存");
+		
+		uploadLayout.addMember(saveBtn);
+		saveBtn.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				transformAndSave();
+				
+			}});
+		
+		
 		addMember(uploadLayout);
 		
 		LayoutSpacer sp = new LayoutSpacer();
@@ -202,6 +218,13 @@ public class BatchImportPanel extends VLayout {
 		
 		
 		addMember(uploaded);
+	}
+
+	protected void transformAndSave() {
+
+		//BrightEdu.createDataBaseRPC().adds
+		
+		
 	}
 
 	protected void createDataGrid(String message) {

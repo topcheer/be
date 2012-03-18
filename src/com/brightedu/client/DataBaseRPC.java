@@ -241,6 +241,7 @@ public interface DataBaseRPC extends RemoteService {
 	List<StudentPicture> getPictures(int student_id);
 	boolean saveStudent(StudentInfo stu, List<StudentPicture> pictures);
 	boolean deleteStudent(List<StudentInfo> studentIds);
+	boolean addStudents(List<StudentInfo> stus);  //批量
 	
 	/**************************站内用户短信******************************/
 	

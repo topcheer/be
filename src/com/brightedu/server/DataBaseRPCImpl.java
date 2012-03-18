@@ -627,4 +627,9 @@ public class DataBaseRPCImpl extends BrightServlet implements DataBaseRPC {
 				needTotalCounts);
 	}
 
+	@Override
+	public boolean addStudents(List<StudentInfo> stus) {
+		return agent.addStudents(stus);
+	}
+
 }

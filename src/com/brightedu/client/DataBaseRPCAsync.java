@@ -316,4 +316,6 @@ public interface DataBaseRPCAsync {
 
 	void initBankAccount(Integer batchId, AsyncCallback<Boolean> callback);
 
+	void addStudents(List<StudentInfo> stus, AsyncCallback<Boolean> callback);
+
 }
