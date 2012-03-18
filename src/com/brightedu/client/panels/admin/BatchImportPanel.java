@@ -4,31 +4,31 @@ import gwtupload.client.IUploadStatus.Status;
 import gwtupload.client.IUploader;
 import gwtupload.client.IUploader.UploadedInfo;
 import gwtupload.client.IUploader.UploaderConstants;
-import gwtupload.client.MultiUploader;
 import gwtupload.client.SingleUploader;
-
-import java.io.LineNumberReader;
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
-
 import com.brightedu.client.BrightEdu;
 import com.brightedu.client.CommonAsyncCall;
-import com.brightedu.client.panels.BasicAdminPanel;
-import com.brightedu.model.edu.ChargeType;
+import com.brightedu.model.edu.BatchIndex;
+import com.brightedu.model.edu.College;
+import com.brightedu.model.edu.EthnicGroup;
+import com.brightedu.model.edu.MajorCategory;
+import com.brightedu.model.edu.PoliticalStatus;
+import com.brightedu.model.edu.RecruitAgent;
+import com.brightedu.model.edu.School;
+import com.brightedu.model.edu.StudentClassified;
 import com.brightedu.model.edu.StudentInfo;
-import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.brightedu.model.edu.StudentStatus;
+import com.brightedu.model.edu.StudentType;
+import com.brightedu.model.edu.Subjects;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
-import com.smartgwt.client.types.Autofit;
-import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.types.Overflow;
-import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.form.validator.Validator;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -37,16 +37,137 @@ import com.smartgwt.client.widgets.layout.LayoutSpacer;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 public class BatchImportPanel extends VLayout {
-	private ListGrid uploaded  = new ListGrid();
+	private ListGrid uploaded = new ListGrid();
+	private LinkedHashMap<String,String> batchReverse = new LinkedHashMap<String,String>();
+	private LinkedHashMap<String,String> levelReverse = new LinkedHashMap<String,String>();
+	private LinkedHashMap<String,String> collegeReverse = new LinkedHashMap<String,String>();
+	private LinkedHashMap<String,String> subjectReverse = new LinkedHashMap<String,String>();
+	private LinkedHashMap<String,String> agentReverse = new LinkedHashMap<String,String>();
+	private LinkedHashMap<String,String> ethnicReverse = new LinkedHashMap<String,String>();
+	private LinkedHashMap<String,String> politicalReverse = new LinkedHashMap<String,String>();
+	private LinkedHashMap<String,String> schoolReverse = new LinkedHashMap<String,String>();
+	private LinkedHashMap<String,String> statusReverse = new LinkedHashMap<String,String>();
+	private LinkedHashMap<String,String> studentTypeReverse = new LinkedHashMap<String,String>();
+	private LinkedHashMap<String,String> majorCategoryReverse = new LinkedHashMap<String,String>();
+	private String[] nameValuePareModels;
+
 	public BatchImportPanel() {
+
+		nameValuePareModels = new String[] { "BatchIndex", "College",
+				"StudentClassified", "Subjects", "RecruitAgent",
+				"StudentStatus", "EthnicGroup", "PoliticalStatus", "School",
+				"StudentType", "MajorCategory", "PictureType" };
+		initValueMaps();
+
 		init();
 
+	}
+
+	private void initValueMaps() {
+
+		BrightEdu.createDataBaseRPC().getNameValuePareList(nameValuePareModels,
+				new CommonAsyncCall<List>() {
+					@Override
+					public void onSuccess(List result) {
+						parseValueMaps(result);
+					}
+				});
+	}
+
+	private void parseValueMaps(List totalNameValuePares) {
+
+		for (int i = 0; i < totalNameValuePares.size(); i++) {
+			List nameValuePare = (List) totalNameValuePares.get(i);
+			switch (i) {
+			case 0:
+				for (int x = 0; x < nameValuePare.size(); x++) {
+					BatchIndex bi = (BatchIndex) nameValuePare.get(x);
+					batchReverse.put(bi.getBatch_name(), bi.getBatch_id() + "");
+				}
+
+				break;
+			case 1:
+				for (int x = 0; x < nameValuePare.size(); x++) {
+					College c = (College) nameValuePare.get(x);
+					collegeReverse.put(c.getCollege_name(), c.getCollege_id()
+							+ "");
+				}
+				break;
+			case 2:
+				for (int x = 0; x < nameValuePare.size(); x++) {
+					StudentClassified c = (StudentClassified) nameValuePare
+							.get(x);
+					levelReverse.put(c.getClassified_name(),
+							c.getClassified_id() + "");
+				}
+				break;
+			case 3:
+				for (int x = 0; x < nameValuePare.size(); x++) {
+					Subjects c = (Subjects) nameValuePare.get(x);
+					subjectReverse.put(c.getSubject_name(), c.getSubject_id()
+							+ "");
+				}
+				break;
+			case 4:
+				for (int x = 0; x < nameValuePare.size(); x++) {
+					RecruitAgent agent = (RecruitAgent) nameValuePare.get(x);
+
+					agentReverse.put(agent.getAgent_name(), agent.getAgent_id()
+							+ "");
+
+				}
+				break;
+			case 5:
+				for (int x = 0; x < nameValuePare.size(); x++) {
+					StudentStatus c = (StudentStatus) nameValuePare.get(x);
+					statusReverse.put(c.getStu_status_name(),
+							c.getStu_status_id() + "");
+				}
+				break;
+			case 6:
+				for (int x = 0; x < nameValuePare.size(); x++) {
+					EthnicGroup c = (EthnicGroup) nameValuePare.get(x);
+					ethnicReverse.put(c.getEthnic_group_name(),
+							c.getEthnic_group_id() + "");
+				}
+				break;
+			case 7:
+				for (int x = 0; x < nameValuePare.size(); x++) {
+					PoliticalStatus c = (PoliticalStatus) nameValuePare.get(x);
+					politicalReverse.put(c.getPol_name(), c.getPol_id() + "");
+				}
+				break;
+			case 8:
+				for (int x = 0; x < nameValuePare.size(); x++) {
+					School c = (School) nameValuePare.get(x);
+					schoolReverse.put(c.getSchool_name(), c.getSchool_code());
+				}
+				break;
+			case 9:
+				for (int x = 0; x < nameValuePare.size(); x++) {
+					StudentType c = (StudentType) nameValuePare.get(x);
+					studentTypeReverse.put(c.getStudent_type_name(),
+							c.getStudent_type_id() + "");
+				}
+				break;
+			case 10:
+				for (int x = 0; x < nameValuePare.size(); x++) {
+					MajorCategory c = (MajorCategory) nameValuePare.get(x);
+					majorCategoryReverse.put(
+							c.getStudent_major_category_name(),
+							c.getStudent_major_category_id() + "");
+				}
+				break;
+			default:
+				break;
+			}
+		}
 	}
 
 	protected void init() {
 
 		this.setMargin(5);
-		
+
 		HLayout uploadLayout = new HLayout();
 		uploadLayout.setHeight(25);
 		uploadLayout.setMembersMargin(10);
@@ -54,10 +175,10 @@ public class BatchImportPanel extends VLayout {
 
 		// Create a new uploader panel and attach it to the document
 		SingleUploader defaultUploader = new SingleUploader();
-		defaultUploader.setValidExtensions(".xls",".xlsx");
-		
-		//defaultUploader.setSize("400px", "20px");
-		//defaultUploader.setStyleName("sendButton");
+		defaultUploader.setValidExtensions(".xls", ".xlsx");
+
+		// defaultUploader.setSize("400px", "20px");
+		// defaultUploader.setStyleName("sendButton");
 		defaultUploader.setI18Constants(new UploaderConstants() {
 
 			@Override
@@ -199,98 +320,93 @@ public class BatchImportPanel extends VLayout {
 		sp0.setWidth100();
 		uploadLayout.addMember(sp0);
 		IButton saveBtn = new IButton("保存");
-		
+
 		uploadLayout.addMember(saveBtn);
-		saveBtn.addClickHandler(new ClickHandler(){
+		saveBtn.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
 				transformAndSave();
-				
-			}});
-		
-		
+
+			}
+		});
+
 		addMember(uploadLayout);
-		
+
 		LayoutSpacer sp = new LayoutSpacer();
 		sp.setHeight(10);
 		addMember(sp);
-		
+
 		uploaded.setShowHeaderContextMenu(false);
 		uploaded.setShowHeaderMenuButton(false);
 		uploaded.setOverflow(Overflow.VISIBLE);
-		
-		
+
 		addMember(uploaded);
 	}
 
 	protected void transformAndSave() {
-		
-		if(uploaded.getRecords().length == 0) 
-		{
+
+		if (uploaded.getRecords().length == 0) {
 			BrightEdu.showTip("你还没有上传文件");
 			return;
 		}
-			
 
-		if(uploaded.getFields().length != 33) 
-		{
+		if (uploaded.getFields().length != 33) {
 			BrightEdu.showTip("你上传的文件格式不正确,请与系统管理员联系");
 			return;
 		}
-			
 
-		
 		List<StudentInfo> students = new ArrayList<StudentInfo>();
-				
-		for(Record x : uploaded.getRecords())
-		{
+
+		for (Record x : uploaded.getRecords()) {
 			students.add(transform(x));
 		}
-		BrightEdu.createDataBaseRPC().addStudents(students, new CommonAsyncCall<Boolean>(){
+		BrightEdu.createDataBaseRPC().addStudents(students,
+				new CommonAsyncCall<Boolean>() {
 
-			@Override
-			public void onSuccess(Boolean result) {
-				BrightEdu.showTip("成功倒入");
-				
-			}});
-		
-		
+					@Override
+					public void onSuccess(Boolean result) {
+						BrightEdu.showTip("成功倒入");
+
+					}
+				});
+
 	}
 
 	private StudentInfo transform(Record x) {
-        //transform each row into a StudentInfo object
+		// transform each row into a StudentInfo object
+		//TODO code not finished yet
+		StudentInfo student = new StudentInfo();
 		
-		return null;
+		student.setAgent_owner(new Integer(agentReverse.get(x.getAttributeAsString("F0"))));  //F0 agent owner
+		
+		return student;
 	}
 
 	protected void createDataGrid(String message) {
-		
+
 		String[] lines = message.split("\n");
 		String[] columnNames = lines[0].split(":");
 		ListGridField[] fields = new ListGridField[columnNames.length];
-		for(int i =0 ; i< columnNames.length;i++)
-		{
-			
-			fields[i] = new ListGridField("F" + i ,columnNames[i] );
-			
+		for (int i = 0; i < columnNames.length; i++) {
+
+			fields[i] = new ListGridField("F" + i, columnNames[i]);
+
 		}
 		uploaded.setWidth(120 * columnNames.length);
 		uploaded.setFields(fields);
 		RecordList list = new RecordList();
-		for(int j = 1; j<lines.length;j++)
-		{
+		for (int j = 1; j < lines.length; j++) {
 			ListGridRecord record = new ListGridRecord();
 			String[] row = lines[j].split(":");
-			for(int i =0 ; i< row.length;i++ )
-			{
+			for (int i = 0; i < row.length; i++) {
 				record.setAttribute("F" + i, "" + row[i]);
 			}
 			list.add(record);
-			
+
 		}
 		uploaded.setData(list);
-		
+
 	}
 
 }
